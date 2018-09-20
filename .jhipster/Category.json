@@ -1,0 +1,30 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "needs",
+            "otherEntityName": "need",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "categories"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "subCategory",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20180919113156",
+    "javadoc": "Category entity.\n@author Dheeraj das.",
+    "entityTableName": "category",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "microserviceName": "karma"
+}

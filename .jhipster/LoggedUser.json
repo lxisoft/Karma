@@ -1,0 +1,91 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "profilePic",
+            "otherEntityName": "media",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "loggedUser"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "addresses",
+            "otherEntityName": "address",
+            "otherEntityRelationshipName": "loggedUser"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "needs",
+            "otherEntityName": "need",
+            "otherEntityRelationshipName": "loggedUser"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "services",
+            "otherEntityName": "service",
+            "otherEntityRelationshipName": "loggedUser"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "needs",
+            "otherEntityName": "need",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "willingUsers"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "verificationTeams",
+            "otherEntityName": "verificationTeam",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "approvingUsers"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "email",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "firstName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "lastName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "rating",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "profession",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "gender",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dob",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "bloodGroup",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20180919113152",
+    "javadoc": "LoggedUser entity.\n@author Muhammed Ruhail",
+    "entityTableName": "logged_user",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "microserviceName": "karma"
+}

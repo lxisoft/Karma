@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity VerificationTeam.
+    -->
+    <changeSet id="20180919113201-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="verification_teams_id"
+                                 baseTableName="verification_team_approving_users"
+                                 constraintName="fk_verification_team_approving_users_verification_teams_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="verification_team"/>
+        <addForeignKeyConstraint baseColumnNames="approving_users_id"
+                                 baseTableName="verification_team_approving_users"
+                                 constraintName="fk_verification_team_approving_users_approving_users_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="logged_user"/>
+        
+    </changeSet>
+</databaseChangeLog>
