@@ -4,8 +4,8 @@
 # This configuration will be overridden by the Spring profile you use,
 # for example application-dev.yml if you use the "dev" profile.
 #
-# More information on profiles: http://www.jhipster.tech/profiles/
-# More information on configuration properties: http://www.jhipster.tech/common-application-properties/
+# More information on profiles: https://www.jhipster.tech/profiles/
+# More information on configuration properties: https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
 # ===================================================================
@@ -14,32 +14,45 @@
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 
-# See https://github.com/Netflix/Hystrix/wiki/Configuration
-#hystrix:
-#    command:
-#        default:
-#            execution:
-#                isolation:
-#                    thread:
-#                        timeoutInMilliseconds: 10000
-# See https://github.com/spring-cloud/spring-cloud-netflix/issues/1330
 feign:
     hystrix:
         enabled: true
+#    client:
+#        config:
+#            default:
+#                connectTimeout: 5000
+#                readTimeout: 5000
 
+# See https://github.com/Netflix/Hystrix/wiki/Configuration
 hystrix:
-    share-security-context: true
+    command:
+        default:
+            execution:
+                isolation:
+                    strategy: SEMAPHORE
+# See https://github.com/spring-cloud/spring-cloud-netflix/issues/1330
+#                    thread:
+#                        timeoutInMilliseconds: 10000
+    shareSecurityContext: true
 
 management:
-    security:
-        roles: ADMIN
-    context-path: /management
+    endpoints:
+        web:
+            base-path: /management
+            exposure:
+                include: ["configprops", "env", "health", "info", "threaddump", "logfile" ]
+    endpoint:
+        health:
+            show-details: when_authorized
     info:
         git:
             mode: full
     health:
         mail:
             enabled: false # When using the MailService, configure an SMTP server and set this to true
+    metrics:
+        enabled: false # http://micrometer.io/ is disabled by default, as we use http://metrics.dropwizard.io/ instead
+
 spring:
     application:
         name: karma
@@ -48,8 +61,6 @@ spring:
         # Otherwise, it will be filled in by maven when building the WAR file
         # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
         active: #spring.profiles.active#
-    jackson:
-        serialization.write_dates_as_timestamps: false
     jpa:
         open-in-view: false
         hibernate:
@@ -63,7 +74,7 @@ spring:
         favicon:
             enabled: false
     thymeleaf:
-        mode: XHTML
+        mode: HTML
 
 # ===================================================================
 # OpenID Connect Settings. Default settings are for Keycloak in Docker.
@@ -85,10 +96,9 @@ spring:
 # export SECURITY_OAUTH2_CLIENT_CLIENT_SECRET="38561a05"
 # ===================================================================
 security:
-    basic:
-        enabled: false
     oauth2:
         client:
+<<<<<<< HEAD
             access-token-uri: https://kcnew.bytatech.com:8443/auth/realms/ayoos/protocol/openid-connect/token
             user-authorization-uri:  https://kcnew.bytatech.com:8443/auth/realms/ayoos/protocol/openid-connect/auth
             client-id: internal
@@ -102,20 +112,29 @@ security:
             prefer-token-info: false
             jwt:
                 key-uri: https://kcnew.bytatech.com:8443/auth/realms/ayoos
+=======
+            client-id: internal
+            client-secret: internal
+        resource:
+            user-info-uri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/userinfo
+>>>>>>> jhipster_upgrade
 
 server:
-    session:
-        cookie:
-            http-only: true
+    servlet:
+        context-path: /${spring.application.name}
+        session:
+            cookie:
+                http-only: true
 
+# Properties to be exposed on the /info management endpoint
 info:
-    project:
-        version: #project.version#
+    # Comma separated list of profiles that will trigger the ribbon to show
+    display-ribbon-on-profiles: "dev"
 
 # ===================================================================
 # JHipster specific properties
 #
-# Full reference is available at: http://www.jhipster.tech/common-application-properties/
+# Full reference is available at: https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
 jhipster:
@@ -144,8 +163,9 @@ jhipster:
         contact-email:
         license:
         license-url:
-    ribbon:
-        display-on-active-profiles: dev
+
+logging:
+    file: target/karma.log
 
 # ===================================================================
 # Application specific properties
@@ -153,7 +173,7 @@ jhipster:
 # to have type-safe configuration, like in the JHipsterProperties above
 #
 # More documentation is available at:
-# http://www.jhipster.tech/common-application-properties/
+# https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-application:
+# application:

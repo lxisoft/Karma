@@ -1,8 +1,11 @@
 package com.lxisoft.service;
 
 import com.lxisoft.service.dto.HelpDTO;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.Optional;
 
 /**
  * Service Interface for managing Help.
@@ -25,13 +28,14 @@ public interface HelpService {
      */
     Page<HelpDTO> findAll(Pageable pageable);
 
+
     /**
      * Get the "id" help.
      *
      * @param id the id of the entity
      * @return the entity
      */
-    HelpDTO findOne(Long id);
+    Optional<HelpDTO> findOne(Long id);
 
     /**
      * Delete the "id" help.

@@ -1,8 +1,11 @@
 package com.lxisoft.service;
 
 import com.lxisoft.service.dto.LoggedUserDTO;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.Optional;
 
 /**
  * Service Interface for managing LoggedUser.
@@ -25,13 +28,14 @@ public interface LoggedUserService {
      */
     Page<LoggedUserDTO> findAll(Pageable pageable);
 
+
     /**
      * Get the "id" loggedUser.
      *
      * @param id the id of the entity
      * @return the entity
      */
-    LoggedUserDTO findOne(Long id);
+    Optional<LoggedUserDTO> findOne(Long id);
 
     /**
      * Delete the "id" loggedUser.

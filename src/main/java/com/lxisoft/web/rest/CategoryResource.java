@@ -31,7 +31,7 @@ public class CategoryResource {
 
     private final Logger log = LoggerFactory.getLogger(CategoryResource.class);
 
-    private static final String ENTITY_NAME = "category";
+    private static final String ENTITY_NAME = "karmaCategory";
 
     private final CategoryService categoryService;
 
@@ -73,7 +73,7 @@ public class CategoryResource {
     public ResponseEntity<CategoryDTO> updateCategory(@RequestBody CategoryDTO categoryDTO) throws URISyntaxException {
         log.debug("REST request to update Category : {}", categoryDTO);
         if (categoryDTO.getId() == null) {
-            return createCategory(categoryDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         CategoryDTO result = categoryService.save(categoryDTO);
         return ResponseEntity.ok()
@@ -106,8 +106,8 @@ public class CategoryResource {
     @Timed
     public ResponseEntity<CategoryDTO> getCategory(@PathVariable Long id) {
         log.debug("REST request to get Category : {}", id);
-        CategoryDTO categoryDTO = categoryService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(categoryDTO));
+        Optional<CategoryDTO> categoryDTO = categoryService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(categoryDTO);
     }
 
     /**

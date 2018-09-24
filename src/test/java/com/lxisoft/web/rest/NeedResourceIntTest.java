@@ -12,9 +12,12 @@ import com.lxisoft.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -26,11 +29,14 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
+
 
 import static com.lxisoft.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -55,8 +61,15 @@ public class NeedResourceIntTest {
     @Autowired
     private NeedRepository needRepository;
 
+    @Mock
+    private NeedRepository needRepositoryMock;
+
     @Autowired
     private NeedMapper needMapper;
+    
+
+    @Mock
+    private NeedService needServiceMock;
 
     @Autowired
     private NeedService needService;
@@ -163,6 +176,37 @@ public class NeedResourceIntTest {
             .andExpect(jsonPath("$.[*].beneficiaryType").value(hasItem(DEFAULT_BENEFICIARY_TYPE.toString())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
     }
+    
+    public void getAllNeedsWithEagerRelationshipsIsEnabled() throws Exception {
+        NeedResource needResource = new NeedResource(needServiceMock);
+        when(needServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        MockMvc restNeedMockMvc = MockMvcBuilders.standaloneSetup(needResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
+            .setMessageConverters(jacksonMessageConverter).build();
+
+        restNeedMockMvc.perform(get("/api/needs?eagerload=true"))
+        .andExpect(status().isOk());
+
+        verify(needServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    public void getAllNeedsWithEagerRelationshipsIsNotEnabled() throws Exception {
+        NeedResource needResource = new NeedResource(needServiceMock);
+            when(needServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+            MockMvc restNeedMockMvc = MockMvcBuilders.standaloneSetup(needResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
+            .setMessageConverters(jacksonMessageConverter).build();
+
+        restNeedMockMvc.perform(get("/api/needs?eagerload=true"))
+        .andExpect(status().isOk());
+
+            verify(needServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
 
     @Test
     @Transactional
@@ -193,10 +237,11 @@ public class NeedResourceIntTest {
     public void updateNeed() throws Exception {
         // Initialize the database
         needRepository.saveAndFlush(need);
+
         int databaseSizeBeforeUpdate = needRepository.findAll().size();
 
         // Update the need
-        Need updatedNeed = needRepository.findOne(need.getId());
+        Need updatedNeed = needRepository.findById(need.getId()).get();
         // Disconnect from session so that the updates on updatedNeed are not directly saved in db
         em.detach(updatedNeed);
         updatedNeed
@@ -227,15 +272,15 @@ public class NeedResourceIntTest {
         // Create the Need
         NeedDTO needDTO = needMapper.toDto(need);
 
-        // If the entity doesn't have an ID, it will be created instead of just being updated
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restNeedMockMvc.perform(put("/api/needs")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(needDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the Need in the database
         List<Need> needList = needRepository.findAll();
-        assertThat(needList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(needList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -243,6 +288,7 @@ public class NeedResourceIntTest {
     public void deleteNeed() throws Exception {
         // Initialize the database
         needRepository.saveAndFlush(need);
+
         int databaseSizeBeforeDelete = needRepository.findAll().size();
 
         // Get the need

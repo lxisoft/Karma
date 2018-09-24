@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+
 import static com.lxisoft.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -64,7 +65,7 @@ public class AddressResourceIntTest {
 
     @Autowired
     private AddressMapper addressMapper;
-
+    
     @Autowired
     private AddressService addressService;
 
@@ -179,7 +180,7 @@ public class AddressResourceIntTest {
             .andExpect(jsonPath("$.[*].country").value(hasItem(DEFAULT_COUNTRY.toString())))
             .andExpect(jsonPath("$.[*].zip").value(hasItem(DEFAULT_ZIP.intValue())));
     }
-
+    
     @Test
     @Transactional
     public void getAddress() throws Exception {
@@ -212,10 +213,11 @@ public class AddressResourceIntTest {
     public void updateAddress() throws Exception {
         // Initialize the database
         addressRepository.saveAndFlush(address);
+
         int databaseSizeBeforeUpdate = addressRepository.findAll().size();
 
         // Update the address
-        Address updatedAddress = addressRepository.findOne(address.getId());
+        Address updatedAddress = addressRepository.findById(address.getId()).get();
         // Disconnect from session so that the updates on updatedAddress are not directly saved in db
         em.detach(updatedAddress);
         updatedAddress
@@ -252,15 +254,15 @@ public class AddressResourceIntTest {
         // Create the Address
         AddressDTO addressDTO = addressMapper.toDto(address);
 
-        // If the entity doesn't have an ID, it will be created instead of just being updated
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restAddressMockMvc.perform(put("/api/addresses")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(addressDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the Address in the database
         List<Address> addressList = addressRepository.findAll();
-        assertThat(addressList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(addressList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -268,6 +270,7 @@ public class AddressResourceIntTest {
     public void deleteAddress() throws Exception {
         // Initialize the database
         addressRepository.saveAndFlush(address);
+
         int databaseSizeBeforeDelete = addressRepository.findAll().size();
 
         // Get the address

@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+
 import static com.lxisoft.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -49,7 +50,7 @@ public class ApprovalStatusResourceIntTest {
 
     @Autowired
     private ApprovalStatusMapper approvalStatusMapper;
-
+    
     @Autowired
     private ApprovalStatusService approvalStatusService;
 
@@ -149,7 +150,7 @@ public class ApprovalStatusResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(approvalStatus.getId().intValue())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
     }
-
+    
     @Test
     @Transactional
     public void getApprovalStatus() throws Exception {
@@ -177,10 +178,11 @@ public class ApprovalStatusResourceIntTest {
     public void updateApprovalStatus() throws Exception {
         // Initialize the database
         approvalStatusRepository.saveAndFlush(approvalStatus);
+
         int databaseSizeBeforeUpdate = approvalStatusRepository.findAll().size();
 
         // Update the approvalStatus
-        ApprovalStatus updatedApprovalStatus = approvalStatusRepository.findOne(approvalStatus.getId());
+        ApprovalStatus updatedApprovalStatus = approvalStatusRepository.findById(approvalStatus.getId()).get();
         // Disconnect from session so that the updates on updatedApprovalStatus are not directly saved in db
         em.detach(updatedApprovalStatus);
         updatedApprovalStatus
@@ -207,15 +209,15 @@ public class ApprovalStatusResourceIntTest {
         // Create the ApprovalStatus
         ApprovalStatusDTO approvalStatusDTO = approvalStatusMapper.toDto(approvalStatus);
 
-        // If the entity doesn't have an ID, it will be created instead of just being updated
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restApprovalStatusMockMvc.perform(put("/api/approval-statuses")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(approvalStatusDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the ApprovalStatus in the database
         List<ApprovalStatus> approvalStatusList = approvalStatusRepository.findAll();
-        assertThat(approvalStatusList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(approvalStatusList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -223,6 +225,7 @@ public class ApprovalStatusResourceIntTest {
     public void deleteApprovalStatus() throws Exception {
         // Initialize the database
         approvalStatusRepository.saveAndFlush(approvalStatus);
+
         int databaseSizeBeforeDelete = approvalStatusRepository.findAll().size();
 
         // Get the approvalStatus

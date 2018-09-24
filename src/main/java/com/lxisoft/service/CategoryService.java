@@ -1,8 +1,11 @@
 package com.lxisoft.service;
 
 import com.lxisoft.service.dto.CategoryDTO;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.Optional;
 
 /**
  * Service Interface for managing Category.
@@ -25,13 +28,14 @@ public interface CategoryService {
      */
     Page<CategoryDTO> findAll(Pageable pageable);
 
+
     /**
      * Get the "id" category.
      *
      * @param id the id of the entity
      * @return the entity
      */
-    CategoryDTO findOne(Long id);
+    Optional<CategoryDTO> findOne(Long id);
 
     /**
      * Delete the "id" category.

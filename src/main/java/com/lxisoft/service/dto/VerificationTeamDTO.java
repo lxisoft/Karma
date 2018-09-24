@@ -1,6 +1,5 @@
 package com.lxisoft.service.dto;
 
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -51,7 +50,7 @@ public class VerificationTeamDTO implements Serializable {
         }
 
         VerificationTeamDTO verificationTeamDTO = (VerificationTeamDTO) o;
-        if(verificationTeamDTO.getId() == null || getId() == null) {
+        if (verificationTeamDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), verificationTeamDTO.getId());

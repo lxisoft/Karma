@@ -31,7 +31,7 @@ public class VerificationTeamResource {
 
     private final Logger log = LoggerFactory.getLogger(VerificationTeamResource.class);
 
-    private static final String ENTITY_NAME = "verificationTeam";
+    private static final String ENTITY_NAME = "karmaVerificationTeam";
 
     private final VerificationTeamService verificationTeamService;
 
@@ -73,7 +73,7 @@ public class VerificationTeamResource {
     public ResponseEntity<VerificationTeamDTO> updateVerificationTeam(@RequestBody VerificationTeamDTO verificationTeamDTO) throws URISyntaxException {
         log.debug("REST request to update VerificationTeam : {}", verificationTeamDTO);
         if (verificationTeamDTO.getId() == null) {
-            return createVerificationTeam(verificationTeamDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         VerificationTeamDTO result = verificationTeamService.save(verificationTeamDTO);
         return ResponseEntity.ok()
@@ -85,14 +85,20 @@ public class VerificationTeamResource {
      * GET  /verification-teams : get all the verificationTeams.
      *
      * @param pageable the pagination information
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many)
      * @return the ResponseEntity with status 200 (OK) and the list of verificationTeams in body
      */
     @GetMapping("/verification-teams")
     @Timed
-    public ResponseEntity<List<VerificationTeamDTO>> getAllVerificationTeams(Pageable pageable) {
+    public ResponseEntity<List<VerificationTeamDTO>> getAllVerificationTeams(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get a page of VerificationTeams");
-        Page<VerificationTeamDTO> page = verificationTeamService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/verification-teams");
+        Page<VerificationTeamDTO> page;
+        if (eagerload) {
+            page = verificationTeamService.findAllWithEagerRelationships(pageable);
+        } else {
+            page = verificationTeamService.findAll(pageable);
+        }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, String.format("/api/verification-teams?eagerload=%b", eagerload));
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
@@ -106,8 +112,8 @@ public class VerificationTeamResource {
     @Timed
     public ResponseEntity<VerificationTeamDTO> getVerificationTeam(@PathVariable Long id) {
         log.debug("REST request to get VerificationTeam : {}", id);
-        VerificationTeamDTO verificationTeamDTO = verificationTeamService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(verificationTeamDTO));
+        Optional<VerificationTeamDTO> verificationTeamDTO = verificationTeamService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(verificationTeamDTO);
     }
 
     /**

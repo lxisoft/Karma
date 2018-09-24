@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+
 import static com.lxisoft.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -49,7 +50,7 @@ public class SeverityResourceIntTest {
 
     @Autowired
     private SeverityMapper severityMapper;
-
+    
     @Autowired
     private SeverityService severityService;
 
@@ -149,7 +150,7 @@ public class SeverityResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(severity.getId().intValue())))
             .andExpect(jsonPath("$.[*].severityLevel").value(hasItem(DEFAULT_SEVERITY_LEVEL.toString())));
     }
-
+    
     @Test
     @Transactional
     public void getSeverity() throws Exception {
@@ -177,10 +178,11 @@ public class SeverityResourceIntTest {
     public void updateSeverity() throws Exception {
         // Initialize the database
         severityRepository.saveAndFlush(severity);
+
         int databaseSizeBeforeUpdate = severityRepository.findAll().size();
 
         // Update the severity
-        Severity updatedSeverity = severityRepository.findOne(severity.getId());
+        Severity updatedSeverity = severityRepository.findById(severity.getId()).get();
         // Disconnect from session so that the updates on updatedSeverity are not directly saved in db
         em.detach(updatedSeverity);
         updatedSeverity
@@ -207,15 +209,15 @@ public class SeverityResourceIntTest {
         // Create the Severity
         SeverityDTO severityDTO = severityMapper.toDto(severity);
 
-        // If the entity doesn't have an ID, it will be created instead of just being updated
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restSeverityMockMvc.perform(put("/api/severities")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(severityDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the Severity in the database
         List<Severity> severityList = severityRepository.findAll();
-        assertThat(severityList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(severityList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -223,6 +225,7 @@ public class SeverityResourceIntTest {
     public void deleteSeverity() throws Exception {
         // Initialize the database
         severityRepository.saveAndFlush(severity);
+
         int databaseSizeBeforeDelete = severityRepository.findAll().size();
 
         // Get the severity

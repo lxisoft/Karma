@@ -31,7 +31,7 @@ public class MediaResource {
 
     private final Logger log = LoggerFactory.getLogger(MediaResource.class);
 
-    private static final String ENTITY_NAME = "media";
+    private static final String ENTITY_NAME = "karmaMedia";
 
     private final MediaService mediaService;
 
@@ -73,7 +73,7 @@ public class MediaResource {
     public ResponseEntity<MediaDTO> updateMedia(@RequestBody MediaDTO mediaDTO) throws URISyntaxException {
         log.debug("REST request to update Media : {}", mediaDTO);
         if (mediaDTO.getId() == null) {
-            return createMedia(mediaDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         MediaDTO result = mediaService.save(mediaDTO);
         return ResponseEntity.ok()
@@ -106,8 +106,8 @@ public class MediaResource {
     @Timed
     public ResponseEntity<MediaDTO> getMedia(@PathVariable Long id) {
         log.debug("REST request to get Media : {}", id);
-        MediaDTO mediaDTO = mediaService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(mediaDTO));
+        Optional<MediaDTO> mediaDTO = mediaService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(mediaDTO);
     }
 
     /**

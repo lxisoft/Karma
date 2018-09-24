@@ -1,10 +1,7 @@
 package com.lxisoft.service.dto;
 
-
 import java.time.Instant;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -82,7 +79,7 @@ public class HelpDTO implements Serializable {
         }
 
         HelpDTO helpDTO = (HelpDTO) o;
-        if(helpDTO.getId() == null || getId() == null) {
+        if (helpDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), helpDTO.getId());
@@ -99,6 +96,9 @@ public class HelpDTO implements Serializable {
             "id=" + getId() +
             ", time='" + getTime() + "'" +
             ", description='" + getDescription() + "'" +
+            ", approvalStatus=" + getApprovalStatusId() +
+            ", providedUser=" + getProvidedUserId() +
+            ", fulfilledNeed=" + getFulfilledNeedId() +
             "}";
     }
 }

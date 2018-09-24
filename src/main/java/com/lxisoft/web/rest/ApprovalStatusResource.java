@@ -31,7 +31,7 @@ public class ApprovalStatusResource {
 
     private final Logger log = LoggerFactory.getLogger(ApprovalStatusResource.class);
 
-    private static final String ENTITY_NAME = "approvalStatus";
+    private static final String ENTITY_NAME = "karmaApprovalStatus";
 
     private final ApprovalStatusService approvalStatusService;
 
@@ -73,7 +73,7 @@ public class ApprovalStatusResource {
     public ResponseEntity<ApprovalStatusDTO> updateApprovalStatus(@RequestBody ApprovalStatusDTO approvalStatusDTO) throws URISyntaxException {
         log.debug("REST request to update ApprovalStatus : {}", approvalStatusDTO);
         if (approvalStatusDTO.getId() == null) {
-            return createApprovalStatus(approvalStatusDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         ApprovalStatusDTO result = approvalStatusService.save(approvalStatusDTO);
         return ResponseEntity.ok()
@@ -106,8 +106,8 @@ public class ApprovalStatusResource {
     @Timed
     public ResponseEntity<ApprovalStatusDTO> getApprovalStatus(@PathVariable Long id) {
         log.debug("REST request to get ApprovalStatus : {}", id);
-        ApprovalStatusDTO approvalStatusDTO = approvalStatusService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(approvalStatusDTO));
+        Optional<ApprovalStatusDTO> approvalStatusDTO = approvalStatusService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(approvalStatusDTO);
     }
 
     /**

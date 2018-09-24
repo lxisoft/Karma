@@ -1,8 +1,11 @@
 package com.lxisoft.service;
 
 import com.lxisoft.service.dto.VerificationTeamDTO;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.Optional;
 
 /**
  * Service Interface for managing VerificationTeam.
@@ -26,12 +29,19 @@ public interface VerificationTeamService {
     Page<VerificationTeamDTO> findAll(Pageable pageable);
 
     /**
+     * Get all the VerificationTeam with eager load of many-to-many relationships.
+     *
+     * @return the list of entities
+     */
+    Page<VerificationTeamDTO> findAllWithEagerRelationships(Pageable pageable);
+    
+    /**
      * Get the "id" verificationTeam.
      *
      * @param id the id of the entity
      * @return the entity
      */
-    VerificationTeamDTO findOne(Long id);
+    Optional<VerificationTeamDTO> findOne(Long id);
 
     /**
      * Delete the "id" verificationTeam.

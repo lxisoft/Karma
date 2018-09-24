@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+
 import static com.lxisoft.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -55,7 +56,7 @@ public class MediaResourceIntTest {
 
     @Autowired
     private MediaMapper mediaMapper;
-
+    
     @Autowired
     private MediaService mediaService;
 
@@ -161,7 +162,7 @@ public class MediaResourceIntTest {
             .andExpect(jsonPath("$.[*].url").value(hasItem(DEFAULT_URL.toString())))
             .andExpect(jsonPath("$.[*].extension").value(hasItem(DEFAULT_EXTENSION.toString())));
     }
-
+    
     @Test
     @Transactional
     public void getMedia() throws Exception {
@@ -191,10 +192,11 @@ public class MediaResourceIntTest {
     public void updateMedia() throws Exception {
         // Initialize the database
         mediaRepository.saveAndFlush(media);
+
         int databaseSizeBeforeUpdate = mediaRepository.findAll().size();
 
         // Update the media
-        Media updatedMedia = mediaRepository.findOne(media.getId());
+        Media updatedMedia = mediaRepository.findById(media.getId()).get();
         // Disconnect from session so that the updates on updatedMedia are not directly saved in db
         em.detach(updatedMedia);
         updatedMedia
@@ -225,15 +227,15 @@ public class MediaResourceIntTest {
         // Create the Media
         MediaDTO mediaDTO = mediaMapper.toDto(media);
 
-        // If the entity doesn't have an ID, it will be created instead of just being updated
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restMediaMockMvc.perform(put("/api/media")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(mediaDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the Media in the database
         List<Media> mediaList = mediaRepository.findAll();
-        assertThat(mediaList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(mediaList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -241,6 +243,7 @@ public class MediaResourceIntTest {
     public void deleteMedia() throws Exception {
         // Initialize the database
         mediaRepository.saveAndFlush(media);
+
         int databaseSizeBeforeDelete = mediaRepository.findAll().size();
 
         // Get the media

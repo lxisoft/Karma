@@ -28,7 +28,6 @@ public class Severity implements Serializable {
     private String severityLevel;
 
     @OneToMany(mappedBy = "severity")
-    @JsonIgnore
     private Set<Need> needs = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

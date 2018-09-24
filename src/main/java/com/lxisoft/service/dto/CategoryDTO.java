@@ -1,9 +1,6 @@
 package com.lxisoft.service.dto;
 
-
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -51,7 +48,7 @@ public class CategoryDTO implements Serializable {
         }
 
         CategoryDTO categoryDTO = (CategoryDTO) o;
-        if(categoryDTO.getId() == null || getId() == null) {
+        if (categoryDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), categoryDTO.getId());

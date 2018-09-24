@@ -1,9 +1,6 @@
 package com.lxisoft.service.dto;
 
-
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -41,7 +38,7 @@ public class SeverityDTO implements Serializable {
         }
 
         SeverityDTO severityDTO = (SeverityDTO) o;
-        if(severityDTO.getId() == null || getId() == null) {
+        if (severityDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), severityDTO.getId());

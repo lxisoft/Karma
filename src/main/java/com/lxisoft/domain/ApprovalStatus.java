@@ -29,11 +29,9 @@ public class ApprovalStatus implements Serializable {
     private String status;
 
     @OneToMany(mappedBy = "approvalStatus")
-    @JsonIgnore
     private Set<Need> needs = new HashSet<>();
 
     @OneToMany(mappedBy = "approvalStatus")
-    @JsonIgnore
     private Set<Help> helps = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

@@ -31,7 +31,7 @@ public class UserCheckResource {
 
     private final Logger log = LoggerFactory.getLogger(UserCheckResource.class);
 
-    private static final String ENTITY_NAME = "userCheck";
+    private static final String ENTITY_NAME = "karmaUserCheck";
 
     private final UserCheckService userCheckService;
 
@@ -73,7 +73,7 @@ public class UserCheckResource {
     public ResponseEntity<UserCheckDTO> updateUserCheck(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException {
         log.debug("REST request to update UserCheck : {}", userCheckDTO);
         if (userCheckDTO.getId() == null) {
-            return createUserCheck(userCheckDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         UserCheckDTO result = userCheckService.save(userCheckDTO);
         return ResponseEntity.ok()
@@ -106,8 +106,8 @@ public class UserCheckResource {
     @Timed
     public ResponseEntity<UserCheckDTO> getUserCheck(@PathVariable Long id) {
         log.debug("REST request to get UserCheck : {}", id);
-        UserCheckDTO userCheckDTO = userCheckService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(userCheckDTO));
+        Optional<UserCheckDTO> userCheckDTO = userCheckService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(userCheckDTO);
     }
 
     /**

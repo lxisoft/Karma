@@ -12,9 +12,12 @@ import com.lxisoft.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -24,11 +27,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
+
 
 import static com.lxisoft.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -47,8 +53,15 @@ public class VerificationTeamResourceIntTest {
     @Autowired
     private VerificationTeamRepository verificationTeamRepository;
 
+    @Mock
+    private VerificationTeamRepository verificationTeamRepositoryMock;
+
     @Autowired
     private VerificationTeamMapper verificationTeamMapper;
+    
+
+    @Mock
+    private VerificationTeamService verificationTeamServiceMock;
 
     @Autowired
     private VerificationTeamService verificationTeamService;
@@ -149,6 +162,37 @@ public class VerificationTeamResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(verificationTeam.getId().intValue())))
             .andExpect(jsonPath("$.[*].approvalLevel").value(hasItem(DEFAULT_APPROVAL_LEVEL.toString())));
     }
+    
+    public void getAllVerificationTeamsWithEagerRelationshipsIsEnabled() throws Exception {
+        VerificationTeamResource verificationTeamResource = new VerificationTeamResource(verificationTeamServiceMock);
+        when(verificationTeamServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        MockMvc restVerificationTeamMockMvc = MockMvcBuilders.standaloneSetup(verificationTeamResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
+            .setMessageConverters(jacksonMessageConverter).build();
+
+        restVerificationTeamMockMvc.perform(get("/api/verification-teams?eagerload=true"))
+        .andExpect(status().isOk());
+
+        verify(verificationTeamServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    public void getAllVerificationTeamsWithEagerRelationshipsIsNotEnabled() throws Exception {
+        VerificationTeamResource verificationTeamResource = new VerificationTeamResource(verificationTeamServiceMock);
+            when(verificationTeamServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+            MockMvc restVerificationTeamMockMvc = MockMvcBuilders.standaloneSetup(verificationTeamResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
+            .setMessageConverters(jacksonMessageConverter).build();
+
+        restVerificationTeamMockMvc.perform(get("/api/verification-teams?eagerload=true"))
+        .andExpect(status().isOk());
+
+            verify(verificationTeamServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
 
     @Test
     @Transactional
@@ -177,10 +221,11 @@ public class VerificationTeamResourceIntTest {
     public void updateVerificationTeam() throws Exception {
         // Initialize the database
         verificationTeamRepository.saveAndFlush(verificationTeam);
+
         int databaseSizeBeforeUpdate = verificationTeamRepository.findAll().size();
 
         // Update the verificationTeam
-        VerificationTeam updatedVerificationTeam = verificationTeamRepository.findOne(verificationTeam.getId());
+        VerificationTeam updatedVerificationTeam = verificationTeamRepository.findById(verificationTeam.getId()).get();
         // Disconnect from session so that the updates on updatedVerificationTeam are not directly saved in db
         em.detach(updatedVerificationTeam);
         updatedVerificationTeam
@@ -207,15 +252,15 @@ public class VerificationTeamResourceIntTest {
         // Create the VerificationTeam
         VerificationTeamDTO verificationTeamDTO = verificationTeamMapper.toDto(verificationTeam);
 
-        // If the entity doesn't have an ID, it will be created instead of just being updated
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restVerificationTeamMockMvc.perform(put("/api/verification-teams")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(verificationTeamDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the VerificationTeam in the database
         List<VerificationTeam> verificationTeamList = verificationTeamRepository.findAll();
-        assertThat(verificationTeamList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(verificationTeamList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -223,6 +268,7 @@ public class VerificationTeamResourceIntTest {
     public void deleteVerificationTeam() throws Exception {
         // Initialize the database
         verificationTeamRepository.saveAndFlush(verificationTeam);
+
         int databaseSizeBeforeDelete = verificationTeamRepository.findAll().size();
 
         // Get the verificationTeam

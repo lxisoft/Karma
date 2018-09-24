@@ -7,11 +7,13 @@ import com.lxisoft.service.dto.MediaDTO;
 import com.lxisoft.service.mapper.MediaMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 
 /**
  * Service Implementation for managing Media.
@@ -59,6 +61,7 @@ public class MediaServiceImpl implements MediaService {
             .map(mediaMapper::toDto);
     }
 
+
     /**
      * Get one media by id.
      *
@@ -67,10 +70,10 @@ public class MediaServiceImpl implements MediaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public MediaDTO findOne(Long id) {
+    public Optional<MediaDTO> findOne(Long id) {
         log.debug("Request to get Media : {}", id);
-        Media media = mediaRepository.findOne(id);
-        return mediaMapper.toDto(media);
+        return mediaRepository.findById(id)
+            .map(mediaMapper::toDto);
     }
 
     /**
@@ -81,6 +84,6 @@ public class MediaServiceImpl implements MediaService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Media : {}", id);
-        mediaRepository.delete(id);
+        mediaRepository.deleteById(id);
     }
 }

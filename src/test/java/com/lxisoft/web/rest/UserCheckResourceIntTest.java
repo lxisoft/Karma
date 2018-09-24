@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+
 import static com.lxisoft.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -52,7 +53,7 @@ public class UserCheckResourceIntTest {
 
     @Autowired
     private UserCheckMapper userCheckMapper;
-
+    
     @Autowired
     private UserCheckService userCheckService;
 
@@ -155,7 +156,7 @@ public class UserCheckResourceIntTest {
             .andExpect(jsonPath("$.[*].voteType").value(hasItem(DEFAULT_VOTE_TYPE.toString())))
             .andExpect(jsonPath("$.[*].category").value(hasItem(DEFAULT_CATEGORY.toString())));
     }
-
+    
     @Test
     @Transactional
     public void getUserCheck() throws Exception {
@@ -184,10 +185,11 @@ public class UserCheckResourceIntTest {
     public void updateUserCheck() throws Exception {
         // Initialize the database
         userCheckRepository.saveAndFlush(userCheck);
+
         int databaseSizeBeforeUpdate = userCheckRepository.findAll().size();
 
         // Update the userCheck
-        UserCheck updatedUserCheck = userCheckRepository.findOne(userCheck.getId());
+        UserCheck updatedUserCheck = userCheckRepository.findById(userCheck.getId()).get();
         // Disconnect from session so that the updates on updatedUserCheck are not directly saved in db
         em.detach(updatedUserCheck);
         updatedUserCheck
@@ -216,15 +218,15 @@ public class UserCheckResourceIntTest {
         // Create the UserCheck
         UserCheckDTO userCheckDTO = userCheckMapper.toDto(userCheck);
 
-        // If the entity doesn't have an ID, it will be created instead of just being updated
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restUserCheckMockMvc.perform(put("/api/user-checks")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(userCheckDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the UserCheck in the database
         List<UserCheck> userCheckList = userCheckRepository.findAll();
-        assertThat(userCheckList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(userCheckList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -232,6 +234,7 @@ public class UserCheckResourceIntTest {
     public void deleteUserCheck() throws Exception {
         // Initialize the database
         userCheckRepository.saveAndFlush(userCheck);
+
         int databaseSizeBeforeDelete = userCheckRepository.findAll().size();
 
         // Get the userCheck

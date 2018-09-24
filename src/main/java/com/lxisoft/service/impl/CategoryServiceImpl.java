@@ -7,11 +7,13 @@ import com.lxisoft.service.dto.CategoryDTO;
 import com.lxisoft.service.mapper.CategoryMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 
 /**
  * Service Implementation for managing Category.
@@ -59,6 +61,7 @@ public class CategoryServiceImpl implements CategoryService {
             .map(categoryMapper::toDto);
     }
 
+
     /**
      * Get one category by id.
      *
@@ -67,10 +70,10 @@ public class CategoryServiceImpl implements CategoryService {
      */
     @Override
     @Transactional(readOnly = true)
-    public CategoryDTO findOne(Long id) {
+    public Optional<CategoryDTO> findOne(Long id) {
         log.debug("Request to get Category : {}", id);
-        Category category = categoryRepository.findOne(id);
-        return categoryMapper.toDto(category);
+        return categoryRepository.findById(id)
+            .map(categoryMapper::toDto);
     }
 
     /**
@@ -81,6 +84,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Category : {}", id);
-        categoryRepository.delete(id);
+        categoryRepository.deleteById(id);
     }
 }

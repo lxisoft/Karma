@@ -18,7 +18,7 @@
         Added the entity Media.
     -->
     <changeSet id="20180924060351-1" author="jhipster">
-        <createTable tableName="media">
+        <createTable tableName="media" remarks="Media entity. @author Dheeraj das.">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>

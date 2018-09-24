@@ -1,13 +1,12 @@
 package com.lxisoft.repository;
 
 import com.lxisoft.domain.Severity;
-import org.springframework.stereotype.Repository;
-
 import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.Repository;
 
 
 /**
- * Spring Data JPA repository for the Severity entity.
+ * Spring Data  repository for the Severity entity.
  */
 @SuppressWarnings("unused")
 @Repository

@@ -1,8 +1,11 @@
 package com.lxisoft.service;
 
 import com.lxisoft.service.dto.NeedDTO;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.Optional;
 
 /**
  * Service Interface for managing Need.
@@ -26,12 +29,19 @@ public interface NeedService {
     Page<NeedDTO> findAll(Pageable pageable);
 
     /**
+     * Get all the Need with eager load of many-to-many relationships.
+     *
+     * @return the list of entities
+     */
+    Page<NeedDTO> findAllWithEagerRelationships(Pageable pageable);
+    
+    /**
      * Get the "id" need.
      *
      * @param id the id of the entity
      * @return the entity
      */
-    NeedDTO findOne(Long id);
+    Optional<NeedDTO> findOne(Long id);
 
     /**
      * Delete the "id" need.

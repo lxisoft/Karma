@@ -1,6 +1,5 @@
 package com.lxisoft.service.dto;
 
-
 import java.time.Instant;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -112,7 +111,7 @@ public class NeedDTO implements Serializable {
         }
 
         NeedDTO needDTO = (NeedDTO) o;
-        if(needDTO.getId() == null || getId() == null) {
+        if (needDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), needDTO.getId());
@@ -130,6 +129,10 @@ public class NeedDTO implements Serializable {
             ", description='" + getDescription() + "'" +
             ", beneficiaryType='" + getBeneficiaryType() + "'" +
             ", date='" + getDate() + "'" +
+            ", severity=" + getSeverityId() +
+            ", verificationTeam=" + getVerificationTeamId() +
+            ", approvalStatus=" + getApprovalStatusId() +
+            ", postedUser=" + getPostedUserId() +
             "}";
     }
 }

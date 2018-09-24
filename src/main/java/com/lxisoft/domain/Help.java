@@ -1,5 +1,6 @@
 package com.lxisoft.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 
 import javax.persistence.*;
@@ -30,12 +31,15 @@ public class Help implements Serializable {
     private String description;
 
     @ManyToOne
+    @JsonIgnoreProperties("helps")
     private ApprovalStatus approvalStatus;
 
     @ManyToOne
+    @JsonIgnoreProperties("helps")
     private LoggedUser providedUser;
 
     @ManyToOne
+    @JsonIgnoreProperties("helps")
     private Need fulfilledNeed;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

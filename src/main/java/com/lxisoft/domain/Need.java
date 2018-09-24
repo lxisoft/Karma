@@ -1,6 +1,7 @@
 package com.lxisoft.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 
 import javax.persistence.*;
@@ -36,33 +37,34 @@ public class Need implements Serializable {
     private Instant date;
 
     @OneToMany(mappedBy = "need")
-    @JsonIgnore
     private Set<Media> proofs = new HashSet<>();
 
     @OneToMany(mappedBy = "markedUser")
-    @JsonIgnore
     private Set<UserCheck> userChecks = new HashSet<>();
 
     @OneToMany(mappedBy = "fulfilledNeed")
-    @JsonIgnore
     private Set<Help> helps = new HashSet<>();
 
     @ManyToOne
+    @JsonIgnoreProperties("needs")
     private Severity severity;
 
     @ManyToOne
+    @JsonIgnoreProperties("needs")
     private VerificationTeam verificationTeam;
 
     @ManyToOne
+    @JsonIgnoreProperties("needs")
     private ApprovalStatus approvalStatus;
 
     @ManyToMany
     @JoinTable(name = "need_categories",
-               joinColumns = @JoinColumn(name="needs_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="categories_id", referencedColumnName="id"))
+               joinColumns = @JoinColumn(name = "needs_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "categories_id", referencedColumnName = "id"))
     private Set<Category> categories = new HashSet<>();
 
     @ManyToOne
+    @JsonIgnoreProperties("needs")
     private LoggedUser postedUser;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
