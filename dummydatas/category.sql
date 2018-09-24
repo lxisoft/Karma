@@ -1,0 +1,10 @@
+insert into category (name, sub_category) values ('blandit non', 'erat quisque');
+insert into category (name, sub_category) values ('id sapien', 'vel ipsum');
+insert into category (name, sub_category) values ('sem fusce', 'eu nibh');
+insert into category (name, sub_category) values ('nec euismod', 'habitasse platea');
+insert into category (name, sub_category) values ('mauris laoreet', 'eu interdum');
+insert into category (name, sub_category) values ('magna vulputate', 'fusce posuere');
+insert into category (name, sub_category) values ('tortor sollicitudin', 'nisi nam');
+insert into category (name, sub_category) values ('vestibulum quam', 'curabitur gravida');
+insert into category (name, sub_category) values ('pede malesuada', 'accumsan felis');
+insert into category (name, sub_category) values ('posuere cubilia', 'nibh fusce');

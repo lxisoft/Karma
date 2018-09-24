@@ -1,0 +1,10 @@
+insert into media (file_name, url, extension) values ('ipsum primis', 'curae duis', 'non velit');
+insert into media (file_name, url, extension) values ('suspendisse potenti', 'eget tempus', 'blandit non');
+insert into media (file_name, url, extension) values ('montes nascetur', 'metus arcu', 'ante ipsum');
+insert into media (file_name, url, extension) values ('id nulla', 'sit amet', 'blandit nam');
+insert into media (file_name, url, extension) values ('rhoncus dui', 'curae nulla', 'at ipsum');
+insert into media (file_name, url, extension) values ('ornare imperdiet', 'erat quisque', 'tortor quis');
+insert into media (file_name, url, extension) values ('nisi venenatis', 'ligula nec', 'lectus aliquam');
+insert into media (file_name, url, extension) values ('quis augue', 'vel est', 'magnis dis');
+insert into media (file_name, url, extension) values ('augue luctus', 'sociis natoque', 'aliquet pulvinar');
+insert into media (file_name, url, extension) values ('suspendisse ornare', 'commodo vulputate', 'ultrices enim');

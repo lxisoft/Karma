@@ -1,0 +1,10 @@
+insert into address (house_name, place, city, state, country, zip) values ('magna at', 'turpis integer', 'Decatur', 'Georgia', 'United States', '5750');
+insert into address (house_name, place, city, state, country, zip) values ('non pretium', 'sed nisl', 'Shawnee Mission', 'Kansas', 'United States', '7');
+insert into address (house_name, place, city, state, country, zip) values ('velit donec', 'nulla suscipit', 'Spring', 'Texas', 'United States', '594');
+insert into address (house_name, place, city, state, country, zip) values ('faucibus orci', 'tellus in', 'Detroit', 'Michigan', 'United States', '4');
+insert into address (house_name, place, city, state, country, zip) values ('viverra dapibus', 'hendrerit at', 'Lake Worth', 'Florida', 'United States', '93');
+insert into address (house_name, place, city, state, country, zip) values ('in leo', 'purus phasellus', 'Torrance', 'California', 'United States', '700');
+insert into address (house_name, place, city, state, country, zip) values ('viverra diam', 'eu orci', 'Washington', 'District of Columbia', 'United States', '97');
+insert into address (house_name, place, city, state, country, zip) values ('in blandit', 'erat vestibulum', 'Jefferson City', 'Missouri', 'United States', '57');
+insert into address (house_name, place, city, state, country, zip) values ('tortor duis', 'luctus et', 'Oakland', 'California', 'United States', '0');
+insert into address (house_name, place, city, state, country, zip) values ('sed sagittis', 'viverra diam', 'El Paso', 'Texas', 'United States', '5');
