@@ -1,13 +1,12 @@
 package com.lxisoft.repository;
 
 import com.lxisoft.domain.Media;
-import org.springframework.stereotype.Repository;
-
 import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.Repository;
 
 
 /**
- * Spring Data JPA repository for the Media entity.
+ * Spring Data  repository for the Media entity.
  */
 @SuppressWarnings("unused")
 @Repository

@@ -1,67 +1,177 @@
 package com.lxisoft.domain;
 
+import com.lxisoft.config.Constants;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.annotations.BatchSize;
+import javax.validation.constraints.Email;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 
-public class User {
+/**
+ * A user.
+ */
+@Entity
+@Table(name = "jhi_user")
 
-    private final String login;
+public class User extends AbstractAuditingEntity implements Serializable {
 
-    private final String firstName;
+    private static final long serialVersionUID = 1L;
 
-    private final String lastName;
+    @Id
+    private String id;
 
-    private final String email;
+    @NotNull
+    @Pattern(regexp = Constants.LOGIN_REGEX)
+    @Size(min = 1, max = 50)
+    @Column(length = 50, unique = true, nullable = false)
+    private String login;
 
-    private final String langKey;
+    @Size(max = 50)
+    @Column(name = "first_name", length = 50)
+    private String firstName;
 
-    private final String imageUrl;
+    @Size(max = 50)
+    @Column(name = "last_name", length = 50)
+    private String lastName;
 
-    private final boolean activated;
+    @Email
+    @Size(min = 5, max = 254)
+    @Column(length = 254, unique = true)
+    private String email;
 
-    private final Set<String> authorities;
+    @NotNull
+    @Column(nullable = false)
+    private boolean activated = false;
 
-    public User(String login, String firstName, String lastName, String email, String langKey,
-        String imageUrl, boolean activated, Set<String> authorities) {
+    @Size(min = 2, max = 6)
+    @Column(name = "lang_key", length = 6)
+    private String langKey;
 
-        this.login = login;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.langKey = langKey;
-        this.imageUrl = imageUrl;
-        this.activated = activated;
-        this.authorities = authorities;
+    @Size(max = 256)
+    @Column(name = "image_url", length = 256)
+    private String imageUrl;
+
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+        name = "jhi_user_authority",
+        joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+        inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "name")})
+
+    @BatchSize(size = 20)
+    private Set<Authority> authorities = new HashSet<>();
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getLogin() {
         return login;
     }
 
+    // Lowercase the login before saving it in database
+    public void setLogin(String login) {
+        this.login = StringUtils.lowerCase(login, Locale.ENGLISH);
+    }
+
     public String getFirstName() {
         return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
         return lastName;
     }
 
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public String getEmail() {
         return email;
     }
 
-    public String getLangKey() {
-        return langKey;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getImageUrl() {
         return imageUrl;
     }
 
-    public boolean isActivated() {
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public boolean getActivated() {
         return activated;
     }
 
-    public Set<String> getAuthorities() {
+    public void setActivated(boolean activated) {
+        this.activated = activated;
+    }
+
+    public String getLangKey() {
+        return langKey;
+    }
+
+    public void setLangKey(String langKey) {
+        this.langKey = langKey;
+    }
+
+    public Set<Authority> getAuthorities() {
         return authorities;
+    }
+
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        User user = (User) o;
+        return !(user.getId() == null || getId() == null) && Objects.equals(getId(), user.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+            "login='" + login + '\'' +
+            ", firstName='" + firstName + '\'' +
+            ", lastName='" + lastName + '\'' +
+            ", email='" + email + '\'' +
+            ", imageUrl='" + imageUrl + '\'' +
+            ", activated='" + activated + '\'' +
+            ", langKey='" + langKey + '\'' +
+            "}";
     }
 }

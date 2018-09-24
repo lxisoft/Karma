@@ -31,7 +31,7 @@ public class LoggedUserResource {
 
     private final Logger log = LoggerFactory.getLogger(LoggedUserResource.class);
 
-    private static final String ENTITY_NAME = "loggedUser";
+    private static final String ENTITY_NAME = "karmaLoggedUser";
 
     private final LoggedUserService loggedUserService;
 
@@ -73,7 +73,7 @@ public class LoggedUserResource {
     public ResponseEntity<LoggedUserDTO> updateLoggedUser(@RequestBody LoggedUserDTO loggedUserDTO) throws URISyntaxException {
         log.debug("REST request to update LoggedUser : {}", loggedUserDTO);
         if (loggedUserDTO.getId() == null) {
-            return createLoggedUser(loggedUserDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         LoggedUserDTO result = loggedUserService.save(loggedUserDTO);
         return ResponseEntity.ok()
@@ -106,8 +106,8 @@ public class LoggedUserResource {
     @Timed
     public ResponseEntity<LoggedUserDTO> getLoggedUser(@PathVariable Long id) {
         log.debug("REST request to get LoggedUser : {}", id);
-        LoggedUserDTO loggedUserDTO = loggedUserService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(loggedUserDTO));
+        Optional<LoggedUserDTO> loggedUserDTO = loggedUserService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(loggedUserDTO);
     }
 
     /**

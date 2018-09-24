@@ -58,15 +58,12 @@ public class LoggedUser implements Serializable {
     private Media profilePic;
 
     @OneToMany(mappedBy = "loggedUser")
-    @JsonIgnore
     private Set<Address> addresses = new HashSet<>();
 
     @OneToMany(mappedBy = "postedUser")
-    @JsonIgnore
     private Set<Need> needs = new HashSet<>();
 
     @OneToMany(mappedBy = "providedUser")
-    @JsonIgnore
     private Set<Help> helps = new HashSet<>();
 
     @ManyToMany(mappedBy = "approvingUsers")

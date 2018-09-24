@@ -1,8 +1,11 @@
 package com.lxisoft.service;
 
 import com.lxisoft.service.dto.AddressDTO;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.Optional;
 
 /**
  * Service Interface for managing Address.
@@ -25,13 +28,14 @@ public interface AddressService {
      */
     Page<AddressDTO> findAll(Pageable pageable);
 
+
     /**
      * Get the "id" address.
      *
      * @param id the id of the entity
      * @return the entity
      */
-    AddressDTO findOne(Long id);
+    Optional<AddressDTO> findOne(Long id);
 
     /**
      * Delete the "id" address.

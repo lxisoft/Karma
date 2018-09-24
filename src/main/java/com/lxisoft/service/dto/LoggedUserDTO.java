@@ -1,10 +1,7 @@
 package com.lxisoft.service.dto;
 
-
 import java.time.LocalDate;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -132,7 +129,7 @@ public class LoggedUserDTO implements Serializable {
         }
 
         LoggedUserDTO loggedUserDTO = (LoggedUserDTO) o;
-        if(loggedUserDTO.getId() == null || getId() == null) {
+        if (loggedUserDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), loggedUserDTO.getId());
@@ -156,6 +153,7 @@ public class LoggedUserDTO implements Serializable {
             ", gender='" + getGender() + "'" +
             ", dob='" + getDob() + "'" +
             ", bloodGroup='" + getBloodGroup() + "'" +
+            ", profilePic=" + getProfilePicId() +
             "}";
     }
 }

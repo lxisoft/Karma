@@ -1,13 +1,12 @@
 package com.lxisoft.repository;
 
 import com.lxisoft.domain.Help;
-import org.springframework.stereotype.Repository;
-
 import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.Repository;
 
 
 /**
- * Spring Data JPA repository for the Help entity.
+ * Spring Data  repository for the Help entity.
  */
 @SuppressWarnings("unused")
 @Repository

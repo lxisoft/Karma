@@ -31,7 +31,7 @@ public class HelpResource {
 
     private final Logger log = LoggerFactory.getLogger(HelpResource.class);
 
-    private static final String ENTITY_NAME = "help";
+    private static final String ENTITY_NAME = "karmaHelp";
 
     private final HelpService helpService;
 
@@ -73,7 +73,7 @@ public class HelpResource {
     public ResponseEntity<HelpDTO> updateHelp(@RequestBody HelpDTO helpDTO) throws URISyntaxException {
         log.debug("REST request to update Help : {}", helpDTO);
         if (helpDTO.getId() == null) {
-            return createHelp(helpDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         HelpDTO result = helpService.save(helpDTO);
         return ResponseEntity.ok()
@@ -106,8 +106,8 @@ public class HelpResource {
     @Timed
     public ResponseEntity<HelpDTO> getHelp(@PathVariable Long id) {
         log.debug("REST request to get Help : {}", id);
-        HelpDTO helpDTO = helpService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(helpDTO));
+        Optional<HelpDTO> helpDTO = helpService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(helpDTO);
     }
 
     /**

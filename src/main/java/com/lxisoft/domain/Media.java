@@ -1,5 +1,6 @@
 package com.lxisoft.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 
 import javax.persistence.*;
@@ -32,6 +33,7 @@ public class Media implements Serializable {
     private String extension;
 
     @ManyToOne
+    @JsonIgnoreProperties("proofs")
     private Need need;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

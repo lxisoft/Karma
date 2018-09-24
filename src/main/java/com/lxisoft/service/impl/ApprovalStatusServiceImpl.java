@@ -7,11 +7,13 @@ import com.lxisoft.service.dto.ApprovalStatusDTO;
 import com.lxisoft.service.mapper.ApprovalStatusMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 
 /**
  * Service Implementation for managing ApprovalStatus.
@@ -59,6 +61,7 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
             .map(approvalStatusMapper::toDto);
     }
 
+
     /**
      * Get one approvalStatus by id.
      *
@@ -67,10 +70,10 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
      */
     @Override
     @Transactional(readOnly = true)
-    public ApprovalStatusDTO findOne(Long id) {
+    public Optional<ApprovalStatusDTO> findOne(Long id) {
         log.debug("Request to get ApprovalStatus : {}", id);
-        ApprovalStatus approvalStatus = approvalStatusRepository.findOne(id);
-        return approvalStatusMapper.toDto(approvalStatus);
+        return approvalStatusRepository.findById(id)
+            .map(approvalStatusMapper::toDto);
     }
 
     /**
@@ -81,6 +84,6 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete ApprovalStatus : {}", id);
-        approvalStatusRepository.delete(id);
+        approvalStatusRepository.deleteById(id);
     }
 }

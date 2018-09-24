@@ -31,7 +31,7 @@ public class NeedResource {
 
     private final Logger log = LoggerFactory.getLogger(NeedResource.class);
 
-    private static final String ENTITY_NAME = "need";
+    private static final String ENTITY_NAME = "karmaNeed";
 
     private final NeedService needService;
 
@@ -73,7 +73,7 @@ public class NeedResource {
     public ResponseEntity<NeedDTO> updateNeed(@RequestBody NeedDTO needDTO) throws URISyntaxException {
         log.debug("REST request to update Need : {}", needDTO);
         if (needDTO.getId() == null) {
-            return createNeed(needDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         NeedDTO result = needService.save(needDTO);
         return ResponseEntity.ok()
@@ -85,14 +85,20 @@ public class NeedResource {
      * GET  /needs : get all the needs.
      *
      * @param pageable the pagination information
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many)
      * @return the ResponseEntity with status 200 (OK) and the list of needs in body
      */
     @GetMapping("/needs")
     @Timed
-    public ResponseEntity<List<NeedDTO>> getAllNeeds(Pageable pageable) {
+    public ResponseEntity<List<NeedDTO>> getAllNeeds(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get a page of Needs");
-        Page<NeedDTO> page = needService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/needs");
+        Page<NeedDTO> page;
+        if (eagerload) {
+            page = needService.findAllWithEagerRelationships(pageable);
+        } else {
+            page = needService.findAll(pageable);
+        }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, String.format("/api/needs?eagerload=%b", eagerload));
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
@@ -106,8 +112,8 @@ public class NeedResource {
     @Timed
     public ResponseEntity<NeedDTO> getNeed(@PathVariable Long id) {
         log.debug("REST request to get Need : {}", id);
-        NeedDTO needDTO = needService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(needDTO));
+        Optional<NeedDTO> needDTO = needService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(needDTO);
     }
 
     /**

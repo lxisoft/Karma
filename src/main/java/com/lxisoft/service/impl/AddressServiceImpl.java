@@ -7,11 +7,13 @@ import com.lxisoft.service.dto.AddressDTO;
 import com.lxisoft.service.mapper.AddressMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 
 /**
  * Service Implementation for managing Address.
@@ -59,6 +61,7 @@ public class AddressServiceImpl implements AddressService {
             .map(addressMapper::toDto);
     }
 
+
     /**
      * Get one address by id.
      *
@@ -67,10 +70,10 @@ public class AddressServiceImpl implements AddressService {
      */
     @Override
     @Transactional(readOnly = true)
-    public AddressDTO findOne(Long id) {
+    public Optional<AddressDTO> findOne(Long id) {
         log.debug("Request to get Address : {}", id);
-        Address address = addressRepository.findOne(id);
-        return addressMapper.toDto(address);
+        return addressRepository.findById(id)
+            .map(addressMapper::toDto);
     }
 
     /**
@@ -81,6 +84,6 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Address : {}", id);
-        addressRepository.delete(id);
+        addressRepository.deleteById(id);
     }
 }

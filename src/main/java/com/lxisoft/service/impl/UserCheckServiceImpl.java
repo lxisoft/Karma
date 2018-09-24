@@ -7,11 +7,13 @@ import com.lxisoft.service.dto.UserCheckDTO;
 import com.lxisoft.service.mapper.UserCheckMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 
 /**
  * Service Implementation for managing UserCheck.
@@ -59,6 +61,7 @@ public class UserCheckServiceImpl implements UserCheckService {
             .map(userCheckMapper::toDto);
     }
 
+
     /**
      * Get one userCheck by id.
      *
@@ -67,10 +70,10 @@ public class UserCheckServiceImpl implements UserCheckService {
      */
     @Override
     @Transactional(readOnly = true)
-    public UserCheckDTO findOne(Long id) {
+    public Optional<UserCheckDTO> findOne(Long id) {
         log.debug("Request to get UserCheck : {}", id);
-        UserCheck userCheck = userCheckRepository.findOne(id);
-        return userCheckMapper.toDto(userCheck);
+        return userCheckRepository.findById(id)
+            .map(userCheckMapper::toDto);
     }
 
     /**
@@ -81,6 +84,6 @@ public class UserCheckServiceImpl implements UserCheckService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete UserCheck : {}", id);
-        userCheckRepository.delete(id);
+        userCheckRepository.deleteById(id);
     }
 }

@@ -1,9 +1,6 @@
 package com.lxisoft.service.dto;
 
-
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -71,7 +68,7 @@ public class MediaDTO implements Serializable {
         }
 
         MediaDTO mediaDTO = (MediaDTO) o;
-        if(mediaDTO.getId() == null || getId() == null) {
+        if (mediaDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), mediaDTO.getId());
@@ -89,6 +86,7 @@ public class MediaDTO implements Serializable {
             ", fileName='" + getFileName() + "'" +
             ", url='" + getUrl() + "'" +
             ", extension='" + getExtension() + "'" +
+            ", need=" + getNeedId() +
             "}";
     }
 }

@@ -28,6 +28,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+
 import static com.lxisoft.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -54,7 +55,7 @@ public class HelpResourceIntTest {
 
     @Autowired
     private HelpMapper helpMapper;
-
+    
     @Autowired
     private HelpService helpService;
 
@@ -157,7 +158,7 @@ public class HelpResourceIntTest {
             .andExpect(jsonPath("$.[*].time").value(hasItem(DEFAULT_TIME.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
     }
-
+    
     @Test
     @Transactional
     public void getHelp() throws Exception {
@@ -186,10 +187,11 @@ public class HelpResourceIntTest {
     public void updateHelp() throws Exception {
         // Initialize the database
         helpRepository.saveAndFlush(help);
+
         int databaseSizeBeforeUpdate = helpRepository.findAll().size();
 
         // Update the help
-        Help updatedHelp = helpRepository.findOne(help.getId());
+        Help updatedHelp = helpRepository.findById(help.getId()).get();
         // Disconnect from session so that the updates on updatedHelp are not directly saved in db
         em.detach(updatedHelp);
         updatedHelp
@@ -218,15 +220,15 @@ public class HelpResourceIntTest {
         // Create the Help
         HelpDTO helpDTO = helpMapper.toDto(help);
 
-        // If the entity doesn't have an ID, it will be created instead of just being updated
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restHelpMockMvc.perform(put("/api/helps")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(helpDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the Help in the database
         List<Help> helpList = helpRepository.findAll();
-        assertThat(helpList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(helpList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -234,6 +236,7 @@ public class HelpResourceIntTest {
     public void deleteHelp() throws Exception {
         // Initialize the database
         helpRepository.saveAndFlush(help);
+
         int databaseSizeBeforeDelete = helpRepository.findAll().size();
 
         // Get the help

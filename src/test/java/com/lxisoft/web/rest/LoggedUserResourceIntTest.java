@@ -28,6 +28,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 
+
 import static com.lxisoft.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -75,7 +76,7 @@ public class LoggedUserResourceIntTest {
 
     @Autowired
     private LoggedUserMapper loggedUserMapper;
-
+    
     @Autowired
     private LoggedUserService loggedUserService;
 
@@ -199,7 +200,7 @@ public class LoggedUserResourceIntTest {
             .andExpect(jsonPath("$.[*].dob").value(hasItem(DEFAULT_DOB.toString())))
             .andExpect(jsonPath("$.[*].bloodGroup").value(hasItem(DEFAULT_BLOOD_GROUP.toString())));
     }
-
+    
     @Test
     @Transactional
     public void getLoggedUser() throws Exception {
@@ -235,10 +236,11 @@ public class LoggedUserResourceIntTest {
     public void updateLoggedUser() throws Exception {
         // Initialize the database
         loggedUserRepository.saveAndFlush(loggedUser);
+
         int databaseSizeBeforeUpdate = loggedUserRepository.findAll().size();
 
         // Update the loggedUser
-        LoggedUser updatedLoggedUser = loggedUserRepository.findOne(loggedUser.getId());
+        LoggedUser updatedLoggedUser = loggedUserRepository.findById(loggedUser.getId()).get();
         // Disconnect from session so that the updates on updatedLoggedUser are not directly saved in db
         em.detach(updatedLoggedUser);
         updatedLoggedUser
@@ -281,15 +283,15 @@ public class LoggedUserResourceIntTest {
         // Create the LoggedUser
         LoggedUserDTO loggedUserDTO = loggedUserMapper.toDto(loggedUser);
 
-        // If the entity doesn't have an ID, it will be created instead of just being updated
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restLoggedUserMockMvc.perform(put("/api/logged-users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(loggedUserDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the LoggedUser in the database
         List<LoggedUser> loggedUserList = loggedUserRepository.findAll();
-        assertThat(loggedUserList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(loggedUserList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -297,6 +299,7 @@ public class LoggedUserResourceIntTest {
     public void deleteLoggedUser() throws Exception {
         // Initialize the database
         loggedUserRepository.saveAndFlush(loggedUser);
+
         int databaseSizeBeforeDelete = loggedUserRepository.findAll().size();
 
         // Get the loggedUser

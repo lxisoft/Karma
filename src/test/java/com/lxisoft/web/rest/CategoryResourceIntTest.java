@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+
 import static com.lxisoft.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -52,7 +53,7 @@ public class CategoryResourceIntTest {
 
     @Autowired
     private CategoryMapper categoryMapper;
-
+    
     @Autowired
     private CategoryService categoryService;
 
@@ -155,7 +156,7 @@ public class CategoryResourceIntTest {
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].subCategory").value(hasItem(DEFAULT_SUB_CATEGORY.toString())));
     }
-
+    
     @Test
     @Transactional
     public void getCategory() throws Exception {
@@ -184,10 +185,11 @@ public class CategoryResourceIntTest {
     public void updateCategory() throws Exception {
         // Initialize the database
         categoryRepository.saveAndFlush(category);
+
         int databaseSizeBeforeUpdate = categoryRepository.findAll().size();
 
         // Update the category
-        Category updatedCategory = categoryRepository.findOne(category.getId());
+        Category updatedCategory = categoryRepository.findById(category.getId()).get();
         // Disconnect from session so that the updates on updatedCategory are not directly saved in db
         em.detach(updatedCategory);
         updatedCategory
@@ -216,15 +218,15 @@ public class CategoryResourceIntTest {
         // Create the Category
         CategoryDTO categoryDTO = categoryMapper.toDto(category);
 
-        // If the entity doesn't have an ID, it will be created instead of just being updated
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restCategoryMockMvc.perform(put("/api/categories")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(categoryDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the Category in the database
         List<Category> categoryList = categoryRepository.findAll();
-        assertThat(categoryList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(categoryList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -232,6 +234,7 @@ public class CategoryResourceIntTest {
     public void deleteCategory() throws Exception {
         // Initialize the database
         categoryRepository.saveAndFlush(category);
+
         int databaseSizeBeforeDelete = categoryRepository.findAll().size();
 
         // Get the category

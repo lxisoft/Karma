@@ -1,13 +1,12 @@
 package com.lxisoft.repository;
 
 import com.lxisoft.domain.Address;
-import org.springframework.stereotype.Repository;
-
 import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.Repository;
 
 
 /**
- * Spring Data JPA repository for the Address entity.
+ * Spring Data  repository for the Address entity.
  */
 @SuppressWarnings("unused")
 @Repository

@@ -7,11 +7,13 @@ import com.lxisoft.service.dto.HelpDTO;
 import com.lxisoft.service.mapper.HelpMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 
 /**
  * Service Implementation for managing Help.
@@ -59,6 +61,7 @@ public class HelpServiceImpl implements HelpService {
             .map(helpMapper::toDto);
     }
 
+
     /**
      * Get one help by id.
      *
@@ -67,10 +70,10 @@ public class HelpServiceImpl implements HelpService {
      */
     @Override
     @Transactional(readOnly = true)
-    public HelpDTO findOne(Long id) {
+    public Optional<HelpDTO> findOne(Long id) {
         log.debug("Request to get Help : {}", id);
-        Help help = helpRepository.findOne(id);
-        return helpMapper.toDto(help);
+        return helpRepository.findById(id)
+            .map(helpMapper::toDto);
     }
 
     /**
@@ -81,6 +84,6 @@ public class HelpServiceImpl implements HelpService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Help : {}", id);
-        helpRepository.delete(id);
+        helpRepository.deleteById(id);
     }
 }

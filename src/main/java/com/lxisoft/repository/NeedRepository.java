@@ -1,22 +1,30 @@
 package com.lxisoft.repository;
 
 import com.lxisoft.domain.Need;
-import org.springframework.stereotype.Repository;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
+import java.util.Optional;
 
 /**
- * Spring Data JPA repository for the Need entity.
+ * Spring Data  repository for the Need entity.
  */
 @SuppressWarnings("unused")
 @Repository
 public interface NeedRepository extends JpaRepository<Need, Long> {
-    @Query("select distinct need from Need need left join fetch need.categories")
+
+    @Query(value = "select distinct need from Need need left join fetch need.categories",
+        countQuery = "select count(distinct need) from Need need")
+    Page<Need> findAllWithEagerRelationships(Pageable pageable);
+
+    @Query(value = "select distinct need from Need need left join fetch need.categories")
     List<Need> findAllWithEagerRelationships();
 
     @Query("select need from Need need left join fetch need.categories where need.id =:id")
-    Need findOneWithEagerRelationships(@Param("id") Long id);
+    Optional<Need> findOneWithEagerRelationships(@Param("id") Long id);
 
 }

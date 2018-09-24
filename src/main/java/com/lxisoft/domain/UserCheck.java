@@ -1,5 +1,6 @@
 package com.lxisoft.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 
 import javax.persistence.*;
@@ -29,6 +30,7 @@ public class UserCheck implements Serializable {
     private String category;
 
     @ManyToOne
+    @JsonIgnoreProperties("userChecks")
     private Need markedUser;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

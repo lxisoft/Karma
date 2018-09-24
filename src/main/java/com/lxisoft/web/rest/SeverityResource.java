@@ -31,7 +31,7 @@ public class SeverityResource {
 
     private final Logger log = LoggerFactory.getLogger(SeverityResource.class);
 
-    private static final String ENTITY_NAME = "severity";
+    private static final String ENTITY_NAME = "karmaSeverity";
 
     private final SeverityService severityService;
 
@@ -73,7 +73,7 @@ public class SeverityResource {
     public ResponseEntity<SeverityDTO> updateSeverity(@RequestBody SeverityDTO severityDTO) throws URISyntaxException {
         log.debug("REST request to update Severity : {}", severityDTO);
         if (severityDTO.getId() == null) {
-            return createSeverity(severityDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         SeverityDTO result = severityService.save(severityDTO);
         return ResponseEntity.ok()
@@ -106,8 +106,8 @@ public class SeverityResource {
     @Timed
     public ResponseEntity<SeverityDTO> getSeverity(@PathVariable Long id) {
         log.debug("REST request to get Severity : {}", id);
-        SeverityDTO severityDTO = severityService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(severityDTO));
+        Optional<SeverityDTO> severityDTO = severityService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(severityDTO);
     }
 
     /**

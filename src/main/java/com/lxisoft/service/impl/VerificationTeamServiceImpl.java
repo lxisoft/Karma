@@ -7,11 +7,13 @@ import com.lxisoft.service.dto.VerificationTeamDTO;
 import com.lxisoft.service.mapper.VerificationTeamMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 
 /**
  * Service Implementation for managing VerificationTeam.
@@ -60,6 +62,16 @@ public class VerificationTeamServiceImpl implements VerificationTeamService {
     }
 
     /**
+     * Get all the VerificationTeam with eager load of many-to-many relationships.
+     *
+     * @return the list of entities
+     */
+    public Page<VerificationTeamDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return verificationTeamRepository.findAllWithEagerRelationships(pageable).map(verificationTeamMapper::toDto);
+    }
+    
+
+    /**
      * Get one verificationTeam by id.
      *
      * @param id the id of the entity
@@ -67,10 +79,10 @@ public class VerificationTeamServiceImpl implements VerificationTeamService {
      */
     @Override
     @Transactional(readOnly = true)
-    public VerificationTeamDTO findOne(Long id) {
+    public Optional<VerificationTeamDTO> findOne(Long id) {
         log.debug("Request to get VerificationTeam : {}", id);
-        VerificationTeam verificationTeam = verificationTeamRepository.findOneWithEagerRelationships(id);
-        return verificationTeamMapper.toDto(verificationTeam);
+        return verificationTeamRepository.findOneWithEagerRelationships(id)
+            .map(verificationTeamMapper::toDto);
     }
 
     /**
@@ -81,6 +93,6 @@ public class VerificationTeamServiceImpl implements VerificationTeamService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete VerificationTeam : {}", id);
-        verificationTeamRepository.delete(id);
+        verificationTeamRepository.deleteById(id);
     }
 }

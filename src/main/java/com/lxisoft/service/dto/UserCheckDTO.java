@@ -1,9 +1,6 @@
 package com.lxisoft.service.dto;
 
-
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -61,7 +58,7 @@ public class UserCheckDTO implements Serializable {
         }
 
         UserCheckDTO userCheckDTO = (UserCheckDTO) o;
-        if(userCheckDTO.getId() == null || getId() == null) {
+        if (userCheckDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), userCheckDTO.getId());
@@ -78,6 +75,7 @@ public class UserCheckDTO implements Serializable {
             "id=" + getId() +
             ", voteType='" + getVoteType() + "'" +
             ", category='" + getCategory() + "'" +
+            ", markedUser=" + getMarkedUserId() +
             "}";
     }
 }

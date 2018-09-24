@@ -1,8 +1,11 @@
 package com.lxisoft.service;
 
 import com.lxisoft.service.dto.ApprovalStatusDTO;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.Optional;
 
 /**
  * Service Interface for managing ApprovalStatus.
@@ -25,13 +28,14 @@ public interface ApprovalStatusService {
      */
     Page<ApprovalStatusDTO> findAll(Pageable pageable);
 
+
     /**
      * Get the "id" approvalStatus.
      *
      * @param id the id of the entity
      * @return the entity
      */
-    ApprovalStatusDTO findOne(Long id);
+    Optional<ApprovalStatusDTO> findOne(Long id);
 
     /**
      * Delete the "id" approvalStatus.

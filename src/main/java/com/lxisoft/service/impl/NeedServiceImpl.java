@@ -7,11 +7,13 @@ import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.service.mapper.NeedMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 
 /**
  * Service Implementation for managing Need.
@@ -60,6 +62,16 @@ public class NeedServiceImpl implements NeedService {
     }
 
     /**
+     * Get all the Need with eager load of many-to-many relationships.
+     *
+     * @return the list of entities
+     */
+    public Page<NeedDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return needRepository.findAllWithEagerRelationships(pageable).map(needMapper::toDto);
+    }
+    
+
+    /**
      * Get one need by id.
      *
      * @param id the id of the entity
@@ -67,10 +79,10 @@ public class NeedServiceImpl implements NeedService {
      */
     @Override
     @Transactional(readOnly = true)
-    public NeedDTO findOne(Long id) {
+    public Optional<NeedDTO> findOne(Long id) {
         log.debug("Request to get Need : {}", id);
-        Need need = needRepository.findOneWithEagerRelationships(id);
-        return needMapper.toDto(need);
+        return needRepository.findOneWithEagerRelationships(id)
+            .map(needMapper::toDto);
     }
 
     /**
@@ -81,6 +93,6 @@ public class NeedServiceImpl implements NeedService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Need : {}", id);
-        needRepository.delete(id);
+        needRepository.deleteById(id);
     }
 }

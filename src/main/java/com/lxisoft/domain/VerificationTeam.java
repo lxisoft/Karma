@@ -29,12 +29,11 @@ public class VerificationTeam implements Serializable {
 
     @ManyToMany
     @JoinTable(name = "verification_team_approving_users",
-               joinColumns = @JoinColumn(name="verification_teams_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="approving_users_id", referencedColumnName="id"))
+               joinColumns = @JoinColumn(name = "verification_teams_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "approving_users_id", referencedColumnName = "id"))
     private Set<LoggedUser> approvingUsers = new HashSet<>();
 
     @OneToMany(mappedBy = "verificationTeam")
-    @JsonIgnore
     private Set<Need> needs = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

@@ -1,9 +1,6 @@
 package com.lxisoft.service.dto;
 
-
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -41,7 +38,7 @@ public class ApprovalStatusDTO implements Serializable {
         }
 
         ApprovalStatusDTO approvalStatusDTO = (ApprovalStatusDTO) o;
-        if(approvalStatusDTO.getId() == null || getId() == null) {
+        if (approvalStatusDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), approvalStatusDTO.getId());

@@ -1,9 +1,6 @@
 package com.lxisoft.service.dto;
 
-
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -101,7 +98,7 @@ public class AddressDTO implements Serializable {
         }
 
         AddressDTO addressDTO = (AddressDTO) o;
-        if(addressDTO.getId() == null || getId() == null) {
+        if (addressDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), addressDTO.getId());
@@ -122,6 +119,7 @@ public class AddressDTO implements Serializable {
             ", state='" + getState() + "'" +
             ", country='" + getCountry() + "'" +
             ", zip=" + getZip() +
+            ", loggedUser=" + getLoggedUserId() +
             "}";
     }
 }

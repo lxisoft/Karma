@@ -31,7 +31,7 @@ public class AddressResource {
 
     private final Logger log = LoggerFactory.getLogger(AddressResource.class);
 
-    private static final String ENTITY_NAME = "address";
+    private static final String ENTITY_NAME = "karmaAddress";
 
     private final AddressService addressService;
 
@@ -73,7 +73,7 @@ public class AddressResource {
     public ResponseEntity<AddressDTO> updateAddress(@RequestBody AddressDTO addressDTO) throws URISyntaxException {
         log.debug("REST request to update Address : {}", addressDTO);
         if (addressDTO.getId() == null) {
-            return createAddress(addressDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         AddressDTO result = addressService.save(addressDTO);
         return ResponseEntity.ok()
@@ -106,8 +106,8 @@ public class AddressResource {
     @Timed
     public ResponseEntity<AddressDTO> getAddress(@PathVariable Long id) {
         log.debug("REST request to get Address : {}", id);
-        AddressDTO addressDTO = addressService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(addressDTO));
+        Optional<AddressDTO> addressDTO = addressService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(addressDTO);
     }
 
     /**

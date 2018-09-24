@@ -7,11 +7,13 @@ import com.lxisoft.service.dto.SeverityDTO;
 import com.lxisoft.service.mapper.SeverityMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 
 /**
  * Service Implementation for managing Severity.
@@ -59,6 +61,7 @@ public class SeverityServiceImpl implements SeverityService {
             .map(severityMapper::toDto);
     }
 
+
     /**
      * Get one severity by id.
      *
@@ -67,10 +70,10 @@ public class SeverityServiceImpl implements SeverityService {
      */
     @Override
     @Transactional(readOnly = true)
-    public SeverityDTO findOne(Long id) {
+    public Optional<SeverityDTO> findOne(Long id) {
         log.debug("Request to get Severity : {}", id);
-        Severity severity = severityRepository.findOne(id);
-        return severityMapper.toDto(severity);
+        return severityRepository.findById(id)
+            .map(severityMapper::toDto);
     }
 
     /**
@@ -81,6 +84,6 @@ public class SeverityServiceImpl implements SeverityService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Severity : {}", id);
-        severityRepository.delete(id);
+        severityRepository.deleteById(id);
     }
 }

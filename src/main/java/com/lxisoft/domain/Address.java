@@ -1,5 +1,6 @@
 package com.lxisoft.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 
 import javax.persistence.*;
@@ -41,6 +42,7 @@ public class Address implements Serializable {
     private Long zip;
 
     @ManyToOne
+    @JsonIgnoreProperties("addresses")
     private LoggedUser loggedUser;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
