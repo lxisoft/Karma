@@ -1,0 +1,31 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "needs",
+            "otherEntityName": "need",
+            "otherEntityRelationshipName": "approvalStatus"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "helps",
+            "otherEntityName": "help",
+            "otherEntityRelationshipName": "approvalStatus"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "status",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20180924060349",
+    "javadoc": "ApprovalStatus entity.\n@author Sanil kumar",
+    "entityTableName": "approval_status",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "microserviceName": "karma"
+}

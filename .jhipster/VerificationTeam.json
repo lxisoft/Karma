@@ -1,0 +1,33 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "verificationTeams",
+            "relationshipName": "approvingUsers",
+            "otherEntityName": "loggedUser",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "needs",
+            "otherEntityName": "need",
+            "otherEntityRelationshipName": "verificationTeam"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "approvalLevel",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20180924060357",
+    "javadoc": "@Author Sarangi Balu",
+    "entityTableName": "verification_team",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "microserviceName": "karma"
+}

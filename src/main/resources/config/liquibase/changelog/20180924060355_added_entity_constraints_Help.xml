@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Help.
+    -->
+    <changeSet id="20180924060355-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="approval_status_id"
+                                 baseTableName="help"
+                                 constraintName="fk_help_approval_status_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="approval_status"/>
+
+        <addForeignKeyConstraint baseColumnNames="provided_user_id"
+                                 baseTableName="help"
+                                 constraintName="fk_help_provided_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="logged_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="fulfilled_need_id"
+                                 baseTableName="help"
+                                 constraintName="fk_help_fulfilled_need_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="need"/>
+
+    </changeSet>
+</databaseChangeLog>

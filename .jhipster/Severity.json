@@ -1,0 +1,25 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "needs",
+            "otherEntityName": "need",
+            "otherEntityRelationshipName": "severity"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "severityLevel",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20180924060356",
+    "javadoc": "@Author Anjali",
+    "entityTableName": "severity",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "microserviceName": "karma"
+}
