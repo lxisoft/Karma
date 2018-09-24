@@ -98,30 +98,17 @@ spring:
 security:
     oauth2:
         client:
-<<<<<<< HEAD
             access-token-uri: https://kcnew.bytatech.com:8443/auth/realms/ayoos/protocol/openid-connect/token
-            user-authorization-uri:  https://kcnew.bytatech.com:8443/auth/realms/ayoos/protocol/openid-connect/auth
-            client-id: internal
-            client-secret:  internal
-            authentication-scheme: header
-            client-authentication-scheme: header
+            user-authorization-uri: https://kcnew.bytatech.com:8443/auth/realms/ayoos/protocol/openid-connect/auth
+            client-id: account
+            client-secret: 362c5924-9d6c-4f9b-a418-369dcba56b1a
+            scope: openid profile email
         resource:
-            filter-order: 3
-            user-info-uri:  https://kcnew.bytatech.com:8443/auth/realms/ayoos/protocol/openid-connect/userinfo
-            token-info-uri:  https://kcnew.bytatech.com:8443/auth/realms/ayoos/protocol/openid-connect/token/introspect
-            prefer-token-info: false
-            jwt:
-                key-uri: https://kcnew.bytatech.com:8443/auth/realms/ayoos
-=======
-            client-id: internal
-            client-secret: internal
-        resource:
-            user-info-uri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/userinfo
->>>>>>> jhipster_upgrade
+            user-info-uri: https://kcnew.bytatech.com:8443/auth/realms/ayoos/protocol/openid-connect/userinfo
 
 server:
     servlet:
-        context-path: /${spring.application.name}
+        
         session:
             cookie:
                 http-only: true
