@@ -43,4 +43,13 @@ public interface ApprovalStatusService {
      * @param id the id of the entity
      */
     void delete(Long id);
+    
+    /**
+     * find pending status id.
+     *
+     * @param status the status of the entity
+     */
+    Optional<ApprovalStatusDTO> findByStatus(String status);
+    
+    
 }

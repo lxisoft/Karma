@@ -86,4 +86,18 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
         log.debug("Request to delete ApprovalStatus : {}", id);
         approvalStatusRepository.deleteById(id);
     }
+    
+    /**
+     * get pending status by 
+     *
+     * @param status the status of the entity
+     */
+    @Override
+    public Optional<ApprovalStatusDTO> findByStatus(String status){
+    	log.debug("Request to retreive pending status: {}",status);
+    	return approvalStatusRepository.findByStatus(status)
+    			.map(approvalStatusMapper::toDto);
+    		  
+    }
+    
 }

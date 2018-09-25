@@ -57,7 +57,7 @@ public class Need implements Serializable {
     @JsonIgnoreProperties("needs")
     private ApprovalStatus approvalStatus;
 
-    @ManyToMany
+    @ManyToMany(cascade=CascadeType.ALL)
     @JoinTable(name = "need_categories",
                joinColumns = @JoinColumn(name = "needs_id", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "categories_id", referencedColumnName = "id"))

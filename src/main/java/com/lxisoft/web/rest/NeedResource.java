@@ -1,14 +1,18 @@
 package com.lxisoft.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.lxisoft.domain.ApprovalStatus;
+import com.lxisoft.service.ApprovalStatusService;
 import com.lxisoft.service.NeedService;
 import com.lxisoft.web.rest.errors.BadRequestAlertException;
 import com.lxisoft.web.rest.util.HeaderUtil;
 import com.lxisoft.web.rest.util.PaginationUtil;
+import com.lxisoft.service.dto.ApprovalStatusDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -34,6 +38,9 @@ public class NeedResource {
     private static final String ENTITY_NAME = "karmaNeed";
 
     private final NeedService needService;
+    
+    @Autowired
+    ApprovalStatusService approvalStatusService;
 
     public NeedResource(NeedService needService) {
         this.needService = needService;
@@ -53,10 +60,21 @@ public class NeedResource {
         if (needDTO.getId() != null) {
             throw new BadRequestAlertException("A new need cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        
+        if(needDTO.getApprovalStatusId()==null){
+        	
+        	Optional<ApprovalStatusDTO> approvalStatus=approvalStatusService.findByStatus("pending");
+        	
+        	long id=approvalStatus.get().getId();
+        	log.debug("***************{}"+id);
+        	needDTO.setApprovalStatusId(approvalStatus.get().getId());
+        }
+        
         NeedDTO result = needService.save(needDTO);
         return ResponseEntity.created(new URI("/api/needs/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
+        
     }
 
     /**
