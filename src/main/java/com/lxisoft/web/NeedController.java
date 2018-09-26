@@ -55,8 +55,8 @@ import io.github.jhipster.web.util.ResponseUtil;
  */
 @Controller
 public class NeedController {
-	
-	private final Logger log = LoggerFactory.getLogger(NeedResource.class);
+    
+    private final Logger log = LoggerFactory.getLogger(NeedController.class);
 
     private static final String ENTITY_NAME = "karmaNeed";
 
@@ -82,7 +82,7 @@ public class NeedController {
         }
         NeedDTO need = needService.save(needDTO);
         model.addAttribute("need", need);
-    	return "need";
+        return "help-post-result";
         
     }
      
@@ -105,10 +105,10 @@ public class NeedController {
         }
         List<NeedDTO> needs = page.getContent();
         model.addAttribute("needs", needs);
-        return "needs";
+        return "home";
         
     }
-    
+
     /**
      * GET  /needs : get all the needs by approvalStatus.
      *

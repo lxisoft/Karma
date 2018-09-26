@@ -2,7 +2,9 @@ package com.lxisoft.service.dto;
 
 import java.time.Instant;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Objects;
 
@@ -26,6 +28,23 @@ public class NeedDTO implements Serializable {
     private Long approvalStatusId;
 
     private Set<CategoryDTO> categories = new HashSet<>();
+    
+    
+    
+    public List<CategoryDTO> getCategoriesAsList() {
+    	return new ArrayList<CategoryDTO>(categories); 
+    }
+    
+    public void setCategoriesAsList(List<CategoryDTO> categories) {
+   
+    	this.categories.clear();
+    	for(CategoryDTO category : categories){
+    		this.categories.add(category);
+    	}
+    	
+    }
+    // 
+    
 
     private Long postedUserId;
 

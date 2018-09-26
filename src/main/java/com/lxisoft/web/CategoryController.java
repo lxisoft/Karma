@@ -17,6 +17,8 @@ package com.lxisoft.web;
 
 
 import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,8 +38,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 
 import com.codahale.metrics.annotation.Timed;
+import com.lxisoft.domain.Need;
 import com.lxisoft.service.CategoryService;
 import com.lxisoft.service.dto.CategoryDTO;
+import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.web.rest.CategoryResource;
 import com.lxisoft.web.rest.errors.BadRequestAlertException;
 
@@ -50,7 +54,7 @@ import com.lxisoft.web.rest.errors.BadRequestAlertException;
  */
 @Controller
 public class CategoryController {
-	private final Logger log = LoggerFactory.getLogger(CategoryResource.class);
+    private final Logger log = LoggerFactory.getLogger(CategoryController.class);
 
     private static final String ENTITY_NAME = "karmaCategory";
 
@@ -75,7 +79,7 @@ public class CategoryController {
         }
         CategoryDTO category = categoryService.save(categoryDTO);
         model.addAttribute("category", category);
-    	return "category";
+        return "category";
         
     }
    
@@ -92,7 +96,10 @@ public class CategoryController {
         Page<CategoryDTO> page = categoryService.findAll(pageable);
         List<CategoryDTO> categories = page.getContent();
         model.addAttribute("categories", categories);
-    	return "categories";
+        NeedDTO needDTO=new NeedDTO();
+        needDTO.setCategories(new HashSet(Arrays.asList(new CategoryDTO[]{new CategoryDTO()})));
+        model.addAttribute("need",needDTO);
+        return "post-help-request";
         
     }
        
@@ -108,7 +115,7 @@ public class CategoryController {
         log.debug("request to get Category : {}", id);
         Optional<CategoryDTO> categoryDTO = categoryService.findOne(id);
         model.addAttribute("categoryById",categoryDTO ); 
-    	return "categoryById";
+        return "categoryById";
     }
     
     

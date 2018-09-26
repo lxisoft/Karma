@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Material Design Bootstrap</title>
+<!-- Font Awesome -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- Bootstrap core CSS -->
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css"
+	rel="stylesheet">
+<!-- Material Design Bootstrap -->
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.11/css/mdb.min.css"
+	rel="stylesheet">
+</head>
+
+<body>
+
+	<!-- Material form login -->
+	<!-- Default form login -->
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-3"></div>
+			<div class="col-sm-6">
+				<!-- Default form contact -->
+				<form class="text-center border border-light p-5" th:action="@{/needs}" th:object="${need}" th:method="post">
+
+					<p class="h4 mb-4">Help request</p>
+
+					<!-- Subject -->
+					<label>Category</label>
+					<div th:each="needCategory,status : *{categories}"> 
+					<select class="mdb-select md-form" th:field="*{categoriesAsList[__${status.index}__].name}">
+						 <th:block th:each="category : ${categories}">
+						<!-- <th:block th:each="category : ${categories}">-->
+						<optgroup th:label="${category.name}">
+							<option  th:value="${category.name}" th:text="${category.subCategory}">Option 1</option>
+						</optgroup>
+						</th:block>
+					</select>
+					</div>
+
+					<!-- Message -->
+					<div class="form-group">
+						<textarea class="form-control rounded-0"
+							id="exampleFormControlTextarea2" rows="3"
+							placeholder="Description" th:field="*{description}"></textarea>
+					</div>
+<!--					<label class="btn-bs-file btn btn-info"> Browse files <input
+						type="file" name="image" multiple>
+					</label>--><br> <label>Beneficiary type</label> <select
+						class="mdb-select md-form colorful-select dropdown-primary" th:field="*{beneficiaryType}">
+						<option value="you">you</option>
+						<option value="someone else">someone else</option>
+					</select>
+
+					<!-- Copy -->
+					<div class="custom-control custom-checkbox mb-4">
+						<input type="checkbox" class="custom-control-input"
+							id="defaultContactFormCopy"> <label
+							class="custom-control-label" for="defaultContactFormCopy">Send
+							me a copy of this message</label>
+					</div>
+
+					<!-- Send button -->
+					<button class="btn btn-info btn-block" name="submit" type="submit">Submit</button>
+
+				</form>
+				<!-- Default form contact -->
+			</div>
+		</div>
+	</div>
+	<!-- SCRIPTS -->
+	<!-- JQuery -->
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<!-- Bootstrap tooltips -->
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+	<!-- Bootstrap core JavaScript -->
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+	<!-- MDB core JavaScript -->
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.11/js/mdb.min.js"></script>
+</body>
+
+</html>
