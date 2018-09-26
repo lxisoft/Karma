@@ -1,0 +1,19 @@
+Feature---AAYOS applies comparative algorithms to identify if the same institution is already registered.
+			Check for duplicate email addresses
+			
+Feature-- Can use either as community edition or  more featured premium  edition
+
+
+Clinic is registered in Doctor App
+       -    enter key clinic information
+       -    validate provided information 
+for activation: email or sms/OTP
+get an own profile which can access from anywhere
+includes login by valid information(username/password)
+ Laboratory is registered in Examination App
+enter key laboratory  information
+       -    validate provided information 
+for activation: email or sms/OTP
+get an own profile which can access from anywhere
+includes login by valid information(username/password)
+
