@@ -49,4 +49,15 @@ public interface NeedService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+	Page<NeedDTO> findAllNeedsByApprovedStatus(Pageable pageable, String approvalStatus);
+    
+    /**
+     * Get all the approved needs.
+     *
+     * @param pageable the pagination information
+     * @return the list of approved entities
+     */
+    //Page<NeedDTO> findAllNeedsByApprovedStatusId(Pageable pageable,long approvalStatusId);
+
 }

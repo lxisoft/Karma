@@ -147,4 +147,35 @@ public class NeedResource {
         needService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+    
+
+    /*@GetMapping("/needs/{approvalStatusId}")
+    @Timed
+    public ResponseEntity<List<NeedDTO>> getAllNeedsByApprovedStatusId(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload,long approvalStatusId) {
+        log.debug("REST request to get a page of Needs");
+        Page<NeedDTO> page;
+        if (eagerload) {
+            page = needService.findAllWithEagerRelationships(pageable);
+        } else {
+            page = needService.findAllNeedsByApprovedStatusId(pageable,approvalStatusId);
+        }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, String.format("/api/approvedneeds?eagerload=%b", eagerload));
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }*/
+    
+    @GetMapping("/needs/{approvalStatus}")
+    @Timed
+    public ResponseEntity<List<NeedDTO>> getAllNeedsByApprovedStatus(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload,String approvalStatus) {
+        log.debug("REST request to get a page of Needs");
+        Page<NeedDTO> page;
+        if (eagerload) {
+            page = needService.findAllWithEagerRelationships(pageable);
+        } else {
+            page = needService.findAllNeedsByApprovedStatus(pageable,approvalStatus);
+        }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, String.format("/api/approvedneeds?eagerload=%b", eagerload));
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+     
 }

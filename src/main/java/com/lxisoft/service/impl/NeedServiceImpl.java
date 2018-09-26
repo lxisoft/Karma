@@ -1,13 +1,15 @@
 package com.lxisoft.service.impl;
 
+import com.lxisoft.service.ApprovalStatusService;
 import com.lxisoft.service.NeedService;
 import com.lxisoft.domain.Need;
 import com.lxisoft.repository.NeedRepository;
+import com.lxisoft.service.dto.ApprovalStatusDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.service.mapper.NeedMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,9 @@ public class NeedServiceImpl implements NeedService {
 
     private final NeedMapper needMapper;
 
+    @Autowired
+    ApprovalStatusService approvalStatusService;
+    
     public NeedServiceImpl(NeedRepository needRepository, NeedMapper needMapper) {
         this.needRepository = needRepository;
         this.needMapper = needMapper;
@@ -94,5 +99,33 @@ public class NeedServiceImpl implements NeedService {
     public void delete(Long id) {
         log.debug("Request to delete Need : {}", id);
         needRepository.deleteById(id);
+    }
+
+	@Override
+	public Page<NeedDTO> findAllNeedsByApprovedStatus(Pageable pageable, String approvalStatus) {
+		// TODO Auto-generated method stub
+		
+		    log.debug("Request to get all Needs by approval status");
+		    
+		    long approvalStatusId=approvalStatusService.findByStatus(approvalStatus).get().getId();
+	         	
+	         	Page<NeedDTO> needs=findAllNeedsByApprovalStatusId(pageable,approvalStatusId);
+	         	
+	   
+		    
+	        return needRepository.findAll(pageable)
+	            .map(needMapper::toDto);
+	  
+	}
+    
+   
+    
+    public Page<NeedDTO> findAllNeedsByApprovalStatusId(Pageable pageable,Long approvalStatusId){
+    	
+    	 log.debug("Request to get all Needs by approval status id{}",approvalStatusId);
+    	
+         return needRepository.findAllNeedsByApprovalStatusId(pageable,approvalStatusId)
+             .map(needMapper::toDto);
+    
     }
 }
