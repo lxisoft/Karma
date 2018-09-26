@@ -109,13 +109,9 @@ public class NeedServiceImpl implements NeedService {
 		    
 		    long approvalStatusId=approvalStatusService.findByStatus(approvalStatus).get().getId();
 	         	
-	         	Page<NeedDTO> needs=findAllNeedsByApprovalStatusId(pageable,approvalStatusId);
+	        Page<NeedDTO> needs=findAllNeedsByApprovalStatusId(pageable,approvalStatusId);
 	         	
-	   
-		    
-	        return needRepository.findAll(pageable)
-	            .map(needMapper::toDto);
-	  
+	   	    return needs;
 	}
     
    

@@ -108,6 +108,29 @@ public class NeedController {
         return "needs";
         
     }
+    
+    /**
+     * GET  /needs : get all the needs by approvalStatus.
+     *
+     * @param pageable the pagination information
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many)
+     * @return the string value
+     */
+    
+    @GetMapping("/needs/{approvalStatus}")
+    @Timed
+    public String getAllNeedsByApprovedStatus(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload,@PathVariable(value="approvalStatus") String approvalStatus,Model model) {
+        log.debug("request to get a page of Needs");
+        Page<NeedDTO> page;
+        if (eagerload) {
+            page = needService.findAllWithEagerRelationships(pageable);
+        } else {
+            page = needService.findAllNeedsByApprovedStatus(pageable,approvalStatus);
+        }
+        List<NeedDTO> needs = page.getContent();
+        model.addAttribute("needs", needs);
+        return "needs";
+    }
 
     /**
      * GET  /needs/:id : get the "id" need.
