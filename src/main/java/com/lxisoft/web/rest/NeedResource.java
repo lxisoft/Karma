@@ -163,9 +163,9 @@ public class NeedResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }*/
     
-    @GetMapping("/needs/{approvalStatus}")
+    @GetMapping("/needs/getAllNeedsByApprovedStatus/{approvalStatus}")
     @Timed
-    public ResponseEntity<List<NeedDTO>> getAllNeedsByApprovedStatus(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload,String approvalStatus) {
+    public ResponseEntity<List<NeedDTO>> getAllNeedsByApprovedStatus(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload,@PathVariable String approvalStatus) {
         log.debug("REST request to get a page of Needs");
         Page<NeedDTO> page;
         if (eagerload) {
