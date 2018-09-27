@@ -3,11 +3,13 @@ package com.lxisoft.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.domain.ApprovalStatus;
 import com.lxisoft.service.ApprovalStatusService;
+import com.lxisoft.service.CategoryService;
 import com.lxisoft.service.NeedService;
 import com.lxisoft.web.rest.errors.BadRequestAlertException;
 import com.lxisoft.web.rest.util.HeaderUtil;
 import com.lxisoft.web.rest.util.PaginationUtil;
 import com.lxisoft.service.dto.ApprovalStatusDTO;
+import com.lxisoft.service.dto.CategoryDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -22,9 +24,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * REST controller for managing Need.
@@ -42,6 +45,9 @@ public class NeedResource {
     @Autowired
     ApprovalStatusService approvalStatusService;
 
+    @Autowired
+    CategoryService categoryService;
+    
     public NeedResource(NeedService needService) {
         this.needService = needService;
     }
@@ -57,6 +63,8 @@ public class NeedResource {
     @Timed
     public ResponseEntity<NeedDTO> createNeed(@RequestBody NeedDTO needDTO) throws URISyntaxException {
         log.debug("REST request to save Need : {}", needDTO);
+        Set<CategoryDTO> categorySet=new HashSet<CategoryDTO>();
+    	
         if (needDTO.getId() != null) {
             throw new BadRequestAlertException("A new need cannot already have an ID", ENTITY_NAME, "idexists");
         }
@@ -69,6 +77,14 @@ public class NeedResource {
         	log.debug("***************{}"+id);
         	needDTO.setApprovalStatusId(approvalStatus.get().getId());
         }
+        
+        Set<CategoryDTO> categories=needDTO.getCategories();
+        for(CategoryDTO categori:categories){
+        	Long id=categori.getId();
+        	CategoryDTO categorie=categoryService.findOne(id).orElse(null);
+           	categorySet.add(categorie);
+            }
+        needDTO.setCategories(categorySet);
         
         NeedDTO result = needService.save(needDTO);
         return ResponseEntity.created(new URI("/api/needs/" + result.getId()))
