@@ -17,6 +17,7 @@ package com.lxisoft.web;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +41,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.service.NeedService;
+import com.lxisoft.service.dto.CategoryDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.web.rest.NeedResource;
 import com.lxisoft.web.rest.errors.BadRequestAlertException;
@@ -80,6 +82,7 @@ public class NeedController {
         if (needDTO.getId() != null) {
             throw new BadRequestAlertException("A new need cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        needDTO.setCategories(new HashSet<CategoryDTO>(needDTO.getCategoryList()));
         NeedDTO need = needService.save(needDTO);
         model.addAttribute("need", need);
         return "help-post-result";
