@@ -1,0 +1,16 @@
+{
+  "name": "library",
+  "version": "0.0.0",
+  "description": "Description for library",
+  "private": true,
+  "license": "UNLICENSED",
+  "cacheDirectories": [
+    "node_modules"
+  ],
+  "devDependencies": {
+    "generator-jhipster": "5.3.1"
+  },
+  "engines": {
+    "node": ">=8.9.0"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.lxisoft"
+    },
+    "jhipsterVersion": "5.3.1",
+    "applicationType": "microservice",
+    "baseName": "library",
+    "packageName": "com.lxisoft",
+    "packageFolder": "com/lxisoft",
+    "serverPort": "8081",
+    "authenticationType": "oauth2",
+    "cacheProvider": "hazelcast",
+    "enableHibernateCache": false,
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "mysql",
+    "prodDatabaseType": "mysql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "YzZlZjJmOWZlMTJlOWYxMDcxYjFiY2U0Nzc2MzU3ZmNkNGU4NmJlZmEyZDlmYTY2NDcyODI2MzVkM2I4OWRhNjNkMTAzZjQwOWM4ZTM2NGRjMzI4OTQ2NzJiYzg4OTg4ZGNjYjEzODAwMWU5ODgyMjUxOTFkNDBkMjVjNzkyZGU=",
+    "enableTranslation": false,
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "clientPackageManager": "npm",
+    "skipClient": true,
+    "skipUserManagement": true
+  }
+}

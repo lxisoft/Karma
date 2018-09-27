@@ -1,0 +1,38 @@
+{
+    "name": "Book",
+    "fields": [
+        {
+            "fieldName": "bookName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "price",
+            "fieldType": "Float"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "publisher",
+            "otherEntityName": "publisher",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "author",
+            "otherEntityName": "author",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "book"
+        }
+    ],
+    "changelogDate": "20180925044829",
+    "entityTableName": "book",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "library",
+    "applications": "*",
+    "microserviceName": "library"
+}
