@@ -20,9 +20,11 @@ import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -40,7 +42,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.codahale.metrics.annotation.Timed;
+import com.lxisoft.service.ApprovalStatusService;
+import com.lxisoft.service.CategoryService;
 import com.lxisoft.service.NeedService;
+import com.lxisoft.service.dto.ApprovalStatusDTO;
 import com.lxisoft.service.dto.CategoryDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.web.rest.NeedResource;
@@ -63,6 +68,12 @@ public class NeedController {
     private static final String ENTITY_NAME = "karmaNeed";
 
     private NeedService needService;
+    
+    @Autowired
+    ApprovalStatusService approvalStatusService;
+    
+    @Autowired
+    CategoryService categoryService;
 
     public NeedController(NeedService needService) {
         this.needService = needService;
@@ -79,10 +90,34 @@ public class NeedController {
     @Timed
     public String createNeed(@ModelAttribute NeedDTO needDTO,Model model) throws URISyntaxException {
         log.debug(" request to save Need : {}", needDTO);
+        
+        Set<CategoryDTO> categorySet=new HashSet<CategoryDTO>();
+        
         if (needDTO.getId() != null) {
             throw new BadRequestAlertException("A new need cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        needDTO.setCategories(new HashSet<CategoryDTO>(needDTO.getCategoryList()));
+        
+          if(needDTO.getApprovalStatusId()==null){
+        	
+        	Optional<ApprovalStatusDTO> approvalStatus=approvalStatusService.findByStatus("pending");
+        	
+        	long id=approvalStatus.get().getId();
+        	log.debug("***************{}"+id);
+        	needDTO.setApprovalStatusId(approvalStatus.get().getId());
+        }
+        
+        needDTO.setCategories(new HashSet<CategoryDTO>(needDTO.getCategoryList()));  
+        
+        Set<CategoryDTO> categories=needDTO.getCategories();
+        for(CategoryDTO categori:categories){
+        	Long id=categori.getId();
+        	CategoryDTO categorie=categoryService.findOne(id).orElse(null);
+           	categorySet.add(categorie);
+            }
+        needDTO.setCategories(categorySet);
+
+        
+        
         NeedDTO need = needService.save(needDTO);
         model.addAttribute("need", need);
         return "help-post-result";
