@@ -1,0 +1,56 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="libraryApp.publisher.home.title">Publishers</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-publisher" [routerLink]="['/publisher/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="libraryApp.publisher.home.createLabel">
+            Create new Publisher
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="publishers">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="libraryApp.publisher.publisherName">Publisher Name</span></th>
+            <th><span jhiTranslate="libraryApp.publisher.address">Address</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let publisher of publishers ;trackBy: trackId">
+                <td><a [routerLink]="['/publisher', publisher.id, 'view' ]">{{publisher.id}}</a></td>
+                <td>{{publisher.publisherName}}</td>
+                <td>{{publisher.address}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/publisher', publisher.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/publisher', publisher.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'publisher/'+ publisher.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

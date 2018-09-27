@@ -1,0 +1,28 @@
+
+entity Book
+{
+	bookName String,
+    price Float
+}
+
+entity Author
+{
+	authorName String,
+    phoneNumber Long
+}
+
+entity Publisher
+{
+	publisherName String,
+    address String
+}
+
+relationship ManyToOne
+{
+	Book{publisher} to Publisher
+}
+
+relationship ManyToMany
+{
+	Author{book} to Book{author}
+}

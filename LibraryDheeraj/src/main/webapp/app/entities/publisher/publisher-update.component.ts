@@ -1,0 +1,58 @@
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+import { IPublisher } from 'app/shared/model/publisher.model';
+import { PublisherService } from './publisher.service';
+
+@Component({
+    selector: 'jhi-publisher-update',
+    templateUrl: './publisher-update.component.html'
+})
+export class PublisherUpdateComponent implements OnInit {
+    private _publisher: IPublisher;
+    isSaving: boolean;
+
+    constructor(private publisherService: PublisherService, private activatedRoute: ActivatedRoute) {}
+
+    ngOnInit() {
+        this.isSaving = false;
+        this.activatedRoute.data.subscribe(({ publisher }) => {
+            this.publisher = publisher;
+        });
+    }
+
+    previousState() {
+        window.history.back();
+    }
+
+    save() {
+        this.isSaving = true;
+        if (this.publisher.id !== undefined) {
+            this.subscribeToSaveResponse(this.publisherService.update(this.publisher));
+        } else {
+            this.subscribeToSaveResponse(this.publisherService.create(this.publisher));
+        }
+    }
+
+    private subscribeToSaveResponse(result: Observable<HttpResponse<IPublisher>>) {
+        result.subscribe((res: HttpResponse<IPublisher>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
+    }
+
+    private onSaveSuccess() {
+        this.isSaving = false;
+        this.previousState();
+    }
+
+    private onSaveError() {
+        this.isSaving = false;
+    }
+    get publisher() {
+        return this._publisher;
+    }
+
+    set publisher(publisher: IPublisher) {
+        this._publisher = publisher;
+    }
+}
