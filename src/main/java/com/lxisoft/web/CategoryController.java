@@ -17,6 +17,7 @@ package com.lxisoft.web;
 
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -97,7 +98,7 @@ public class CategoryController {
         List<CategoryDTO> categories = page.getContent();
         model.addAttribute("categories", categories);
         NeedDTO needDTO=new NeedDTO();
-        needDTO.setCategories(new HashSet(Arrays.asList(new CategoryDTO[]{new CategoryDTO()})));
+        needDTO.setCategoryList(new ArrayList<>(Arrays.asList(new CategoryDTO[]{new CategoryDTO()})));
         model.addAttribute("need",needDTO);
         return "post-help-request";
         

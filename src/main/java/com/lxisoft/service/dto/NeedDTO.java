@@ -29,20 +29,8 @@ public class NeedDTO implements Serializable {
 
     private Set<CategoryDTO> categories = new HashSet<>();
     
-    
-    
-    public List<CategoryDTO> getCategoriesAsList() {
-    	return new ArrayList<CategoryDTO>(categories); 
-    }
-    
-    public void setCategoriesAsList(List<CategoryDTO> categories) {
-   
-    	this.categories.clear();
-    	for(CategoryDTO category : categories){
-    		this.categories.add(category);
-    	}
-    	
-    }
+    private List<CategoryDTO> categoryList = new ArrayList<>();
+
     // 
     
 
@@ -152,6 +140,36 @@ public class NeedDTO implements Serializable {
             ", verificationTeam=" + getVerificationTeamId() +
             ", approvalStatus=" + getApprovalStatusId() +
             ", postedUser=" + getPostedUserId() +
+            ", categories"+getCategories().toString()+
             "}";
     }
+    
+    public List<CategoryDTO> getCategoriesAsList() {
+    	return new ArrayList<CategoryDTO>(categories); 
+    }
+    
+    public void setCategoriesAsList(List<CategoryDTO> categories) {
+   
+    	this.categories.clear();
+    	for(CategoryDTO category : categories){
+    		this.categories.add(category);
+    	}
+    	
+    }
+    
+    /**
+	 * @return the categoryList
+	 */
+	public List<CategoryDTO> getCategoryList() {
+		return this.categoryList;
+	}
+	
+	/**
+	 * @param cats the categoryList to set
+	 */
+	public void setCategoryList(List<CategoryDTO> categoryList) {
+		this.categoryList = categoryList;
+	}
+    
+    
 }

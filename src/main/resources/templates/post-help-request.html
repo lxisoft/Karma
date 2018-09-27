@@ -35,12 +35,12 @@
 
 					<!-- Subject -->
 					<label>Category</label>
-					<div th:each="needCategory,status : *{categories}"> 
-					<select class="mdb-select md-form" th:field="*{categoriesAsList[__${status.index}__].name}">
+					<div th:each="needCategory,status : *{categoryList}"> 
+					<select class="mdb-select md-form" th:field="*{categoryList[__${status.index}__].id}">
 						 <th:block th:each="category : ${categories}">
 						<!-- <th:block th:each="category : ${categories}">-->
 						<optgroup th:label="${category.name}">
-							<option  th:value="${category.name}" th:text="${category.subCategory}">Option 1</option>
+							<option  th:value="${category.id}" th:text="${category.subCategory}">Option 1</option>
 						</optgroup>
 						</th:block>
 					</select>
