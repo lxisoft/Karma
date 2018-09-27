@@ -1,0 +1,31 @@
+/*Author entity
+*@Author Neeraja
+*/
+
+entity Author{
+name String,
+}
+
+/*Book entity
+*Author Neeraja
+*/
+
+entity Book{
+title String,
+authorName String,
+}
+
+/*Category entity
+*@Author Neeraja
+*/
+entity Category{
+categoryName String,
+}
+
+relationship OneToMany{
+Author{books} to Book
+}
+
+relationship ManyToMany{
+Category{books} to Book{categories}
+}

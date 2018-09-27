@@ -1,0 +1,39 @@
+{
+    "name": "Book",
+    "fields": [
+        {
+            "fieldName": "title",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "authorName",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipName": "author",
+            "otherEntityName": "author",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "categories",
+            "otherEntityName": "category",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "books"
+        }
+    ],
+    "changelogDate": "20180924093139",
+    "javadoc": "Book entity\nAuthor Neeraja",
+    "entityTableName": "book",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "mylibrary",
+    "applications": "*",
+    "microserviceName": "mylibrary"
+}
