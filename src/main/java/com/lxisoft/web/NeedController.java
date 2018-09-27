@@ -117,7 +117,7 @@ public class NeedController {
      * @return the string value
      */
     
-    @GetMapping("/needs/{approvalStatus}")
+    @GetMapping("/home/{approvalStatus}")
     @Timed
     public String getAllNeedsByApprovedStatus(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload,@PathVariable(value="approvalStatus") String approvalStatus,Model model) {
         log.debug("request to get a page of Needs");
@@ -129,7 +129,12 @@ public class NeedController {
         }
         List<NeedDTO> needs = page.getContent();
         model.addAttribute("needs", needs);
-        return "needs";
+        if(approvalStatus.equals("approved"))
+        	return "home";
+        else if(approvalStatus.equals("pending"))
+        	return "pending-requests";
+        else
+        	return "home";
     }
 
     /**
