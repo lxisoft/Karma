@@ -45,6 +45,7 @@ import com.lxisoft.web.rest.errors.BadRequestAlertException;
  */
 @Controller
 public class CategoryController {
+	
 	private final Logger log = LoggerFactory.getLogger(CategoryController.class);
 
 	private static final String ENTITY_NAME = "karmaCategory";
