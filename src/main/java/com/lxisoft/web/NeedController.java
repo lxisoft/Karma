@@ -15,8 +15,8 @@
  */
 package com.lxisoft.web;
 
-import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -27,18 +27,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.codahale.metrics.annotation.Timed;
@@ -48,148 +42,159 @@ import com.lxisoft.service.NeedService;
 import com.lxisoft.service.dto.ApprovalStatusDTO;
 import com.lxisoft.service.dto.CategoryDTO;
 import com.lxisoft.service.dto.NeedDTO;
-import com.lxisoft.web.rest.NeedResource;
 import com.lxisoft.web.rest.errors.BadRequestAlertException;
-import com.lxisoft.web.rest.util.HeaderUtil;
-import com.lxisoft.web.rest.util.PaginationUtil;
-
-import io.github.jhipster.web.util.ResponseUtil;
 
 /**
- * TODO Provide a detailed description here 
- * @author Sarangi Balu
- * sarangibalu, sarangibalu.a@lxisoft.com
+ * TODO Provide a detailed description here
+ * 
+ * @author Sarangi Balu sarangibalu, sarangibalu.a@lxisoft.com
  */
 @Controller
 public class NeedController {
-    
-    private final Logger log = LoggerFactory.getLogger(NeedController.class);
 
-    private static final String ENTITY_NAME = "karmaNeed";
+	private final Logger log = LoggerFactory.getLogger(NeedController.class);
 
-    private NeedService needService;
-    
-    @Autowired
-    ApprovalStatusService approvalStatusService;
-    
-    @Autowired
-    CategoryService categoryService;
+	private static final String ENTITY_NAME = "karmaNeed";
 
-    public NeedController(NeedService needService) {
-        this.needService = needService;
-    }
+	private NeedService needService;
 
-    /**
-     * POST  /needs : Create a new need.
-     *
-     * @param needDTO the needDTO to create
-     * @return the string value
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PostMapping("/needs")
-    @Timed
-    public String createNeed(@ModelAttribute NeedDTO needDTO,Model model) throws URISyntaxException {
-        log.debug(" request to save Need : {}", needDTO);
-        
-        Set<CategoryDTO> categorySet=new HashSet<CategoryDTO>();
-        
-        if (needDTO.getId() != null) {
-            throw new BadRequestAlertException("A new need cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        
-          if(needDTO.getApprovalStatusId()==null){
-        	
-        	Optional<ApprovalStatusDTO> approvalStatus=approvalStatusService.findByStatus("pending");
-        	
-        	long id=approvalStatus.get().getId();
-        	log.debug("***************{}"+id);
-        	needDTO.setApprovalStatusId(approvalStatus.get().getId());
-        }
-        
-        needDTO.setCategories(new HashSet<CategoryDTO>(needDTO.getCategoryList()));  
-        
-        Set<CategoryDTO> categories=needDTO.getCategories();
-        for(CategoryDTO categori:categories){
-        	Long id=categori.getId();
-        	CategoryDTO categorie=categoryService.findOne(id).orElse(null);
-           	categorySet.add(categorie);
-            }
-        needDTO.setCategories(categorySet);
+	@Autowired
+	ApprovalStatusService approvalStatusService;
 
-        
-        
-        NeedDTO need = needService.save(needDTO);
-        model.addAttribute("need", need);
-        return "help-post-result";
-        
-    }
-     
-    /**
-     * GET  /needs : get all the needs.
-     *
-     * @param pageable the pagination information
-     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many)
-     * @return the string value
-     */
-    @GetMapping("/needs")
-    @Timed
-    public String getAllNeeds(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload,Model model) {
-        log.debug("request to get a page of Needs");
-        Page<NeedDTO> page;
-        if (eagerload) {
-            page = needService.findAllWithEagerRelationships(pageable);
-        } else {
-            page = needService.findAll(pageable);
-        }
-        List<NeedDTO> needs = page.getContent();
-        model.addAttribute("needs", needs);
-        return "home";
-        
-    }
+	@Autowired
+	CategoryService categoryService;
 
-    /**
-     * GET  /needs : get all the needs by approvalStatus.
-     *
-     * @param pageable the pagination information
-     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many)
-     * @return the string value
-     */
-    
-    @GetMapping("/home/{approvalStatus}")
-    @Timed
-    public String getAllNeedsByApprovedStatus(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload,@PathVariable(value="approvalStatus") String approvalStatus,Model model) {
-        log.debug("request to get a page of Needs");
-        Page<NeedDTO> page;
-        if (eagerload) {
-            page = needService.findAllWithEagerRelationships(pageable);
-        } else {
-            page = needService.findAllNeedsByApprovedStatus(pageable,approvalStatus);
-        }
-        List<NeedDTO> needs = page.getContent();
-        model.addAttribute("needs", needs);
-        if(approvalStatus.equals("approved"))
-        	return "home";
-        else if(approvalStatus.equals("pending"))
-        	return "pending-requests";
-        else
-        	return "home";
-    }
+	public NeedController(NeedService needService) {
+		this.needService = needService;
+	}
 
-    /**
-     * GET  /needs/:id : get the "id" need.
-     *
-     * @param id the id of the needDTO to retrieve
-     * @return the string value
-     */
-    @GetMapping("/needs/{id}")
-    @Timed
-    public String getNeed(@PathVariable(value="id") Long id,Model model) {
-        log.debug("request to get Need : {}", id);
-        Optional<NeedDTO> needDTO = needService.findOne(id);
-        model.addAttribute("needById", needDTO);
-        return "needById";
-    }
+	/**
+	 * POST /needs : Create a new need.
+	 *
+	 * @param needDTO
+	 *            the needDTO to create
+	 * @return the string value
+	 * @throws URISyntaxException
+	 *             if the Location URI syntax is incorrect
+	 */
+	@PostMapping("/needs")
+	@Timed
+	public String createNeed(@ModelAttribute NeedDTO needDTO, Model model) throws URISyntaxException {
+		log.debug(" request to save Need : {}", needDTO);
 
-    
+		Set<CategoryDTO> categorySet = new HashSet<CategoryDTO>();
+
+		if (needDTO.getId() != null) {
+			throw new BadRequestAlertException("A new need cannot already have an ID", ENTITY_NAME, "idexists");
+		}
+
+		if (needDTO.getApprovalStatusId() == null) {
+
+			Optional<ApprovalStatusDTO> approvalStatus = approvalStatusService.findByStatus("pending");
+
+			long id = approvalStatus.get().getId();
+			log.debug("***************{}" + id);
+			needDTO.setApprovalStatusId(approvalStatus.get().getId());
+		}
+
+		needDTO.setCategories(new HashSet<CategoryDTO>(needDTO.getCategoryList()));
+
+		Set<CategoryDTO> categories = needDTO.getCategories();
+
+		for (CategoryDTO category : categories) {
+			Long id = category.getId();
+			CategoryDTO categoryDTO = categoryService.findOne(id).orElse(null);
+			categorySet.add(categoryDTO);
+		}
+
+		needDTO.setCategories(categorySet);
+
+		// parsing string to ISO_INSTANT format
+		String parsedDate = needDTO.getDateInString().replaceAll(" ", "T").concat("Z");
+
+		// creates a date instance of type instant from a string
+		needDTO.setDate(Instant.parse(parsedDate));
+
+		NeedDTO need = needService.save(needDTO);
+		model.addAttribute("need", need);
+		return "help-post-result";
+
+	}
+
+	/**
+	 * GET /needs : get all the needs.
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @param eagerload
+	 *            flag to eager load entities from relationships (This is
+	 *            applicable for many-to-many)
+	 * @return the string value
+	 */
+	@GetMapping("/needs")
+	@Timed
+	public String getAllNeeds(Pageable pageable,
+			@RequestParam(required = false, defaultValue = "false") boolean eagerload, Model model) {
+		log.debug("request to get a page of Needs");
+		Page<NeedDTO> page;
+		if (eagerload) {
+			page = needService.findAllWithEagerRelationships(pageable);
+		} else {
+			page = needService.findAll(pageable);
+		}
+		List<NeedDTO> needs = page.getContent();
+		model.addAttribute("needs", needs);
+		return "home";
+
+	}
+
+	/**
+	 * GET /needs : get all the needs by approvalStatus.
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @param eagerload
+	 *            flag to eager load entities from relationships (This is
+	 *            applicable for many-to-many)
+	 * @return the string value
+	 */
+
+	@GetMapping("/home/{approvalStatus}")
+	@Timed
+	public String getAllNeedsByApprovedStatus(Pageable pageable,
+			@RequestParam(required = false, defaultValue = "false") boolean eagerload,
+			@PathVariable(value = "approvalStatus") String approvalStatus, Model model) {
+		log.debug("request to get a page of Needs");
+		Page<NeedDTO> page;
+		if (eagerload) {
+			page = needService.findAllWithEagerRelationships(pageable);
+		} else {
+			page = needService.findAllNeedsByApprovedStatus(pageable, approvalStatus);
+		}
+		List<NeedDTO> needs = page.getContent();
+		model.addAttribute("needs", needs);
+		if (approvalStatus.equals("approved"))
+			return "home";
+		else if (approvalStatus.equals("pending"))
+			return "pending-requests";
+		else
+			return "home";
+	}
+
+	/**
+	 * GET /needs/:id : get the "id" need.
+	 *
+	 * @param id
+	 *            the id of the needDTO to retrieve
+	 * @return the string value
+	 */
+	@GetMapping("/needs/{id}")
+	@Timed
+	public String getNeed(@PathVariable(value = "id") Long id, Model model) {
+		log.debug("request to get Need : {}", id);
+		Optional<NeedDTO> needDTO = needService.findOne(id);
+		model.addAttribute("needById", needDTO);
+		return "needById";
+	}
 
 }
