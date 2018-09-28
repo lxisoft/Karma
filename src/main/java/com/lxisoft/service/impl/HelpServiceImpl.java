@@ -1,13 +1,15 @@
 package com.lxisoft.service.impl;
 
+import com.lxisoft.service.ApprovalStatusService;
 import com.lxisoft.service.HelpService;
 import com.lxisoft.domain.Help;
 import com.lxisoft.repository.HelpRepository;
 import com.lxisoft.service.dto.HelpDTO;
+
 import com.lxisoft.service.mapper.HelpMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,9 @@ public class HelpServiceImpl implements HelpService {
     private final HelpRepository helpRepository;
 
     private final HelpMapper helpMapper;
+    
+    @Autowired
+    ApprovalStatusService approvalStatusService;
 
     public HelpServiceImpl(HelpRepository helpRepository, HelpMapper helpMapper) {
         this.helpRepository = helpRepository;
@@ -86,4 +91,40 @@ public class HelpServiceImpl implements HelpService {
         log.debug("Request to delete Help : {}", id);
         helpRepository.deleteById(id);
     }
+
+    /**
+     * Get all the helpsByApprovedStatus.
+     *
+     * @param pageable the pagination information
+     * @param approvedStatus the approvedStatus of the entity
+     * @return the list of entities
+     */
+	@Override
+	public Page<HelpDTO> findAllHelpsByApprovedStatus(Pageable pageable, String approvalStatus) {
+				
+		log.debug("Request to get all Helps by approval status");
+	    
+	    Long approvalStatusId=approvalStatusService.findByStatus(approvalStatus).get().getId();
+         	
+        Page<HelpDTO> helps=findAllHelpsByApprovedStatusId(pageable,approvalStatusId);
+         	
+   	    return helps;
+		        
+	}
+
+	/**
+	 * @param pageable
+	 * @param approvalStatusId
+	 * @return
+	 */
+	public Page<HelpDTO> findAllHelpsByApprovedStatusId(Pageable pageable, Long approvalStatusId) {
+				
+		log.debug("Request to get all Needs by approval status id{}",approvalStatusId);
+    	
+        return helpRepository.findAllHelpsByApprovalStatusId(pageable,approvalStatusId)
+            .map(helpMapper::toDto);
+	}
+	
+	
+
 }

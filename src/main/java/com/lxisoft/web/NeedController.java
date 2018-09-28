@@ -96,7 +96,7 @@ public class NeedController {
 
 			Optional<ApprovalStatusDTO> approvalStatus = approvalStatusService.findByStatus("pending");
 
-			long id = approvalStatus.get().getId();
+			Long id = approvalStatus.get().getId();
 			log.debug("***************{}" + id);
 			needDTO.setApprovalStatusId(approvalStatus.get().getId());
 		}

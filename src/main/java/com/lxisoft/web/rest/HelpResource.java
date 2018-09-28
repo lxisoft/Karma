@@ -8,6 +8,8 @@ import com.lxisoft.web.rest.util.HeaderUtil;
 import com.lxisoft.web.rest.util.PaginationUtil;
 import com.lxisoft.service.dto.ApprovalStatusDTO;
 import com.lxisoft.service.dto.HelpDTO;
+
+
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,9 +63,9 @@ public class HelpResource {
         }
         if (helpDTO.getApprovalStatusId() == null) {
 
-			Optional<ApprovalStatusDTO> approvalStatus = approvalStatusService.findByStatus("pending");
+			Optional<ApprovalStatusDTO> approvalStatus = approvalStatusService.findByStatus("incompleted");
 
-			long id = approvalStatus.get().getId();
+			Long id = approvalStatus.get().getId();
 			log.debug("***************{}" + id);
 			helpDTO.setApprovalStatusId(approvalStatus.get().getId());
 		}
@@ -137,4 +139,21 @@ public class HelpResource {
         helpService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+    
+    /**
+     * GET  /helps : get all the helps.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of helps in body
+     */
+    @GetMapping("/helps/getAllHelpsByApprovedStatus/{approvalStatus}")
+    @Timed
+    public ResponseEntity<List<HelpDTO>> getAllHelpsByApprovedStatus(Pageable pageable,@PathVariable String approvalStatus) {
+        log.debug("REST request to get a page of Helps");
+        Page<HelpDTO> page = helpService.findAllHelpsByApprovedStatus(pageable,approvalStatus);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/helps");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    
 }

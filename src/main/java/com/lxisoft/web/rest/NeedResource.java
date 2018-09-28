@@ -73,7 +73,7 @@ public class NeedResource {
         	
         	Optional<ApprovalStatusDTO> approvalStatus=approvalStatusService.findByStatus("pending");
         	
-        	long id=approvalStatus.get().getId();
+        	Long id=approvalStatus.get().getId();
         	log.debug("***************{}"+id);
         	needDTO.setApprovalStatusId(approvalStatus.get().getId());
         }
@@ -164,20 +164,7 @@ public class NeedResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
     
-
-    /*@GetMapping("/needs/{approvalStatusId}")
-    @Timed
-    public ResponseEntity<List<NeedDTO>> getAllNeedsByApprovedStatusId(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload,long approvalStatusId) {
-        log.debug("REST request to get a page of Needs");
-        Page<NeedDTO> page;
-        if (eagerload) {
-            page = needService.findAllWithEagerRelationships(pageable);
-        } else {
-            page = needService.findAllNeedsByApprovedStatusId(pageable,approvalStatusId);
-        }
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, String.format("/api/approvedneeds?eagerload=%b", eagerload));
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }*/
+    
     
     @GetMapping("/needs/getAllNeedsByApprovedStatus/{approvalStatus}")
     @Timed

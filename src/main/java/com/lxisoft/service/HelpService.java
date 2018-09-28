@@ -43,4 +43,19 @@ public interface HelpService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+	/**
+	 * @param pageable
+	 * @param approvalStatus
+	 * @return
+	 */
+	Page<HelpDTO> findAllHelpsByApprovedStatus(Pageable pageable, String approvalStatus);
+	
+	/**
+	 * @param pageable
+	 * @param approvalStatus
+	 * @return
+	 */
+	
+	Page<HelpDTO> findAllHelpsByApprovedStatusId(Pageable pageable, Long approvalStatusId);
 }

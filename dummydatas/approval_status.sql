@@ -1,4 +1,4 @@
-insert into  approval_status (status) values ('vitae consectetuer eget');
-insert into  approval_status (status) values ('orci mauris lacinia');
-insert into  approval_status (status) values ('vel nulla eget');
-insert into  approval_status (status) values ('nonummy maecenas tincidunt');
+insert into  approval_status (status) values ('Completed');
+insert into  approval_status (status) values ('Incompleted');
+insert into  approval_status (status) values ('Cancelled');
+

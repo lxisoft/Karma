@@ -53,11 +53,11 @@ public interface NeedService {
 	Page<NeedDTO> findAllNeedsByApprovedStatus(Pageable pageable, String approvalStatus);
     
     /**
-     * Get all the approved needs.
+     * Get all the approvedstatus needs.
      *
      * @param pageable the pagination information
-     * @return the list of approved entities
+     * @return the list of approvedstatus entities
      */
-    //Page<NeedDTO> findAllNeedsByApprovedStatusId(Pageable pageable,long approvalStatusId);
+	Page<NeedDTO> findAllNeedsByApprovalStatusId(Pageable pageable,Long approvalStatusId);
 
 }

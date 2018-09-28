@@ -17,21 +17,27 @@ package com.lxisoft.web;
 
 
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.service.ApprovalStatusService;
 import com.lxisoft.service.HelpService;
 import com.lxisoft.service.dto.ApprovalStatusDTO;
 import com.lxisoft.service.dto.HelpDTO;
+
 import com.lxisoft.web.rest.HelpResource;
 import com.lxisoft.web.rest.errors.BadRequestAlertException;
 
@@ -74,9 +80,9 @@ public class HelpController {
         }
         if (helpDTO.getApprovalStatusId() == null) {
 
-			Optional<ApprovalStatusDTO> approvalStatus = approvalStatusService.findByStatus("pending");
+			Optional<ApprovalStatusDTO> approvalStatus = approvalStatusService.findByStatus("incompleted");
 
-			long id = approvalStatus.get().getId();
+			Long id = approvalStatus.get().getId();
 			log.debug("***************{}" + id);
 			helpDTO.setApprovalStatusId(approvalStatus.get().getId());
 		}
@@ -84,5 +90,37 @@ public class HelpController {
         model.addAttribute("help", helpdto);
         return "help";
     }
+    
+    /**
+	 * GET /needs : get all the needs by approvalStatus.
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @param eagerload
+	 *            flag to eager load entities from relationships (This is
+	 *            applicable for many-to-many)
+	 * @return the string value
+	 */
+
+	@GetMapping("/help/{approvalStatus}")
+	@Timed
+	public String getAllHelpsByApprovedStatus(Pageable pageable,
+			@RequestParam(required = false, defaultValue = "false") boolean eagerload,
+			@PathVariable(value = "approvalStatus") String approvalStatus, Model model) {
+		log.debug("request to get a page of helps");
+		
+		Page<HelpDTO> page = helpService.findAllHelpsByApprovedStatus(pageable,approvalStatus);
+		
+		List<HelpDTO> helps = page.getContent();
+		
+		model.addAttribute("helps", helps);
+		if (approvalStatus.equals("completed"))
+			return "home";
+		else if (approvalStatus.equals("incompleted"))
+			return "incompleted-helps";
+		else
+			return "home";
+	}
+		
 
 }

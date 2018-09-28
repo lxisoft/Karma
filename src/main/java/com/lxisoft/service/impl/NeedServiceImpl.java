@@ -4,7 +4,6 @@ import com.lxisoft.service.ApprovalStatusService;
 import com.lxisoft.service.NeedService;
 import com.lxisoft.domain.Need;
 import com.lxisoft.repository.NeedRepository;
-import com.lxisoft.service.dto.ApprovalStatusDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.service.mapper.NeedMapper;
 import org.slf4j.Logger;
