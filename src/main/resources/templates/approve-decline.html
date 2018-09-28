@@ -32,8 +32,8 @@
 		</button>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active"><a class="nav-link" th:href="@{/home/approved}">Home
-						<span class="sr-only">(current)</span>
+				<li class="nav-item active"><a class="nav-link"
+					th:href="@{/home/approved}">Home <span class="sr-only">(current)</span>
 				</a></li>
 				<li class="nav-item"><a class="nav-link"
 					th:href="@{/categories}">I need help</a></li>
@@ -53,54 +53,19 @@
 			</ul>
 		</div>
 	</nav>
-
 	<!-- Material form login -->
 	<!-- Default form login -->
 	<div class="container-fluid">
-		<!--<div class="row mx-auto mt-5">
-			<div class="col-sm-8"></div>
-			<a th:href="@{/categories}" class="btn btn-info">I need help</a> <a
-				th:href="@{/home/pending}" class="btn btn-info">See pending help requests</a>
-		</div>-->
-		<div class="row mt-5"></div>
 		<div class="row mt-5">
-			<!-- 			<div class="col-sm-8">
-				<div th:each="need : ${needs}" class="row my-3">
-					<div class="card border-info mb-3 mx-auto"
-						style="width: 75%">
-						<div th:text="'posted on '+${need.date}" class="card-header"></div>
-						<div class="card-body text-info">
-							<h5 class="card-title">Need help</h5>
-							<p class="card-text" th:text="${need.description}">Some quick
-								example text to build on the card title and make up the bulk of
-								the card's content.</p>
-							<p th:if="${need.beneficiaryType != 'you'}">help is for
-								someone else</p>
-							<div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div> -->
-			<div class="col-sm-8 mx-auto">
-				<div th:each="need : ${needs}" class="row my-4">
-					<div class="card" style="width:70%">
-						<div class="card-body">
-							<h4 class="card-title text-info">Need help</h4>
-							<h5 class="card-title text-info" th:unless="${#lists.isEmpty(need.categories)}" th:text="'category: '+${need.categories[0].name}+'-'+${need.categories[0].subCategory}">Need help</h5>
-							
-							<h6 class="card-subtitle mb-2 text-muted" th:text="'posted on '+${need.date}">Panel subtitle</h6>
-						
-							<p class="card-text mt-3" th:text="${need.description}">Some quick example text to build on the
-								panel title and make up the bulk of the panel's content.</p>
-							<p>
-							<a th:href="@{'/needs/'+${need.id}}" class="card-link">Click for more</a> <a href="#"
-								class="card-link text-success">Help now</a>
-								<a href="#"
-								class="card-link">Help later</a>
-						</div>
-					</div>
-				</div>
+			<div class="col-sm-3 mt-5"></div>
+			<div class="col-sm-6 text-center mt-5">
+				<p class="text-success" th:text="'Successfully '+${message}">Successfully </p>
+			</div>
+		</div>
+		<div class="row mt-4">
+			<div class="col-sm-3"></div>
+			<div class="col-sm-6">
+					<a href="needs" class="btn btn-primary">Ok</a>
 			</div>
 		</div>
 	</div>

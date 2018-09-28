@@ -6,7 +6,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
-<title>Home</title>
+<title>Need</title>
 <!-- Font Awesome -->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -23,7 +23,7 @@
 <body>
 	<nav
 		class="navbar fixed-top navbar-expand-lg navbar-dark info-color scrolling-navbar">
-		<a class="navbar-brand" th:href="@{/home/approved}"><strong>Karma</strong></a>
+		<a class="navbar-brand" href="#"><strong>Karma</strong></a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarSupportedContent"
 			aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -32,7 +32,7 @@
 		</button>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active"><a class="nav-link" th:href="@{/home/approved}">Home
+				<li class="nav-item active"><a class="nav-link" href="#">Home
 						<span class="sr-only">(current)</span>
 				</a></li>
 				<li class="nav-item"><a class="nav-link"
@@ -82,25 +82,43 @@
 					</div>
 				</div>
 			</div> -->
-			<div class="col-sm-8 mx-auto">
-				<div th:each="need : ${needs}" class="row my-4">
-					<div class="card" style="width:70%">
+			<div class="col-sm-10 mx-auto">
+				<div class="row my-4">
+					<div class="card" style="width: 75%">
 						<div class="card-body">
 							<h4 class="card-title text-info">Need help</h4>
-							<h5 class="card-title text-info" th:unless="${#lists.isEmpty(need.categories)}" th:text="'category: '+${need.categories[0].name}+'-'+${need.categories[0].subCategory}">Need help</h5>
-							
-							<h6 class="card-subtitle mb-2 text-muted" th:text="'posted on '+${need.date}">Panel subtitle</h6>
-						
-							<p class="card-text mt-3" th:text="${need.description}">Some quick example text to build on the
-								panel title and make up the bulk of the panel's content.</p>
+							<h5 class="card-title text-info"
+								th:unless="${#lists.isEmpty(need.categories)}"
+								th:text="'category: '+${need.categories[0].name}+'-'+${need.categories[0].subCategory}">Need
+								help</h5>
+
+							<h6 class="card-subtitle mb-2 text-muted"
+								th:text="'posted on '+${need.date}">Panel subtitle</h6>
+
+							<p class="card-text mt-3" th:text="${need.description}">Some
+								quick example text to build on the panel title and make up the
+								bulk of the panel's content.</p>
 							<p>
-							<a th:href="@{'/needs/'+${need.id}}" class="card-link">Click for more</a> <a href="#"
-								class="card-link text-success">Help now</a>
-								<a href="#"
-								class="card-link">Help later</a>
+								<a th:href="@{'/needs/'+${need.id}}" class="card-link">Click
+									for more</a> <a href="#" class="card-link text-success">Help
+									now</a> <a href="#" class="card-link">Help later</a>
 						</div>
 					</div>
 				</div>
+			</div>
+		</div>
+		<div class="row my-3">
+			<div class="col-sm-6"></div>
+			<div class="col-sm-3 float-right" th:each="status : ${statuses}" th:unless="${status == 'approved' && status == 'declined'}">
+				<form th:action="@{/needs}" th:object="${need}" th:method="put">
+					<input type="hidden" th:field="${need.description]">
+					<input type="hidden" th:field="${need.beneficiaryType]">
+					<input type="hidden" th:field="${need.date}">
+					<input type="hidden" th:field="${need.categories}">
+					<input type="hidden" th:field="${need.id}">
+					<input type="hidden" th:field="${need.approvalStatusId}">
+					<button class="btn btn-info btn-block" th:text="${status.status}" name="submit" type="submit">Submit</button>
+				</form>
 			</div>
 		</div>
 	</div>

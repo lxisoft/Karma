@@ -29,22 +29,9 @@
 			<div class="col-sm-3"></div>
 			<div class="col-sm-6">
 				<!-- Default form contact -->
-				<form class="text-center border border-light p-5" th:action="@{/needs}" th:object="${need}" th:method="post">
+				<form class="text-center border border-light p-5" th:action="@{/helps}" th:object="${help}" th:method="post">
 
-					<p class="h4 mb-4 text-info">Help request</p>
-
-					<!-- Subject -->
-					
-					<div th:each="needCategory,status : *{categoryList}"> 
-					<select class="mdb-select md-form" th:field="*{categoryList[__${status.index}__].id}">
-						 <th:block th:each="category : ${categories}">
-						<!-- <th:block th:each="category : ${categories}">-->
-						<optgroup th:label="${category.name}">
-							<option  th:value="${category.id}" th:text="${category.subCategory}">Option 1</option>
-						</optgroup>
-						</th:block>
-					</select><label class="text-info">Category</label>
-					</div>
+					<p class="h4 mb-4 text-info">Help submission</p>
 
 					<!-- Message -->
 					<div class="form-group mb-0">
@@ -54,11 +41,7 @@
 					</div>
 <!--					<label class="btn-bs-file btn btn-info"> Browse files <input
 						type="file" name="image" multiple>
-					</label>--><br>  <select
-						class="mdb-select md-form colorful-select dropdown-primary mt-0" th:field="*{beneficiaryType}">
-						<option value="you">you</option>
-						<option value="someone else">someone else</option>
-					</select><label class="text-info">Beneficiary type</label>
+					</label>-->
 
 					<!-- Copy -->
 					<div class="custom-control custom-checkbox mb-4">

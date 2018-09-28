@@ -26,8 +26,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +35,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.codahale.metrics.annotation.Timed;
@@ -46,7 +45,6 @@ import com.lxisoft.service.dto.ApprovalStatusDTO;
 import com.lxisoft.service.dto.CategoryDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.web.rest.errors.BadRequestAlertException;
-
 
 /**
  * TODO Provide a detailed description here
@@ -96,7 +94,7 @@ public class NeedController {
 
 			Optional<ApprovalStatusDTO> approvalStatus = approvalStatusService.findByStatus("pending");
 
-			Long id = approvalStatus.get().getId();
+			long id = approvalStatus.get().getId();
 			log.debug("***************{}" + id);
 			needDTO.setApprovalStatusId(approvalStatus.get().getId());
 		}
@@ -124,28 +122,41 @@ public class NeedController {
 		return "help-post-result";
 
 	}
-	
-	
+
 	/**
-     * PUT  /needs : Updates an existing need.
-     *
-     * @param needDTO the needDTO to update
-     * @return the string value,
-     * or with status 400 (Bad Request) if the needDTO is not valid,
-     * or with status 500 (Internal Server Error) if the needDTO couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PutMapping("/needs")
-    @Timed
-    public String updateNeed(@RequestBody NeedDTO needDTO,Model model) throws URISyntaxException {
-        log.debug("request to update Need : {}", needDTO);
-        if (needDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        NeedDTO needDto = needService.save(needDTO);
-        model.addAttribute("need", needDto);
-        return "need";
-    }
+	 * PUT /needs : Updates an existing need.
+	 *
+	 * @param needDTO
+	 *            the needDTO to update
+	 * @return the string value, or with status 400 (Bad Request) if the needDTO
+	 *         is not valid, or with status 500 (Internal Server Error) if the
+	 *         needDTO couldn't be updated
+	 * @throws URISyntaxException
+	 *             if the Location URI syntax is incorrect
+	 */
+	@PutMapping("/needs")
+	@Timed
+	public String updateNeed(@ModelAttribute NeedDTO needDTO, Model model) throws URISyntaxException {
+		log.debug("request to update Need : {}", needDTO);
+		if (needDTO.getId() == null) {
+			throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+		}
+		Set<CategoryDTO> categorySet = new HashSet<CategoryDTO>();
+		needDTO.setCategories(new HashSet<CategoryDTO>(needDTO.getCategoryList()));
+		Set<CategoryDTO> categories = needDTO.getCategories();
+
+		for (CategoryDTO category : categories) {
+			Long id = category.getId();
+			CategoryDTO categoryDTO = categoryService.findOne(id).orElse(null);
+			categorySet.add(categoryDTO);
+		}
+
+		needDTO.setCategories(categorySet);
+		NeedDTO needDto = needService.save(needDTO);
+		model.addAttribute("need", needDto);
+		model.addAttribute("message", approvalStatusService.findOne(needDTO.getApprovalStatusId()).orElse(null));
+		return "approve-decline";
+	}
 
 	/**
 	 * GET /needs : get all the needs.
@@ -214,18 +225,37 @@ public class NeedController {
 	 *            the id of the needDTO to retrieve
 	 * @return the string value
 	 */
+	@GetMapping("/needs/statuses/{id}")
+	@Timed
+	public String getNeedWithStatuses(@PathVariable(value = "id") Long id, Model model) {
+		log.debug("request to get Need : {}", id);
+		Pageable pageable = PageRequest.of(0, 20);
+
+		NeedDTO needDTO = needService.findOne(id).orElse(null);
+
+		model.addAttribute("need", needDTO);
+		model.addAttribute("approvalStatuses", approvalStatusService.findAll(pageable).getContent());
+
+		return "pending-need";
+	}
+
+	/**
+	 * GET /needs/:id : get the "id" need.
+	 *
+	 * @param id
+	 *            the id of the needDTO to retrieve
+	 * @return the string value
+	 */
 	@GetMapping("/needs/{id}")
 	@Timed
 	public String getNeed(@PathVariable(value = "id") Long id, Model model) {
 		log.debug("request to get Need : {}", id);
-		Pageable pageable = null;
-		
-		Optional<NeedDTO> needDTO = needService.findOne(id);
-		
-		model.addAttribute("needs", needDTO);
-		model.addAttribute("ApprovalStatuses", approvalStatusService.findAll(pageable));
-		
-		return "needs_approvalStatuses";
+
+		NeedDTO needDTO = needService.findOne(id).orElse(null);
+
+		model.addAttribute("need", needDTO);
+
+		return "need";
 	}
 
 }
