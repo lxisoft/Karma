@@ -1,7 +1,4 @@
 # karma
-This application was generated using JHipster 5.3.4, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v5.3.4](https://www.jhipster.tech/documentation-archive/v5.3.4).
-
-This is a "microservice" application intended to be part of a microservice architecture, please refer to the [Doing microservices with JHipster][] page of the documentation for more information.
 
 This application is configured for Service Discovery and Configuration with . On launch, it will refuse to start if it is not able to connect to .
 
@@ -10,11 +7,6 @@ This application is configured for Service Discovery and Configuration with . On
 To start your application in the dev profile, simply run:
 
     ./mvnw
-
-
-For further instructions on how to develop with JHipster, have a look at [Using JHipster in development][].
-
-
 
 ## Building for production
 
@@ -26,8 +18,6 @@ To ensure everything worked, run:
 
     java -jar target/*.war
 
-
-Refer to [Using JHipster in production][] for more details.
 
 ## Testing
 
