@@ -6,7 +6,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
-<title>Home</title>
+<title>Incomplete helps</title>
 <!-- Font Awesome -->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -31,7 +31,7 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav mr-auto">
+<ul class="navbar-nav mr-auto">
 				<li class="nav-item active"><a class="nav-link" th:href="@{/home/approved}">Home
 						<span class="sr-only">(current)</span>
 				</a></li>
@@ -82,25 +82,44 @@
 					</div>
 				</div>
 			</div> -->
-			<div class="col-sm-8 mx-auto">
-				<div th:each="need : ${needs}" class="row my-4">
-					<div class="card" style="width:70%">
+			<div class="col-sm-10 mx-auto">
+				<div class="row my-4">
+					<div class="card" style="width: 75%">
 						<div class="card-body">
-							<h4 class="card-title text-info">Need help</h4>
-							<h5 class="card-title text-info" th:unless="${#lists.isEmpty(need.categories)}" th:text="'category: '+${need.categories[0].name}+'-'+${need.categories[0].subCategory}">Need help</h5>
-							
-							<h6 class="card-subtitle mb-2 text-muted" th:text="'posted on '+${need.date}">Panel subtitle</h6>
-						
-							<p class="card-text mt-3" th:text="${need.description}">Some quick example text to build on the
-								panel title and make up the bulk of the panel's content.</p>
+							<h4 class="card-title text-info">Helped</h4>
+
+							<h6 class="card-subtitle mb-2 text-muted"
+								th:text="'posted on '+${help.time}">Panel subtitle</h6>
+
+							<p class="card-text mt-3" th:text="${help.description}">Some
+								quick example text to build on the panel title and make up the
+								bulk of the panel's content.</p>
 							<p>
-							<a th:href="@{'/needs/'+${need.id}}" class="card-link">Click for more</a> <a th:href="@{'/help-need/'+${need.id}}"
-								class="card-link text-success">Help now</a>
-								<a href="#"
-								class="card-link">Help later</a>
 						</div>
 					</div>
 				</div>
+			</div>
+		</div>
+		<div class="row my-3">
+			<div class="col-sm-6"></div>
+			<div class="float-right" th:each="status : ${approvalStatuses}">
+				<form class="col-sm-12" th:action="@{/helps}" th:object="${help}" th:method="put" th:if="${status.status == 'completed'}">
+					<input type="hidden" th:field="${help.description}">
+					<input type="hidden" th:field="${help.time}">
+					<input type="hidden" th:field="${help.id}">
+					<input type="hidden" th:field="${help.fulfilledNeedId}">
+					<input type="hidden" th:name="approvalStatusId" th:value="${status.id}">
+					<button class="btn btn-success btn-block" name="submit" type="submit">Mark as complete</button>
+				</form>
+				
+				<form class="col-sm-12" th:action="@{/helps}" th:object="${help}" th:method="put" th:if="${status.status == 'declined'}">
+					<input type="hidden" th:field="${help.description}">
+					<input type="hidden" th:field="${help.time}">
+					<input type="hidden" th:field="${help.id}">	
+					<input type="hidden" th:field="${help.fulfilledNeedId}">
+					<input type="hidden" th:name="approvalStatusId" th:value="${status.id}">
+					<button class="btn btn-danger btn-block" name="submit" type="submit">Decline</button>
+				</form>
 			</div>
 		</div>
 	</div>

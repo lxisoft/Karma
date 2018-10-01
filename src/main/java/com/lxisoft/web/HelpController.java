@@ -15,8 +15,8 @@
  */
 package com.lxisoft.web;
 
-
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,12 +24,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.codahale.metrics.annotation.Timed;
@@ -37,48 +40,49 @@ import com.lxisoft.service.ApprovalStatusService;
 import com.lxisoft.service.HelpService;
 import com.lxisoft.service.dto.ApprovalStatusDTO;
 import com.lxisoft.service.dto.HelpDTO;
-
 import com.lxisoft.web.rest.HelpResource;
 import com.lxisoft.web.rest.errors.BadRequestAlertException;
 
-
 /**
- * TODO Provide a detailed description here 
- * @author Sarangi Balu
- * sarangibalu, sarangibalu.a@lxisoft.com
+ * TODO Provide a detailed description here
+ * 
+ * @author Sarangi Balu sarangibalu, sarangibalu.a@lxisoft.com
  */
+
+@Controller
 public class HelpController {
-	
+
 	private final Logger log = LoggerFactory.getLogger(HelpResource.class);
 
-    private static final String ENTITY_NAME = "karmaHelp";
+	private static final String ENTITY_NAME = "karmaHelp";
 
-    private HelpService helpService;
-    
-    @Autowired
+	private HelpService helpService;
+
+	@Autowired
 	ApprovalStatusService approvalStatusService;
 
+	public HelpController(HelpService helpService) {
+		this.helpService = helpService;
+	}
 
-    public HelpController(HelpService helpService) {
-        this.helpService = helpService;
-    }
+	/**
+	 * POST /helps : Create a new help.
+	 *
+	 * @param helpDTO
+	 *            the helpDTO to create
+	 * @return the String value
+	 * @throws URISyntaxException
+	 *             if the Location URI syntax is incorrect
+	 */
+	@PostMapping("/helps")
+	@Timed
+	public String createHelp(@ModelAttribute HelpDTO helpDTO, Model model) throws URISyntaxException {
 
-    /**
-     * POST  /helps : Create a new help.
-     *
-     * @param helpDTO the helpDTO to create
-     * @return the String value
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PostMapping("/helps")
-    @Timed
-    public String createHelp(@RequestBody HelpDTO helpDTO,Model model) throws URISyntaxException {
-    	
-        log.debug("REST request to save Help : {}", helpDTO);
-        if (helpDTO.getId() != null) {
-            throw new BadRequestAlertException("A new help cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        if (helpDTO.getApprovalStatusId() == null) {
+		log.debug("REST request to save Help : {}", helpDTO);
+		if (helpDTO.getId() != null) {
+			throw new BadRequestAlertException("A new help cannot already have an ID", ENTITY_NAME, "idexists");
+		}
+		if (helpDTO.getApprovalStatusId() == null) {
 
 			Optional<ApprovalStatusDTO> approvalStatus = approvalStatusService.findByStatus("incompleted");
 
@@ -86,12 +90,44 @@ public class HelpController {
 			log.debug("***************{}" + id);
 			helpDTO.setApprovalStatusId(approvalStatus.get().getId());
 		}
-        HelpDTO helpdto = helpService.save(helpDTO);
-        model.addAttribute("help", helpdto);
-        return "help";
-    }
-    
-    /**
+
+		String parsedDate = helpDTO.getTimeInString().replaceAll(" ", "T").concat("Z");
+
+		// creates a date instance of type instant from a string
+		helpDTO.setTime(Instant.parse(parsedDate));
+
+		HelpDTO helpdto = helpService.save(helpDTO);
+		model.addAttribute("help", helpdto);
+		model.addAttribute("message", "submitted");
+		return "approve-decline";
+	}
+
+	/**
+	 * PUT /helps : Updates an existing need.
+	 *
+	 * @param helpDTO
+	 *            the needDTO to update
+	 * @return the string value, or with status 400 (Bad Request) if the needDTO
+	 *         is not valid, or with status 500 (Internal Server Error) if the
+	 *         needDTO couldn't be updated
+	 * @throws URISyntaxException
+	 *             if the Location URI syntax is incorrect
+	 */
+	@PutMapping("/helps")
+	@Timed
+	public String updateHelp(@ModelAttribute HelpDTO helpDTO, Model model) throws URISyntaxException {
+		log.debug("request to update Need : {}", helpDTO);
+		if (helpDTO.getId() == null) {
+			throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+		}
+
+		HelpDTO help = helpService.save(helpDTO);
+		model.addAttribute("help", help);
+		model.addAttribute("message", approvalStatusService.findOne(help.getApprovalStatusId()).orElse(null));
+		return "approve-decline";
+	}
+
+	/**
 	 * GET /needs : get all the needs by approvalStatus.
 	 *
 	 * @param pageable
@@ -102,25 +138,67 @@ public class HelpController {
 	 * @return the string value
 	 */
 
-	@GetMapping("/help/{approvalStatus}")
+	@GetMapping("/helps/{approvalStatus}")
 	@Timed
 	public String getAllHelpsByApprovedStatus(Pageable pageable,
 			@RequestParam(required = false, defaultValue = "false") boolean eagerload,
 			@PathVariable(value = "approvalStatus") String approvalStatus, Model model) {
 		log.debug("request to get a page of helps");
-		
-		Page<HelpDTO> page = helpService.findAllHelpsByApprovedStatus(pageable,approvalStatus);
-		
+
+		Page<HelpDTO> page = helpService.findAllHelpsByApprovedStatus(pageable, approvalStatus);
+
 		List<HelpDTO> helps = page.getContent();
-		
+
 		model.addAttribute("helps", helps);
-		if (approvalStatus.equals("completed"))
-			return "home";
-		else if (approvalStatus.equals("incompleted"))
+
+		if (approvalStatus.equals(("completed")))
+			return "completed-helps";
+		else if (approvalStatus.equals(("incompleted")))
 			return "incompleted-helps";
 		else
 			return "home";
 	}
-		
+
+	/**
+	 * GET /help-need/:id : get the "id" need.
+	 *
+	 * @param id
+	 *            the id of the needDTO to retrieve
+	 * @return the string value
+	 */
+	@GetMapping("/help-need/{id}")
+	@Timed
+	public String getHelpWithNeed(@PathVariable(value = "id") Long id, Model model) {
+		log.debug("request to get Need : {}", id);
+
+		HelpDTO help = new HelpDTO();
+		help.setFulfilledNeedId(id);
+
+		model.addAttribute("help", help);
+
+		return "help-submission";
+	}
+
+	/**
+	 * GET /help-need/:id : get the "id" need.
+	 *
+	 * @param id
+	 *            the id of the needDTO to retrieve
+	 * @return the string value
+	 */
+	@GetMapping("helps/incomplete/{id}")
+	@Timed
+	public String getHelpForApproval(@PathVariable(value = "id") Long id, Model model) {
+
+		log.debug("request to get Need : {}", id);
+
+		HelpDTO help = helpService.findOne(id).orElse(null);
+
+		List<ApprovalStatusDTO> approvalStatuses = approvalStatusService.findAll(PageRequest.of(0, 20)).getContent();
+		model.addAttribute("help", help);
+		model.addAttribute("approvalStatuses", approvalStatuses);
+
+		return "incompleted-help";
+	}
 
 }

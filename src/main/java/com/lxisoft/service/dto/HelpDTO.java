@@ -1,7 +1,7 @@
 package com.lxisoft.service.dto;
 
-import java.time.Instant;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -9,96 +9,108 @@ import java.util.Objects;
  */
 public class HelpDTO implements Serializable {
 
-    private Long id;
+	private Long id;
 
-    private Instant time;
+	private Instant time;
 
-    private String description;
+	private String description;
 
-    private Long approvalStatusId;
+	private Long approvalStatusId;
 
-    private Long providedUserId;
+	private Long providedUserId;
 
-    private Long fulfilledNeedId;
+	private Long fulfilledNeedId;
 
-    public Long getId() {
-        return id;
-    }
+	private String timeInString;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public Instant getTime() {
-        return time;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setTime(Instant time) {
-        this.time = time;
-    }
+	public Instant getTime() {
+		return time;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public void setTime(Instant time) {
+		this.time = time;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public Long getApprovalStatusId() {
-        return approvalStatusId;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public void setApprovalStatusId(Long approvalStatusId) {
-        this.approvalStatusId = approvalStatusId;
-    }
+	public Long getApprovalStatusId() {
+		return approvalStatusId;
+	}
 
-    public Long getProvidedUserId() {
-        return providedUserId;
-    }
+	public void setApprovalStatusId(Long approvalStatusId) {
+		this.approvalStatusId = approvalStatusId;
+	}
 
-    public void setProvidedUserId(Long loggedUserId) {
-        this.providedUserId = loggedUserId;
-    }
+	public Long getProvidedUserId() {
+		return providedUserId;
+	}
 
-    public Long getFulfilledNeedId() {
-        return fulfilledNeedId;
-    }
+	public void setProvidedUserId(Long loggedUserId) {
+		this.providedUserId = loggedUserId;
+	}
 
-    public void setFulfilledNeedId(Long needId) {
-        this.fulfilledNeedId = needId;
-    }
+	public Long getFulfilledNeedId() {
+		return fulfilledNeedId;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+	public void setFulfilledNeedId(Long needId) {
+		this.fulfilledNeedId = needId;
+	}
 
-        HelpDTO helpDTO = (HelpDTO) o;
-        if (helpDTO.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), helpDTO.getId());
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
-    }
+		HelpDTO helpDTO = (HelpDTO) o;
+		if (helpDTO.getId() == null || getId() == null) {
+			return false;
+		}
+		return Objects.equals(getId(), helpDTO.getId());
+	}
 
-    @Override
-    public String toString() {
-        return "HelpDTO{" +
-            "id=" + getId() +
-            ", time='" + getTime() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", approvalStatus=" + getApprovalStatusId() +
-            ", providedUser=" + getProvidedUserId() +
-            ", fulfilledNeed=" + getFulfilledNeedId() +
-            "}";
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(getId());
+	}
+
+	@Override
+	public String toString() {
+		return "HelpDTO{" + "id=" + getId() + ", time='" + getTime() + "'" + ", description='" + getDescription() + "'"
+				+ ", approvalStatus=" + getApprovalStatusId() + ", providedUser=" + getProvidedUserId()
+				+ ", fulfilledNeed=" + getFulfilledNeedId() + "}";
+	}
+
+	/**
+	 * @return
+	 */
+	public String getTimeInString() {
+		// TODO Auto-generated method stub
+		return timeInString;
+	}
+
+	/**
+	 * @param timeInString the timeInString to set
+	 */
+	public void setTimeInString(String timeInString) {
+		this.timeInString = timeInString;
+	}
 }

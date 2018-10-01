@@ -6,7 +6,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
-<title>Home</title>
+<title>completed helps</title>
 <!-- Font Awesome -->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -32,15 +32,15 @@
 		</button>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active"><a class="nav-link" th:href="@{/home/approved}">Home
+				<li class="nav-item"><a class="nav-link" th:href="@{/home/approved}">Home
 						<span class="sr-only">(current)</span>
 				</a></li>
 				<li class="nav-item"><a class="nav-link"
 					th:href="@{/categories}">I need help</a></li>
 				<li class="nav-item"><a class="nav-link"
 					th:href="@{/home/pending}">Pending help requests</a></li>
-				<li class="nav-item"><a class="nav-link" th:href="@{/helps/completed}">Helps</a></li>
-				<li class="nav-item"><a class="nav-link" th:href="@{/helps/incompleted}">Incomplete
+				<li class="nav-item"><a class="nav-link active" th:href="@{'/helps/status/completed'}">Helps</a></li>
+				<li class="nav-item"><a class="nav-link" th:href="@{'/helps/status/incompleted'}">Incomplete
 						helps</a></li>
 			</ul>
 			<ul class="navbar-nav nav-flex-icons">
@@ -83,21 +83,18 @@
 				</div>
 			</div> -->
 			<div class="col-sm-8 mx-auto">
-				<div th:each="need : ${needs}" class="row my-4">
+				<div th:each="help : ${helps}" class="row my-4">
 					<div class="card" style="width:70%">
 						<div class="card-body">
-							<h4 class="card-title text-info">Need help</h4>
-							<h5 class="card-title text-info" th:unless="${#lists.isEmpty(need.categories)}" th:text="'category: '+${need.categories[0].name}+'-'+${need.categories[0].subCategory}">Need help</h5>
+							<h4 class="card-title text-info">Helped</h4>
 							
-							<h6 class="card-subtitle mb-2 text-muted" th:text="'posted on '+${need.date}">Panel subtitle</h6>
+							<h6 class="card-subtitle mb-2 text-muted" th:text="'posted on '+${help.time}">Panel subtitle</h6>
 						
-							<p class="card-text mt-3" th:text="${need.description}">Some quick example text to build on the
+							<p class="card-text mt-3" th:text="${help.description}">Some quick example text to build on the
 								panel title and make up the bulk of the panel's content.</p>
 							<p>
-							<a th:href="@{'/needs/'+${need.id}}" class="card-link">Click for more</a> <a th:href="@{'/help-need/'+${need.id}}"
-								class="card-link text-success">Help now</a>
-								<a href="#"
-								class="card-link">Help later</a>
+							<!--<a th:href="@{'/helps/'+${help.id}}" class="card-link">Click for more</a> <a th:href="@{'/needs/'+${help.fulfilledNeedId}}"
+								class="card-link text-success" th:if="${help.fulfilledNeedId != null}">Fulfilled need</a>-->
 						</div>
 					</div>
 				</div>
