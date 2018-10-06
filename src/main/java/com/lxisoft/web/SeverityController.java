@@ -1,4 +1,4 @@
-package com.lxisoft.web.rest;
+package com.lxisoft.web;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.service.SeverityService;
@@ -14,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -25,22 +27,21 @@ import java.util.Optional;
 /**
  * REST controller for managing Severity.
  */
-@RestController
-@RequestMapping("/api")
-public class SeverityResource {
+@Controller
 
-    private final Logger log = LoggerFactory.getLogger(SeverityResource.class);
+public class SeverityController {
+
+    private final Logger log = LoggerFactory.getLogger(SeverityController.class);
 
     private static final String ENTITY_NAME = "karmaSeverity";
 
     private final SeverityService severityService;
 
-	
-    public SeverityResource(SeverityService severityService) {
+    public SeverityController(SeverityService severityService) {
         this.severityService = severityService;
     }
 
-  /**
+    /**
      * POST  /severities : Create a new severity.
      *
      * @param severityDTO the severityDTO to create
@@ -49,7 +50,7 @@ public class SeverityResource {
      */
     @PostMapping("/severities")
     @Timed
-    public ResponseEntity<SeverityDTO> createSeverity(@RequestBody SeverityDTO severityDTO) throws URISyntaxException {
+    public String createSeverity(@RequestBody SeverityDTO severityDTO) throws URISyntaxException {
         log.debug("REST request to save Severity : {}", severityDTO);
         if (severityDTO.getId() != null) {
             throw new BadRequestAlertException("A new severity cannot already have an ID", ENTITY_NAME, "idexists");
@@ -61,9 +62,7 @@ public class SeverityResource {
         }
         
         SeverityDTO result = severityService.save(severityDTO);
-        return ResponseEntity.created(new URI("/api/severities/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+        return "severity";
     }
 
     /**
@@ -77,18 +76,20 @@ public class SeverityResource {
      */
     @PutMapping("/severities")
     @Timed
-    public ResponseEntity<SeverityDTO> updateSeverity(@RequestBody SeverityDTO severityDTO) throws URISyntaxException {
+    public String updateSeverity(@RequestBody SeverityDTO severityDTO,Model model) throws URISyntaxException {
         log.debug("REST request to update Severity : {}", severityDTO);
         if (severityDTO.getId() == null) {
+        	
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+            
         }
-		
         SeverityDTO result = severityService.save(severityDTO);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, severityDTO.getId().toString()))
-            .body(result);
+        
+        model.addAttribute("severity",result);
+        
+        return "severity";
     }
-
+ 
     /**
      * GET  /severities : get all the severities.
      *
@@ -97,12 +98,14 @@ public class SeverityResource {
      */
     @GetMapping("/severities")
     @Timed
-    public ResponseEntity<List<SeverityDTO>> getAllSeverities(Pageable pageable) {
+    public String getAllSeverities(Pageable pageable,Model model){
+    	
         log.debug("REST request to get a page of Severities");
         Page<SeverityDTO> page = severityService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/severities");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
+        List<SeverityDTO>severities=page.getContent();
+       model.addAttribute("severities",severities);
+        return "severities";
+    } 
 
     /**
      * GET  /severities/:id : get the "id" severity.
@@ -112,11 +115,16 @@ public class SeverityResource {
      */
     @GetMapping("/severities/{id}")
     @Timed
-	
-    public ResponseEntity<SeverityDTO> getSeverity(@PathVariable Long id) {
+    public String getSeverity(@PathVariable Long id,Model model) {
         log.debug("REST request to get Severity : {}", id);
         Optional<SeverityDTO> severityDTO = severityService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(severityDTO);
+        SeverityDTO severity=severityDTO.get();
+        
+        model.addAttribute("severity",severity);
+        
+        
+     
+        return "severity";
     }
 
     /**
@@ -127,10 +135,10 @@ public class SeverityResource {
      */
     @DeleteMapping("/severities/{id}")
     @Timed
-    public ResponseEntity<Void> deleteSeverity(@PathVariable Long id) {
-        
-		log.debug("REST request to delete Severity : {}", id);
+    public String deleteSeverity(@PathVariable Long id) {
+        log.debug("REST request to delete Severity : {}", id);
         severityService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return "done";
     }
+    
 }

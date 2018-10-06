@@ -78,6 +78,11 @@ public class NeedResource {
         	needDTO.setApprovalStatusId(approvalStatus.get().getId());
         }
         
+		if(needDTO.getSeverityId() == null)
+        {
+        	needDTO.setSeverityId(1l);
+        }
+        
         Set<CategoryDTO> categories=needDTO.getCategories();
         for(CategoryDTO categori:categories){
         	Long id=categori.getId();
