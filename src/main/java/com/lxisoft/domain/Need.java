@@ -39,9 +39,6 @@ public class Need implements Serializable {
     @OneToMany(mappedBy = "need")
     private Set<Media> proofs = new HashSet<>();
 
-    @OneToMany(mappedBy = "markedUser")
-    private Set<UserCheck> userChecks = new HashSet<>();
-
     @OneToMany(mappedBy = "fulfilledNeed")
     private Set<Help> helps = new HashSet<>();
 
@@ -57,11 +54,7 @@ public class Need implements Serializable {
     @JsonIgnoreProperties("needs")
     private ApprovalStatus approvalStatus;
 
-    @ManyToMany(fetch = FetchType.EAGER,
-            cascade = {
-                    CascadeType.MERGE,
-                    CascadeType.REFRESH
-                })
+    @ManyToMany
     @JoinTable(name = "need_categories",
                joinColumns = @JoinColumn(name = "needs_id", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "categories_id", referencedColumnName = "id"))
@@ -70,6 +63,9 @@ public class Need implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties("needs")
     private LoggedUser postedUser;
+
+    @OneToMany(mappedBy = "checkedNeed")
+    private Set<UserCheck> userChecks = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -142,31 +138,6 @@ public class Need implements Serializable {
 
     public void setProofs(Set<Media> media) {
         this.proofs = media;
-    }
-
-    public Set<UserCheck> getUserChecks() {
-        return userChecks;
-    }
-
-    public Need userChecks(Set<UserCheck> userChecks) {
-        this.userChecks = userChecks;
-        return this;
-    }
-
-    public Need addUserChecks(UserCheck userCheck) {
-        this.userChecks.add(userCheck);
-        userCheck.setMarkedUser(this);
-        return this;
-    }
-
-    public Need removeUserChecks(UserCheck userCheck) {
-        this.userChecks.remove(userCheck);
-        userCheck.setMarkedUser(null);
-        return this;
-    }
-
-    public void setUserChecks(Set<UserCheck> userChecks) {
-        this.userChecks = userChecks;
     }
 
     public Set<Help> getHelps() {
@@ -269,6 +240,31 @@ public class Need implements Serializable {
 
     public void setPostedUser(LoggedUser loggedUser) {
         this.postedUser = loggedUser;
+    }
+
+    public Set<UserCheck> getUserChecks() {
+        return userChecks;
+    }
+
+    public Need userChecks(Set<UserCheck> userChecks) {
+        this.userChecks = userChecks;
+        return this;
+    }
+
+    public Need addUserChecks(UserCheck userCheck) {
+        this.userChecks.add(userCheck);
+        userCheck.setCheckedNeed(this);
+        return this;
+    }
+
+    public Need removeUserChecks(UserCheck userCheck) {
+        this.userChecks.remove(userCheck);
+        userCheck.setCheckedNeed(null);
+        return this;
+    }
+
+    public void setUserChecks(Set<UserCheck> userChecks) {
+        this.userChecks = userChecks;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

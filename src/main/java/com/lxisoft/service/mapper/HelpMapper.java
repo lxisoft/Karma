@@ -16,6 +16,7 @@ public interface HelpMapper extends EntityMapper<HelpDTO, Help> {
     @Mapping(source = "fulfilledNeed.id", target = "fulfilledNeedId")
     HelpDTO toDto(Help help);
 
+    @Mapping(target = "proofs", ignore = true)
     @Mapping(source = "approvalStatusId", target = "approvalStatus")
     @Mapping(source = "providedUserId", target = "providedUser")
     @Mapping(source = "fulfilledNeedId", target = "fulfilledNeed")

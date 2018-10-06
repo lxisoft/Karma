@@ -36,6 +36,10 @@ public class Media implements Serializable {
     @JsonIgnoreProperties("proofs")
     private Need need;
 
+    @ManyToOne
+    @JsonIgnoreProperties("proofs")
+    private Help help;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -95,6 +99,19 @@ public class Media implements Serializable {
 
     public void setNeed(Need need) {
         this.need = need;
+    }
+
+    public Help getHelp() {
+        return help;
+    }
+
+    public Media help(Help help) {
+        this.help = help;
+        return this;
+    }
+
+    public void setHelp(Help help) {
+        this.help = help;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

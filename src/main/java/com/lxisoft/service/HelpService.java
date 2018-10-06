@@ -43,8 +43,8 @@ public interface HelpService {
      * @param id the id of the entity
      */
     void delete(Long id);
-
-	/**
+    
+    /**
 	 * @param pageable
 	 * @param approvalStatus
 	 * @return

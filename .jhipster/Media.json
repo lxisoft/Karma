@@ -1,13 +1,5 @@
 {
-    "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipName": "need",
-            "otherEntityName": "need",
-            "relationshipType": "many-to-one",
-            "otherEntityField": "id"
-        }
-    ],
+    "name": "Media",
     "fields": [
         {
             "fieldName": "fileName",
@@ -22,6 +14,20 @@
             "fieldType": "String"
         }
     ],
+    "relationships": [
+        {
+            "relationshipName": "need",
+            "otherEntityName": "need",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "help",
+            "otherEntityName": "help",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
     "changelogDate": "20180924060351",
     "javadoc": "Media entity.\n@author Dheeraj das.",
     "entityTableName": "media",
@@ -29,5 +35,8 @@
     "pagination": "pagination",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "karma",
+    "applications": "*",
     "microserviceName": "karma"
 }

@@ -1,7 +1,6 @@
 package com.lxisoft.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.lxisoft.domain.ApprovalStatus;
 import com.lxisoft.service.ApprovalStatusService;
 import com.lxisoft.service.CategoryService;
 import com.lxisoft.service.NeedService;
@@ -47,7 +46,7 @@ public class NeedResource {
 
     @Autowired
     CategoryService categoryService;
-    
+
     public NeedResource(NeedService needService) {
         this.needService = needService;
     }
@@ -63,8 +62,9 @@ public class NeedResource {
     @Timed
     public ResponseEntity<NeedDTO> createNeed(@RequestBody NeedDTO needDTO) throws URISyntaxException {
         log.debug("REST request to save Need : {}", needDTO);
+        
         Set<CategoryDTO> categorySet=new HashSet<CategoryDTO>();
-    	
+        
         if (needDTO.getId() != null) {
             throw new BadRequestAlertException("A new need cannot already have an ID", ENTITY_NAME, "idexists");
         }
@@ -90,7 +90,6 @@ public class NeedResource {
         return ResponseEntity.created(new URI("/api/needs/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
-        
     }
 
     /**
@@ -163,22 +162,4 @@ public class NeedResource {
         needService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-    
-    
-    
-    @GetMapping("/needs/getAllNeedsByApprovedStatus/{approvalStatus}")
-    @Timed
-    public ResponseEntity<List<NeedDTO>> getAllNeedsByApprovedStatus(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload,@PathVariable String approvalStatus) {
-        log.debug("REST request to get a page of Needs");
-        Page<NeedDTO> page;
-        if (eagerload) {
-            page = needService.findAllWithEagerRelationships(pageable);
-        } else {
-            page = needService.findAllNeedsByApprovedStatus(pageable,approvalStatus);
-        }
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, String.format("/api/approvedneeds?eagerload=%b", eagerload));
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
-
-     
 }

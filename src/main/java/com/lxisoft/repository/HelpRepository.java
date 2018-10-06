@@ -1,7 +1,6 @@
 package com.lxisoft.repository;
 
 import com.lxisoft.domain.Help;
-import com.lxisoft.service.dto.HelpDTO;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,9 +14,7 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface HelpRepository extends JpaRepository<Help, Long> {
-
 	
-
 	/**
 	 * @param pageable
 	 * @param approvalStatusId
@@ -25,5 +22,5 @@ public interface HelpRepository extends JpaRepository<Help, Long> {
 	 */
 	Page<Help> findAllHelpsByApprovalStatusId(Pageable pageable, Long approvalStatusId);
 
-	
+
 }

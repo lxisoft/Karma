@@ -105,7 +105,7 @@ relationship OneToMany{
   LoggedUser{needs} to Need{postedUser},
   LoggedUser{Helps} to Help{providedUser},
   Need{proofs} to Media,
-  Need{userChecks} to UserCheck{markedUser},
+  Help{proofs} to Media,
   Need{Helps} to Help{fulfilledNeed}
 }
   
@@ -113,7 +113,10 @@ relationship ManyToOne{
   Need{severity} to Severity{needs},
   Need{verificationTeam} to VerificationTeam{needs},
   Need{approvalStatus} to ApprovalStatus{needs},
-  Help{approvalStatus} to ApprovalStatus{Helps}
+  Help{approvalStatus} to ApprovalStatus{Helps},
+  UserCheck{checkedNeed} to Need{userChecks},
+  UserCheck{checkedUser} to LoggedUser{checkedNeeds}
+  
 }
 
 relationship ManyToMany{

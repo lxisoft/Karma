@@ -66,6 +66,9 @@ public class LoggedUser implements Serializable {
     @OneToMany(mappedBy = "providedUser")
     private Set<Help> helps = new HashSet<>();
 
+    @OneToMany(mappedBy = "checkedUser")
+    private Set<UserCheck> checkedNeeds = new HashSet<>();
+
     @ManyToMany(mappedBy = "approvingUsers")
     @JsonIgnore
     private Set<VerificationTeam> verificationTeams = new HashSet<>();
@@ -282,6 +285,31 @@ public class LoggedUser implements Serializable {
 
     public void setHelps(Set<Help> helps) {
         this.helps = helps;
+    }
+
+    public Set<UserCheck> getCheckedNeeds() {
+        return checkedNeeds;
+    }
+
+    public LoggedUser checkedNeeds(Set<UserCheck> userChecks) {
+        this.checkedNeeds = userChecks;
+        return this;
+    }
+
+    public LoggedUser addCheckedNeeds(UserCheck userCheck) {
+        this.checkedNeeds.add(userCheck);
+        userCheck.setCheckedUser(this);
+        return this;
+    }
+
+    public LoggedUser removeCheckedNeeds(UserCheck userCheck) {
+        this.checkedNeeds.remove(userCheck);
+        userCheck.setCheckedUser(null);
+        return this;
+    }
+
+    public void setCheckedNeeds(Set<UserCheck> userChecks) {
+        this.checkedNeeds = userChecks;
     }
 
     public Set<VerificationTeam> getVerificationTeams() {

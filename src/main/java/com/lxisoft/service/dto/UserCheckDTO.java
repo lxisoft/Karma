@@ -14,7 +14,9 @@ public class UserCheckDTO implements Serializable {
 
     private String category;
 
-    private Long markedUserId;
+    private Long checkedNeedId;
+
+    private Long checkedUserId;
 
     public Long getId() {
         return id;
@@ -40,12 +42,20 @@ public class UserCheckDTO implements Serializable {
         this.category = category;
     }
 
-    public Long getMarkedUserId() {
-        return markedUserId;
+    public Long getCheckedNeedId() {
+        return checkedNeedId;
     }
 
-    public void setMarkedUserId(Long needId) {
-        this.markedUserId = needId;
+    public void setCheckedNeedId(Long needId) {
+        this.checkedNeedId = needId;
+    }
+
+    public Long getCheckedUserId() {
+        return checkedUserId;
+    }
+
+    public void setCheckedUserId(Long loggedUserId) {
+        this.checkedUserId = loggedUserId;
     }
 
     @Override
@@ -75,7 +85,8 @@ public class UserCheckDTO implements Serializable {
             "id=" + getId() +
             ", voteType='" + getVoteType() + "'" +
             ", category='" + getCategory() + "'" +
-            ", markedUser=" + getMarkedUserId() +
+            ", checkedNeed=" + getCheckedNeedId() +
+            ", checkedUser=" + getCheckedUserId() +
             "}";
     }
 }

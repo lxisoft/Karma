@@ -5,7 +5,6 @@ import com.lxisoft.service.HelpService;
 import com.lxisoft.domain.Help;
 import com.lxisoft.repository.HelpRepository;
 import com.lxisoft.service.dto.HelpDTO;
-
 import com.lxisoft.service.mapper.HelpMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,7 +90,7 @@ public class HelpServiceImpl implements HelpService {
         log.debug("Request to delete Help : {}", id);
         helpRepository.deleteById(id);
     }
-
+    
     /**
      * Get all the helpsByApprovedStatus.
      *
@@ -124,7 +123,4 @@ public class HelpServiceImpl implements HelpService {
         return helpRepository.findAllHelpsByApprovalStatusId(pageable,approvalStatusId)
             .map(helpMapper::toDto);
 	}
-	
-	
-
 }

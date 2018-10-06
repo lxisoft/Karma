@@ -30,7 +30,11 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="marked_user_id" type="bigint">
+            <column name="checked_need_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="checked_user_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 

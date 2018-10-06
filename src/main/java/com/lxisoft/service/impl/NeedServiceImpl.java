@@ -28,10 +28,10 @@ public class NeedServiceImpl implements NeedService {
     private final NeedRepository needRepository;
 
     private final NeedMapper needMapper;
-
+    
     @Autowired
     ApprovalStatusService approvalStatusService;
-    
+
     public NeedServiceImpl(NeedRepository needRepository, NeedMapper needMapper) {
         this.needRepository = needRepository;
         this.needMapper = needMapper;
@@ -99,8 +99,8 @@ public class NeedServiceImpl implements NeedService {
         log.debug("Request to delete Need : {}", id);
         needRepository.deleteById(id);
     }
-
-	@Override
+    
+    @Override
 	public Page<NeedDTO> findAllNeedsByApprovedStatus(Pageable pageable, String approvalStatus) {
 		// TODO Auto-generated method stub
 		

@@ -8,11 +8,17 @@
     -->
     <changeSet id="20180924060353-2" author="jhipster">
         
-        <addForeignKeyConstraint baseColumnNames="marked_user_id"
+        <addForeignKeyConstraint baseColumnNames="checked_need_id"
                                  baseTableName="user_check"
-                                 constraintName="fk_user_check_marked_user_id"
+                                 constraintName="fk_user_check_checked_need_id"
                                  referencedColumnNames="id"
                                  referencedTableName="need"/>
+
+        <addForeignKeyConstraint baseColumnNames="checked_user_id"
+                                 baseTableName="user_check"
+                                 constraintName="fk_user_check_checked_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="logged_user"/>
 
     </changeSet>
 </databaseChangeLog>

@@ -1,13 +1,5 @@
 {
-    "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipType": "many-to-one",
-            "relationshipName": "markedUser",
-            "otherEntityName": "need",
-            "otherEntityField": "id"
-        }
-    ],
+    "name": "UserCheck",
     "fields": [
         {
             "fieldName": "voteType",
@@ -18,6 +10,20 @@
             "fieldType": "String"
         }
     ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "checkedNeed",
+            "otherEntityName": "need",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "checkedUser",
+            "otherEntityName": "loggedUser",
+            "otherEntityField": "id"
+        }
+    ],
     "changelogDate": "20180924060353",
     "javadoc": "UserCheck entity\n@author Deepthi E",
     "entityTableName": "user_check",
@@ -25,5 +31,8 @@
     "pagination": "pagination",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "karma",
+    "applications": "*",
     "microserviceName": "karma"
 }

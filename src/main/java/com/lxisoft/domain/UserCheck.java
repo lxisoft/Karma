@@ -31,7 +31,11 @@ public class UserCheck implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties("userChecks")
-    private Need markedUser;
+    private Need checkedNeed;
+
+    @ManyToOne
+    @JsonIgnoreProperties("checkedNeeds")
+    private LoggedUser checkedUser;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -68,17 +72,30 @@ public class UserCheck implements Serializable {
         this.category = category;
     }
 
-    public Need getMarkedUser() {
-        return markedUser;
+    public Need getCheckedNeed() {
+        return checkedNeed;
     }
 
-    public UserCheck markedUser(Need need) {
-        this.markedUser = need;
+    public UserCheck checkedNeed(Need need) {
+        this.checkedNeed = need;
         return this;
     }
 
-    public void setMarkedUser(Need need) {
-        this.markedUser = need;
+    public void setCheckedNeed(Need need) {
+        this.checkedNeed = need;
+    }
+
+    public LoggedUser getCheckedUser() {
+        return checkedUser;
+    }
+
+    public UserCheck checkedUser(LoggedUser loggedUser) {
+        this.checkedUser = loggedUser;
+        return this;
+    }
+
+    public void setCheckedUser(LoggedUser loggedUser) {
+        this.checkedUser = loggedUser;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

@@ -1,8 +1,6 @@
 package com.lxisoft.repository;
 
 import com.lxisoft.domain.Need;
-import com.lxisoft.service.dto.NeedDTO;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
@@ -29,11 +27,6 @@ public interface NeedRepository extends JpaRepository<Need, Long> {
     @Query("select need from Need need left join fetch need.categories where need.id =:id")
     Optional<Need> findOneWithEagerRelationships(@Param("id") Long id);
     
-   
-	Page<Need> findAllNeedsByApprovalStatusId(Pageable pageable, Long approvalStatusId);
-
-	
-
-    
+    Page<Need> findAllNeedsByApprovalStatusId(Pageable pageable, Long approvalStatusId);
 
 }

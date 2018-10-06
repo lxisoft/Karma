@@ -8,8 +8,6 @@ import com.lxisoft.web.rest.util.HeaderUtil;
 import com.lxisoft.web.rest.util.PaginationUtil;
 import com.lxisoft.service.dto.ApprovalStatusDTO;
 import com.lxisoft.service.dto.HelpDTO;
-
-
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,6 +59,7 @@ public class HelpResource {
         if (helpDTO.getId() != null) {
             throw new BadRequestAlertException("A new help cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        
         if (helpDTO.getApprovalStatusId() == null) {
 
 			Optional<ApprovalStatusDTO> approvalStatus = approvalStatusService.findByStatus("incompleted");
@@ -69,6 +68,7 @@ public class HelpResource {
 			log.debug("***************{}" + id);
 			helpDTO.setApprovalStatusId(approvalStatus.get().getId());
 		}
+        
         HelpDTO result = helpService.save(helpDTO);
         return ResponseEntity.created(new URI("/api/helps/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -154,6 +154,4 @@ public class HelpResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/helps");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
-
-    
 }

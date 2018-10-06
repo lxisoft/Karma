@@ -1,5 +1,6 @@
 package com.lxisoft.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 
@@ -7,6 +8,8 @@ import javax.persistence.*;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -29,6 +32,9 @@ public class Help implements Serializable {
 
     @Column(name = "description")
     private String description;
+
+    @OneToMany(mappedBy = "help")
+    private Set<Media> proofs = new HashSet<>();
 
     @ManyToOne
     @JsonIgnoreProperties("helps")
@@ -75,6 +81,31 @@ public class Help implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<Media> getProofs() {
+        return proofs;
+    }
+
+    public Help proofs(Set<Media> media) {
+        this.proofs = media;
+        return this;
+    }
+
+    public Help addProofs(Media media) {
+        this.proofs.add(media);
+        media.setHelp(this);
+        return this;
+    }
+
+    public Help removeProofs(Media media) {
+        this.proofs.remove(media);
+        media.setHelp(null);
+        return this;
+    }
+
+    public void setProofs(Set<Media> media) {
+        this.proofs = media;
     }
 
     public ApprovalStatus getApprovalStatus() {

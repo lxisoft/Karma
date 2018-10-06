@@ -18,12 +18,12 @@ public interface NeedMapper extends EntityMapper<NeedDTO, Need> {
     NeedDTO toDto(Need need);
 
     @Mapping(target = "proofs", ignore = true)
-    @Mapping(target = "userChecks", ignore = true)
     @Mapping(target = "helps", ignore = true)
     @Mapping(source = "severityId", target = "severity")
     @Mapping(source = "verificationTeamId", target = "verificationTeam")
     @Mapping(source = "approvalStatusId", target = "approvalStatus")
     @Mapping(source = "postedUserId", target = "postedUser")
+    @Mapping(target = "userChecks", ignore = true)
     Need toEntity(NeedDTO needDTO);
 
     default Need fromId(Long id) {

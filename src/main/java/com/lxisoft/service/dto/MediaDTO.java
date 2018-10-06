@@ -18,6 +18,8 @@ public class MediaDTO implements Serializable {
 
     private Long needId;
 
+    private Long helpId;
+
     public Long getId() {
         return id;
     }
@@ -58,6 +60,14 @@ public class MediaDTO implements Serializable {
         this.needId = needId;
     }
 
+    public Long getHelpId() {
+        return helpId;
+    }
+
+    public void setHelpId(Long helpId) {
+        this.helpId = helpId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -87,6 +97,7 @@ public class MediaDTO implements Serializable {
             ", url='" + getUrl() + "'" +
             ", extension='" + getExtension() + "'" +
             ", need=" + getNeedId() +
+            ", help=" + getHelpId() +
             "}";
     }
 }

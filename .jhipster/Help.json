@@ -1,6 +1,22 @@
 {
-    "fluentMethods": true,
+    "name": "Help",
+    "fields": [
+        {
+            "fieldName": "time",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        }
+    ],
     "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "proofs",
+            "otherEntityName": "media",
+            "otherEntityRelationshipName": "help"
+        },
         {
             "relationshipType": "many-to-one",
             "relationshipName": "approvalStatus",
@@ -20,16 +36,6 @@
             "otherEntityField": "id"
         }
     ],
-    "fields": [
-        {
-            "fieldName": "time",
-            "fieldType": "Instant"
-        },
-        {
-            "fieldName": "description",
-            "fieldType": "String"
-        }
-    ],
     "changelogDate": "20180924060355",
     "javadoc": "Service entity\n@Author Sooraj Pn",
     "entityTableName": "help",
@@ -37,5 +43,8 @@
     "pagination": "pagination",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "karma",
+    "applications": "*",
     "microserviceName": "karma"
 }

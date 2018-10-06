@@ -14,5 +14,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="need"/>
 
+        <addForeignKeyConstraint baseColumnNames="help_id"
+                                 baseTableName="media"
+                                 constraintName="fk_media_help_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="help"/>
+
     </changeSet>
 </databaseChangeLog>

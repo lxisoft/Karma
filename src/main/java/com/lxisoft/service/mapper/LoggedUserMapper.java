@@ -18,6 +18,7 @@ public interface LoggedUserMapper extends EntityMapper<LoggedUserDTO, LoggedUser
     @Mapping(target = "addresses", ignore = true)
     @Mapping(target = "needs", ignore = true)
     @Mapping(target = "helps", ignore = true)
+    @Mapping(target = "checkedNeeds", ignore = true)
     @Mapping(target = "verificationTeams", ignore = true)
     LoggedUser toEntity(LoggedUserDTO loggedUserDTO);
 

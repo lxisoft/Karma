@@ -1,17 +1,25 @@
 {
-    "fluentMethods": true,
+    "name": "Need",
+    "fields": [
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "beneficiaryType",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "date",
+            "fieldType": "Instant"
+        }
+    ],
     "relationships": [
         {
             "relationshipType": "one-to-many",
             "relationshipName": "proofs",
             "otherEntityName": "media",
             "otherEntityRelationshipName": "need"
-        },
-        {
-            "relationshipType": "one-to-many",
-            "relationshipName": "userChecks",
-            "otherEntityName": "userCheck",
-            "otherEntityRelationshipName": "markedUser"
         },
         {
             "relationshipType": "one-to-many",
@@ -50,20 +58,12 @@
             "relationshipName": "postedUser",
             "otherEntityName": "loggedUser",
             "otherEntityField": "id"
-        }
-    ],
-    "fields": [
-        {
-            "fieldName": "description",
-            "fieldType": "String"
         },
         {
-            "fieldName": "beneficiaryType",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "date",
-            "fieldType": "Instant"
+            "relationshipType": "one-to-many",
+            "relationshipName": "userChecks",
+            "otherEntityName": "userCheck",
+            "otherEntityRelationshipName": "checkedNeed"
         }
     ],
     "changelogDate": "20180924060354",
@@ -73,5 +73,8 @@
     "pagination": "pagination",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "karma",
+    "applications": "*",
     "microserviceName": "karma"
 }

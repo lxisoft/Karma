@@ -1,40 +1,5 @@
 {
-    "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipType": "one-to-one",
-            "relationshipName": "profilePic",
-            "otherEntityName": "media",
-            "otherEntityField": "id",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "loggedUser"
-        },
-        {
-            "relationshipType": "one-to-many",
-            "relationshipName": "addresses",
-            "otherEntityName": "address",
-            "otherEntityRelationshipName": "loggedUser"
-        },
-        {
-            "relationshipType": "one-to-many",
-            "relationshipName": "needs",
-            "otherEntityName": "need",
-            "otherEntityRelationshipName": "postedUser"
-        },
-        {
-            "relationshipType": "one-to-many",
-            "relationshipName": "helps",
-            "otherEntityName": "help",
-            "otherEntityRelationshipName": "providedUser"
-        },
-        {
-            "relationshipType": "many-to-many",
-            "relationshipName": "verificationTeams",
-            "otherEntityName": "verificationTeam",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "approvingUsers"
-        }
-    ],
+    "name": "LoggedUser",
     "fields": [
         {
             "fieldName": "email",
@@ -73,6 +38,47 @@
             "fieldType": "String"
         }
     ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "profilePic",
+            "otherEntityName": "media",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "loggedUser"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "addresses",
+            "otherEntityName": "address",
+            "otherEntityRelationshipName": "loggedUser"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "needs",
+            "otherEntityName": "need",
+            "otherEntityRelationshipName": "postedUser"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "helps",
+            "otherEntityName": "help",
+            "otherEntityRelationshipName": "providedUser"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "checkedNeeds",
+            "otherEntityName": "userCheck",
+            "otherEntityRelationshipName": "checkedUser"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "verificationTeams",
+            "otherEntityName": "verificationTeam",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "approvingUsers"
+        }
+    ],
     "changelogDate": "20180924060348",
     "javadoc": "LoggedUser entity.\n@author Muhammed Ruhail",
     "entityTableName": "logged_user",
@@ -80,5 +86,8 @@
     "pagination": "pagination",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "karma",
+    "applications": "*",
     "microserviceName": "karma"
 }
