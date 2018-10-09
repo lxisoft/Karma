@@ -123,4 +123,27 @@ public class LoggedUserResource {
         loggedUserService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+    
+    /**
+     * GET  /logged-users/:id : get the "id" loggedUser.
+     *
+     * @param id the id of the loggedUserDTO rating to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the loggedUserDTO, or with status 404 (Not Found)
+     */
+    
+    @GetMapping("/logged-users/updateLoggedUserRatingById/{id}")
+    @Timed
+    public ResponseEntity<LoggedUserDTO> updateLoggedUserRatingById(@PathVariable Long id) {
+        log.debug("REST request to rate LoggedUser : {}", id);
+        LoggedUserDTO loggedUserDTO = loggedUserService.findOne(id).orElse(null); 
+        
+        Long rating=1l;
+        if(loggedUserDTO.getRating()==null)
+        	loggedUserDTO.setRating(rating);	
+        else
+        	loggedUserDTO.setRating((loggedUserDTO.getRating())+1);
+        
+    	loggedUserDTO = loggedUserService.save(loggedUserDTO);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(loggedUserDTO));
+    }
 }
