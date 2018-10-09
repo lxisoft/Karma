@@ -9,6 +9,7 @@ import com.lxisoft.service.dto.SeverityDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -33,6 +34,7 @@ public class SeverityResource {
 
     private static final String ENTITY_NAME = "karmaSeverity";
 
+    @Autowired
     private final SeverityService severityService;
 
     public SeverityResource(SeverityService severityService) {
@@ -123,4 +125,18 @@ public class SeverityResource {
         severityService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+    
+    /**
+      *
+     * @param severity the id of the severityDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the severityDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/getSeverityBySeverityLevel/{severityLevel}")
+    @Timed
+    public ResponseEntity<SeverityDTO> getSeverityBySeverityLevel(@PathVariable String severityLevel) {
+        log.debug("REST request to get Severity : {}", severityLevel);
+        Optional<SeverityDTO> severityDTO = severityService.findBySeverityLevel(severityLevel);
+        return ResponseUtil.wrapOrNotFound(severityDTO);
+    }
+
 }

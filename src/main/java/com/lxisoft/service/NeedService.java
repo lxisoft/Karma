@@ -66,4 +66,7 @@ public interface NeedService {
      * @return the list of approvedstatus entities
      */
 	Page<NeedDTO> findAllNeedsByApprovalStatusId(Pageable pageable,Long approvalStatusId);
+	
+	Page<NeedDTO> findAllNeedsBySeverity(Pageable pageable,Long severityId);
+	
 }

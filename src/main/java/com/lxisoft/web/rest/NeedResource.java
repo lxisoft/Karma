@@ -39,6 +39,7 @@ public class NeedResource {
 
     private static final String ENTITY_NAME = "karmaNeed";
 
+    @Autowired
     private final NeedService needService;
     
     @Autowired
@@ -162,4 +163,27 @@ public class NeedResource {
         needService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+    /**
+     *
+     * @param severityId the id of the needDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the needDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/needs/getNeedsBySeverityId/{severityId}")
+    @Timed
+    public ResponseEntity<List<NeedDTO>> getNeedsBySeverityId(Pageable pageable,@PathVariable Long severityId, @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
+        log.debug("REST request to get Need : {}", severityId);
+        
+        Page<NeedDTO> page;
+        
+        if (eagerload) {
+            page = needService.findAllWithEagerRelationships(pageable);
+        } else {
+            page = needService.findAllNeedsBySeverity(pageable, severityId);
+        }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, String.format("/api/severitylevel/?eagerload=%b", eagerload));
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);    
+        
+        }
+
 }

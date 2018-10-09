@@ -86,4 +86,22 @@ public class SeverityServiceImpl implements SeverityService {
         log.debug("Request to delete Severity : {}", id);
         severityRepository.deleteById(id);
     }
+    
+    /**
+     * Get one severity by severityLevel.
+     *
+     * @param severityLevel of the entity
+     * @return the entity
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<SeverityDTO> findBySeverityLevel(String severityLevel){
+    	
+        log.debug("Request to get Severity : {}", severityLevel);
+        return severityRepository.findBySeverityLevel(severityLevel)
+                .map(severityMapper::toDto);
+        
+    	
+    }
+
 }
