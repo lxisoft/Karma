@@ -1,4 +1,4 @@
-insert into   severity ( severity_level) values ('id mauris vulputate');
-insert into   severity ( severity_level) values ('velit donec diam');
-insert into   severity ( severity_level) values ('volutpat dui maecenas');
-insert into   severity ( severity_level) values ('feugiat non pretium');
+insert into severity (severityLevel) values ('low');
+insert into severity (severityLevel) values ('medium');
+insert into severity (severityLevel) values ('urgent');
+insert into severity (severityLevel) values ('very urgent');
