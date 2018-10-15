@@ -3,6 +3,9 @@ package com.lxisoft.service.dto;
 import java.io.Serializable;
 import java.util.Objects;
 
+import org.springframework.web.multipart.MultipartFile;
+
+
 /**
  * A DTO for the Media entity.
  */
@@ -19,8 +22,28 @@ public class MediaDTO implements Serializable {
     private Long needId;
 
     private Long helpId;
+    
+    private MultipartFile file;
 
-    public Long getId() {
+   /* private byte[] data;
+
+    public byte[] getData() {
+		return data;
+	}
+
+	public void setData(byte[] data) {
+		this.data = data;
+	}*/
+
+	public MultipartFile getFile() {
+		return file;
+	}
+
+	public void setFile(MultipartFile file) {
+		this.file = file;
+	}
+
+	public Long getId() {
         return id;
     }
 

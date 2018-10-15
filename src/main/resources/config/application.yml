@@ -75,6 +75,8 @@ spring:
             enabled: false
     thymeleaf:
         mode: HTML
+        
+           
 
 # ===================================================================
 # OpenID Connect Settings. Default settings are for Keycloak in Docker.
@@ -154,6 +156,8 @@ jhipster:
 logging:
     file: target/karma.log
 
+
+
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class
@@ -164,3 +168,5 @@ logging:
 # ===================================================================
 
 # application:
+
+upload.path: src/main/resources/static/uploadedfiles/
