@@ -123,4 +123,13 @@ public class NeedServiceImpl implements NeedService {
              .map(needMapper::toDto);
     
     }
+    
+	public Page<NeedDTO> findAllNeedsBySeverity(Pageable pageable,Long severityId){
+		
+		 log.debug("Request to get all Needs by severity id{}",severityId);
+	    	
+		 return needRepository.findAllNeedsBySeverity(pageable, severityId)
+				 .map(needMapper::toDto);
+		
+	}
 }

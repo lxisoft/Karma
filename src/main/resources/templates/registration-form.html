@@ -41,20 +41,20 @@
     <div class="card-body px-lg-5 pt-0">
 
         <!-- Form -->
-        <form class="text-center" style="color: #757575;">
+        <form class="text-center" style="color: #757575;" th:action="@{/logged-users}" th:object="${loggedUser}" th:method="post" enctype="multipart/form-data">
 
             <div class="form-row">
                 <div class="col">
                     <!-- First name -->
                     <div class="md-form">
-                        <input type="text" id="materialRegisterFormFirstName" class="form-control">
+                        <input type="text" id="materialRegisterFormFirstName" name="firstName" class="form-control">
                         <label for="materialRegisterFormFirstName">First name</label>
                     </div>
                 </div>
                 <div class="col">
                     <!-- Last name -->
                     <div class="md-form">
-                        <input type="email" id="materialRegisterFormLastName" class="form-control">
+                        <input type="text" id="materialRegisterFormLastName" name="lastName" class="form-control">
                         <label for="materialRegisterFormLastName">Last name</label>
                     </div>
                 </div>
@@ -75,13 +75,20 @@
                 </small>
             </div>
 
-            <!-- Phone number -->
+            <!-- file upload -->
             <div class="md-form">
-                <input type="password" id="materialRegisterFormPhone" class="form-control" aria-describedby="materialRegisterFormPhoneHelpBlock">
-                <label for="materialRegisterFormPhone">Phone number</label>
-                <small id="materialRegisterFormPhoneHelpBlock" class="form-text text-muted mb-4">
-                    Optional - for two step authentication
-                </small>
+                <div class="row mt-5">
+			<div class="col-sm-3"></div>				
+    		 <div class="file-field">
+        <div class="btn btn-primary btn-sm float-left">
+            <span>Choose file</span>
+            <input type="file">
+        </div>
+        <div class="file-path-wrapper">
+            <input class="file-path validate" type="text" placeholder="Upload your file">
+        </div>
+    </div>
+    	</div>
             </div>
 
             <!-- Newsletter -->
@@ -91,7 +98,7 @@
             </div>
 
             <!-- Sign up button -->
-            <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit">Sign in</button>
+            <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" name="submit" type="submit">Sign in</button>
 
             <!-- Social register -->
             <p>or sign up with:</p>

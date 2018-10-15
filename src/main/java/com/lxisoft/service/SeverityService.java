@@ -43,4 +43,13 @@ public interface SeverityService {
      * @param id the id of the entity
      */
     void delete(Long id);
+    
+    /**
+     * Get the severity level.
+     *
+     * @param severityLevel the id of the entity
+     * @return the entity
+     */
+    Optional<SeverityDTO> findBySeverityLevel(String severityLevel);
+
 }
