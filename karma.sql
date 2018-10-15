@@ -34,7 +34,7 @@ CREATE TABLE `address` (
   PRIMARY KEY (`id`),
   KEY `fk_address_logged_user_id` (`logged_user_id`),
   CONSTRAINT `fk_address_logged_user_id` FOREIGN KEY (`logged_user_id`) REFERENCES `logged_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Address entity. @author Neeraja';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='Address entity. @author Neeraja';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -58,7 +58,7 @@ CREATE TABLE `approval_status` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `status` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='ApprovalStatus entity. @author Sanil kumar';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='ApprovalStatus entity. @author Sanil kumar';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -83,7 +83,7 @@ CREATE TABLE `category` (
   `name` varchar(255) DEFAULT NULL,
   `sub_category` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Category entity. @author Dheeraj das.';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='Category entity. @author Dheeraj das.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -166,7 +166,7 @@ DROP TABLE IF EXISTS `help`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `help` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `jhi_time` datetime,
+  `jhi_time` datetime DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   `approval_status_id` bigint(20) DEFAULT NULL,
   `provided_user_id` bigint(20) DEFAULT NULL,
@@ -175,10 +175,10 @@ CREATE TABLE `help` (
   KEY `fk_help_approval_status_id` (`approval_status_id`),
   KEY `fk_help_provided_user_id` (`provided_user_id`),
   KEY `fk_help_fulfilled_need_id` (`fulfilled_need_id`),
-  CONSTRAINT `fk_help_fulfilled_need_id` FOREIGN KEY (`fulfilled_need_id`) REFERENCES `need` (`id`),
   CONSTRAINT `fk_help_approval_status_id` FOREIGN KEY (`approval_status_id`) REFERENCES `approval_status` (`id`),
+  CONSTRAINT `fk_help_fulfilled_need_id` FOREIGN KEY (`fulfilled_need_id`) REFERENCES `need` (`id`),
   CONSTRAINT `fk_help_provided_user_id` FOREIGN KEY (`provided_user_id`) REFERENCES `logged_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Service entity @Author Sooraj Pn';
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COMMENT='Service entity @Author Sooraj Pn';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -214,20 +214,20 @@ LOCK TABLES `jhi_authority` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `jhi_persistent_audit_evt_data`
+-- Table structure for table `jhi_persistent_audit_event`
 --
 
-DROP TABLE IF EXISTS `jhi_persistent_audit_evt_data`;
+DROP TABLE IF EXISTS `jhi_persistent_audit_event`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `jhi_persistent_audit_evt_data` (
-  `event_id` bigint(20) NOT NULL,
-  `name` varchar(150) NOT NULL,
-  `value` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`event_id`,`name`),
-  KEY `idx_persistent_audit_evt_data` (`event_id`),
-  CONSTRAINT `fk_evt_pers_audit_evt_data` FOREIGN KEY (`event_id`) REFERENCES `jhi_persistent_audit_event` (`event_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `jhi_persistent_audit_event` (
+  `event_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `principal` varchar(50) NOT NULL,
+  `event_date` timestamp NULL DEFAULT NULL,
+  `event_type` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`event_id`),
+  KEY `idx_persistent_audit_event` (`principal`,`event_date`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -236,6 +236,7 @@ CREATE TABLE `jhi_persistent_audit_evt_data` (
 
 LOCK TABLES `jhi_persistent_audit_event` WRITE;
 /*!40000 ALTER TABLE `jhi_persistent_audit_event` DISABLE KEYS */;
+INSERT INTO `jhi_persistent_audit_event` VALUES (1,'admin','2018-10-09 06:51:29','AUTHENTICATION_SUCCESS'),(2,'admin','2018-10-09 06:55:39','AUTHENTICATION_SUCCESS'),(3,'admin','2018-10-09 06:57:06','AUTHENTICATION_SUCCESS'),(4,'admin','2018-10-09 06:58:14','AUTHENTICATION_SUCCESS'),(5,'admin','2018-10-09 07:06:28','AUTHENTICATION_SUCCESS'),(6,'admin','2018-10-09 07:06:41','AUTHENTICATION_SUCCESS'),(7,'admin','2018-10-09 07:06:45','AUTHENTICATION_SUCCESS'),(8,'admin','2018-10-09 07:07:06','AUTHENTICATION_SUCCESS'),(9,'admin','2018-10-09 07:07:09','AUTHENTICATION_SUCCESS'),(10,'admin','2018-10-09 07:07:11','AUTHENTICATION_SUCCESS'),(11,'admin','2018-10-15 08:34:50','AUTHENTICATION_SUCCESS'),(12,'admin','2018-10-15 08:38:18','AUTHENTICATION_SUCCESS'),(13,'admin','2018-10-15 08:38:35','AUTHENTICATION_SUCCESS'),(14,'admin','2018-10-15 08:40:31','AUTHENTICATION_SUCCESS'),(15,'admin','2018-10-15 08:42:16','AUTHENTICATION_SUCCESS'),(16,'admin','2018-10-15 08:48:39','AUTHENTICATION_SUCCESS');
 /*!40000 ALTER TABLE `jhi_persistent_audit_event` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -262,6 +263,7 @@ CREATE TABLE `jhi_persistent_audit_evt_data` (
 
 LOCK TABLES `jhi_persistent_audit_evt_data` WRITE;
 /*!40000 ALTER TABLE `jhi_persistent_audit_evt_data` DISABLE KEYS */;
+INSERT INTO `jhi_persistent_audit_evt_data` VALUES (5,'details','remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>'),(6,'details','remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>'),(7,'details','remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>'),(8,'details','remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>'),(9,'details','remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>'),(10,'details','remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>'),(11,'details','remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>'),(12,'details','remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>'),(13,'details','remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>'),(14,'details','remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>'),(15,'details','remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>'),(16,'details','remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>');
 /*!40000 ALTER TABLE `jhi_persistent_audit_evt_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -312,8 +314,8 @@ CREATE TABLE `jhi_user_authority` (
   `authority_name` varchar(50) NOT NULL,
   PRIMARY KEY (`user_id`,`authority_name`),
   KEY `fk_authority_name` (`authority_name`),
-  CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `jhi_user` (`id`),
-  CONSTRAINT `fk_authority_name` FOREIGN KEY (`authority_name`) REFERENCES `jhi_authority` (`name`)
+  CONSTRAINT `fk_authority_name` FOREIGN KEY (`authority_name`) REFERENCES `jhi_authority` (`name`),
+  CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `jhi_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -348,7 +350,7 @@ CREATE TABLE `logged_user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `ux_logged_user_profile_pic_id` (`profile_pic_id`),
   CONSTRAINT `fk_logged_user_profile_pic_id` FOREIGN KEY (`profile_pic_id`) REFERENCES `media` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='LoggedUser entity. @author Muhammed Ruhail';
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='LoggedUser entity. @author Muhammed Ruhail';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -357,7 +359,7 @@ CREATE TABLE `logged_user` (
 
 LOCK TABLES `logged_user` WRITE;
 /*!40000 ALTER TABLE `logged_user` DISABLE KEYS */;
-INSERT INTO `logged_user` VALUES (1,'bwillgress0@bravesites.com','Brennen','Willgress',78,'ut tellus nulla ut erat id mauris vulputate elementum nullam varius nulla facilisi cras non velit nec nisi vulputate nonummy','in leo','Male','2017-09-27','purus eu magna vulputate luctus',NULL),(2,'mlivingstone1@etsy.com','Merla','Livingstone',26,'urna pretium nisl ut volutpat sapien arcu sed augue aliquam erat volutpat in congue etiam','aliquet pulvinar','Female','2018-08-28','vulputate elementum nullam varius nulla',NULL),(3,'njurgensen2@bigcartel.com','Norah','Jurgensen',72,'tempus vivamus in felis eu sapien cursus vestibulum proin eu mi nulla ac enim in tempor turpis nec euismod','quam sapien','Female','2018-06-11','platea dictumst maecenas',NULL),(4,'mtumasian3@google.nl','Marje','Tumasian',55,'feugiat non pretium quis lectus suspendisse potenti in eleifend quam a odio in hac habitasse platea','sagittis sapien','Female','2018-09-01','in porttitor pede',NULL),(5,'paldam4@google.ca','Pauletta','Aldam',36,'luctus ultricies eu nibh quisque id justo sit amet sapien dignissim vestibulum vestibulum ante ipsum primis in faucibus orci luctus','vulputate justo','Female','2017-10-30','orci vehicula condimentum curabitur in',NULL),(6,'rdunhill5@cbsnews.com','Richy','Dunhill',55,'lacus morbi quis tortor id nulla ultrices aliquet maecenas leo odio condimentum id luctus nec molestie sed justo pellentesque viverra','vestibulum proin','Male','2018-05-09','mauris ullamcorper purus',NULL),(7,'pgrut6@storify.com','Pacorro','Grut',52,'lectus suspendisse potenti in eleifend quam a odio in hac habitasse platea dictumst maecenas ut massa quis','eget vulputate','Male','2017-11-02','aliquam sit amet diam in',NULL),(8,'hbaldry7@upenn.edu','Hyacintha','Baldry',11,'sit amet diam in magna bibendum imperdiet nullam orci pede venenatis non sodales sed tincidunt eu felis fusce','eget nunc','Female','2018-08-18','duis faucibus accumsan',NULL),(9,'rwinwright8@yellowbook.com','Raddie','Winwright',29,'dis parturient montes nascetur ridiculus mus etiam vel augue vestibulum rutrum rutrum neque aenean auctor gravida sem praesent id','in tempus','Male','2018-08-13','lectus vestibulum quam sapien varius',NULL),(10,'bskilling9@arizona.edu','Barbee','Skilling',73,'cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus etiam vel augue vestibulum rutrum rutrum neque','amet sapien','Female','2018-06-21','magna bibendum',NULL),(11,'bskilling9@arizona.edu','sarangi','Skilling',NULL,'cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus etiam vel augue vestibulum rutrum rutrum neque','amet sapien','Female','2018-06-21','magna bibendum',NULL);
+INSERT INTO `logged_user` VALUES (1,'bwillgress0@bravesites.com','Brennen','Willgress',78,'ut tellus nulla ut erat id mauris vulputate elementum nullam varius nulla facilisi cras non velit nec nisi vulputate nonummy','in leo','Male','2017-09-27','purus eu magna vulputate luctus',NULL),(2,'mlivingstone1@etsy.com','Merla','Livingstone',26,'urna pretium nisl ut volutpat sapien arcu sed augue aliquam erat volutpat in congue etiam','aliquet pulvinar','Female','2018-08-28','vulputate elementum nullam varius nulla',NULL),(3,'njurgensen2@bigcartel.com','Norah','Jurgensen',72,'tempus vivamus in felis eu sapien cursus vestibulum proin eu mi nulla ac enim in tempor turpis nec euismod','quam sapien','Female','2018-06-11','platea dictumst maecenas',NULL),(4,'mtumasian3@google.nl','Marje','Tumasian',55,'feugiat non pretium quis lectus suspendisse potenti in eleifend quam a odio in hac habitasse platea','sagittis sapien','Female','2018-09-01','in porttitor pede',NULL),(5,'paldam4@google.ca','Pauletta','Aldam',36,'luctus ultricies eu nibh quisque id justo sit amet sapien dignissim vestibulum vestibulum ante ipsum primis in faucibus orci luctus','vulputate justo','Female','2017-10-30','orci vehicula condimentum curabitur in',NULL),(6,'rdunhill5@cbsnews.com','Richy','Dunhill',55,'lacus morbi quis tortor id nulla ultrices aliquet maecenas leo odio condimentum id luctus nec molestie sed justo pellentesque viverra','vestibulum proin','Male','2018-05-09','mauris ullamcorper purus',NULL),(7,'pgrut6@storify.com','Pacorro','Grut',52,'lectus suspendisse potenti in eleifend quam a odio in hac habitasse platea dictumst maecenas ut massa quis','eget vulputate','Male','2017-11-02','aliquam sit amet diam in',NULL),(8,'hbaldry7@upenn.edu','Hyacintha','Baldry',11,'sit amet diam in magna bibendum imperdiet nullam orci pede venenatis non sodales sed tincidunt eu felis fusce','eget nunc','Female','2018-08-18','duis faucibus accumsan',NULL),(9,'rwinwright8@yellowbook.com','Raddie','Winwright',29,'dis parturient montes nascetur ridiculus mus etiam vel augue vestibulum rutrum rutrum neque aenean auctor gravida sem praesent id','in tempus','Male','2018-08-13','lectus vestibulum quam sapien varius',NULL),(10,'bskilling9@arizona.edu','Barbee','Skilling',73,'cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus etiam vel augue vestibulum rutrum rutrum neque','amet sapien','Female','2018-06-21','magna bibendum',NULL),(11,'bskilling9@arizona.edu','sarangi','Skilling',6,'cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus etiam vel augue vestibulum rutrum rutrum neque','amet sapien','Female','2018-06-21','magna bibendum',NULL);
 /*!40000 ALTER TABLE `logged_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -389,7 +391,6 @@ CREATE TABLE `media` (
 
 LOCK TABLES `media` WRITE;
 /*!40000 ALTER TABLE `media` DISABLE KEYS */;
-INSERT INTO `media` VALUES (1,'ipsum primis','curae duis','non velit',NULL),(2,'suspendisse potenti','eget tempus','blandit non',NULL),(3,'montes nascetur','metus arcu','ante ipsum',NULL),(4,'id nulla','sit amet','blandit nam',NULL),(5,'rhoncus dui','curae nulla','at ipsum',NULL),(6,'ornare imperdiet','erat quisque','tortor quis',NULL),(7,'nisi venenatis','ligula nec','lectus aliquam',NULL),(8,'quis augue','vel est','magnis dis',NULL),(9,'augue luctus','sociis natoque','aliquet pulvinar',NULL),(10,'suspendisse ornare','commodo vulputate','ultrices enim',NULL);
 /*!40000 ALTER TABLE `media` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -404,7 +405,7 @@ CREATE TABLE `need` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `description` varchar(255) DEFAULT NULL,
   `beneficiary_type` varchar(255) DEFAULT NULL,
-  `jhi_date` datetime,
+  `jhi_date` datetime DEFAULT NULL,
   `severity_id` bigint(20) DEFAULT NULL,
   `verification_team_id` bigint(20) DEFAULT NULL,
   `approval_status_id` bigint(20) DEFAULT NULL,
@@ -414,11 +415,11 @@ CREATE TABLE `need` (
   KEY `fk_need_verification_team_id` (`verification_team_id`),
   KEY `fk_need_approval_status_id` (`approval_status_id`),
   KEY `fk_need_posted_user_id` (`posted_user_id`),
-  CONSTRAINT `fk_need_posted_user_id` FOREIGN KEY (`posted_user_id`) REFERENCES `logged_user` (`id`),
   CONSTRAINT `fk_need_approval_status_id` FOREIGN KEY (`approval_status_id`) REFERENCES `approval_status` (`id`),
+  CONSTRAINT `fk_need_posted_user_id` FOREIGN KEY (`posted_user_id`) REFERENCES `logged_user` (`id`),
   CONSTRAINT `fk_need_severity_id` FOREIGN KEY (`severity_id`) REFERENCES `severity` (`id`),
   CONSTRAINT `fk_need_verification_team_id` FOREIGN KEY (`verification_team_id`) REFERENCES `verification_team` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Need entity @author Balagopal v';
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8 COMMENT='Need entity @author Balagopal v';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -469,7 +470,7 @@ CREATE TABLE `severity` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `severity_level` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='@Author Anjali';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='@Author Anjali';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -498,9 +499,9 @@ CREATE TABLE `user_check` (
   PRIMARY KEY (`id`),
   KEY `fk_user_check_checked_need_id` (`checked_need_id`),
   KEY `fk_user_check_checked_user_id` (`checked_user_id`),
-  CONSTRAINT `fk_user_check_checked_user_id` FOREIGN KEY (`checked_user_id`) REFERENCES `logged_user` (`id`),
-  CONSTRAINT `fk_user_check_checked_need_id` FOREIGN KEY (`checked_need_id`) REFERENCES `need` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='UserCheck entity @author Deepthi E';
+  CONSTRAINT `fk_user_check_checked_need_id` FOREIGN KEY (`checked_need_id`) REFERENCES `need` (`id`),
+  CONSTRAINT `fk_user_check_checked_user_id` FOREIGN KEY (`checked_user_id`) REFERENCES `logged_user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='UserCheck entity @author Deepthi E';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -509,7 +510,7 @@ CREATE TABLE `user_check` (
 
 LOCK TABLES `user_check` WRITE;
 /*!40000 ALTER TABLE `user_check` DISABLE KEYS */;
-INSERT INTO `user_check` VALUES (1,'suspendisse potenti','ridiculus mus',NULL),(2,'eget massa','justo lacinia',NULL),(3,'mus vivamus','aenean lectus',NULL),(4,'libero nullam','vestibulum vestibulum',NULL),(5,'sapien a','nam dui',NULL),(6,'odio justo','sit amet',NULL),(7,'quisque ut','lacus at',NULL),(8,'nullam orci','sem duis',NULL),(9,'sem praesent','quis turpis',NULL),(10,'cubilia curae','libero rutrum',NULL);
+INSERT INTO `user_check` VALUES (1,'postive','genuiness',1,NULL),(2,'postive','genuiness',2,NULL),(3,'negative','genuiness',3,NULL);
 /*!40000 ALTER TABLE `user_check` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -524,7 +525,7 @@ CREATE TABLE `verification_team` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `approval_level` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='@Author Sarangi Balu';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='@Author Sarangi Balu';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -572,4 +573,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-03 14:20:39
+-- Dump completed on 2018-10-15 14:23:28

@@ -8,7 +8,8 @@ import java.util.Objects;
  */
 public class UserCheckDTO implements Serializable {
 
-    private Long id;
+    
+	private Long id;
 
     private String voteType;
 
@@ -17,6 +18,8 @@ public class UserCheckDTO implements Serializable {
     private Long checkedNeedId;
 
     private Long checkedUserId;
+    
+    private Boolean isGenuine;
 
     public Long getId() {
         return id;
@@ -25,8 +28,8 @@ public class UserCheckDTO implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public String getVoteType() {
+  
+	public String getVoteType() {
         return voteType;
     }
 
@@ -89,4 +92,19 @@ public class UserCheckDTO implements Serializable {
             ", checkedUser=" + getCheckedUserId() +
             "}";
     }
+    
+    /**
+   	 * @return the isGenuine
+   	 */
+   	public Boolean getIsGenuine() {
+   		return isGenuine;
+   	}
+
+   	/**
+   	 * @param isGenuine the isGenuine to set
+   	 */
+   	public void setIsGenuine(Boolean isGenuine) {
+   		this.isGenuine = isGenuine;
+   	}
+
 }

@@ -123,4 +123,53 @@ public class UserCheckResource {
         userCheckService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+    
+    /**
+     * POST  /user-checks : checking the genuineness.
+     *
+     * @param userCheckDTO the userCheckDTO to create
+     * 
+     * @param voteType the voteType of the userCheckDto
+     * 
+     * @return the ResponseEntity with status 201 (Created) and with body the new userCheckDTO, or with status 400 (Bad Request) if the userCheck has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping("/user-checks/markingGenuinenes")
+    @Timed
+    public ResponseEntity<UserCheckDTO> markingGenuinenes(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException {
+        log.debug("REST request to save UserCheck : {}", userCheckDTO);
+        
+        UserCheckDTO result=null;
+        
+        UserCheckDTO usrCheckDtoObject=userCheckService.findByCategoryAndCheckedNeedIdAndCheckedUserId(userCheckDTO.getCategory(),userCheckDTO.getCheckedNeedId(),userCheckDTO.getCheckedUserId()).orElse(null);
+       
+       if((userCheckDTO.getIsGenuine()==true) && (usrCheckDtoObject==null))
+        {
+        	userCheckDTO.setVoteType("postive");
+        	result = userCheckService.save(userCheckDTO);
+        }
+        	        	
+       else if((userCheckDTO.getIsGenuine()==true) && (usrCheckDtoObject!=null))
+        {
+    	   usrCheckDtoObject.setVoteType("postive");
+           result=userCheckService.save(usrCheckDtoObject);
+        }
+        
+       else if((userCheckDTO.getIsGenuine()==false) && (usrCheckDtoObject==null))
+        {
+    	   userCheckDTO.setVoteType("negative");
+           result=userCheckService.save(userCheckDTO);
+        }
+        
+       else
+        {
+   	       usrCheckDtoObject.setVoteType("negative");
+           result=userCheckService.save(usrCheckDtoObject);
+        } 
+        
+                    
+        return ResponseEntity.created(new URI("/api/user-checks/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+        }
 }

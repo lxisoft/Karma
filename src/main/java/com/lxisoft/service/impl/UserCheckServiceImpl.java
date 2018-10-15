@@ -86,4 +86,21 @@ public class UserCheckServiceImpl implements UserCheckService {
         log.debug("Request to delete UserCheck : {}", id);
         userCheckRepository.deleteById(id);
     }
+    
+    /**
+     * Get one userCheck by Category,CheckedNeedId,CheckedUserId.
+     *
+     * @param Category the Category of the entity
+     * 
+     * @param CheckedNeedId the CheckedNeedId of the entity
+     * 
+     * @param CheckedUserId the CheckedUserId of the entity
+     * 
+     * @return the entity
+     */
+    public Optional<UserCheckDTO> findByCategoryAndCheckedNeedIdAndCheckedUserId(String category,Long checkedNeedId, Long checkedUserId){
+    	return userCheckRepository.findByCategoryAndCheckedNeedIdAndCheckedUserId(category,checkedNeedId,checkedUserId)
+    			.map(userCheckMapper::toDto);
+    	
+    }
 }
