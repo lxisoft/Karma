@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.io.Serializable;
 import java.util.Objects;
 
+import org.springframework.web.multipart.MultipartFile;
+
 /**
  * A DTO for the LoggedUser entity.
  */
@@ -23,15 +25,25 @@ public class LoggedUserDTO implements Serializable {
 
     private String profession;
 
-    private String gender;
+	private String gender;
 
     private LocalDate dob;
 
     private String bloodGroup;
 
     private Long profilePicId;
+    
+    private MultipartFile file;
 
-    public Long getId() {
+    public MultipartFile getFile() {
+		return file;
+	}
+
+	public void setFile(MultipartFile file) {
+		this.file = file;
+	}
+
+	public Long getId() {
         return id;
     }
 

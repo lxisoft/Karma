@@ -1,90 +1,108 @@
-/*
- * Copyright 2002-2016 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.lxisoft.web;
+import com.codahale.metrics.annotation.Timed;
+import com.lxisoft.service.LoggedUserService;
+import com.lxisoft.service.MediaService;
+import com.lxisoft.web.rest.errors.BadRequestAlertException;
+import com.lxisoft.web.rest.util.HeaderUtil;
+import com.lxisoft.web.rest.util.PaginationUtil;
+import com.lxisoft.service.dto.ApprovalStatusDTO;
+import com.lxisoft.service.dto.HelpDTO;
+import com.lxisoft.service.dto.LoggedUserDTO;
+import com.lxisoft.service.dto.MediaDTO;
+import com.lxisoft.service.dto.NeedDTO;
 
-
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import io.github.jhipster.web.util.ResponseUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.List;
+import java.util.Optional;
 
-
-import com.codahale.metrics.annotation.Timed;
-import com.lxisoft.service.LoggedUserService;
-import com.lxisoft.service.dto.LoggedUserDTO;
-
-import com.lxisoft.web.rest.LoggedUserResource;
-import com.lxisoft.web.rest.errors.BadRequestAlertException;
-
+import javax.servlet.MultipartConfigElement;
 
 /**
- * TODO Provide a detailed description here 
- * @author Sarangi Balu
- * sarangibalu, sarangibalu.a@lxisoft.com
+ * Controller for managing LoggedUser.
  */
-
 @Controller
 public class LoggedUserController {
-	
-	private final Logger log = LoggerFactory.getLogger(LoggedUserResource.class);
+
+    private final Logger log = LoggerFactory.getLogger(LoggedUserController.class);
 
     private static final String ENTITY_NAME = "karmaLoggedUser";
 
     private final LoggedUserService loggedUserService;
-
+    
+    @Value("${upload.path}")
+    private String path;
+    
+   // private final Path pathLocation=Paths.get("uploadedfiles");
+    
+    @Autowired
+    MediaService mediaService;
+    
     public LoggedUserController(LoggedUserService loggedUserService) {
         this.loggedUserService = loggedUserService;
     }
-    
+
     /**
      * POST  /logged-users : Create a new loggedUser.
      *
      * @param loggedUserDTO the loggedUserDTO to create
-     * 
-     * @return the String value
-     * 
-	 * @throws URISyntaxException
-	 *             if the Location URI syntax is incorrect
+     * @return the ResponseEntity with status 201 (Created) and with body the new loggedUserDTO, or with status 400 (Bad Request) if the loggedUser has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @throws IOException 
      */
     @PostMapping("/logged-users")
     @Timed
-    public String createLoggedUser(@ModelAttribute LoggedUserDTO loggedUserDTO,Model model) throws URISyntaxException {
-        log.debug("request to save LoggedUser : {}", loggedUserDTO);
+    public String createLoggedUser(@ModelAttribute LoggedUserDTO loggedUserDTO,@RequestParam MultipartFile file,Model model) throws URISyntaxException, IOException {
+       
+    System.out.println("heloooo");
+    	log.debug("request to save LoggedUser : {}", loggedUserDTO);
+    	
+    	 MediaDTO mediaDTO=new MediaDTO();
+    	 
+    	 mediaDTO.setFile(file);
+         
+    	 mediaService.save(mediaDTO);
         
-        if (loggedUserDTO.getId() != null) {
-            throw new BadRequestAlertException("A new loggedUser cannot already have an ID", ENTITY_NAME, "idexists");
-        }
+      
+        Optional<MediaDTO> mediaDto=mediaService.findByFileName(file.getOriginalFilename());
         
-        LoggedUserDTO loggedUserDto = loggedUserService.save(loggedUserDTO);
+        Long mediaId=mediaDto.get().getId();
+        loggedUserDTO.setProfilePicId(mediaId);
+        log.info("*************{}",mediaId);
+       
+        loggedUserService.save(loggedUserDTO);
         
-        model.addAttribute("loggedUser", loggedUserDto);
-        
+       model.addAttribute("loggedUserDTO",loggedUserDTO);
+       model.addAttribute("file",file);
+          
+       // LoggedUserDTO result = loggedUserService.save(loggedUserDTO);
         return "home";
     }
 
@@ -92,21 +110,22 @@ public class LoggedUserController {
      * PUT  /logged-users : Updates an existing loggedUser.
      *
      * @param loggedUserDTO the loggedUserDTO to update
-     * @return the String value.
+     * @return the ResponseEntity with status 200 (OK) and with body the updated loggedUserDTO,
+     * or with status 400 (Bad Request) if the loggedUserDTO is not valid,
+     * or with status 500 (Internal Server Error) if the loggedUserDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/logged-users")
     @Timed
-    public String updateLoggedUser(@ModelAttribute LoggedUserDTO loggedUserDTO,Model model) throws URISyntaxException {
-        log.debug("request to update LoggedUser : {}", loggedUserDTO);
+    public ResponseEntity<LoggedUserDTO> updateLoggedUser(@RequestBody LoggedUserDTO loggedUserDTO) throws URISyntaxException {
+        log.debug("REST request to update LoggedUser : {}", loggedUserDTO);
         if (loggedUserDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        LoggedUserDTO loggedUserDto = loggedUserService.save(loggedUserDTO);
-        
-        model.addAttribute("loggedUser", loggedUserDto);
-        
-        return "home";
+        LoggedUserDTO result = loggedUserService.save(loggedUserDTO);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, loggedUserDTO.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -117,14 +136,11 @@ public class LoggedUserController {
      */
     @GetMapping("/logged-users")
     @Timed
-    public String getAllLoggedUsers(Pageable pageable,Model model) {
-        log.debug("request to get a page of LoggedUsers");
+    public ResponseEntity<List<LoggedUserDTO>> getAllLoggedUsers(Pageable pageable) {
+        log.debug("REST request to get a page of LoggedUsers");
         Page<LoggedUserDTO> page = loggedUserService.findAll(pageable);
-        
-        List<LoggedUserDTO> loggedUsers = page.getContent();
-		model.addAttribute("loggedUsers", loggedUsers);
-        
-        return "home";
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/logged-users");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
@@ -135,39 +151,37 @@ public class LoggedUserController {
      */
     @GetMapping("/logged-users/{id}")
     @Timed
-    public String getLoggedUser(@PathVariable Long id,Model model) {
-        log.debug("request to get LoggedUser : {}", id);
+    public ResponseEntity<LoggedUserDTO> getLoggedUser(@PathVariable Long id) {
+        log.debug("REST request to get LoggedUser : {}", id);
         Optional<LoggedUserDTO> loggedUserDTO = loggedUserService.findOne(id);
-        
-        model.addAttribute("loggedUser", loggedUserDTO);
-        
-        return "home";
+        return ResponseUtil.wrapOrNotFound(loggedUserDTO);
     }
 
-   
-    
     /**
-     * GET  /logged-users/:id : get the "id" loggedUser.
+     * DELETE  /logged-users/:id : delete the "id" loggedUser.
      *
-     * @param id the id of the loggedUserDTO rating to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the loggedUserDTO, or with status 404 (Not Found)
+     * @param id the id of the loggedUserDTO to delete
+     * @return the ResponseEntity with status 200 (OK)
      */
-    
-    @GetMapping("/logged-users/updateLoggedUserRatingById/{id}")
+    @DeleteMapping("/logged-users/{id}")
     @Timed
-    public String updateLoggedUserRatingById(@PathVariable Long id,Model model) {
-        log.debug("REST request to rate LoggedUser : {}", id);
-        LoggedUserDTO loggedUserDTO = loggedUserService.findOne(id).orElse(null); 
-        
-        Long rating=1l;
-        if(loggedUserDTO.getRating()==null)
-        	loggedUserDTO.setRating(rating);	
-        else
-        	loggedUserDTO.setRating((loggedUserDTO.getRating())+1);
-        
-    	loggedUserDTO = loggedUserService.save(loggedUserDTO);
-        return "home";
+    public ResponseEntity<Void> deleteLoggedUser(@PathVariable Long id) {
+        log.debug("REST request to delete LoggedUser : {}", id);
+        loggedUserService.delete(id);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-
+    
+    
+    /*
+     * test
+     */
+    @GetMapping("/registration")
+	public String showDetails(Model model){
+		
+		//model.addAttribute("car", new Car());
+		return "registration-form";
+	}
+	
+    
+    
 }

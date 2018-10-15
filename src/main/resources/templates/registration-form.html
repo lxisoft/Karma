@@ -41,7 +41,7 @@
     <div class="card-body px-lg-5 pt-0">
 
         <!-- Form -->
-        <form class="text-center" style="color: #757575;" th:action="@{/logged-users}" th:object="${loggedUser}" th:method="post" enctype="multipart/form-data">
+        <form class="text-center" style="color: #757575;" th:action="@{/logged-users}" th:object="${loggedUserDTO}" th:method="post" enctype="multipart/form-data">
 
             <div class="form-row">
                 <div class="col">
@@ -62,7 +62,7 @@
 
             <!-- E-mail -->
             <div class="md-form mt-0">
-                <input type="email" id="materialRegisterFormEmail" class="form-control">
+                <input type="email" id="materialRegisterFormEmail" name="email" class="form-control">
                 <label for="materialRegisterFormEmail">E-mail</label>
             </div>
 
@@ -82,12 +82,12 @@
     		 <div class="file-field">
         <div class="btn btn-primary btn-sm float-left">
             <span>Choose file</span>
-            <input type="file">
+            <input type="file" name="file">
         </div>
         <div class="file-path-wrapper">
             <input class="file-path validate" type="text" placeholder="Upload your file">
         </div>
-    </div>
+    	</div>
     	</div>
             </div>
 

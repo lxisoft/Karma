@@ -1,4 +1,4 @@
-package com.lxisoft.web.rest;
+package com.lxisoft.web;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.service.MediaService;
@@ -14,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -24,19 +26,18 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * REST controller for managing Media.
+ * controller for managing Media.
  */
-@RestController
-@RequestMapping("/api")
-public class MediaResource {
+@Controller
+public class MediaController {
 
-    private final Logger log = LoggerFactory.getLogger(MediaResource.class);
+    private final Logger log = LoggerFactory.getLogger(MediaController.class);
 
     private static final String ENTITY_NAME = "karmaMedia";
 
     private final MediaService mediaService;
 
-    public MediaResource(MediaService mediaService) {
+    public MediaController(MediaService mediaService) {
         this.mediaService = mediaService;
     }
 
@@ -128,15 +129,17 @@ public class MediaResource {
     }
     
     /**
-     *
-     * @param fileName the id of the mediaDTO to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the mediaDTO, or with status 404 (Not Found)
-     */
-    @GetMapping("/media/getMedia/{fileName}")
-    @Timed
-    public ResponseEntity<MediaDTO> getMedia(@PathVariable String fileName) {
-        log.debug("REST request to get Media : {}", fileName);
-        Optional<MediaDTO> mediaDTO = mediaService.findByFileName(fileName);
-        return ResponseUtil.wrapOrNotFound(mediaDTO);
-    }
+    *
+    * @param fileName the id of the mediaDTO to retrieve
+    * @return the ResponseEntity with status 200 (OK) and with body the mediaDTO, or with status 404 (Not Found)
+    */
+   @GetMapping("/media/getMedia/{fileName}")
+   @Timed
+   public String getMedia(@PathVariable String fileName,Model model) {
+       log.debug("REST request to get Media : {}", fileName);
+       Optional<MediaDTO> mediaDTO = mediaService.findByFileName(fileName);
+       
+       model.addAttribute("media",mediaDTO);
+       return "home";
+   }
 }
