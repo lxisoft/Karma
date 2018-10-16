@@ -75,8 +75,6 @@ spring:
             enabled: false
     thymeleaf:
         mode: HTML
-        
-           
 
 # ===================================================================
 # OpenID Connect Settings. Default settings are for Keycloak in Docker.
@@ -100,14 +98,21 @@ spring:
 security:
     oauth2:
         client:
-            access-token-uri: https://kcnew.bytatech.com:8443/auth/realms/ayoos/protocol/openid-connect/token
-            user-authorization-uri: https://kcnew.bytatech.com:8443/auth/realms/ayoos/protocol/openid-connect/auth
-            client-id: account
-            client-secret: 362c5924-9d6c-4f9b-a418-369dcba56b1a
-            scope: openid profile email
+            #access-token-uri: https://kcnew.bytatech.com:8443/auth/realms/ayoos/protocol/openid-connect/token
+            #user-authorization-uri: https://kcnew.bytatech.com:8443/auth/realms/ayoos/protocol/openid-connect/auth
+            #client-id: account
+            #client-secret: 362c5924-9d6c-4f9b-a418-369dcba56b1a
+            #scope: openid profile email
+        #resource:
+            #user-info-uri: https://kcnew.bytatech.com:8443/auth/realms/ayoos/protocol/openid-connect/userinfo
+            access-token-uri: https://graph.facebook.com/v3.1/oauth/access_token
+            user-authorization-uri: https://graph.facebook.com/v3.1/dialog/oauth
+            client-id: 238416377027972
+            client-secret: 325037883fdba60c339ada08c1fb38e5
+            #scope: openid profile email
+            clientAuthenticationScheme: form
         resource:
-            user-info-uri: https://kcnew.bytatech.com:8443/auth/realms/ayoos/protocol/openid-connect/userinfo
-
+            user-info-uri: https://graph.facebook.com/v3.1/me
 server:
     servlet:
         
@@ -156,8 +161,6 @@ jhipster:
 logging:
     file: target/karma.log
 
-
-
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class
@@ -168,5 +171,3 @@ logging:
 # ===================================================================
 
 # application:
-
-upload.path: src/main/resources/static/uploadedfiles/

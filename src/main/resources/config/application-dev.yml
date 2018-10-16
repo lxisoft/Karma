@@ -75,6 +75,12 @@ spring:
 
 server:
     port: 8081
+    ssl:
+      key-alias: selfsigned_localhost_ssl
+      key-password: password
+      key-store: classpath:selfsigned-localhost-ssl.jks
+      key-store-provider: SUN
+      key-store-type: JKS
 
 # ===================================================================
 # JHipster specific properties
