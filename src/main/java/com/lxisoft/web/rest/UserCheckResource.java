@@ -125,6 +125,21 @@ public class UserCheckResource {
     }
     
     /**
+     * GET  /user-checks : get all the userChecks.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of userChecks in body
+     */
+    @GetMapping("/user-checks/getAllUserChecksByCheckedNeedId/{checkedNeedId}")
+    @Timed
+    public ResponseEntity<List<UserCheckDTO>> getAllUserChecksByCheckedNeedId(Pageable pageable,@PathVariable Long checkedNeedId) {
+        log.debug("REST request to get a page of UserChecks");
+        Page<UserCheckDTO> page = userCheckService.findAllUserChecksByCheckedNeedId(pageable,checkedNeedId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/user-checks");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }   
+    
+    /**
      * POST  /user-checks : checking the genuineness.
      *
      * @param userCheckDTO the userCheckDTO to create

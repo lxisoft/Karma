@@ -34,6 +34,8 @@ public class NeedDTO implements Serializable {
 	private String dateInString;
 
     private Long postedUserId;
+    
+	private Long percentageOfGenuineness;
 
     public Long getId() {
         return id;
@@ -183,5 +185,21 @@ public class NeedDTO implements Serializable {
 	public void setDateInString(String dateInString) {
 		this.dateInString = dateInString;
 	}
+	
+	 /**
+	  * @return the percentageOfGenuineness
+	  */
+	public Long getPercentageOfGenuineness() {
+			return percentageOfGenuineness;
+	}
+
+	/**
+	 * @param percentageOfGenuineness the percentageOfGenuineness to set
+	 */
+		
+	public void setPercentageOfGenuineness(Long percentageOfGenuineness) {
+			this.percentageOfGenuineness = percentageOfGenuineness;
+	}
+
 
 }

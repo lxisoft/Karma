@@ -56,4 +56,11 @@ public interface UserCheckService {
      * @return the entity
      */
     Optional<UserCheckDTO> findByCategoryAndCheckedNeedIdAndCheckedUserId(String category,Long checkedNeedId,Long checkedUserId);
+
+	/**
+	 * @param pageable
+	 * @param checkedNeedId
+	 * @return
+	 */
+	Page<UserCheckDTO> findAllUserChecksByCheckedNeedId(Pageable pageable, Long checkedNeedId);
 }

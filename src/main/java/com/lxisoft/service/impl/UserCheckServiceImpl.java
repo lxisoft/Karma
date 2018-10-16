@@ -103,4 +103,21 @@ public class UserCheckServiceImpl implements UserCheckService {
     			.map(userCheckMapper::toDto);
     	
     }
+
+    /**
+     * Get all the userChecks by checkedNeedId.
+     *
+     * @param pageable the pagination information
+     * 
+     * @return the list of entities
+     */
+	@Override
+	public Page<UserCheckDTO> findAllUserChecksByCheckedNeedId(Pageable pageable, Long checkedNeedId) {
+		
+	        log.debug("Request to get all UserChecks");
+	        return userCheckRepository.findAllUserChecksByCheckedNeedId(pageable)
+	            .map(userCheckMapper::toDto);
+	    }
+
+	
 }

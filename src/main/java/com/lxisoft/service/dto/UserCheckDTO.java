@@ -20,7 +20,7 @@ public class UserCheckDTO implements Serializable {
     private Long checkedUserId;
     
     private Boolean isGenuine;
-
+    
     public Long getId() {
         return id;
     }

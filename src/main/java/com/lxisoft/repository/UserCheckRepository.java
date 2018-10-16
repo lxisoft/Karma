@@ -1,6 +1,10 @@
 package com.lxisoft.repository;
 
 import com.lxisoft.domain.UserCheck;
+import com.lxisoft.service.dto.UserCheckDTO;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;
@@ -13,5 +17,11 @@ import java.util.Optional;
 public interface UserCheckRepository extends JpaRepository<UserCheck, Long> {
 	
 	Optional<UserCheck> findByCategoryAndCheckedNeedIdAndCheckedUserId(String category,Long checkedNeedId,Long checkedUserId);
+
+	/**
+	 * @param pageable
+	 * @return
+	 */
+	Page<UserCheck> findAllUserChecksByCheckedNeedId(Pageable pageable);
 
 }
