@@ -89,8 +89,9 @@ public class LoggedUserController {
     	 mediaDTO.setFile(file);
          
     	 mediaService.save(mediaDTO);
-         
-    	 Optional<MediaDTO> mediaDto=mediaService.findByFileName(file.getOriginalFilename());
+        
+      
+        Optional<MediaDTO> mediaDto=mediaService.findByFileName(file.getOriginalFilename());
         
         Long mediaId=mediaDto.get().getId();
         loggedUserDTO.setProfilePicId(mediaId);
@@ -98,8 +99,8 @@ public class LoggedUserController {
        
         loggedUserService.save(loggedUserDTO);
         
-        model.addAttribute("loggedUserDTO",loggedUserDTO);
-        model.addAttribute("file",file);
+       model.addAttribute("loggedUserDTO",loggedUserDTO);
+       model.addAttribute("file",file);
           
        // LoggedUserDTO result = loggedUserService.save(loggedUserDTO);
         return "home";
