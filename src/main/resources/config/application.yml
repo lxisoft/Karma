@@ -171,3 +171,6 @@ logging:
 # ===================================================================
 
 # application:
+
+
+upload.path: src/main/resources/static/uploadedfiles/
