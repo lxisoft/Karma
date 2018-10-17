@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -53,5 +54,14 @@ public interface MediaService {
      * @return the entity
      */
     Optional<MediaDTO> findByFileName(String fileName);
+
+
+    /**
+     * Get all the media.
+     *
+     * @param needId of the media
+     * @return the list of entities
+     */
+    Page<MediaDTO> findAllUrlByNeedId(Long needId,Pageable pageable);
 
 }

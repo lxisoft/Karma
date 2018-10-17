@@ -209,6 +209,29 @@ public class NeedController {
 			page = needService.findAll(pageable);
 		}
 		List<NeedDTO> needs = page.getContent();
+		
+		for(NeedDTO need:needs){
+			
+			List<String> fileNameList=need.getFileNameList();
+			//Page<MediaDTO> media=mediaService.findAllUrlByNeedId(need.getId(), pageable);
+			
+			log.info("*********need");
+			
+			//List<MediaDTO> mediaDtoList=(List<MediaDTO>) mediaService.findAllUrlByNeedId(need.getId(), pageable);
+	
+			Page<MediaDTO> mediaList=mediaService.findAllUrlByNeedId(need.getId(), pageable);
+			
+			List<MediaDTO> mediaDtoList=mediaList.getContent();
+			
+			for(MediaDTO media:mediaDtoList){
+				
+				String mediaUrl=media.getUrl();
+				fileNameList.add(mediaUrl);
+				log.info("*********media url{}",mediaUrl);
+			
+			}
+		}
+		
 		model.addAttribute("needs", needs);
 		return "home";
 

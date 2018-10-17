@@ -29,7 +29,7 @@
 			<div class="col-sm-3"></div>
 			<div class="col-sm-6">
 				<!-- Default form contact -->
-				<form class="text-center border border-light p-5" th:action="@{/needs}" th:object="${need}" th:method="post">
+				<form class="text-center border border-light p-5" th:action="@{/needs}" th:object="${need}" th:method="post" enctype="multipart/form-data">
 
 					<p class="h4 mb-4 text-info">Help request</p>
 
@@ -67,7 +67,7 @@
     		 <div class="file-field">
         <div class="btn btn-primary btn-sm float-left">
             <span>Choose file</span>
-            <input type="file" name="file" multiple>
+            <input type="file" name="files" multiple>
         </div>
         <div class="file-path-wrapper">
             <input class="file-path validate" type="text" placeholder="Upload your file">

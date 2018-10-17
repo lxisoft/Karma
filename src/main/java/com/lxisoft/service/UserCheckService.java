@@ -43,17 +43,4 @@ public interface UserCheckService {
      * @param id the id of the entity
      */
     void delete(Long id);
-    
-    /**
-     * Get one userCheck by Category,CheckedNeedId,CheckedUserId.
-     *
-     * @param Category the Category of the entity
-     * 
-     * @param CheckedNeedId the CheckedNeedId of the entity
-     * 
-     * @param CheckedUserId the CheckedUserId of the entity
-     * 
-     * @return the entity
-     */
-    Optional<UserCheckDTO> findByCategoryAndCheckedNeedIdAndCheckedUserId(String category,Long checkedNeedId,Long checkedUserId);
 }

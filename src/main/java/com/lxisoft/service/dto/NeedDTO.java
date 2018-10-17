@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.Objects;
 
 /**
@@ -34,8 +37,28 @@ public class NeedDTO implements Serializable {
 	private String dateInString;
 
     private Long postedUserId;
+    
+    private MultipartFile[] files;
+    
+    private List<String> fileNameList=new ArrayList<>();
 
-    public Long getId() {
+    public List<String> getFileNameList() {
+		return fileNameList;
+	}
+
+	public void setFileNameList(List<String> fileNameList) {
+		this.fileNameList = fileNameList;
+	}
+
+	public MultipartFile[] getFiles() {
+		return files;
+	}
+
+	public void setFiles(MultipartFile[] files) {
+		this.files = files;
+	}
+
+	public Long getId() {
         return id;
     }
 

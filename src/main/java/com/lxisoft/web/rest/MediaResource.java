@@ -139,4 +139,18 @@ public class MediaResource {
         Optional<MediaDTO> mediaDTO = mediaService.findByFileName(fileName);
         return ResponseUtil.wrapOrNotFound(mediaDTO);
     }
+    
+    /**
+    *
+    * @param needId the id of the mediaDTO to retrieve
+    * @return the ResponseEntity with status 200 (OK) and with body the mediaDTO, or with status 404 (Not Found)
+    */
+   @GetMapping("/media/getAllUrlByNeedId/{needId}")
+   @Timed
+   public ResponseEntity<List<MediaDTO>> getAllUrlByNeedId(@PathVariable Long needId,Pageable pageable) {
+       log.debug("REST request to get a page of Media{}",needId);
+       Page<MediaDTO> page = mediaService.findAllUrlByNeedId(needId,pageable);
+       HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getAllUrlByNeedId");
+       return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+   }
 }

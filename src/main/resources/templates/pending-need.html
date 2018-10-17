@@ -86,20 +86,7 @@
 				<div class="row my-4">
 					<div class="card" style="width: 75%">
 						<div class="card-body">
-	                        <div class="btn-group dropleft">
-                            <i class="fa fa-ellipsis-v" data-toggle="dropdown" aria-haspopup="true" aria-hidden="true"
-                            aria-expanded="false">
-                            <span class="sr-only">Toggle Dropdown</span>
-                            </i>
-                            
-                           <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>                          
-                          </div>
-                           
-                         </div>					
-                 			<h4 class="card-title text-info">Need help</h4>
+							<h4 class="card-title text-info">Need help</h4>
 							<h5 class="card-title text-info"
 								th:unless="${#lists.isEmpty(need.categories)}"
 								th:text="'category: '+${need.categories[0].name}+'-'+${need.categories[0].subCategory}">Need

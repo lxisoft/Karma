@@ -139,7 +139,20 @@ public class MediaServiceImpl implements MediaService {
     	 log.debug("Request to get Media : {}", fileName);
          return mediaRepository.findByFileName(fileName)
              .map(mediaMapper::toDto);
-     
-    	
     }
+
+
+    /**
+     * Get all the media by needId.
+     *
+     * @param needId of the media
+     * @return the list of entities
+     */
+	@Override
+	public Page<MediaDTO> findAllUrlByNeedId(Long needId,Pageable pageable) {
+		// TODO Auto-generated method stub
+		return mediaRepository.findAllUrlByNeedId(needId,pageable)
+				.map(mediaMapper::toDto);
+	}
+
 }

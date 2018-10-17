@@ -1,7 +1,9 @@
 package com.lxisoft.service.impl;
 
 import com.lxisoft.service.ApprovalStatusService;
+import com.lxisoft.service.MediaService;
 import com.lxisoft.service.NeedService;
+import com.lxisoft.domain.Media;
 import com.lxisoft.domain.Need;
 import com.lxisoft.repository.NeedRepository;
 import com.lxisoft.service.dto.NeedDTO;
@@ -9,12 +11,22 @@ import com.lxisoft.service.mapper.NeedMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Service Implementation for managing Need.
@@ -29,9 +41,12 @@ public class NeedServiceImpl implements NeedService {
 
     private final NeedMapper needMapper;
     
+    @Value("${upload.path}")
+    private String path;
+    
     @Autowired
     ApprovalStatusService approvalStatusService;
-
+    
     public NeedServiceImpl(NeedRepository needRepository, NeedMapper needMapper) {
         this.needRepository = needRepository;
         this.needMapper = needMapper;
@@ -42,11 +57,33 @@ public class NeedServiceImpl implements NeedService {
      *
      * @param needDTO the entity to save
      * @return the persisted entity
+     * @throws IOException 
      */
     @Override
-    public NeedDTO save(NeedDTO needDTO) {
+    public NeedDTO save(NeedDTO needDTO) throws IOException {
         log.debug("Request to save Need : {}", needDTO);
+        		
+		if (needDTO.getFiles() != null && needDTO.getFiles().length > 0) {
+            for (MultipartFile aFile : needDTO.getFiles()){
+                 
+                System.out.println("Saving file: " + aFile.getOriginalFilename());
+               	
+                	if (!aFile.isEmpty()) {
+                    	
+                        String fileName = aFile.getOriginalFilename();
+                        InputStream is = aFile.getInputStream();
+                        
+                        Files.copy(is, Paths.get(path+fileName),
+                               StandardCopyOption.REPLACE_EXISTING);                   
+                    }    
+                
+            }
+        }
+
+		
         Need need = needMapper.toEntity(needDTO);
+       // Set<Media> proofs = need.getProofs();
+        
         need = needRepository.save(need);
         return needMapper.toDto(need);
     }
@@ -61,6 +98,8 @@ public class NeedServiceImpl implements NeedService {
     @Transactional(readOnly = true)
     public Page<NeedDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Needs");
+        
+        log.debug("*********findall need");
         return needRepository.findAll(pageable)
             .map(needMapper::toDto);
     }
