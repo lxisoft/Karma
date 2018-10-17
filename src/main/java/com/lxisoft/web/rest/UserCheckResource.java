@@ -123,4 +123,68 @@ public class UserCheckResource {
         userCheckService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+    
+    /**
+     * GET  /user-checks : get all the userChecks.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of userChecks in body
+     */
+    @GetMapping("/user-checks/getAllUserChecksByCheckedNeedId/{checkedNeedId}")
+    @Timed
+    public ResponseEntity<List<UserCheckDTO>> getAllUserChecksByCheckedNeedId(Pageable pageable,@PathVariable Long checkedNeedId) {
+        log.debug("REST request to get a page of UserChecks");
+        Page<UserCheckDTO> page = userCheckService.findAllUserChecksByCheckedNeedId(pageable,checkedNeedId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/user-checks");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }   
+    
+    /**
+     * POST  /user-checks : checking the genuineness.
+     *
+     * @param userCheckDTO the userCheckDTO to create
+     * 
+     * @param voteType the voteType of the userCheckDto
+     * 
+     * @return the ResponseEntity with status 201 (Created) and with body the new userCheckDTO, or with status 400 (Bad Request) if the userCheck has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping("/user-checks/markingGenuinenes")
+    @Timed
+    public ResponseEntity<UserCheckDTO> markingGenuinenes(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException {
+        log.debug("REST request to save UserCheck : {}", userCheckDTO);
+        
+        UserCheckDTO result=null;
+        
+        UserCheckDTO usrCheckDtoObject=userCheckService.findByCategoryAndCheckedNeedIdAndCheckedUserId(userCheckDTO.getCategory(),userCheckDTO.getCheckedNeedId(),userCheckDTO.getCheckedUserId()).orElse(null);
+       
+       if((userCheckDTO.getIsGenuine()==true) && (usrCheckDtoObject==null))
+        {
+        	userCheckDTO.setVoteType("postive");
+        	result = userCheckService.save(userCheckDTO);
+        }
+        	        	
+       else if((userCheckDTO.getIsGenuine()==true) && (usrCheckDtoObject!=null))
+        {
+    	   usrCheckDtoObject.setVoteType("postive");
+           result=userCheckService.save(usrCheckDtoObject);
+        }
+        
+       else if((userCheckDTO.getIsGenuine()==false) && (usrCheckDtoObject==null))
+        {
+    	   userCheckDTO.setVoteType("negative");
+           result=userCheckService.save(userCheckDTO);
+        }
+        
+       else
+        {
+   	       usrCheckDtoObject.setVoteType("negative");
+           result=userCheckService.save(usrCheckDtoObject);
+        } 
+        
+                    
+        return ResponseEntity.created(new URI("/api/user-checks/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+        }
 }

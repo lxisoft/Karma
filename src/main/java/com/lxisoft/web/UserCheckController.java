@@ -16,12 +16,19 @@
 package com.lxisoft.web;
 
 import java.net.URISyntaxException;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +38,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.service.UserCheckService;
 import com.lxisoft.service.dto.UserCheckDTO;
 import com.lxisoft.web.rest.errors.BadRequestAlertException;
+import com.lxisoft.web.rest.util.PaginationUtil;
 
 /**
  * TODO Provide a detailed description here 
@@ -137,6 +145,25 @@ public class UserCheckController {
         
        
         }
+    
+    
+    /**
+     * GET  /user-checks : get all the userChecks.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of userChecks in body
+     */
+    @GetMapping("/user-checks/getAllUserChecksByCheckedNeedId/{checkedNeedId}")
+    @Timed
+    public String getAllUserChecksByCheckedNeedId(Pageable pageable,@PathVariable Long checkedNeedId,Model model) {
+        log.debug("REST request to get a page of UserChecks");
+        
+        Page<UserCheckDTO> page = userCheckService.findAllUserChecksByCheckedNeedId(pageable,checkedNeedId);
+        
+        model.addAttribute("userCheck",page);
+        
+        return "home";
+    }   
 	
 
 }

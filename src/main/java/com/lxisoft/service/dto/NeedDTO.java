@@ -41,6 +41,8 @@ public class NeedDTO implements Serializable {
     private MultipartFile[] files;
     
     private List<String> fileNameList=new ArrayList<>();
+	
+	private Long percentageOfGenuineness;
 
     public List<String> getFileNameList() {
 		return fileNameList;
@@ -57,7 +59,7 @@ public class NeedDTO implements Serializable {
 	public void setFiles(MultipartFile[] files) {
 		this.files = files;
 	}
-
+	
 	public Long getId() {
         return id;
     }
@@ -206,5 +208,21 @@ public class NeedDTO implements Serializable {
 	public void setDateInString(String dateInString) {
 		this.dateInString = dateInString;
 	}
+	
+	 /**
+	  * @return the percentageOfGenuineness
+	  */
+	public Long getPercentageOfGenuineness() {
+			return percentageOfGenuineness;
+	}
+
+	/**
+	 * @param percentageOfGenuineness the percentageOfGenuineness to set
+	 */
+		
+	public void setPercentageOfGenuineness(Long percentageOfGenuineness) {
+			this.percentageOfGenuineness = percentageOfGenuineness;
+	}
+
 
 }

@@ -155,6 +155,9 @@ jhipster:
 
 logging:
     file: target/karma.log
+   
+upload:
+  path: src/main/resources/static/uploadedfiles/
 
 
 
@@ -168,5 +171,3 @@ logging:
 # ===================================================================
 
 # application:
-
-upload.path: src/main/resources/static/uploadedfiles/

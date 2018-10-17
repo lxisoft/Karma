@@ -15,13 +15,7 @@
  */
 package com.lxisoft.web;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
@@ -31,7 +25,6 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -43,17 +36,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.service.ApprovalStatusService;
 import com.lxisoft.service.CategoryService;
-import com.lxisoft.service.MediaService;
 import com.lxisoft.service.NeedService;
+import com.lxisoft.service.UserCheckService;
 import com.lxisoft.service.dto.ApprovalStatusDTO;
 import com.lxisoft.service.dto.CategoryDTO;
-import com.lxisoft.service.dto.MediaDTO;
 import com.lxisoft.service.dto.NeedDTO;
+import com.lxisoft.service.dto.UserCheckDTO;
 import com.lxisoft.web.rest.errors.BadRequestAlertException;
 
 /**
@@ -77,8 +69,8 @@ public class NeedController {
 	CategoryService categoryService;
 	
 	@Autowired
-	MediaService mediaService;
-  
+	UserCheckService userCheckService;
+
 	public NeedController(NeedService needService) {
 		this.needService = needService;
 	}
@@ -91,12 +83,10 @@ public class NeedController {
 	 * @return the string value
 	 * @throws URISyntaxException
 	 *             if the Location URI syntax is incorrect
-	 * @throws IOException 
-	 * @throws IllegalStateException 
 	 */
 	@PostMapping("/needs")
 	@Timed
-	public String createNeed(@ModelAttribute NeedDTO needDTO,@RequestParam MultipartFile[] files ,Model model) throws URISyntaxException, IllegalStateException, IOException {
+	public String createNeed(@ModelAttribute NeedDTO needDTO, Model model) throws URISyntaxException {
 		log.debug(" request to save Need : {}", needDTO);
 
 		Set<CategoryDTO> categorySet = new HashSet<CategoryDTO>();
@@ -131,21 +121,8 @@ public class NeedController {
 
 		// creates a date instance of type instant from a string
 		needDTO.setDate(Instant.parse(parsedDate));
-		
+
 		NeedDTO need = needService.save(needDTO);
-		
-		for(MultipartFile file:files){
-			
-			 MediaDTO mediaDTO=new MediaDTO();
-	    	 
-	    	 mediaDTO.setFile(file);
-	    	 
-	    	 mediaDTO.setNeedId(need.getId());
-	         
-	    	 mediaService.save(mediaDTO);
-	        
-		}
-		
 		model.addAttribute("need", need);
 		return "help-post-result";
 
@@ -161,11 +138,10 @@ public class NeedController {
 	 *         needDTO couldn't be updated
 	 * @throws URISyntaxException
 	 *             if the Location URI syntax is incorrect
-	 * @throws IOException 
 	 */
 	@PutMapping("/needs")
 	@Timed
-	public String updateNeed(@ModelAttribute NeedDTO needDTO, Model model) throws URISyntaxException, IOException {
+	public String updateNeed(@ModelAttribute NeedDTO needDTO, Model model) throws URISyntaxException {
 		log.debug("request to update Need : {}", needDTO);
 		if (needDTO.getId() == null) {
 			throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -261,6 +237,25 @@ public class NeedController {
 			page = needService.findAllNeedsByApprovedStatus(pageable, approvalStatus);
 		}
 		List<NeedDTO> needs = page.getContent();
+		
+		int count=0;
+		
+		for(NeedDTO need:needs)
+		{
+			Page<UserCheckDTO> userCheckDTOs=userCheckService.findAllUserChecksByCheckedNeedId(pageable,need.getId());
+			List<UserCheckDTO> userCheckDTOList = userCheckDTOs.getContent();
+			
+			for(UserCheckDTO userChecks:userCheckDTOList)
+			{
+				if(userChecks.getVoteType()=="postive")
+				{
+					count=count+1;
+				}
+			}
+			
+			need.setPercentageOfGenuineness(new Long((count/userCheckDTOList.size())*100));
+		}
+		
 		model.addAttribute("needs", needs);
 		if (approvalStatus.equals("approved"))
 			return "home";
