@@ -16,7 +16,15 @@ public class UserCheckDTO implements Serializable {
 
     private Long checkedNeedId;
 
-    private Long checkedUserId;
+    public Boolean getIsGenuine() {
+		return isGenuine;
+	}
+
+	public void setIsGenuine(Boolean isGenuine) {
+		this.isGenuine = isGenuine;
+	}
+
+	private Long checkedUserId;
  
     private Boolean isGenuine;
     

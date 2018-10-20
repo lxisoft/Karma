@@ -21,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashSet;
@@ -58,10 +59,11 @@ public class NeedResource {
      * @param needDTO the needDTO to create
      * @return the ResponseEntity with status 201 (Created) and with body the new needDTO, or with status 400 (Bad Request) if the need has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
+	 * @throws IOException 
      */
     @PostMapping("/needs")
     @Timed
-    public ResponseEntity<NeedDTO> createNeed(@RequestBody NeedDTO needDTO) throws URISyntaxException {
+    public ResponseEntity<NeedDTO> createNeed(@RequestBody NeedDTO needDTO) throws URISyntaxException, IOException {
         log.debug("REST request to save Need : {}", needDTO);
         
         Set<CategoryDTO> categorySet=new HashSet<CategoryDTO>();
@@ -101,10 +103,11 @@ public class NeedResource {
      * or with status 400 (Bad Request) if the needDTO is not valid,
      * or with status 500 (Internal Server Error) if the needDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
+	 * @throws IOException 
      */
     @PutMapping("/needs")
     @Timed
-    public ResponseEntity<NeedDTO> updateNeed(@RequestBody NeedDTO needDTO) throws URISyntaxException {
+    public ResponseEntity<NeedDTO> updateNeed(@RequestBody NeedDTO needDTO) throws URISyntaxException, IOException {
         log.debug("REST request to update Need : {}", needDTO);
         if (needDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

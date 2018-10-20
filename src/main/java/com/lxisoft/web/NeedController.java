@@ -15,6 +15,7 @@
  */
 package com.lxisoft.web;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.HashSet;
@@ -40,10 +41,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.service.ApprovalStatusService;
 import com.lxisoft.service.CategoryService;
+import com.lxisoft.service.MediaService;
 import com.lxisoft.service.NeedService;
 import com.lxisoft.service.UserCheckService;
 import com.lxisoft.service.dto.ApprovalStatusDTO;
 import com.lxisoft.service.dto.CategoryDTO;
+import com.lxisoft.service.dto.MediaDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.service.dto.UserCheckDTO;
 import com.lxisoft.web.rest.errors.BadRequestAlertException;
@@ -70,6 +73,9 @@ public class NeedController {
 	
 	@Autowired
 	UserCheckService userCheckService;
+	
+	@Autowired
+	MediaService mediaService;
 
 	public NeedController(NeedService needService) {
 		this.needService = needService;
@@ -83,10 +89,11 @@ public class NeedController {
 	 * @return the string value
 	 * @throws URISyntaxException
 	 *             if the Location URI syntax is incorrect
+	 * @throws IOException 
 	 */
 	@PostMapping("/needs")
 	@Timed
-	public String createNeed(@ModelAttribute NeedDTO needDTO, Model model) throws URISyntaxException {
+	public String createNeed(@ModelAttribute NeedDTO needDTO, Model model) throws URISyntaxException, IOException {
 		log.debug(" request to save Need : {}", needDTO);
 
 		Set<CategoryDTO> categorySet = new HashSet<CategoryDTO>();
@@ -138,10 +145,11 @@ public class NeedController {
 	 *         needDTO couldn't be updated
 	 * @throws URISyntaxException
 	 *             if the Location URI syntax is incorrect
+	 * @throws IOException 
 	 */
 	@PutMapping("/needs")
 	@Timed
-	public String updateNeed(@ModelAttribute NeedDTO needDTO, Model model) throws URISyntaxException {
+	public String updateNeed(@ModelAttribute NeedDTO needDTO, Model model) throws URISyntaxException, IOException {
 		log.debug("request to update Need : {}", needDTO);
 		if (needDTO.getId() == null) {
 			throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
