@@ -74,7 +74,7 @@
 						<div class="card-body">
 							<form th:action="@{/user-checks/markingGenuinenes}" th:id="'usercheck'+${need.id}">
 								<input type="hidden" name="id" th:value="${need.id}" id="'genuine'+${need.id}">
-								<input type="hidden" name="postedUser" th:value="${need.postedUser}">
+								<input type="hidden" name="postedUser" th:value="${need.postedUserId}">
 								<input type="hidden" name="isGenuine" value="true">
 								</form>
 								<!--<i class="fa fa-ellipsis-v" aria-hidden="true">-->

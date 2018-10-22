@@ -29,7 +29,7 @@
 			<div class="col-sm-3"></div>
 			<div class="col-sm-6">
 				<!-- Default form contact -->
-				<form class="text-center border border-light p-5" th:action="@{/helps}" th:object="${help}" th:method="post">
+				<form class="text-center border border-light p-5" th:action="@{/helps}" th:object="${help}" th:method="post" enctype="multipart/form-data">
 
 					<p class="h4 mb-4 text-info">Help submission</p>
 
@@ -39,10 +39,23 @@
 							id="exampleFormControlTextarea2" rows="3"
 							placeholder="Description" th:field="*{description}"></textarea>
 					</div>
-<!--					<label class="btn-bs-file btn btn-info"> Browse files <input
-						type="file" name="image" multiple>
-					</label>-->
 
+					<!-- file upload -->
+           			 <div class="md-form">
+             		   <div class="row mt-5">
+					   <div class="col-sm-3"></div>				
+    					 <div class="file-field">
+       					 <div class="btn btn-primary btn-sm float-left">
+           				 <span>Choose file</span>
+           			 <input type="file" name="files" multiple>
+        			</div>
+       			 <div class="file-path-wrapper">
+           			 <input class="file-path validate" type="text" placeholder="Upload the proof">
+        		</div>
+    		</div>
+    	</div>
+            </div>
+						
 					<!-- Copy -->
 					<div class="custom-control custom-checkbox mb-4">
 						<input type="checkbox" class="custom-control-input"

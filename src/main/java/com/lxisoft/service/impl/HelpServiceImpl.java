@@ -9,11 +9,18 @@ import com.lxisoft.service.mapper.HelpMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 
 /**
@@ -29,6 +36,9 @@ public class HelpServiceImpl implements HelpService {
 
     private final HelpMapper helpMapper;
     
+    @Value("${upload.path}")
+    private String path;
+   
     @Autowired
     ApprovalStatusService approvalStatusService;
 
@@ -42,10 +52,29 @@ public class HelpServiceImpl implements HelpService {
      *
      * @param helpDTO the entity to save
      * @return the persisted entity
+     * @throws IOException 
      */
     @Override
-    public HelpDTO save(HelpDTO helpDTO) {
+    public HelpDTO save(HelpDTO helpDTO) throws IOException {
         log.debug("Request to save Help : {}", helpDTO);
+        
+		if (helpDTO.getFiles() != null && helpDTO.getFiles().length > 0) {
+            for (MultipartFile aFile : helpDTO.getFiles()){
+                 
+                System.out.println("Saving file: " + aFile.getOriginalFilename());
+               	
+                	if (!aFile.isEmpty()) {
+                    	
+                        String fileName = aFile.getOriginalFilename();
+                        InputStream is = aFile.getInputStream();
+                        
+                        log.info("*******fileee{}",fileName);
+                        
+                        Files.copy(is, Paths.get(path+fileName),
+                               StandardCopyOption.REPLACE_EXISTING);                   
+                    }           
+            }
+		}
         Help help = helpMapper.toEntity(helpDTO);
         help = helpRepository.save(help);
         return helpMapper.toDto(help);

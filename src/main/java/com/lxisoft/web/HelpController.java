@@ -15,6 +15,7 @@
  */
 package com.lxisoft.web;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.List;
@@ -34,12 +35,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.service.ApprovalStatusService;
 import com.lxisoft.service.HelpService;
+import com.lxisoft.service.MediaService;
 import com.lxisoft.service.dto.ApprovalStatusDTO;
 import com.lxisoft.service.dto.HelpDTO;
+import com.lxisoft.service.dto.MediaDTO;
+import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.web.rest.HelpResource;
 import com.lxisoft.web.rest.errors.BadRequestAlertException;
 
@@ -60,6 +65,9 @@ public class HelpController {
 
 	@Autowired
 	ApprovalStatusService approvalStatusService;
+	
+	@Autowired
+	MediaService mediaService;
 
 	public HelpController(HelpService helpService) {
 		this.helpService = helpService;
@@ -73,10 +81,11 @@ public class HelpController {
 	 * @return the String value
 	 * @throws URISyntaxException
 	 *             if the Location URI syntax is incorrect
+	 * @throws IOException 
 	 */
 	@PostMapping("/helps")
 	@Timed
-	public String createHelp(@ModelAttribute HelpDTO helpDTO, Model model) throws URISyntaxException {
+	public String createHelp(@ModelAttribute HelpDTO helpDTO,@RequestParam MultipartFile[] files,Model model) throws URISyntaxException, IOException {
 
 		log.debug("REST request to save Help : {}", helpDTO);
 		if (helpDTO.getId() != null) {
@@ -97,6 +106,23 @@ public class HelpController {
 		helpDTO.setTime(Instant.parse(parsedDate));
 
 		HelpDTO helpdto = helpService.save(helpDTO);
+		
+		//
+		for(MultipartFile file:files){
+			
+			log.info("********helpcontroller",file.getName());
+			
+			 MediaDTO mediaDTO=new MediaDTO();
+	    	 
+	    	 mediaDTO.setFile(file);
+	    	 
+	    	 mediaDTO.setHelpId(helpdto.getId());
+	         
+	    	 mediaService.save(mediaDTO);
+	        
+		}
+		//
+		
 		model.addAttribute("help", helpdto);
 		model.addAttribute("message", "submitted");
 		return "approve-decline";
@@ -112,10 +138,11 @@ public class HelpController {
 	 *         needDTO couldn't be updated
 	 * @throws URISyntaxException
 	 *             if the Location URI syntax is incorrect
+	 * @throws IOException 
 	 */
 	@PutMapping("/helps")
 	@Timed
-	public String updateHelp(@ModelAttribute HelpDTO helpDTO, Model model) throws URISyntaxException {
+	public String updateHelp(@ModelAttribute HelpDTO helpDTO, Model model) throws URISyntaxException, IOException {
 		log.debug("request to update Need : {}", helpDTO);
 		if (helpDTO.getId() == null) {
 			throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

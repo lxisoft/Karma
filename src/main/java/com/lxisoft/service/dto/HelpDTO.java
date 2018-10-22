@@ -4,6 +4,8 @@ import java.time.Instant;
 import java.io.Serializable;
 import java.util.Objects;
 
+import org.springframework.web.multipart.MultipartFile;
+
 /**
  * A DTO for the Help entity.
  */
@@ -22,8 +24,18 @@ public class HelpDTO implements Serializable {
     private Long fulfilledNeedId;
     
     private String timeInString;
+    
+    private MultipartFile[] files;
 
-    public Long getId() {
+    public MultipartFile[] getFiles() {
+		return files;
+	}
+
+	public void setFiles(MultipartFile[] files) {
+		this.files = files;
+	}
+
+	public Long getId() {
         return id;
     }
 

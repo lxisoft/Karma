@@ -18,6 +18,7 @@ package com.lxisoft.web;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +38,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.service.ApprovalStatusService;
@@ -91,9 +93,20 @@ public class NeedController {
 	 *             if the Location URI syntax is incorrect
 	 * @throws IOException 
 	 */
+	/**
+	 * POST /needs : Create a new need.
+	 *
+	 * @param needDTO
+	 *            the needDTO to create
+	 * @return the string value
+	 * @throws URISyntaxException
+	 *             if the Location URI syntax is incorrect
+	 * @throws IOException 
+	 * @throws IllegalStateException 
+	 */
 	@PostMapping("/needs")
 	@Timed
-	public String createNeed(@ModelAttribute NeedDTO needDTO, Model model) throws URISyntaxException, IOException {
+	public String createNeed(@ModelAttribute NeedDTO needDTO,@RequestParam MultipartFile[] files ,Model model) throws URISyntaxException, IllegalStateException, IOException {
 		log.debug(" request to save Need : {}", needDTO);
 
 		Set<CategoryDTO> categorySet = new HashSet<CategoryDTO>();
@@ -128,13 +141,25 @@ public class NeedController {
 
 		// creates a date instance of type instant from a string
 		needDTO.setDate(Instant.parse(parsedDate));
-
+		
 		NeedDTO need = needService.save(needDTO);
+		
+		for(MultipartFile file:files){
+			
+			 MediaDTO mediaDTO=new MediaDTO();
+	    	 
+	    	 mediaDTO.setFile(file);
+	    	 
+	    	 mediaDTO.setNeedId(need.getId());
+	         
+	    	 mediaService.save(mediaDTO);
+	        
+		}
+		
 		model.addAttribute("need", need);
 		return "help-post-result";
 
 	}
-
 	/**
 	 * PUT /needs : Updates an existing need.
 	 *
@@ -196,7 +221,9 @@ public class NeedController {
 		
 		for(NeedDTO need:needs){
 			
-			List<String> fileNameList=need.getFileNameList();
+			List<String> fileNameList=new ArrayList();
+			
+			//List<String> fileNameList=need.getFileNameList();
 			//Page<MediaDTO> media=mediaService.findAllUrlByNeedId(need.getId(), pageable);
 			
 			log.info("*********need");
@@ -214,6 +241,7 @@ public class NeedController {
 				log.info("*********media url{}",mediaUrl);
 			
 			}
+			need.setFileNameList(fileNameList);
 		}
 		
 		model.addAttribute("needs", needs);
@@ -248,6 +276,8 @@ public class NeedController {
 		
 		int count=0;
 		
+		List<String> fileNameList=new ArrayList();
+		
 		for(NeedDTO need:needs)
 		{
 			Page<UserCheckDTO> userCheckDTOs=userCheckService.findAllUserChecksByCheckedNeedId(pageable,need.getId());
@@ -260,6 +290,22 @@ public class NeedController {
 					count=count+1;
 				}
 			}
+			
+			// to get image url of need
+			Page<MediaDTO> mediaList=mediaService.findAllUrlByNeedId(need.getId(), pageable);
+			
+			List<MediaDTO> mediaDtoList=mediaList.getContent();
+			
+			for(MediaDTO media:mediaDtoList){
+				
+				String mediaUrl=media.getUrl();
+				fileNameList.add(mediaUrl);
+				log.info("*********media url{}",mediaUrl);
+			
+			}
+			need.setFileNameList(fileNameList);
+		
+			//
 			
 			need.setPercentageOfGenuineness(new Long((count/userCheckDTOList.size())*100));
 		}
@@ -285,8 +331,25 @@ public class NeedController {
 	public String getNeedWithStatuses(@PathVariable(value = "id") Long id, Model model) {
 		log.debug("request to get Need : {}", id);
 		Pageable pageable = PageRequest.of(0, 20);
+		
+		List<String> fileNameList=new ArrayList();
 
 		NeedDTO needDTO = needService.findOne(id).orElse(null);
+
+		// to get image url of need
+		Page<MediaDTO> mediaList=mediaService.findAllUrlByNeedId(needDTO.getId(), pageable);
+		
+		List<MediaDTO> mediaDtoList=mediaList.getContent();
+		
+		for(MediaDTO media:mediaDtoList){
+			
+			String mediaUrl=media.getUrl();
+			fileNameList.add(mediaUrl);
+			log.info("*********media url{}",mediaUrl);
+		
+		}
+		needDTO.setFileNameList(fileNameList);
+	//
 
 		model.addAttribute("need", needDTO);
 		model.addAttribute("approvalStatuses", approvalStatusService.findAll(pageable).getContent());
@@ -303,11 +366,27 @@ public class NeedController {
 	 */
 	@GetMapping("/needs/{id}")
 	@Timed
-	public String getNeed(@PathVariable(value = "id") Long id, Model model) {
+	public String getNeed(@PathVariable(value = "id") Long id, Model model,Pageable pageable) {
 		log.debug("request to get Need : {}", id);
+
+		List<String> fileNameList=new ArrayList();
 
 		NeedDTO needDTO = needService.findOne(id).orElse(null);
 
+		// to get image url of need
+					Page<MediaDTO> mediaList=mediaService.findAllUrlByNeedId(needDTO.getId(), pageable);
+					
+					List<MediaDTO> mediaDtoList=mediaList.getContent();
+					
+					for(MediaDTO media:mediaDtoList){
+						
+						String mediaUrl=media.getUrl();
+						fileNameList.add(mediaUrl);
+						log.info("*********media url{}",mediaUrl);
+					
+					}
+					needDTO.setFileNameList(fileNameList);
+				//
 		model.addAttribute("need", needDTO);
 
 		return "need";

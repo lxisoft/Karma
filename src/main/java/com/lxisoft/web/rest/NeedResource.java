@@ -3,12 +3,14 @@ package com.lxisoft.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.service.ApprovalStatusService;
 import com.lxisoft.service.CategoryService;
+import com.lxisoft.service.MediaService;
 import com.lxisoft.service.NeedService;
 import com.lxisoft.web.rest.errors.BadRequestAlertException;
 import com.lxisoft.web.rest.util.HeaderUtil;
 import com.lxisoft.web.rest.util.PaginationUtil;
 import com.lxisoft.service.dto.ApprovalStatusDTO;
 import com.lxisoft.service.dto.CategoryDTO;
+import com.lxisoft.service.dto.MediaDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -48,6 +51,10 @@ public class NeedResource {
 
     @Autowired
     CategoryService categoryService;
+    
+    @Autowired
+	MediaService mediaService;
+
 
     public NeedResource(NeedService needService) {
         this.needService = needService;
@@ -135,10 +142,41 @@ public class NeedResource {
         } else {
             page = needService.findAll(pageable);
         }
+        
+        //
+        List<NeedDTO> needs = page.getContent();
+		
+for(NeedDTO need:needs){
+			
+			List<String> fileNameList=new ArrayList();
+			
+			//List<String> fileNameList=need.getFileNameList();
+			//Page<MediaDTO> media=mediaService.findAllUrlByNeedId(need.getId(), pageable);
+			
+			log.info("*********need");
+			
+			//List<MediaDTO> mediaDtoList=(List<MediaDTO>) mediaService.findAllUrlByNeedId(need.getId(), pageable);
+	
+			Page<MediaDTO> mediaList=mediaService.findAllUrlByNeedId(need.getId(), pageable);
+			
+			List<MediaDTO> mediaDtoList=mediaList.getContent();
+			
+			for(MediaDTO media:mediaDtoList){
+				
+				String mediaUrl=media.getUrl();
+				fileNameList.add(mediaUrl);
+				log.info("*********media url{}",mediaUrl);
+			
+			}
+
+			need.setFileNameList(fileNameList);
+		}	
+        //
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, String.format("/api/needs?eagerload=%b", eagerload));
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    
     }
-
+    
     /**
      * GET  /needs/:id : get the "id" need.
      *
@@ -147,9 +185,10 @@ public class NeedResource {
      */
     @GetMapping("/needs/{id}")
     @Timed
-    public ResponseEntity<NeedDTO> getNeed(@PathVariable Long id) {
+    public ResponseEntity<NeedDTO> getNeed(@PathVariable Long id,Pageable pageable) {
         log.debug("REST request to get Need : {}", id);
         Optional<NeedDTO> needDTO = needService.findOne(id);
+        
         return ResponseUtil.wrapOrNotFound(needDTO);
     }
 
