@@ -155,4 +155,20 @@ public class MediaServiceImpl implements MediaService {
 				.map(mediaMapper::toDto);
 	}
 
+	/**
+     * Get all the media by helpId.
+     *
+     * @param helpId of the media
+     * @return the list of entities
+     */
+	@Override
+	public Page<MediaDTO> findAllUrlByHelpId(Long helpId, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return mediaRepository.findAllUrlByHelpId(helpId,pageable)
+				.map(mediaMapper::toDto);
+	}
+	
+	 
+	
+
 }

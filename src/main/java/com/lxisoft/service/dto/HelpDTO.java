@@ -2,6 +2,8 @@ package com.lxisoft.service.dto;
 
 import java.time.Instant;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -27,7 +29,17 @@ public class HelpDTO implements Serializable {
     
     private MultipartFile[] files;
 
-    public MultipartFile[] getFiles() {
+    private List<String> fileNameList=new ArrayList<>();
+
+    public List<String> getFileNameList() {
+		return fileNameList;
+	}
+
+	public void setFileNameList(List<String> fileNameList) {
+		this.fileNameList = fileNameList;
+	}
+
+	public MultipartFile[] getFiles() {
 		return files;
 	}
 

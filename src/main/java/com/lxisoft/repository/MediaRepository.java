@@ -22,4 +22,6 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
 	Optional<Media> findByFileName(String fileName);
 
 	Page<Media> findAllUrlByNeedId(Long needId,Pageable pageable);
+	
+	Page<Media> findAllUrlByHelpId(Long helpId,Pageable pageable);
 }

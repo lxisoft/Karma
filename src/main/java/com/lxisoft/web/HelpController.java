@@ -18,6 +18,7 @@ package com.lxisoft.web;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -176,6 +177,25 @@ public class HelpController {
 
 		List<HelpDTO> helps = page.getContent();
 
+		for(HelpDTO helpDto:helps){
+			
+			List<String> fileNameList=new ArrayList();
+			
+			log.info("*********need");
+			
+			Page<MediaDTO> mediaList=mediaService.findAllUrlByHelpId(helpDto.getId(), pageable);
+			
+			List<MediaDTO> mediaDtoList=mediaList.getContent();
+			
+			for(MediaDTO media:mediaDtoList){
+				
+				String mediaUrl=media.getUrl();
+				fileNameList.add(mediaUrl);
+				log.info("*********media url{}",mediaUrl);
+			
+			}
+			helpDto.setFileNameList(fileNameList);
+		}
 		model.addAttribute("helps", helps);
 
 		if (approvalStatus.equals(("completed")))
@@ -215,14 +235,31 @@ public class HelpController {
 	 */
 	@GetMapping("helps/incomplete/{id}")
 	@Timed
-	public String getHelpForApproval(@PathVariable(value = "id") Long id, Model model) {
+	public String getHelpForApproval(@PathVariable(value = "id") Long id, Model model,Pageable pageable) {
 
 		log.debug("request to get Need : {}", id);
 
-		HelpDTO help = helpService.findOne(id).orElse(null);
+		HelpDTO helpDto = helpService.findOne(id).orElse(null);
 
 		List<ApprovalStatusDTO> approvalStatuses = approvalStatusService.findAll(PageRequest.of(0, 20)).getContent();
-		model.addAttribute("help", help);
+		
+		List<String> fileNameList=new ArrayList();
+
+		// to get image url of need
+		Page<MediaDTO> mediaList=mediaService.findAllUrlByHelpId(helpDto.getId(), pageable);
+		
+		List<MediaDTO> mediaDtoList=mediaList.getContent();
+		
+		for(MediaDTO media:mediaDtoList){
+			
+			String mediaUrl=media.getUrl();
+			fileNameList.add(mediaUrl);
+			log.info("*********media url{}",mediaUrl);
+		
+		}
+		helpDto.setFileNameList(fileNameList);
+	//
+		model.addAttribute("help", helpDto);
 		model.addAttribute("approvalStatuses", approvalStatuses);
 
 		return "incompleted-help";
