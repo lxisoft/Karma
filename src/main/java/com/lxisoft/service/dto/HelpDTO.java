@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.springframework.web.multipart.MultipartFile;
+
 /**
  * A DTO for the Help entity.
  */
@@ -25,7 +27,18 @@ public class HelpDTO implements Serializable {
     
     private String timeInString;
     
+    private MultipartFile[] files;
+
     private List<String> fileNameList=new ArrayList<>();
+
+    
+    public MultipartFile[] getFiles() {
+		return files;
+	}
+
+	public void setFiles(MultipartFile[] files) {
+		this.files = files;
+	}
 
     /**
 	 * @return the fileNameList

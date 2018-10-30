@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.Objects;
 
 /**
@@ -39,8 +42,19 @@ public class NeedDTO implements Serializable {
     private Long percentageOfGenuineness;
     
     private List<String> fileNameList=new ArrayList<>();
+    
+    private MultipartFile[] files;
+    
 
-    /**
+    public MultipartFile[] getFiles() {
+		return files;
+	}
+
+	public void setFiles(MultipartFile[] files) {
+		this.files = files;
+	}
+
+	/**
 	 * @return the fileNameList
 	 */
 	public List<String> getFileNameList() {

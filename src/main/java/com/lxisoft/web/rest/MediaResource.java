@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -45,10 +46,11 @@ public class MediaResource {
      * @param mediaDTO the mediaDTO to create
      * @return the ResponseEntity with status 201 (Created) and with body the new mediaDTO, or with status 400 (Bad Request) if the media has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @throws IOException 
      */
     @PostMapping("/media")
     @Timed
-    public ResponseEntity<MediaDTO> createMedia(@RequestBody MediaDTO mediaDTO) throws URISyntaxException {
+    public ResponseEntity<MediaDTO> createMedia(@RequestBody MediaDTO mediaDTO) throws URISyntaxException, IOException {
         log.debug("REST request to save Media : {}", mediaDTO);
         if (mediaDTO.getId() != null) {
             throw new BadRequestAlertException("A new media cannot already have an ID", ENTITY_NAME, "idexists");
@@ -67,10 +69,11 @@ public class MediaResource {
      * or with status 400 (Bad Request) if the mediaDTO is not valid,
      * or with status 500 (Internal Server Error) if the mediaDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @throws IOException 
      */
     @PutMapping("/media")
     @Timed
-    public ResponseEntity<MediaDTO> updateMedia(@RequestBody MediaDTO mediaDTO) throws URISyntaxException {
+    public ResponseEntity<MediaDTO> updateMedia(@RequestBody MediaDTO mediaDTO) throws URISyntaxException, IOException {
         log.debug("REST request to update Media : {}", mediaDTO);
         if (mediaDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

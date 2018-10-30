@@ -5,6 +5,7 @@ import com.lxisoft.service.dto.HelpDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.io.IOException;
 import java.util.Optional;
 
 /**
@@ -17,8 +18,9 @@ public interface HelpService {
      *
      * @param helpDTO the entity to save
      * @return the persisted entity
+     * @throws IOException 
      */
-    HelpDTO save(HelpDTO helpDTO);
+    HelpDTO save(HelpDTO helpDTO) throws IOException;
 
     /**
      * Get all the helps.

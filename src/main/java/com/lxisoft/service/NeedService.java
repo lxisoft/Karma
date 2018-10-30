@@ -5,6 +5,7 @@ import com.lxisoft.service.dto.NeedDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.io.IOException;
 import java.util.Optional;
 
 /**
@@ -17,8 +18,9 @@ public interface NeedService {
      *
      * @param needDTO the entity to save
      * @return the persisted entity
+     * @throws IOException 
      */
-    NeedDTO save(NeedDTO needDTO);
+    NeedDTO save(NeedDTO needDTO) throws IOException;
 
     /**
      * Get all the needs.
