@@ -1,14 +1,17 @@
 package com.lxisoft.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.lxisoft.service.ApprovalStatusService;
 import com.lxisoft.service.HelpService;
 import com.lxisoft.web.rest.errors.BadRequestAlertException;
 import com.lxisoft.web.rest.util.HeaderUtil;
 import com.lxisoft.web.rest.util.PaginationUtil;
+import com.lxisoft.service.dto.ApprovalStatusDTO;
 import com.lxisoft.service.dto.HelpDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -34,6 +37,10 @@ public class HelpResource {
     private static final String ENTITY_NAME = "karmaHelp";
 
     private final HelpService helpService;
+    
+
+    @Autowired
+   	ApprovalStatusService approvalStatusService;
 
     public HelpResource(HelpService helpService) {
         this.helpService = helpService;
@@ -53,6 +60,16 @@ public class HelpResource {
         if (helpDTO.getId() != null) {
             throw new BadRequestAlertException("A new help cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        
+        if (helpDTO.getApprovalStatusId() == null) {
+
+			Optional<ApprovalStatusDTO> approvalStatus = approvalStatusService.findByStatus("incompleted");
+
+			Long id = approvalStatus.get().getId();
+			log.debug("***************{}" + id);
+			helpDTO.setApprovalStatusId(approvalStatus.get().getId());
+		}
+        
         HelpDTO result = helpService.save(helpDTO);
         return ResponseEntity.created(new URI("/api/helps/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -122,5 +139,20 @@ public class HelpResource {
         log.debug("REST request to delete Help : {}", id);
         helpService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+    
+    /**
+     * GET  /helps : get all the helps.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of helps in body
+     */
+    @GetMapping("/helps/getAllHelpsByApprovedStatus/{approvalStatus}")
+    @Timed
+    public ResponseEntity<List<HelpDTO>> getAllHelpsByApprovedStatus(Pageable pageable,@PathVariable String approvalStatus) {
+        log.debug("REST request to get a page of Helps");
+        Page<HelpDTO> page = helpService.findAllHelpsByApprovedStatus(pageable,approvalStatus);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/helps");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 }
