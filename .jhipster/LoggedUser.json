@@ -67,6 +67,12 @@
         },
         {
             "relationshipType": "one-to-many",
+            "relationshipName": "newsFeeds",
+            "otherEntityName": "newsFeed",
+            "otherEntityRelationshipName": "loggedUser"
+        },
+        {
+            "relationshipType": "one-to-many",
             "relationshipName": "checkedNeeds",
             "otherEntityName": "userCheck",
             "otherEntityRelationshipName": "checkedUser"

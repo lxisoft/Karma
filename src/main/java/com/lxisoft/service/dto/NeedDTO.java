@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.springframework.web.multipart.MultipartFile;
-
 import java.util.Objects;
 
 /**
@@ -16,7 +13,8 @@ import java.util.Objects;
  */
 public class NeedDTO implements Serializable {
 
-    private Long id;
+   
+	private Long id;
 
     private String description;
 
@@ -31,35 +29,31 @@ public class NeedDTO implements Serializable {
     private Long approvalStatusId;
 
     private Set<CategoryDTO> categories = new HashSet<>();
-    
-    private List<CategoryDTO> categoryList = new ArrayList<>();
-
-	private String dateInString;
 
     private Long postedUserId;
-    
-    private MultipartFile[] files;
+
+    private List<CategoryDTO> categoryList = new ArrayList<>();
+
+    private String dateInString;
+
+    private Long percentageOfGenuineness;
     
     private List<String> fileNameList=new ArrayList<>();
-	
-	private Long percentageOfGenuineness;
 
-    public List<String> getFileNameList() {
+    /**
+	 * @return the fileNameList
+	 */
+	public List<String> getFileNameList() {
 		return fileNameList;
 	}
 
+	/**
+	 * @param fileNameList the fileNameList to set
+	 */
 	public void setFileNameList(List<String> fileNameList) {
 		this.fileNameList = fileNameList;
 	}
 
-	public MultipartFile[] getFiles() {
-		return files;
-	}
-
-	public void setFiles(MultipartFile[] files) {
-		this.files = files;
-	}
-	
 	public Long getId() {
         return id;
     }
@@ -131,6 +125,50 @@ public class NeedDTO implements Serializable {
     public void setPostedUserId(Long loggedUserId) {
         this.postedUserId = loggedUserId;
     }
+    
+    
+    /**
+   	 * @return the categoryList
+   	 */
+   	public List<CategoryDTO> getCategoryList() {
+   		return categoryList;
+   	}
+
+   	/**
+   	 * @param categoryList the categoryList to set
+   	 */
+   	public void setCategoryList(List<CategoryDTO> categoryList) {
+   		this.categoryList = categoryList;
+   	}
+
+   	/**
+   	 * @return the dateInString
+   	 */
+   	public String getDateInString() {
+   		return dateInString;
+   	}
+
+   	/**
+   	 * @param dateInString the dateInString to set
+   	 */
+   	public void setDateInString(String dateInString) {
+   		this.dateInString = dateInString;
+   	}
+
+   	/**
+   	 * @return the percentageOfGenuineness
+   	 */
+   	public Long getPercentageOfGenuineness() {
+   		return percentageOfGenuineness;
+   	}
+
+   	/**
+   	 * @param percentageOfGenuineness the percentageOfGenuineness to set
+   	 */
+   	public void setPercentageOfGenuineness(Long percentageOfGenuineness) {
+   		this.percentageOfGenuineness = percentageOfGenuineness;
+   	}
+
 
     @Override
     public boolean equals(Object o) {
@@ -166,63 +204,4 @@ public class NeedDTO implements Serializable {
             ", postedUser=" + getPostedUserId() +
             "}";
     }
-    
-    public List<CategoryDTO> getCategoriesAsList() {
-		return new ArrayList<CategoryDTO>(categories);
-	}
-
-	public void setCategoriesAsList(List<CategoryDTO> categories) {
-
-		this.categories.clear();
-		for (CategoryDTO category : categories) {
-			this.categories.add(category);
-		}
-
-	}
-
-	/**
-	 * @return the categoryList
-	 */
-	public List<CategoryDTO> getCategoryList() {
-		return this.categoryList;
-	}
-
-	/**
-	 * @param cats
-	 *            the categoryList to set
-	 */
-	public void setCategoryList(List<CategoryDTO> categoryList) {
-		this.categoryList = categoryList;
-	}
-
-	/**
-	 * @return the dateInString
-	 */
-	public String getDateInString() {
-		return dateInString;
-	}
-
-	/**
-	 * @param dateInString the dateInString to set
-	 */
-	public void setDateInString(String dateInString) {
-		this.dateInString = dateInString;
-	}
-	
-	 /**
-	  * @return the percentageOfGenuineness
-	  */
-	public Long getPercentageOfGenuineness() {
-			return percentageOfGenuineness;
-	}
-
-	/**
-	 * @param percentageOfGenuineness the percentageOfGenuineness to set
-	 */
-		
-	public void setPercentageOfGenuineness(Long percentageOfGenuineness) {
-			this.percentageOfGenuineness = percentageOfGenuineness;
-	}
-
-
 }

@@ -2,7 +2,6 @@ package com.lxisoft.service.impl;
 
 import com.lxisoft.service.LoggedUserService;
 import com.lxisoft.domain.LoggedUser;
-import com.lxisoft.domain.Media;
 import com.lxisoft.repository.LoggedUserRepository;
 import com.lxisoft.service.dto.LoggedUserDTO;
 import com.lxisoft.service.mapper.LoggedUserMapper;
@@ -44,7 +43,6 @@ public class LoggedUserServiceImpl implements LoggedUserService {
     public LoggedUserDTO save(LoggedUserDTO loggedUserDTO) {
         log.debug("Request to save LoggedUser : {}", loggedUserDTO);
         LoggedUser loggedUser = loggedUserMapper.toEntity(loggedUserDTO);
-        
         loggedUser = loggedUserRepository.save(loggedUser);
         return loggedUserMapper.toDto(loggedUser);
     }

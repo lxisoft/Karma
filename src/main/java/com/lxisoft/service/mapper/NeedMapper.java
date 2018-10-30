@@ -19,6 +19,7 @@ public interface NeedMapper extends EntityMapper<NeedDTO, Need> {
 
     @Mapping(target = "proofs", ignore = true)
     @Mapping(target = "helps", ignore = true)
+    @Mapping(target = "comments", ignore = true)
     @Mapping(source = "severityId", target = "severity")
     @Mapping(source = "verificationTeamId", target = "verificationTeam")
     @Mapping(source = "approvalStatusId", target = "approvalStatus")

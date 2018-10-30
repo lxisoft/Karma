@@ -43,7 +43,7 @@ public interface UserCheckService {
      * @param id the id of the entity
      */
     void delete(Long id);
-   
+    
     /**
      * Get one userCheck by Category,CheckedNeedId,CheckedUserId.
      *

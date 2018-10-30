@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -46,11 +45,10 @@ public class MediaResource {
      * @param mediaDTO the mediaDTO to create
      * @return the ResponseEntity with status 201 (Created) and with body the new mediaDTO, or with status 400 (Bad Request) if the media has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
-     * @throws IOException 
      */
     @PostMapping("/media")
     @Timed
-    public ResponseEntity<MediaDTO> createMedia(@RequestBody MediaDTO mediaDTO) throws URISyntaxException, IOException {
+    public ResponseEntity<MediaDTO> createMedia(@RequestBody MediaDTO mediaDTO) throws URISyntaxException {
         log.debug("REST request to save Media : {}", mediaDTO);
         if (mediaDTO.getId() != null) {
             throw new BadRequestAlertException("A new media cannot already have an ID", ENTITY_NAME, "idexists");
@@ -69,11 +67,10 @@ public class MediaResource {
      * or with status 400 (Bad Request) if the mediaDTO is not valid,
      * or with status 500 (Internal Server Error) if the mediaDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
-     * @throws IOException 
      */
     @PutMapping("/media")
     @Timed
-    public ResponseEntity<MediaDTO> updateMedia(@RequestBody MediaDTO mediaDTO) throws URISyntaxException, IOException {
+    public ResponseEntity<MediaDTO> updateMedia(@RequestBody MediaDTO mediaDTO) throws URISyntaxException {
         log.debug("REST request to update Media : {}", mediaDTO);
         if (mediaDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -126,45 +123,4 @@ public class MediaResource {
         mediaService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-    
-    /**
-     *
-     * @param fileName the id of the mediaDTO to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the mediaDTO, or with status 404 (Not Found)
-     */
-    @GetMapping("/media/getMedia/{fileName}")
-    @Timed
-    public ResponseEntity<MediaDTO> getMedia(@PathVariable String fileName) {
-        log.debug("REST request to get Media : {}", fileName);
-        Optional<MediaDTO> mediaDTO = mediaService.findByFileName(fileName);
-        return ResponseUtil.wrapOrNotFound(mediaDTO);
-    }
-    
-    /**
-    *
-    * @param needId the id of the mediaDTO to retrieve
-    * @return the ResponseEntity with status 200 (OK) and with body the mediaDTO, or with status 404 (Not Found)
-    */
-   @GetMapping("/media/getAllUrlByNeedId/{needId}")
-   @Timed
-   public ResponseEntity<List<MediaDTO>> getAllUrlByNeedId(@PathVariable Long needId,Pageable pageable) {
-       log.debug("REST request to get a page of Media{}",needId);
-       Page<MediaDTO> page = mediaService.findAllUrlByNeedId(needId,pageable);
-       HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getAllUrlByNeedId");
-       return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-   }
-   
-   /**
-   *
-   * @param helpId the id of the mediaDTO to retrieve
-   * @return the ResponseEntity with status 200 (OK) and with body the mediaDTO, or with status 404 (Not Found)
-   */
-  @GetMapping("/media/getAllUrlByHelpId/{helpId}")
-  @Timed
-  public ResponseEntity<List<MediaDTO>> getAllUrlByHelpId(@PathVariable Long helpId,Pageable pageable) {
-      log.debug("REST request to get a page of Media{}",helpId);
-      Page<MediaDTO> page = mediaService.findAllUrlByHelpId(helpId,pageable);
-      HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/media/getAllUrlByHelpId/");
-      return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-  }
 }

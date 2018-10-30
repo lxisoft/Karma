@@ -1,7 +1,6 @@
 package com.lxisoft.repository;
 
 import com.lxisoft.domain.UserCheck;
-import com.lxisoft.service.dto.UserCheckDTO;
 
 import java.util.Optional;
 
@@ -17,6 +16,8 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface UserCheckRepository extends JpaRepository<UserCheck, Long> {
+	
+	Optional<UserCheck> findByCategoryAndCheckedNeedIdAndCheckedUserId(String category,Long checkedNeedId,Long checkedUserId);
 
 	/**
 	 * @param pageable
@@ -24,8 +25,5 @@ public interface UserCheckRepository extends JpaRepository<UserCheck, Long> {
 	 */
 	Page<UserCheck> findAllUserChecksByCheckedNeedId(Pageable pageable);
 
-	Optional<UserCheck> findByCategoryAndCheckedNeedIdAndCheckedUserId(String category, Long checkedNeedId,
-			Long checkedUserId);
 
-	
 }

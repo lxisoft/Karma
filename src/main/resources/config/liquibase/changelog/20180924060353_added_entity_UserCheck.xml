@@ -38,6 +38,22 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="comment_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="reply_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="news_feed_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="violation_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         

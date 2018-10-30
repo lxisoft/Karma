@@ -22,6 +22,30 @@
             "relationshipName": "checkedUser",
             "otherEntityName": "loggedUser",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "comment",
+            "otherEntityName": "comment",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "reply",
+            "otherEntityName": "reply",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "newsFeed",
+            "otherEntityName": "newsFeed",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "violation",
+            "otherEntityName": "violation",
+            "otherEntityField": "id"
         }
     ],
     "changelogDate": "20180924060353",

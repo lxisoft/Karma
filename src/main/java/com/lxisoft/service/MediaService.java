@@ -5,8 +5,6 @@ import com.lxisoft.service.dto.MediaDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -19,9 +17,8 @@ public interface MediaService {
      *
      * @param mediaDTO the entity to save
      * @return the persisted entity
-     * @throws IOException 
      */
-    MediaDTO save(MediaDTO mediaDTO) throws IOException;
+    MediaDTO save(MediaDTO mediaDTO);
 
     /**
      * Get all the media.
@@ -54,8 +51,7 @@ public interface MediaService {
      * @return the entity
      */
     Optional<MediaDTO> findByFileName(String fileName);
-
-
+    
     /**
      * Get all the media.
      *
@@ -71,5 +67,4 @@ public interface MediaService {
      * @return the list of entities
      */
 	Page<MediaDTO> findAllUrlByHelpId(Long helpId, Pageable pageable);
-
 }

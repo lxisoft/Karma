@@ -26,6 +26,18 @@
             "otherEntityName": "help",
             "relationshipType": "many-to-one",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "newsFeed",
+            "otherEntityName": "newsFeed",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "violation",
+            "otherEntityName": "violation",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
         }
     ],
     "changelogDate": "20180924060351",

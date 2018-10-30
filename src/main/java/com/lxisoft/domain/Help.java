@@ -36,6 +36,9 @@ public class Help implements Serializable {
     @OneToMany(mappedBy = "help")
     private Set<Media> proofs = new HashSet<>();
 
+    @OneToMany(mappedBy = "help")
+    private Set<Comment> comments = new HashSet<>();
+
     @ManyToOne
     @JsonIgnoreProperties("helps")
     private ApprovalStatus approvalStatus;
@@ -106,6 +109,31 @@ public class Help implements Serializable {
 
     public void setProofs(Set<Media> media) {
         this.proofs = media;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public Help comments(Set<Comment> comments) {
+        this.comments = comments;
+        return this;
+    }
+
+    public Help addComments(Comment comment) {
+        this.comments.add(comment);
+        comment.setHelp(this);
+        return this;
+    }
+
+    public Help removeComments(Comment comment) {
+        this.comments.remove(comment);
+        comment.setHelp(null);
+        return this;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 
     public ApprovalStatus getApprovalStatus() {

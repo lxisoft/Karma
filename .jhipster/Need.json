@@ -28,6 +28,12 @@
             "otherEntityRelationshipName": "fulfilledNeed"
         },
         {
+            "relationshipType": "one-to-many",
+            "relationshipName": "comments",
+            "otherEntityName": "comment",
+            "otherEntityRelationshipName": "need"
+        },
+        {
             "relationshipType": "many-to-one",
             "relationshipName": "severity",
             "otherEntityName": "severity",

@@ -5,7 +5,6 @@ import com.lxisoft.service.dto.HelpDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.io.IOException;
 import java.util.Optional;
 
 /**
@@ -18,9 +17,8 @@ public interface HelpService {
      *
      * @param helpDTO the entity to save
      * @return the persisted entity
-     * @throws IOException 
      */
-    HelpDTO save(HelpDTO helpDTO) throws IOException;
+    HelpDTO save(HelpDTO helpDTO);
 
     /**
      * Get all the helps.
@@ -47,17 +45,17 @@ public interface HelpService {
     void delete(Long id);
     
     /**
-	 * @param pageable
-	 * @param approvalStatus
-	 * @return
-	 */
-	Page<HelpDTO> findAllHelpsByApprovedStatus(Pageable pageable, String approvalStatus);
-	
-	/**
-	 * @param pageable
-	 * @param approvalStatus
-	 * @return
-	 */
-	
-	Page<HelpDTO> findAllHelpsByApprovedStatusId(Pageable pageable, Long approvalStatusId);
+   	 * @param pageable
+   	 * @param approvalStatus
+   	 * @return
+   	 */
+   	Page<HelpDTO> findAllHelpsByApprovedStatus(Pageable pageable, String approvalStatus);
+   	
+   	/**
+   	 * @param pageable
+   	 * @param approvalStatus
+   	 * @return
+   	 */
+   	
+   	Page<HelpDTO> findAllHelpsByApprovedStatusId(Pageable pageable, Long approvalStatusId);
 }

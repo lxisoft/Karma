@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import org.springframework.web.multipart.MultipartFile;
-
 /**
  * A DTO for the Help entity.
  */
@@ -27,24 +25,34 @@ public class HelpDTO implements Serializable {
     
     private String timeInString;
     
-    private MultipartFile[] files;
-
     private List<String> fileNameList=new ArrayList<>();
 
-    public List<String> getFileNameList() {
+    /**
+	 * @return the fileNameList
+	 */
+	public List<String> getFileNameList() {
 		return fileNameList;
 	}
 
+	/**
+	 * @param fileNameList the fileNameList to set
+	 */
 	public void setFileNameList(List<String> fileNameList) {
 		this.fileNameList = fileNameList;
 	}
 
-	public MultipartFile[] getFiles() {
-		return files;
+	/**
+	 * @return the timeInString
+	 */
+	public String getTimeInString() {
+		return timeInString;
 	}
 
-	public void setFiles(MultipartFile[] files) {
-		this.files = files;
+	/**
+	 * @param timeInString the timeInString to set
+	 */
+	public void setTimeInString(String timeInString) {
+		this.timeInString = timeInString;
 	}
 
 	public Long getId() {
@@ -127,19 +135,4 @@ public class HelpDTO implements Serializable {
             ", fulfilledNeed=" + getFulfilledNeedId() +
             "}";
     }
-    
-    /**
-	 * @return
-	 */
-	public String getTimeInString() {
-		// TODO Auto-generated method stub
-		return timeInString;
-	}
-
-	/**
-	 * @param timeInString the timeInString to set
-	 */
-	public void setTimeInString(String timeInString) {
-		this.timeInString = timeInString;
-	}
 }

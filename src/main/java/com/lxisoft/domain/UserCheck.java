@@ -37,6 +37,22 @@ public class UserCheck implements Serializable {
     @JsonIgnoreProperties("checkedNeeds")
     private LoggedUser checkedUser;
 
+    @ManyToOne
+    @JsonIgnoreProperties("userChecks")
+    private Comment comment;
+
+    @ManyToOne
+    @JsonIgnoreProperties("userChecks")
+    private Reply reply;
+
+    @ManyToOne
+    @JsonIgnoreProperties("userChecks")
+    private NewsFeed newsFeed;
+
+    @ManyToOne
+    @JsonIgnoreProperties("userChecks")
+    private Violation violation;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -96,6 +112,58 @@ public class UserCheck implements Serializable {
 
     public void setCheckedUser(LoggedUser loggedUser) {
         this.checkedUser = loggedUser;
+    }
+
+    public Comment getComment() {
+        return comment;
+    }
+
+    public UserCheck comment(Comment comment) {
+        this.comment = comment;
+        return this;
+    }
+
+    public void setComment(Comment comment) {
+        this.comment = comment;
+    }
+
+    public Reply getReply() {
+        return reply;
+    }
+
+    public UserCheck reply(Reply reply) {
+        this.reply = reply;
+        return this;
+    }
+
+    public void setReply(Reply reply) {
+        this.reply = reply;
+    }
+
+    public NewsFeed getNewsFeed() {
+        return newsFeed;
+    }
+
+    public UserCheck newsFeed(NewsFeed newsFeed) {
+        this.newsFeed = newsFeed;
+        return this;
+    }
+
+    public void setNewsFeed(NewsFeed newsFeed) {
+        this.newsFeed = newsFeed;
+    }
+
+    public Violation getViolation() {
+        return violation;
+    }
+
+    public UserCheck violation(Violation violation) {
+        this.violation = violation;
+        return this;
+    }
+
+    public void setViolation(Violation violation) {
+        this.violation = violation;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

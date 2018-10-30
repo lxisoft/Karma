@@ -18,6 +18,12 @@
             "otherEntityRelationshipName": "help"
         },
         {
+            "relationshipType": "one-to-many",
+            "relationshipName": "comments",
+            "otherEntityName": "comment",
+            "otherEntityRelationshipName": "help"
+        },
+        {
             "relationshipType": "many-to-one",
             "relationshipName": "approvalStatus",
             "otherEntityName": "approvalStatus",

@@ -42,6 +42,9 @@ public class Need implements Serializable {
     @OneToMany(mappedBy = "fulfilledNeed")
     private Set<Help> helps = new HashSet<>();
 
+    @OneToMany(mappedBy = "need")
+    private Set<Comment> comments = new HashSet<>();
+
     @ManyToOne
     @JsonIgnoreProperties("needs")
     private Severity severity;
@@ -163,6 +166,31 @@ public class Need implements Serializable {
 
     public void setHelps(Set<Help> helps) {
         this.helps = helps;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public Need comments(Set<Comment> comments) {
+        this.comments = comments;
+        return this;
+    }
+
+    public Need addComments(Comment comment) {
+        this.comments.add(comment);
+        comment.setNeed(this);
+        return this;
+    }
+
+    public Need removeComments(Comment comment) {
+        this.comments.remove(comment);
+        comment.setNeed(null);
+        return this;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 
     public Severity getSeverity() {

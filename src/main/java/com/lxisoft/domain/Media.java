@@ -40,6 +40,14 @@ public class Media implements Serializable {
     @JsonIgnoreProperties("proofs")
     private Help help;
 
+    @ManyToOne
+    @JsonIgnoreProperties("attachments")
+    private NewsFeed newsFeed;
+
+    @ManyToOne
+    @JsonIgnoreProperties("proofs")
+    private Violation violation;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -112,6 +120,32 @@ public class Media implements Serializable {
 
     public void setHelp(Help help) {
         this.help = help;
+    }
+
+    public NewsFeed getNewsFeed() {
+        return newsFeed;
+    }
+
+    public Media newsFeed(NewsFeed newsFeed) {
+        this.newsFeed = newsFeed;
+        return this;
+    }
+
+    public void setNewsFeed(NewsFeed newsFeed) {
+        this.newsFeed = newsFeed;
+    }
+
+    public Violation getViolation() {
+        return violation;
+    }
+
+    public Media violation(Violation violation) {
+        this.violation = violation;
+        return this;
+    }
+
+    public void setViolation(Violation violation) {
+        this.violation = violation;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

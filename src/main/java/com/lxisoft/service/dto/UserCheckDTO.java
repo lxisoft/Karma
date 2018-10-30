@@ -16,19 +16,34 @@ public class UserCheckDTO implements Serializable {
 
     private Long checkedNeedId;
 
-    public Boolean getIsGenuine() {
+    private Long checkedUserId;
+
+    private Long commentId;
+
+    private Long replyId;
+
+    private Long newsFeedId;
+
+    private Long violationId;
+
+    private Boolean isGenuine;
+    
+    
+    /**
+	 * @return the isGenuine
+	 */
+	public Boolean getIsGenuine() {
 		return isGenuine;
 	}
 
+	/**
+	 * @param isGenuine the isGenuine to set
+	 */
 	public void setIsGenuine(Boolean isGenuine) {
 		this.isGenuine = isGenuine;
 	}
 
-	private Long checkedUserId;
- 
-    private Boolean isGenuine;
-    
-    public Long getId() {
+	public Long getId() {
         return id;
     }
 
@@ -68,6 +83,38 @@ public class UserCheckDTO implements Serializable {
         this.checkedUserId = loggedUserId;
     }
 
+    public Long getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(Long commentId) {
+        this.commentId = commentId;
+    }
+
+    public Long getReplyId() {
+        return replyId;
+    }
+
+    public void setReplyId(Long replyId) {
+        this.replyId = replyId;
+    }
+
+    public Long getNewsFeedId() {
+        return newsFeedId;
+    }
+
+    public void setNewsFeedId(Long newsFeedId) {
+        this.newsFeedId = newsFeedId;
+    }
+
+    public Long getViolationId() {
+        return violationId;
+    }
+
+    public void setViolationId(Long violationId) {
+        this.violationId = violationId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -97,6 +144,10 @@ public class UserCheckDTO implements Serializable {
             ", category='" + getCategory() + "'" +
             ", checkedNeed=" + getCheckedNeedId() +
             ", checkedUser=" + getCheckedUserId() +
+            ", comment=" + getCommentId() +
+            ", reply=" + getReplyId() +
+            ", newsFeed=" + getNewsFeedId() +
+            ", violation=" + getViolationId() +
             "}";
     }
 }

@@ -5,7 +5,6 @@ import java.util.Objects;
 
 import org.springframework.web.multipart.MultipartFile;
 
-
 /**
  * A DTO for the Media entity.
  */
@@ -21,29 +20,16 @@ public class MediaDTO implements Serializable {
 
     private Long needId;
 
-    private Long helpId;
+	private Long helpId;
+
+    private Long newsFeedId;
+
+    private Long violationId;
     
     private MultipartFile file;
 
-   /* private byte[] data;
 
-    public byte[] getData() {
-		return data;
-	}
-
-	public void setData(byte[] data) {
-		this.data = data;
-	}*/
-
-	public MultipartFile getFile() {
-		return file;
-	}
-
-	public void setFile(MultipartFile file) {
-		this.file = file;
-	}
-
-	public Long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -91,6 +77,37 @@ public class MediaDTO implements Serializable {
         this.helpId = helpId;
     }
 
+    public Long getNewsFeedId() {
+        return newsFeedId;
+    }
+
+    public void setNewsFeedId(Long newsFeedId) {
+        this.newsFeedId = newsFeedId;
+    }
+
+    public Long getViolationId() {
+        return violationId;
+    }
+
+    public void setViolationId(Long violationId) {
+        this.violationId = violationId;
+    }
+    
+    /**
+	 * @return the file
+	 */
+	public MultipartFile getFile() {
+		return file;
+	}
+
+	/**
+	 * @param file the file to set
+	 */
+	public void setFile(MultipartFile file) {
+		this.file = file;
+	}
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -121,6 +138,8 @@ public class MediaDTO implements Serializable {
             ", extension='" + getExtension() + "'" +
             ", need=" + getNeedId() +
             ", help=" + getHelpId() +
+            ", newsFeed=" + getNewsFeedId() +
+            ", violation=" + getViolationId() +
             "}";
     }
 }

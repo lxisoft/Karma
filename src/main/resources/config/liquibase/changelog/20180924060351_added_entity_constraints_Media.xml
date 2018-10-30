@@ -20,5 +20,17 @@
                                  referencedColumnNames="id"
                                  referencedTableName="help"/>
 
+        <addForeignKeyConstraint baseColumnNames="news_feed_id"
+                                 baseTableName="media"
+                                 constraintName="fk_media_news_feed_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="news_feed"/>
+
+        <addForeignKeyConstraint baseColumnNames="violation_id"
+                                 baseTableName="media"
+                                 constraintName="fk_media_violation_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="violation"/>
+
     </changeSet>
 </databaseChangeLog>

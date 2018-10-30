@@ -25,25 +25,25 @@ public class LoggedUserDTO implements Serializable {
 
     private String profession;
 
-	private String gender;
+    private String gender;
 
     private LocalDate dob;
 
     private String bloodGroup;
 
     private Long profilePicId;
-    
+
     private MultipartFile file;
 
     public MultipartFile getFile() {
-		return file;
-	}
+        return file;
+    }
 
-	public void setFile(MultipartFile file) {
-		this.file = file;
-	}
+    public void setFile(MultipartFile file) {
+        this.file = file;
+    }
 
-	public Long getId() {
+    public Long getId() {
         return id;
     }
 
