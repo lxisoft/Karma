@@ -273,6 +273,10 @@ public class NeedController {
 			page = needService.findAllNeedsByApprovedStatus(pageable, approvalStatus);
 		}
 		List<NeedDTO> needs = page.getContent();
+		//
+		for(NeedDTO needDto:needs){
+			log.info("*****************{}",needDto.getId());
+		}
 		
 		int count=0;
 		
@@ -280,6 +284,9 @@ public class NeedController {
 		
 		for(NeedDTO need:needs)
 		{
+			
+			log.info("*****************{}",need.getId());
+			
 			Page<UserCheckDTO> userCheckDTOs=userCheckService.findAllUserChecksByCheckedNeedId(pageable,need.getId());
 			List<UserCheckDTO> userCheckDTOList = userCheckDTOs.getContent();
 			

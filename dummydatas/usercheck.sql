@@ -8,3 +8,9 @@ insert into user_check (vote_type, category) values ('quisque ut', 'lacus at');
 insert into user_check (vote_type, category) values ('nullam orci', 'sem duis');
 insert into user_check (vote_type, category) values ('sem praesent', 'quis turpis');
 insert into user_check (vote_type, category) values ('cubilia curae', 'libero rutrum');
+
+
+insert into user_check (vote_type, category) values ('postive','genuiness');
+
+insert into user_check (vote_type, category) values ('negative','genuiness');
+

@@ -115,7 +115,7 @@ public class UserCheckServiceImpl implements UserCheckService {
 	public Page<UserCheckDTO> findAllUserChecksByCheckedNeedId(Pageable pageable, Long checkedNeedId) {
 		
 	        log.debug("Request to get all UserChecks");
-	        return userCheckRepository.findAllUserChecksByCheckedNeedId(pageable)
+	        return userCheckRepository.findAllUserChecksByCheckedNeedId(pageable,checkedNeedId)
 	            .map(userCheckMapper::toDto);
 	    }
 

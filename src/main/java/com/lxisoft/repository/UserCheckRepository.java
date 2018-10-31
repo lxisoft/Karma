@@ -23,7 +23,7 @@ public interface UserCheckRepository extends JpaRepository<UserCheck, Long> {
 	 * @param pageable
 	 * @return
 	 */
-	Page<UserCheck> findAllUserChecksByCheckedNeedId(Pageable pageable);
+	Page<UserCheck> findAllUserChecksByCheckedNeedId(Pageable pageable,Long checkedNeedId);
 
 
 }
