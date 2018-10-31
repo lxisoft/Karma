@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -52,10 +53,11 @@ public class HelpResource {
      * @param helpDTO the helpDTO to create
      * @return the ResponseEntity with status 201 (Created) and with body the new helpDTO, or with status 400 (Bad Request) if the help has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @throws IOException 
      */
     @PostMapping("/helps")
     @Timed
-    public ResponseEntity<HelpDTO> createHelp(@RequestBody HelpDTO helpDTO) throws URISyntaxException {
+    public ResponseEntity<HelpDTO> createHelp(@RequestBody HelpDTO helpDTO) throws URISyntaxException, IOException {
         log.debug("REST request to save Help : {}", helpDTO);
         if (helpDTO.getId() != null) {
             throw new BadRequestAlertException("A new help cannot already have an ID", ENTITY_NAME, "idexists");
@@ -84,10 +86,11 @@ public class HelpResource {
      * or with status 400 (Bad Request) if the helpDTO is not valid,
      * or with status 500 (Internal Server Error) if the helpDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @throws IOException 
      */
     @PutMapping("/helps")
     @Timed
-    public ResponseEntity<HelpDTO> updateHelp(@RequestBody HelpDTO helpDTO) throws URISyntaxException {
+    public ResponseEntity<HelpDTO> updateHelp(@RequestBody HelpDTO helpDTO) throws URISyntaxException, IOException {
         log.debug("REST request to update Help : {}", helpDTO);
         if (helpDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
