@@ -111,7 +111,7 @@
 					<input type="hidden" th:field="${need.description}">
 					<input type="hidden" th:field="${need.beneficiaryType}">
 					<input type="hidden" th:field="${need.date}">
-					<input type="hidden" th:name="categoryList[0].id" th:unless="${need.categoriesAsList}" th:value="${need.categoriesAsList[0].id}">
+					<input type="hidden" th:name="categoryList[0].id" th:unless="${need.categoryList}" th:value="${need.categoryList[0].id}">
 					<input type="hidden" th:field="${need.id}">
 					<input type="hidden" th:name="approvalStatusId" th:value="${status.id}">
 					<button class="btn btn-success btn-block" name="submit" type="submit">Approve</button>
@@ -121,7 +121,7 @@
 					<input type="hidden" th:field="${need.description}">
 					<input type="hidden" th:field="${need.beneficiaryType}">
 					<input type="hidden" th:field="${need.date}">
-					<input type="hidden" th:name="categoryList[0].id" th:unless="${need.categoriesAsList}" th:value="${need.categoriesAsList[0].id}">
+					<input type="hidden" th:name="categoryList[0].id" th:unless="${need.categoryList}" th:value="${need.categoryList[0].id}">
 					<input type="hidden" th:field="${need.id}">	
 					<input type="hidden" th:name="approvalStatusId" th:value="${status.id}">
 					<button class="btn btn-danger btn-block" name="submit" type="submit">Decline</button>
