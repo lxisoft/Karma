@@ -16,7 +16,18 @@ public class ReplyDTO implements Serializable {
     private Instant date;
 
     private Long commentId;
-
+    
+    private String dateInString;
+    
+    public String getDateInString()
+    {
+    	return dateInString;
+    }
+    
+    public void setDateInString(String dateInString)
+    {
+        this.dateInString=dateInString;	
+    }
     public Long getId() {
         return id;
     }

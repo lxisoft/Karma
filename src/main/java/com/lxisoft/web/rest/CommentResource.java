@@ -1,4 +1,4 @@
-package com.lxisoft.web.rest;
+ package com.lxisoft.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.service.CommentService;

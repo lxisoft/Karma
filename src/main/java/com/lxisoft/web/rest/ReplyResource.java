@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +26,6 @@ import java.util.Optional;
  * REST controller for managing Reply.
  */
 @RestController
-@RequestMapping("/api")
 public class ReplyResource {
 
     private final Logger log = LoggerFactory.getLogger(ReplyResource.class);
@@ -53,6 +52,11 @@ public class ReplyResource {
         if (replyDTO.getId() != null) {
             throw new BadRequestAlertException("A new reply cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        
+        String parseDate=replyDTO.getDateInString().replace(" ","T").concat("Z");
+        Instant date=Instant.parse(parseDate);
+        replyDTO.setDate(date);
+        
         ReplyDTO result = replyService.save(replyDTO);
         return ResponseEntity.created(new URI("/api/replies/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
