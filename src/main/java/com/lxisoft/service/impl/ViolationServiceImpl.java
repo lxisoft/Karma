@@ -5,6 +5,8 @@ import com.lxisoft.domain.Violation;
 import com.lxisoft.repository.ViolationRepository;
 import com.lxisoft.service.dto.ViolationDTO;
 import com.lxisoft.service.mapper.ViolationMapper;
+
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -114,5 +117,21 @@ public class ViolationServiceImpl implements ViolationService {
 		   	return violationRepository.findViolationByDateAfter(pageable, date)
 		   			.map(violationMapper::toDto);
 	
+	}
+
+	@Override
+	public Page<ViolationDTO> findViolationByDateBefore(Pageable pageable, Instant date) {
+		log.debug("Request to get all Violations by before date");
+	   	return violationRepository.findViolationByDateBefore(pageable, date)
+	   			.map(violationMapper::toDto);
+
+	}
+
+	@Override
+	public Page<ViolationDTO> findViolationByDateBetween(Pageable pageable, Instant startDate, Instant endDate) {
+		log.debug("Request to get all Violations by before date");
+	   	return violationRepository.findViolationByDateBetween(pageable, startDate,endDate)
+	   			.map(violationMapper::toDto);
+
 	}
 }

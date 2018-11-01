@@ -7,10 +7,13 @@ import com.lxisoft.web.rest.util.HeaderUtil;
 import com.lxisoft.web.rest.util.PaginationUtil;
 import com.lxisoft.service.dto.ViolationDTO;
 import io.github.jhipster.web.util.ResponseUtil;
+
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -146,12 +150,42 @@ public class ViolationResource {
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of violations in body
      */
-    @GetMapping("/getViolationByDateAfter/{date}")
+    @GetMapping("/getViolationByDateAfter")
     @Timed
-    public ResponseEntity<List<ViolationDTO>> getViolationByDateAfter(Pageable pageable,@PathVariable Instant date) {
+    public ResponseEntity<List<ViolationDTO>> getViolationByDateAfter(Pageable pageable,@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") String date) {
         log.debug("REST request to get all the violations by after date");
-        Page<ViolationDTO> page = violationService.findViolationByDateAfter(pageable,date);
+        Page<ViolationDTO> page = violationService.findViolationByDateAfter(pageable,Instant.parse(date));
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getViolationByDateAfter/");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /violations : get all the violations by before date.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of violations in body
+     */
+    @GetMapping("/getViolationByDateBefore")
+    @Timed
+    public ResponseEntity<List<ViolationDTO>> getViolationByDateBefore(Pageable pageable,@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") String date) {
+        log.debug("REST request to get all the violations by after date");
+        Page<ViolationDTO> page = violationService.findViolationByDateBefore(pageable,Instant.parse(date));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getViolationByDateBefore/");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+    
+    /**
+     * GET  /violations : get all the violations between two dates.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of violations in body
+     */
+    @GetMapping("/getViolationByDateBetween")
+    @Timed
+    public ResponseEntity<List<ViolationDTO>> getViolationByDateBetween(Pageable pageable,@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") String startDate,@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") String endDate) {
+        log.debug("REST request to get all the violations by after date");
+        Page<ViolationDTO> page = violationService.findViolationByDateBetween(pageable,Instant.parse(startDate),Instant.parse(endDate));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getViolationByDateBetween/");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
