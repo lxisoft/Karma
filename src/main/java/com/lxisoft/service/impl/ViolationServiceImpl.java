@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.Optional;
 
 /**
@@ -86,4 +87,32 @@ public class ViolationServiceImpl implements ViolationService {
         log.debug("Request to delete Violation : {}", id);
         violationRepository.deleteById(id);
     }
+
+
+    /**
+     * Get all the violations by anonymous user type.
+     *
+     * @param pageable the pagination information, isAnonymous the posted user is anonymous or not
+     * @return the list of entities
+     */
+	@Override
+	public Page<ViolationDTO> findViolationByIsAnonymous(Pageable pageable,Boolean isAnonymous) {
+		 log.debug("Request to get all Violations");
+		   	return violationRepository.findViolationByIsAnonymous(pageable, isAnonymous)
+		   			.map(violationMapper::toDto);
+	}
+
+	  /**
+     * Get all the violations by after date.
+     *
+     * @param pageable the pagination information, date to get the violations
+     * @return the list of entities
+     */
+	@Override
+	public Page<ViolationDTO> findViolationByDateAfter(Pageable pageable, Instant date) {
+		 log.debug("Request to get all Violations by after date");
+		   	return violationRepository.findViolationByDateAfter(pageable, date)
+		   			.map(violationMapper::toDto);
+	
+	}
 }

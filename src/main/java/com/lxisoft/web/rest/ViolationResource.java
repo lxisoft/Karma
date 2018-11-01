@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -123,4 +123,36 @@ public class ViolationResource {
         violationService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+    
+    /**
+     * GET  /violations : get all the violations by anonymous user type.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of violations in body
+     */
+    @GetMapping("/getViolationByIsAnonymous/{isAnonymous}")
+    @Timed
+    public ResponseEntity<List<ViolationDTO>> getViolationByIsAnonymous(Pageable pageable,@PathVariable Boolean isAnonymous) {
+        log.debug("REST request to get all the violations by anonymous user type");
+        log.info("**********{}",isAnonymous);
+        Page<ViolationDTO> page = violationService.findViolationByIsAnonymous(pageable,isAnonymous);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getViolationByIsAnonymous/");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+    
+    /**
+     * GET  /violations : get all the violations by after date.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of violations in body
+     */
+    @GetMapping("/getViolationByDateAfter/{date}")
+    @Timed
+    public ResponseEntity<List<ViolationDTO>> getViolationByDateAfter(Pageable pageable,@PathVariable Instant date) {
+        log.debug("REST request to get all the violations by after date");
+        Page<ViolationDTO> page = violationService.findViolationByDateAfter(pageable,date);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getViolationByDateAfter/");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
 }
