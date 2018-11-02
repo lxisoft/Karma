@@ -1,15 +1,5 @@
 {
-    "name": "UserCheck",
-    "fields": [
-        {
-            "fieldName": "voteType",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "category",
-            "fieldType": "String"
-        }
-    ],
+    "fluentMethods": true,
     "relationships": [
         {
             "relationshipType": "many-to-one",
@@ -46,6 +36,22 @@
             "relationshipName": "violation",
             "otherEntityName": "violation",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "checkedHelp",
+            "otherEntityName": "help",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "voteType",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "category",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180924060353",
@@ -55,8 +61,5 @@
     "pagination": "pagination",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,
-    "fluentMethods": true,
-    "clientRootFolder": "karma",
-    "applications": "*",
     "microserviceName": "karma"
 }

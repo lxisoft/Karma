@@ -1,6 +1,5 @@
 package com.lxisoft.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 
 import javax.persistence.*;
@@ -30,28 +29,25 @@ public class UserCheck implements Serializable {
     private String category;
 
     @ManyToOne
-    @JsonIgnoreProperties("userChecks")
     private Need checkedNeed;
 
     @ManyToOne
-    @JsonIgnoreProperties("checkedNeeds")
     private LoggedUser checkedUser;
 
     @ManyToOne
-    @JsonIgnoreProperties("userChecks")
     private Comment comment;
 
     @ManyToOne
-    @JsonIgnoreProperties("userChecks")
     private Reply reply;
 
     @ManyToOne
-    @JsonIgnoreProperties("userChecks")
     private NewsFeed newsFeed;
 
     @ManyToOne
-    @JsonIgnoreProperties("userChecks")
     private Violation violation;
+
+    @ManyToOne
+    private Help checkedHelp;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -164,6 +160,19 @@ public class UserCheck implements Serializable {
 
     public void setViolation(Violation violation) {
         this.violation = violation;
+    }
+
+    public Help getCheckedHelp() {
+        return checkedHelp;
+    }
+
+    public UserCheck checkedHelp(Help help) {
+        this.checkedHelp = help;
+        return this;
+    }
+
+    public void setCheckedHelp(Help help) {
+        this.checkedHelp = help;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

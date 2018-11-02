@@ -1,12 +1,16 @@
 package com.lxisoft.service.dto;
 
+
 import java.time.Instant;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
+import java.util.Set;
 
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Objects;
 
 /**
  * A DTO for the Help entity.
@@ -24,14 +28,13 @@ public class HelpDTO implements Serializable {
     private Long providedUserId;
 
     private Long fulfilledNeedId;
-    
-    private String timeInString;
+
+  private String timeInString;
     
     private MultipartFile[] files;
 
     private List<String> fileNameList=new ArrayList<>();
 
-    
     public MultipartFile[] getFiles() {
 		return files;
 	}
@@ -68,7 +71,7 @@ public class HelpDTO implements Serializable {
 		this.timeInString = timeInString;
 	}
 
-	public Long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -126,7 +129,7 @@ public class HelpDTO implements Serializable {
         }
 
         HelpDTO helpDTO = (HelpDTO) o;
-        if (helpDTO.getId() == null || getId() == null) {
+        if(helpDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), helpDTO.getId());
@@ -143,9 +146,6 @@ public class HelpDTO implements Serializable {
             "id=" + getId() +
             ", time='" + getTime() + "'" +
             ", description='" + getDescription() + "'" +
-            ", approvalStatus=" + getApprovalStatusId() +
-            ", providedUser=" + getProvidedUserId() +
-            ", fulfilledNeed=" + getFulfilledNeedId() +
             "}";
     }
 }
