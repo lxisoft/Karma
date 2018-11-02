@@ -26,6 +26,7 @@ import java.util.Optional;
  * REST controller for managing Reply.
  */
 @RestController
+@RequestMapping("/api")
 public class ReplyResource {
 
     private final Logger log = LoggerFactory.getLogger(ReplyResource.class);

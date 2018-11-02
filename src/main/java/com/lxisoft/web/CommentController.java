@@ -28,7 +28,6 @@ import java.util.Optional;
  * REST controller for managing Comment.
  */
 @Controller
-@RequestMapping("/api")
 public class CommentController {
 
     private final Logger log = LoggerFactory.getLogger(CommentController.class);
