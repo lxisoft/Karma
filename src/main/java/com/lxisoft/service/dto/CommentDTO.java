@@ -22,6 +22,18 @@ public class CommentDTO implements Serializable {
     private Long newsFeedId;
 
     private Long violationId;
+    
+    private String dateInString;
+    
+    public void setDateInString(String dateInString)
+    {
+    	this.dateInString=dateInString;
+    }
+    
+    public String getDateInString()
+    {
+    	return dateInString;
+    }
 
     public Long getId() {
         return id;
