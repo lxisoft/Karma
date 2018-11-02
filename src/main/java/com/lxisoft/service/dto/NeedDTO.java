@@ -45,6 +45,18 @@ public class NeedDTO implements Serializable {
     
     private MultipartFile[] files;
     
+    private List<CommentDTO> commentList=new ArrayList<>();
+    
+    
+    public void  setCommentList(List<CommentDTO> commentList)
+    {
+    	this.commentList=commentList;
+    }
+    
+    public List<CommentDTO> getCommentList()
+    {
+    	return commentList;
+    }
 
     public MultipartFile[] getFiles() {
 		return files;

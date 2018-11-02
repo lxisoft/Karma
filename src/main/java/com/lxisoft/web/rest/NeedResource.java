@@ -168,8 +168,7 @@ for(NeedDTO need:needs){
 
 			need.setFileNameList(fileNameList);
 		}	
-        //
-        
+       
         
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, String.format("/api/needs?eagerload=%b", eagerload));
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);

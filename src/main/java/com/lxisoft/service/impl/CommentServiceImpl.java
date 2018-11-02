@@ -86,4 +86,20 @@ public class CommentServiceImpl implements CommentService {
         log.debug("Request to delete Comment : {}", id);
         commentRepository.deleteById(id);
     }
+     /* 
+     *find all comment By NeedId
+     *@Param needId 
+     */
+
+	@Override
+	public Page<CommentDTO> findByNeedId(Long needId,Pageable pageable) {
+		log.debug("request to get all comment by needId :"+needId);
+		Page<Comment> comments=commentRepository.findAllByNeedId(needId,pageable);
+		Page<CommentDTO> commentDtos=comments.map(commentMapper::toDto);
+		
+		
+		return  commentDtos;
+		
+	}
+
 }

@@ -43,4 +43,14 @@ public interface CommentService {
      * @param id the id of the entity
      */
     void delete(Long id);
+    
+    /**
+     * get the "Need id" comment.
+     *
+     * @param id the needId of comment
+     */
+    
+    Page<CommentDTO> findByNeedId(Long id,Pageable pageable);
+    
+    
 }

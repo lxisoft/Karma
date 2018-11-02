@@ -1,4 +1,4 @@
- package com.lxisoft.web.rest;
+package com.lxisoft.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.service.CommentService;
@@ -45,7 +45,7 @@ public class CommentResource {
      * @param commentDTO the commentDTO to create
      * @return the ResponseEntity with status 201 (Created) and with body the new commentDTO, or with status 400 (Bad Request) if the comment has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
+     */   
     @PostMapping("/comments")
     @Timed
     public ResponseEntity<CommentDTO> createComment(@RequestBody CommentDTO commentDTO) throws URISyntaxException {
@@ -117,9 +117,8 @@ public class CommentResource {
         return ResponseUtil.wrapOrNotFound(commentDTO);
     }
 
-    /**
+    /*
      * DELETE  /comments/:id : delete the "id" comment.
-     *
      * @param id the id of the commentDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */

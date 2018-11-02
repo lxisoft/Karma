@@ -1,9 +1,11 @@
 package com.lxisoft.service.impl;
 
 import com.lxisoft.service.ApprovalStatusService;
+import com.lxisoft.service.CommentService;
 import com.lxisoft.service.NeedService;
 import com.lxisoft.domain.Need;
 import com.lxisoft.repository.NeedRepository;
+import com.lxisoft.service.dto.CommentDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.service.mapper.NeedMapper;
 import org.slf4j.Logger;
@@ -21,6 +23,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -38,6 +41,9 @@ public class NeedServiceImpl implements NeedService {
     
     @Autowired
     ApprovalStatusService approvalStatusService;
+    
+    @Autowired
+    CommentService commentService;
     
     @Value("${upload.path}")
     private String path;
@@ -115,8 +121,13 @@ public class NeedServiceImpl implements NeedService {
     @Transactional(readOnly = true)
     public Optional<NeedDTO> findOne(Long id) {
         log.debug("Request to get Need : {}", id);
-        return needRepository.findOneWithEagerRelationships(id)
-            .map(needMapper::toDto);
+        
+        Optional<NeedDTO> optional=needRepository.findOneWithEagerRelationships(id)
+        .map(needMapper::toDto);
+        Pageable pageable=null;
+       List<CommentDTO> commentList=commentService.findByNeedId(id,pageable).getContent();
+       optional.get().setCommentList(commentList);
+        return  optional;
     }
 
     /**
