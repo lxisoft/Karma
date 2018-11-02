@@ -1,15 +1,5 @@
 {
-    "name": "Help",
-    "fields": [
-        {
-            "fieldName": "time",
-            "fieldType": "Instant"
-        },
-        {
-            "fieldName": "description",
-            "fieldType": "String"
-        }
-    ],
+    "fluentMethods": true,
     "relationships": [
         {
             "relationshipType": "one-to-many",
@@ -40,6 +30,22 @@
             "relationshipName": "fulfilledNeed",
             "otherEntityName": "need",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "userChecks",
+            "otherEntityName": "userCheck",
+            "otherEntityRelationshipName": "checkedHelp"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "time",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180924060355",
@@ -49,8 +55,5 @@
     "pagination": "pagination",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,
-    "fluentMethods": true,
-    "clientRootFolder": "karma",
-    "applications": "*",
     "microserviceName": "karma"
 }

@@ -18,7 +18,7 @@
         Added the entity UserCheck.
     -->
     <changeSet id="20180924060353-1" author="jhipster">
-        <createTable tableName="user_check" remarks="UserCheck entity @author Deepthi E">
+        <createTable tableName="user_check">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -51,6 +51,10 @@
             </column>
 
             <column name="violation_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="checked_help_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 

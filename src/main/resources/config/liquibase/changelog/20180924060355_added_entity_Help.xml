@@ -18,11 +18,11 @@
         Added the entity Help.
     -->
     <changeSet id="20180924060355-1" author="jhipster">
-        <createTable tableName="help" remarks="Service entity @Author Sooraj Pn">
+        <createTable tableName="help">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="jhi_time" type="datetime">
+            <column name="jhi_time" type="timestamp">
                 <constraints nullable="true" />
             </column>
 
