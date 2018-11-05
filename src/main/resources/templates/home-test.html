@@ -71,10 +71,13 @@
 			<div class="col-sm-6 mx-auto">
                     <ul class="nav nav-pills nav-fill">
                             <li class="nav-item">
-                              <a class="nav-link  info-color active" href="#">Active</a>
+                              <a class="nav-link  info-color active" href="#">Needs</a>
                             </li>
                             <li class="nav-item">
-                              <a class="nav-link" href="#">Longer nav link</a>
+                              <a class="nav-link" href="#">Violations</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" href="#">News Feeds</a>
                             </li>
                             </ul>
 				<div th:each="need,index : ${needs}" class="row my-3">
@@ -178,13 +181,16 @@
 
 							</div>
 							<!-- Grid row -->
-							<p class="card-text mt-3" th:text="${need.description}">Some quick example text to build on the
+							<p class="card-text mt-3" th:text="${need.description}">Some quick example text to build on the               
 								panel title and make up the bulk of the panel's content.</p>
 							<!--<p>
 								<a th:href="@{'/needs/'+${need.id}}" class="card-link">Click for more</a> -->
 							<div class="row">
 								<div class="text-center col-xs-5 mx-auto my-2">
-									<a th:href="@{'/help-need/'+${need.id}}" class="card-link text-success float-left clearfix">Help now</a></div>
+									<a th:href="@{'/help-need/'+${need.id}}" class="card-link text-success float-left clearfix">Help now</a>
+									<a th:href="@{'/help-need/'+${need.id}}" class="card-link text-success float-left clearfix" th:text="${#lists.isEmpty(need.comments)}+ +'Comments'">0 Comments</a></div>
+								</div>	
+
 								<div class="col-xs-7 d-inline mx-auto">
 									<button type="button" class="btn btn-rounded young-passion-gradient btn-sm px-3 float-right">Fake</button>
 									<button type="button" class="btn btn-round aqua-gradient btn-sm px-2 float-right">Genuine</button>
