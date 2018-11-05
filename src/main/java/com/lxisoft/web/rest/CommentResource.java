@@ -129,4 +129,25 @@ public class CommentResource {
         commentService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+    
+    
+    /**
+     * GET  /commentsByNeedId/:id : get the  comment by needId.
+     *
+     * @param id the id of the commentDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the commentDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/commentsByNeedId/{id}")
+    @Timed
+    public ResponseEntity<List<CommentDTO>> getCommentByNeedId(@PathVariable Long id) {
+        log.debug("REST request to get Comments buy needId : {}", id);
+        Pageable pageable=null;
+        Page<CommentDTO> page = commentService.findByNeedId(id,pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/commentsByNeedId");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+
+    }
+    
+    
+    
 }

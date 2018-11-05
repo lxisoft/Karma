@@ -65,5 +65,43 @@ public class CommentController {
         model.addAttribute("comment",result);
         return null;
     }
+    
+    
+    
+    
+    
+    /**
+     * GET  /commentsByNeedId/:id : get the "id" comment.
+     *
+     * @param id the id of the commentDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the commentDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/commentsByNeedId/{id}")
+    @Timed
+    public String getCommentByNeedId(@RequestParam(required=false,defaultValue="false") @PathVariable Long id,Model model) {
+        log.debug("REST request to get Comments buy needId : {}", id);
+        Pageable pageable=null;
+        Page<CommentDTO> result = commentService.findByNeedId(id,pageable);
+        model.addAttribute("comments",result);
+        return null;
 
-}
+    }
+    
+    /**
+     * GET  /comments/:id : get the "id" comment.
+     *
+     * @param id the id of the commentDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the commentDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/comments/{id}")
+    @Timed
+    public String getComment(@RequestParam(required=false,defaultValue="false") @PathVariable Long id,Model model) {
+        log.debug("REST request to get Comment : {}", id);
+        Optional<CommentDTO> commentDTO = commentService.findOne(id);
+        model.addAttribute("comment",commentDTO);
+        return null;
+    }
+    
+    
+
+} 
