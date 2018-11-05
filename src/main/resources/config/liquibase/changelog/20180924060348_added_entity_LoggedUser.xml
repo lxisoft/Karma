@@ -57,6 +57,18 @@
             <column name="blood_group" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+
+            <column name="emotional_quotient" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="social_quotient" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="happiness_index" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <column name="profile_pic_id" type="bigint">
                 <constraints unique="true" nullable="true" uniqueConstraintName="ux_logged_user_profile_pic_id" />
             </column>

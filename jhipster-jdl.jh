@@ -11,7 +11,10 @@ entity LoggedUser{
   profession String,
   gender String,
   dob LocalDate,
-  bloodGroup String
+  bloodGroup String,
+  emotionalQuotient Long,
+  socialQuotient Long,
+  happinessIndex Long
 }
 
 /**
@@ -153,7 +156,6 @@ relationship OneToMany{
   Need{comments} to Comment,
   Help{comments} to Comment,
   Violation{comments} to Comment
-
 }
   
 relationship ManyToOne{
@@ -167,7 +169,9 @@ relationship ManyToOne{
   UserCheck{Reply}   to  Reply{userChecks},
   UserCheck{NewsFeed}  to  NewsFeed{userChecks},
   UserCheck{Violation}  to  Violation{userChecks},
-  UserCheck{checkedHelp} to Help{userChecks}
+  UserCheck{checkedHelp} to Help{userChecks},
+  Comment{commentedUser} to LoggedUser,
+  Reply{repliedUser} to LoggedUser
 }
 
 relationship ManyToMany{

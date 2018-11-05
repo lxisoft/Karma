@@ -8,13 +8,15 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Reply and its DTO ReplyDTO.
  */
-@Mapper(componentModel = "spring", uses = {CommentMapper.class})
+@Mapper(componentModel = "spring", uses = {CommentMapper.class, LoggedUserMapper.class})
 public interface ReplyMapper extends EntityMapper<ReplyDTO, Reply> {
 
     @Mapping(source = "comment.id", target = "commentId")
+    @Mapping(source = "repliedUser.id", target = "repliedUserId")
     ReplyDTO toDto(Reply reply);
 
     @Mapping(source = "commentId", target = "comment")
+    @Mapping(source = "repliedUserId", target = "repliedUser")
     @Mapping(target = "userChecks", ignore = true)
     Reply toEntity(ReplyDTO replyDTO);
 

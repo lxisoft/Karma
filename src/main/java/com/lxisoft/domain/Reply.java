@@ -37,6 +37,10 @@ public class Reply implements Serializable {
     @JsonIgnoreProperties("replies")
     private Comment comment;
 
+    @ManyToOne
+    @JsonIgnoreProperties("")
+    private LoggedUser repliedUser;
+
     @OneToMany(mappedBy = "reply")
     private Set<UserCheck> userChecks = new HashSet<>();
 
@@ -86,6 +90,19 @@ public class Reply implements Serializable {
 
     public void setComment(Comment comment) {
         this.comment = comment;
+    }
+
+    public LoggedUser getRepliedUser() {
+        return repliedUser;
+    }
+
+    public Reply repliedUser(LoggedUser loggedUser) {
+        this.repliedUser = loggedUser;
+        return this;
+    }
+
+    public void setRepliedUser(LoggedUser loggedUser) {
+        this.repliedUser = loggedUser;
     }
 
     public Set<UserCheck> getUserChecks() {
