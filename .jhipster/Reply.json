@@ -18,6 +18,12 @@
             "otherEntityField": "id"
         },
         {
+            "relationshipType": "many-to-one",
+            "relationshipName": "repliedUser",
+            "otherEntityName": "loggedUser",
+            "otherEntityField": "id"
+        },
+        {
             "relationshipType": "one-to-many",
             "relationshipName": "userChecks",
             "otherEntityName": "userCheck",

@@ -53,6 +53,15 @@ public class LoggedUser implements Serializable {
     @Column(name = "blood_group")
     private String bloodGroup;
 
+    @Column(name = "emotional_quotient")
+    private Long emotionalQuotient;
+
+    @Column(name = "social_quotient")
+    private Long socialQuotient;
+
+    @Column(name = "happiness_index")
+    private Long happinessIndex;
+
     @OneToOne
     @JoinColumn(unique = true)
     private Media profilePic;
@@ -200,6 +209,45 @@ public class LoggedUser implements Serializable {
 
     public void setBloodGroup(String bloodGroup) {
         this.bloodGroup = bloodGroup;
+    }
+
+    public Long getEmotionalQuotient() {
+        return emotionalQuotient;
+    }
+
+    public LoggedUser emotionalQuotient(Long emotionalQuotient) {
+        this.emotionalQuotient = emotionalQuotient;
+        return this;
+    }
+
+    public void setEmotionalQuotient(Long emotionalQuotient) {
+        this.emotionalQuotient = emotionalQuotient;
+    }
+
+    public Long getSocialQuotient() {
+        return socialQuotient;
+    }
+
+    public LoggedUser socialQuotient(Long socialQuotient) {
+        this.socialQuotient = socialQuotient;
+        return this;
+    }
+
+    public void setSocialQuotient(Long socialQuotient) {
+        this.socialQuotient = socialQuotient;
+    }
+
+    public Long getHappinessIndex() {
+        return happinessIndex;
+    }
+
+    public LoggedUser happinessIndex(Long happinessIndex) {
+        this.happinessIndex = happinessIndex;
+        return this;
+    }
+
+    public void setHappinessIndex(Long happinessIndex) {
+        this.happinessIndex = happinessIndex;
     }
 
     public Media getProfilePic() {
@@ -399,6 +447,9 @@ public class LoggedUser implements Serializable {
             ", gender='" + getGender() + "'" +
             ", dob='" + getDob() + "'" +
             ", bloodGroup='" + getBloodGroup() + "'" +
+            ", emotionalQuotient=" + getEmotionalQuotient() +
+            ", socialQuotient=" + getSocialQuotient() +
+            ", happinessIndex=" + getHappinessIndex() +
             "}";
     }
 }

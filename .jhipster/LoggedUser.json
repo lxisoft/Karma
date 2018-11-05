@@ -36,6 +36,18 @@
         {
             "fieldName": "bloodGroup",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "emotionalQuotient",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "socialQuotient",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "happinessIndex",
+            "fieldType": "Long"
         }
     ],
     "relationships": [

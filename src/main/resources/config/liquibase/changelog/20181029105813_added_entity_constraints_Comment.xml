@@ -26,6 +26,12 @@
                                  referencedColumnNames="id"
                                  referencedTableName="news_feed"/>
 
+        <addForeignKeyConstraint baseColumnNames="commented_user_id"
+                                 baseTableName="comment"
+                                 constraintName="fk_comment_commented_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="logged_user"/>
+
         <addForeignKeyConstraint baseColumnNames="violation_id"
                                  baseTableName="comment"
                                  constraintName="fk_comment_violation_id"

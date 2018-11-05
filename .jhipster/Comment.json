@@ -36,6 +36,12 @@
             "otherEntityRelationshipName": "comment"
         },
         {
+            "relationshipType": "many-to-one",
+            "relationshipName": "commentedUser",
+            "otherEntityName": "loggedUser",
+            "otherEntityField": "id"
+        },
+        {
             "relationshipType": "one-to-many",
             "relationshipName": "userChecks",
             "otherEntityName": "userCheck",
