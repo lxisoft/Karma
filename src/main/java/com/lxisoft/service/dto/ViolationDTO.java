@@ -16,12 +16,26 @@ public class ViolationDTO implements Serializable {
     private Boolean isAnonymous;
 
     private Instant date;
+    
+    private String dateInString;
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public String getDateInString() {
+		return dateInString;
+	}
+
+	public void setDateInString(String dateInString) {
+		this.dateInString = dateInString;
+	}
+
+	public Boolean getIsAnonymous() {
+		return isAnonymous;
+	}
+
+	public void setId(Long id) {
         this.id = id;
     }
 

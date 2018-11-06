@@ -86,4 +86,16 @@ public class CommentServiceImpl implements CommentService {
         log.debug("Request to delete Comment : {}", id);
         commentRepository.deleteById(id);
     }
+    
+    /**
+     * Get all the comments by violationId.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+	public Page<CommentDTO> findAllCommentByViolationId(Pageable pageable, Long violationId) {
+		 log.debug("Request to get all Comments bu violationId");
+	        return commentRepository.findAllCommentByViolationId(pageable,violationId)
+	            .map(commentMapper::toDto);
+	  }
 }
