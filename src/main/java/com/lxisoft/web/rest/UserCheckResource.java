@@ -233,4 +233,18 @@ public class UserCheckResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    /**
+     * GET  /getAllUserChecksByCommentId : get all the userChecks by commentId.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the violation id
+     */
+    @GetMapping("/getAllUserChecksByCommentId/{commentId}")
+    @Timed
+    public ResponseEntity<List<UserCheckDTO>> getAllUserChecksByCommentId(Pageable pageable,@PathVariable Long commentId) {
+        log.debug("REST request to get a page of UserChecks");
+        Page<UserCheckDTO> page = userCheckService.findAllUserCheckByCommentId(pageable,commentId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getAllUserChecksByCommentId");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 }

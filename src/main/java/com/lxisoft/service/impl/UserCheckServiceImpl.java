@@ -148,10 +148,31 @@ public class UserCheckServiceImpl implements UserCheckService {
 	   
 	}
 
+	 /**
+     * Get all the userChecks by violationId and checkedUserId.
+     *
+     * @param pageable the pagination information,violationId to find, checkedUserId
+     * @return the list of entities
+     */
 	@Override
 	public Page<UserCheckDTO> findAllUserCheckByViolationIdAndCheckedUserId(Pageable pageable, Long violationId, Long checkedUserId) {
 		 log.debug("Request to get all UserChecks by violation id and user id");
 	        return userCheckRepository.findAllUserCheckByViolationIdAndCheckedUserId(pageable,violationId,checkedUserId)
+	            .map(userCheckMapper::toDto);
+	   
+	}
+	
+	 /**
+     * Get all the userChecks by commentId.
+     *
+     * @param pageable the pagination information,violationId to find
+     * @return the list of entities
+     */
+
+	@Override
+	public Page<UserCheckDTO> findAllUserCheckByCommentId(Pageable pageable, Long commentId) {
+		 log.debug("Request to get all UserChecks by comment Id");
+	        return userCheckRepository.findAllUserCheckByCommentId(pageable,commentId)
 	            .map(userCheckMapper::toDto);
 	   
 	}
