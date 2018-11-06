@@ -1,6 +1,7 @@
 package com.lxisoft.repository;
 
 import com.lxisoft.domain.UserCheck;
+import com.lxisoft.service.dto.UserCheckDTO;
 
 import java.util.Optional;
 
@@ -24,6 +25,12 @@ public interface UserCheckRepository extends JpaRepository<UserCheck, Long> {
 	 * @return
 	 */
 	Page<UserCheck> findAllUserChecksByCheckedNeedId(Pageable pageable,Long checkedNeedId);
+
+	Page<UserCheck> findAllUserCheckByCategory(Pageable pageable, String category);
+
+	Page<UserCheck> findAllUserCheckByViolationId(Pageable pageable, Long violationId);
+
+	Page<UserCheck> findAllUserCheckByViolationIdAndCheckedUserId(Pageable pageable, Long violationId, Long checkedUserId);
 
 
 }

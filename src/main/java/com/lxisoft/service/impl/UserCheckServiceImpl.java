@@ -118,5 +118,42 @@ public class UserCheckServiceImpl implements UserCheckService {
 	        return userCheckRepository.findAllUserChecksByCheckedNeedId(pageable,checkedNeedId)
 	            .map(userCheckMapper::toDto);
 	    }
+	
+	 /**
+     * Get all the userChecks by category.
+     *
+     * @param pageable the pagination information,category to find
+     * @return the list of entities
+     */
+
+	@Override
+	public Page<UserCheckDTO> findAllUserCheckByCategory(Pageable pageable,String category) {
+		  log.debug("Request to get all UserChecks by category");
+	        return userCheckRepository.findAllUserCheckByCategory(pageable,category)
+	            .map(userCheckMapper::toDto);
+	   
+	}
+
+	 /**
+     * Get all the userChecks by category.
+     *
+     * @param pageable the pagination information,violationId to find
+     * @return the list of entities
+     */
+	@Override
+	public Page<UserCheckDTO> findAllUserCheckByViolationId(Pageable pageable, Long violationId) {
+		 log.debug("Request to get all UserChecks by category");
+	        return userCheckRepository.findAllUserCheckByViolationId(pageable,violationId)
+	            .map(userCheckMapper::toDto);
+	   
+	}
+
+	@Override
+	public Page<UserCheckDTO> findAllUserCheckByViolationIdAndCheckedUserId(Pageable pageable, Long violationId, Long checkedUserId) {
+		 log.debug("Request to get all UserChecks by violation id and user id");
+	        return userCheckRepository.findAllUserCheckByViolationIdAndCheckedUserId(pageable,violationId,checkedUserId)
+	            .map(userCheckMapper::toDto);
+	   
+	}
 
 }
