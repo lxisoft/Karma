@@ -158,4 +158,7 @@ public class HelpResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/helps");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+    
+    
+    
 }

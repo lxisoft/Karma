@@ -16,7 +16,11 @@ public class ReplyDTO implements Serializable {
     private Instant date;
 
     private Long commentId;
+    
+    private String dateInString;
 
+    private String timeElapsed;
+    
     public Long getId() {
         return id;
     }
@@ -79,4 +83,20 @@ public class ReplyDTO implements Serializable {
             ", comment=" + getCommentId() +
             "}";
     }
+
+	public String getDateInString() {
+		return dateInString;
+	}
+
+	public void setDateInString(String dateInString) {
+		this.dateInString = dateInString;
+	}
+
+	public String getTimeElapsed() {
+		return timeElapsed;
+	}
+
+	public void setTimeElapsed(String timeElapsed) {
+		this.timeElapsed = timeElapsed;
+	}
 }

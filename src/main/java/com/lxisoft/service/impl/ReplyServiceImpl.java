@@ -74,6 +74,9 @@ public class ReplyServiceImpl implements ReplyService {
         log.debug("Request to get Reply : {}", id);
         return replyRepository.findById(id)
             .map(replyMapper::toDto);
+        
+       
+       // optional.get().setElapsedTime()
     }
 
     /**
@@ -86,4 +89,81 @@ public class ReplyServiceImpl implements ReplyService {
         log.debug("Request to delete Reply : {}", id);
         replyRepository.deleteById(id);
     }
+
+	@Override
+	public String timeAgo(long time) {
+		long currentTime = (System.currentTimeMillis()) / 1000;
+        long timeElapsed =currentTime- time;
+        long seconds = timeElapsed;
+        int minutes = Math.round(timeElapsed / 60);
+        int hours = Math.round(timeElapsed / 3600);
+        int days = Math.round(timeElapsed / 86400);
+        int weeks = Math.round(timeElapsed / 604800);
+        int months = Math.round(timeElapsed / 2600640);
+        int years = Math.round(timeElapsed / 31207680);
+		
+		
+        // Seconds
+        if (seconds <= 60) {
+            return "just now";
+        }
+        //Minutes
+        else if (minutes <= 60) {
+            if (minutes == 1) {
+                return "one minute ago";
+            } else {
+                return minutes + " minutes ago";
+            }
+        }
+        //Hours
+        else if (hours <= 24) {
+            if (hours == 1) {
+                return "an hour ago";
+            } else {
+                return hours + " hrs ago";
+            }
+        }
+        //Days
+        else if (days <= 7) {
+            if (days == 1) {
+                return "yesterday";
+            } else {
+                return days + " days ago";
+            }
+        }
+        //Weeks
+        else if (weeks <= 4.3) {
+            if (weeks == 1) {
+                return "a week ago";
+            } else {
+                return weeks + " weeks ago";
+            }
+        }
+        //Months
+        else if (months <= 12) {
+            if (months == 1) {
+                return "a month ago";
+            } else {
+                return months + " months ago";
+            }
+        }
+        //Years
+        else {
+            if (years == 1) {
+                return "one year ago";
+            } else {
+                return years + " years ago";
+            }
+        }
+	}
+
+	@Override
+	public Page<ReplyDTO> findByCommentId(Pageable pageable, Long id) {
+		log.debug("Request to get Reply from commentId : {}", id);
+        return replyRepository.findByCommentId(pageable,id)
+            .map(replyMapper::toDto);
+        
+        
+		
+	}
 }
