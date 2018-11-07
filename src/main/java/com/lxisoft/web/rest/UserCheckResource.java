@@ -187,5 +187,64 @@ public class UserCheckResource {
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
         }
+    
+    /**
+     * GET  /user-checks : get all the userChecks by category.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of userChecks in body
+     */
+    @GetMapping("/getAllUserChecksByCategory/{category}")
+    @Timed
+    public ResponseEntity<List<UserCheckDTO>> getAllUserChecksByCategory(Pageable pageable,@PathVariable String category) {
+        log.debug("REST request to get a page of UserChecks");
+        Page<UserCheckDTO> page = userCheckService.findAllUserCheckByCategory(pageable,category);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getAllUserChecksByCategory");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+    
+    /**
+     * GET  /user-checks : get all the userChecks by violation id.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the violation id
+     */
+    @GetMapping("/getAllUserChecksByViolationId/{violationId}")
+    @Timed
+    public ResponseEntity<List<UserCheckDTO>> getAllUserChecksByViolationId(Pageable pageable,@PathVariable Long violationId) {
+        log.debug("REST request to get a page of UserChecks");
+        Page<UserCheckDTO> page = userCheckService.findAllUserCheckByViolationId(pageable,violationId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getAllUserChecksByViolationId");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+    
+    /**
+     * GET get all the userChecks by violation id and user id.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the violation id,user id
+     */
+    @GetMapping("/getAllUserChecksByViolationIdAndCheckedUserId/{violationId}/{checkedUserId}")
+    @Timed
+    public ResponseEntity<List<UserCheckDTO>> getAllUserChecksByViolationIdAndCheckedUserId(Pageable pageable,@PathVariable Long violationId,@PathVariable Long checkedUserId) {
+        log.debug("REST request to get a page of UserChecks");
+        Page<UserCheckDTO> page = userCheckService.findAllUserCheckByViolationIdAndCheckedUserId(pageable,violationId,checkedUserId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getAllUserChecksByViolationIdAndCheckedUserId");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 
+    /**
+     * GET  /getAllUserChecksByCommentId : get all the userChecks by commentId.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the violation id
+     */
+    @GetMapping("/getAllUserChecksByCommentId/{commentId}")
+    @Timed
+    public ResponseEntity<List<UserCheckDTO>> getAllUserChecksByCommentId(Pageable pageable,@PathVariable Long commentId) {
+        log.debug("REST request to get a page of UserChecks");
+        Page<UserCheckDTO> page = userCheckService.findAllUserCheckByCommentId(pageable,commentId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getAllUserChecksByCommentId");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 }

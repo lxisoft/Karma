@@ -15,13 +15,17 @@ public class CommentDTO implements Serializable {
 
     private Instant date;
 
-    private Long needId;
+    private Long needId;   
 
-    private Long helpId;
+	private Long helpId;
 
     private Long newsFeedId;
 
+    private Long commentedUserId;
+
     private Long violationId;
+    
+    private String dateInString;
 
     public Long getId() {
         return id;
@@ -71,6 +75,14 @@ public class CommentDTO implements Serializable {
         this.newsFeedId = newsFeedId;
     }
 
+    public Long getCommentedUserId() {
+        return commentedUserId;
+    }
+
+    public void setCommentedUserId(Long loggedUserId) {
+        this.commentedUserId = loggedUserId;
+    }
+
     public Long getViolationId() {
         return violationId;
     }
@@ -79,6 +91,20 @@ public class CommentDTO implements Serializable {
         this.violationId = violationId;
     }
 
+    /**
+	 * @return the dateInString
+	 */
+	public String getDateInString() {
+		return dateInString;
+	}
+
+	/**
+	 * @param dateInString the dateInString to set
+	 */
+	public void setDateInString(String dateInString) {
+		this.dateInString = dateInString;
+	}
+	
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -109,6 +135,7 @@ public class CommentDTO implements Serializable {
             ", need=" + getNeedId() +
             ", help=" + getHelpId() +
             ", newsFeed=" + getNewsFeedId() +
+            ", commentedUser=" + getCommentedUserId() +
             ", violation=" + getViolationId() +
             "}";
     }

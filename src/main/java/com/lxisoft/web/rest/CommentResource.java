@@ -1,4 +1,4 @@
-package com.lxisoft.web.rest;
+ package com.lxisoft.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.service.CommentService;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,6 +53,14 @@ public class CommentResource {
         if (commentDTO.getId() != null) {
             throw new BadRequestAlertException("A new comment cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        
+        if(commentDTO.getDateInString()!=null){
+        String parseDate=commentDTO.getDateInString().replace(" ","T").concat("Z");
+        
+        Instant dateInstant=Instant.parse(parseDate);
+        commentDTO.setDate(dateInstant);
+        }
+        
         CommentDTO result = commentService.save(commentDTO);
         return ResponseEntity.created(new URI("/api/comments/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -122,5 +130,20 @@ public class CommentResource {
         log.debug("REST request to delete Comment : {}", id);
         commentService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+    
+    /**
+     * GET  /comments : get all the comments by violation id.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of comments in body
+     */
+    @GetMapping("/getAllCommentsByViolationId/{violationId}")
+    @Timed
+    public ResponseEntity<List<CommentDTO>> getAllCommentsByViolationId(Pageable pageable,@PathVariable Long violationId) {
+        log.debug("REST request to get a page of Comments  by violation id");
+        Page<CommentDTO> page = commentService.findAllCommentByViolationId(pageable, violationId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getAllCommentsByViolationId");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 }

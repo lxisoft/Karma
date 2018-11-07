@@ -71,6 +71,15 @@ public class LoggedUserResourceIntTest {
     private static final String DEFAULT_BLOOD_GROUP = "AAAAAAAAAA";
     private static final String UPDATED_BLOOD_GROUP = "BBBBBBBBBB";
 
+    private static final Long DEFAULT_EMOTIONAL_QUOTIENT = 1L;
+    private static final Long UPDATED_EMOTIONAL_QUOTIENT = 2L;
+
+    private static final Long DEFAULT_SOCIAL_QUOTIENT = 1L;
+    private static final Long UPDATED_SOCIAL_QUOTIENT = 2L;
+
+    private static final Long DEFAULT_HAPPINESS_INDEX = 1L;
+    private static final Long UPDATED_HAPPINESS_INDEX = 2L;
+
     @Autowired
     private LoggedUserRepository loggedUserRepository;
 
@@ -123,7 +132,10 @@ public class LoggedUserResourceIntTest {
             .profession(DEFAULT_PROFESSION)
             .gender(DEFAULT_GENDER)
             .dob(DEFAULT_DOB)
-            .bloodGroup(DEFAULT_BLOOD_GROUP);
+            .bloodGroup(DEFAULT_BLOOD_GROUP)
+            .emotionalQuotient(DEFAULT_EMOTIONAL_QUOTIENT)
+            .socialQuotient(DEFAULT_SOCIAL_QUOTIENT)
+            .happinessIndex(DEFAULT_HAPPINESS_INDEX);
         return loggedUser;
     }
 
@@ -157,6 +169,9 @@ public class LoggedUserResourceIntTest {
         assertThat(testLoggedUser.getGender()).isEqualTo(DEFAULT_GENDER);
         assertThat(testLoggedUser.getDob()).isEqualTo(DEFAULT_DOB);
         assertThat(testLoggedUser.getBloodGroup()).isEqualTo(DEFAULT_BLOOD_GROUP);
+        assertThat(testLoggedUser.getEmotionalQuotient()).isEqualTo(DEFAULT_EMOTIONAL_QUOTIENT);
+        assertThat(testLoggedUser.getSocialQuotient()).isEqualTo(DEFAULT_SOCIAL_QUOTIENT);
+        assertThat(testLoggedUser.getHappinessIndex()).isEqualTo(DEFAULT_HAPPINESS_INDEX);
     }
 
     @Test
@@ -198,7 +213,10 @@ public class LoggedUserResourceIntTest {
             .andExpect(jsonPath("$.[*].profession").value(hasItem(DEFAULT_PROFESSION.toString())))
             .andExpect(jsonPath("$.[*].gender").value(hasItem(DEFAULT_GENDER.toString())))
             .andExpect(jsonPath("$.[*].dob").value(hasItem(DEFAULT_DOB.toString())))
-            .andExpect(jsonPath("$.[*].bloodGroup").value(hasItem(DEFAULT_BLOOD_GROUP.toString())));
+            .andExpect(jsonPath("$.[*].bloodGroup").value(hasItem(DEFAULT_BLOOD_GROUP.toString())))
+            .andExpect(jsonPath("$.[*].emotionalQuotient").value(hasItem(DEFAULT_EMOTIONAL_QUOTIENT.intValue())))
+            .andExpect(jsonPath("$.[*].socialQuotient").value(hasItem(DEFAULT_SOCIAL_QUOTIENT.intValue())))
+            .andExpect(jsonPath("$.[*].happinessIndex").value(hasItem(DEFAULT_HAPPINESS_INDEX.intValue())));
     }
     
     @Test
@@ -220,7 +238,10 @@ public class LoggedUserResourceIntTest {
             .andExpect(jsonPath("$.profession").value(DEFAULT_PROFESSION.toString()))
             .andExpect(jsonPath("$.gender").value(DEFAULT_GENDER.toString()))
             .andExpect(jsonPath("$.dob").value(DEFAULT_DOB.toString()))
-            .andExpect(jsonPath("$.bloodGroup").value(DEFAULT_BLOOD_GROUP.toString()));
+            .andExpect(jsonPath("$.bloodGroup").value(DEFAULT_BLOOD_GROUP.toString()))
+            .andExpect(jsonPath("$.emotionalQuotient").value(DEFAULT_EMOTIONAL_QUOTIENT.intValue()))
+            .andExpect(jsonPath("$.socialQuotient").value(DEFAULT_SOCIAL_QUOTIENT.intValue()))
+            .andExpect(jsonPath("$.happinessIndex").value(DEFAULT_HAPPINESS_INDEX.intValue()));
     }
 
     @Test
@@ -252,7 +273,10 @@ public class LoggedUserResourceIntTest {
             .profession(UPDATED_PROFESSION)
             .gender(UPDATED_GENDER)
             .dob(UPDATED_DOB)
-            .bloodGroup(UPDATED_BLOOD_GROUP);
+            .bloodGroup(UPDATED_BLOOD_GROUP)
+            .emotionalQuotient(UPDATED_EMOTIONAL_QUOTIENT)
+            .socialQuotient(UPDATED_SOCIAL_QUOTIENT)
+            .happinessIndex(UPDATED_HAPPINESS_INDEX);
         LoggedUserDTO loggedUserDTO = loggedUserMapper.toDto(updatedLoggedUser);
 
         restLoggedUserMockMvc.perform(put("/api/logged-users")
@@ -273,6 +297,9 @@ public class LoggedUserResourceIntTest {
         assertThat(testLoggedUser.getGender()).isEqualTo(UPDATED_GENDER);
         assertThat(testLoggedUser.getDob()).isEqualTo(UPDATED_DOB);
         assertThat(testLoggedUser.getBloodGroup()).isEqualTo(UPDATED_BLOOD_GROUP);
+        assertThat(testLoggedUser.getEmotionalQuotient()).isEqualTo(UPDATED_EMOTIONAL_QUOTIENT);
+        assertThat(testLoggedUser.getSocialQuotient()).isEqualTo(UPDATED_SOCIAL_QUOTIENT);
+        assertThat(testLoggedUser.getHappinessIndex()).isEqualTo(UPDATED_HAPPINESS_INDEX);
     }
 
     @Test

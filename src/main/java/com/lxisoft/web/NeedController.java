@@ -292,11 +292,14 @@ public class NeedController {
 			
 			for(UserCheckDTO userChecks:userCheckDTOList)
 			{
+				log.info("*************{}",userChecks.getId());
 				if(userChecks.getVoteType()=="postive")
 				{
 					count=count+1;
 				}
 			}
+			
+			need.setPercentageOfGenuineness(new Long((count/userCheckDTOList.size())*100));
 			
 			// to get image url of need
 			Page<MediaDTO> mediaList=mediaService.findAllUrlByNeedId(need.getId(), pageable);
@@ -312,10 +315,8 @@ public class NeedController {
 			}
 			need.setFileNameList(fileNameList);
 		
-			//
-			
-			need.setPercentageOfGenuineness(new Long((count/userCheckDTOList.size())*100));
-		}
+			//			
+				}
 		
 		model.addAttribute("needs", needs);
 		if (approvalStatus.equals("approved"))

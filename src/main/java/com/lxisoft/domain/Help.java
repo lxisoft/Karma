@@ -1,7 +1,6 @@
 package com.lxisoft.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 
 import javax.persistence.*;
@@ -34,22 +33,25 @@ public class Help implements Serializable {
     private String description;
 
     @OneToMany(mappedBy = "help")
+    @JsonIgnore
     private Set<Media> proofs = new HashSet<>();
 
     @OneToMany(mappedBy = "help")
+    @JsonIgnore
     private Set<Comment> comments = new HashSet<>();
 
     @ManyToOne
-    @JsonIgnoreProperties("helps")
     private ApprovalStatus approvalStatus;
 
     @ManyToOne
-    @JsonIgnoreProperties("helps")
     private LoggedUser providedUser;
 
     @ManyToOne
-    @JsonIgnoreProperties("helps")
     private Need fulfilledNeed;
+
+    @OneToMany(mappedBy = "checkedHelp")
+    @JsonIgnore
+    private Set<UserCheck> userChecks = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -173,6 +175,31 @@ public class Help implements Serializable {
 
     public void setFulfilledNeed(Need need) {
         this.fulfilledNeed = need;
+    }
+
+    public Set<UserCheck> getUserChecks() {
+        return userChecks;
+    }
+
+    public Help userChecks(Set<UserCheck> userChecks) {
+        this.userChecks = userChecks;
+        return this;
+    }
+
+    public Help addUserChecks(UserCheck userCheck) {
+        this.userChecks.add(userCheck);
+        userCheck.setCheckedHelp(this);
+        return this;
+    }
+
+    public Help removeUserChecks(UserCheck userCheck) {
+        this.userChecks.remove(userCheck);
+        userCheck.setCheckedHelp(null);
+        return this;
+    }
+
+    public void setUserChecks(Set<UserCheck> userChecks) {
+        this.userChecks = userChecks;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

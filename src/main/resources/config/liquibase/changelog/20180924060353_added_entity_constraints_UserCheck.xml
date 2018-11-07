@@ -44,5 +44,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="violation"/>
 
+        <addForeignKeyConstraint baseColumnNames="checked_help_id"
+                                 baseTableName="user_check"
+                                 constraintName="fk_user_check_checked_help_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="help"/>
+
     </changeSet>
 </databaseChangeLog>

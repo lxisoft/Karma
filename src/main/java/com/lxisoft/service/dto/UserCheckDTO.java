@@ -1,6 +1,9 @@
 package com.lxisoft.service.dto;
 
+
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -26,8 +29,9 @@ public class UserCheckDTO implements Serializable {
 
     private Long violationId;
 
-    private Boolean isGenuine;
+    private Long checkedHelpId;
     
+    private Boolean isGenuine;
     
     /**
 	 * @return the isGenuine
@@ -43,7 +47,8 @@ public class UserCheckDTO implements Serializable {
 		this.isGenuine = isGenuine;
 	}
 
-	public Long getId() {
+
+    public Long getId() {
         return id;
     }
 
@@ -115,6 +120,14 @@ public class UserCheckDTO implements Serializable {
         this.violationId = violationId;
     }
 
+    public Long getCheckedHelpId() {
+        return checkedHelpId;
+    }
+
+    public void setCheckedHelpId(Long helpId) {
+        this.checkedHelpId = helpId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -125,7 +138,7 @@ public class UserCheckDTO implements Serializable {
         }
 
         UserCheckDTO userCheckDTO = (UserCheckDTO) o;
-        if (userCheckDTO.getId() == null || getId() == null) {
+        if(userCheckDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), userCheckDTO.getId());
@@ -142,12 +155,6 @@ public class UserCheckDTO implements Serializable {
             "id=" + getId() +
             ", voteType='" + getVoteType() + "'" +
             ", category='" + getCategory() + "'" +
-            ", checkedNeed=" + getCheckedNeedId() +
-            ", checkedUser=" + getCheckedUserId() +
-            ", comment=" + getCommentId() +
-            ", reply=" + getReplyId() +
-            ", newsFeed=" + getNewsFeedId() +
-            ", violation=" + getViolationId() +
             "}";
     }
 }

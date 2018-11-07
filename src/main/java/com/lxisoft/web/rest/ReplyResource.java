@@ -54,6 +54,7 @@ public class ReplyResource {
             throw new BadRequestAlertException("A new reply cannot already have an ID", ENTITY_NAME, "idexists");
         }
         
+
      // parsing string to ISO_INSTANT format
      	String parsedDate = replyDTO.getDateInString().replaceAll(" ", "T").concat("Z");
 
@@ -61,6 +62,8 @@ public class ReplyResource {
      	replyDTO.setDate(Instant.parse(parsedDate));
      	
      	
+
+        
         ReplyDTO result = replyService.save(replyDTO);
         return ResponseEntity.created(new URI("/api/replies/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))

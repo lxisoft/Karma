@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.io.Serializable;
 import java.util.Objects;
 
-import org.springframework.web.multipart.MultipartFile;
-
 /**
  * A DTO for the LoggedUser entity.
  */
@@ -31,17 +29,13 @@ public class LoggedUserDTO implements Serializable {
 
     private String bloodGroup;
 
+    private Long emotionalQuotient;
+
+    private Long socialQuotient;
+
+    private Long happinessIndex;
+
     private Long profilePicId;
-
-    private MultipartFile file;
-
-    public MultipartFile getFile() {
-        return file;
-    }
-
-    public void setFile(MultipartFile file) {
-        this.file = file;
-    }
 
     public Long getId() {
         return id;
@@ -123,6 +117,30 @@ public class LoggedUserDTO implements Serializable {
         this.bloodGroup = bloodGroup;
     }
 
+    public Long getEmotionalQuotient() {
+        return emotionalQuotient;
+    }
+
+    public void setEmotionalQuotient(Long emotionalQuotient) {
+        this.emotionalQuotient = emotionalQuotient;
+    }
+
+    public Long getSocialQuotient() {
+        return socialQuotient;
+    }
+
+    public void setSocialQuotient(Long socialQuotient) {
+        this.socialQuotient = socialQuotient;
+    }
+
+    public Long getHappinessIndex() {
+        return happinessIndex;
+    }
+
+    public void setHappinessIndex(Long happinessIndex) {
+        this.happinessIndex = happinessIndex;
+    }
+
     public Long getProfilePicId() {
         return profilePicId;
     }
@@ -165,6 +183,9 @@ public class LoggedUserDTO implements Serializable {
             ", gender='" + getGender() + "'" +
             ", dob='" + getDob() + "'" +
             ", bloodGroup='" + getBloodGroup() + "'" +
+            ", emotionalQuotient=" + getEmotionalQuotient() +
+            ", socialQuotient=" + getSocialQuotient() +
+            ", happinessIndex=" + getHappinessIndex() +
             ", profilePic=" + getProfilePicId() +
             "}";
     }

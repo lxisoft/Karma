@@ -42,6 +42,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="commented_user_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <column name="violation_id" type="bigint">
                 <constraints nullable="true" />
             </column>

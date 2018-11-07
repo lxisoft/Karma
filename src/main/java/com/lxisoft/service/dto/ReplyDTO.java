@@ -19,13 +19,20 @@ public class ReplyDTO implements Serializable {
     
     private String dateInString;
 
+
     private String timeElapsed;
     
+
+    private Long repliedUserId;
+    
+    
+
+
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+	public void setId(Long id) {
         this.id = id;
     }
 
@@ -52,6 +59,29 @@ public class ReplyDTO implements Serializable {
     public void setCommentId(Long commentId) {
         this.commentId = commentId;
     }
+
+    public Long getRepliedUserId() {
+        return repliedUserId;
+    }
+
+    public void setRepliedUserId(Long loggedUserId) {
+        this.repliedUserId = loggedUserId;
+    }
+    
+    /**
+	 * @return the dateInString
+	 */
+	public String getDateInString() {
+		return dateInString;
+	}
+
+	/**
+	 * @param dateInString the dateInString to set
+	 */
+	public void setDateInString(String dateInString) {
+		this.dateInString = dateInString;
+	}
+
 
     @Override
     public boolean equals(Object o) {
@@ -81,16 +111,11 @@ public class ReplyDTO implements Serializable {
             ", message='" + getMessage() + "'" +
             ", date='" + getDate() + "'" +
             ", comment=" + getCommentId() +
+            ", repliedUser=" + getRepliedUserId() +
             "}";
     }
 
-	public String getDateInString() {
-		return dateInString;
-	}
-
-	public void setDateInString(String dateInString) {
-		this.dateInString = dateInString;
-	}
+	
 
 	public String getTimeElapsed() {
 		return timeElapsed;

@@ -2,9 +2,12 @@ package com.lxisoft.service;
 
 import com.lxisoft.service.dto.ViolationDTO;
 
+import org.joda.time.DateTime;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -43,4 +46,26 @@ public interface ViolationService {
      * @param id the id of the entity
      */
     void delete(Long id);
+    
+    /**
+     * Get all the violations by anonymous user type.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+    Page<ViolationDTO> findViolationByIsAnonymous(Pageable pageable,Boolean isAnonymous);
+
+    /**
+     * Get all the violations by after date.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+    Page<ViolationDTO> findViolationByDateAfter(Pageable pageable,Instant date);
+
+	Page<ViolationDTO> findViolationByDateBefore(Pageable pageable, Instant date);
+
+	Page<ViolationDTO> findViolationByDateBetween(Pageable pageable, Instant startDate, Instant endDate);
+
+   
 }

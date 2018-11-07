@@ -63,4 +63,24 @@ public interface UserCheckService {
 	 * @return
 	 */
 	Page<UserCheckDTO> findAllUserChecksByCheckedNeedId(Pageable pageable, Long checkedNeedId);
+
+	   /**
+     * Get all the userChecks by category.
+     *
+     * @param pageable the pagination information, category to find
+     * @return the list of entities
+     */
+	Page<UserCheckDTO> findAllUserCheckByCategory(Pageable pageable,String category);
+
+	 /**
+     * Get all the userChecks by violationId.
+     *
+     * @param pageable the pagination information, category to find
+     * @return the list of entities
+     */
+	Page<UserCheckDTO> findAllUserCheckByViolationId(Pageable pageable, Long violationId);
+
+	Page<UserCheckDTO> findAllUserCheckByViolationIdAndCheckedUserId(Pageable pageable, Long violationId, Long checkedUserId);
+
+	Page<UserCheckDTO> findAllUserCheckByCommentId(Pageable pageable, Long commentId);
 }
