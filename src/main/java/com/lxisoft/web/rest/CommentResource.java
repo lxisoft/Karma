@@ -146,4 +146,20 @@ public class CommentResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getAllCommentsByViolationId");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+    
+    
+    /**
+     * GET  /comments : get all the comments by help id.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of comments in body
+     */
+    @GetMapping("/getAllCommentsByHelpId/{helpId}")
+    @Timed
+    public ResponseEntity<List<CommentDTO>> getAllCommentsByHelpId(Pageable pageable,@PathVariable Long helpId) {
+        log.debug("REST request to get a page of Comments  by help id");
+        Page<CommentDTO> page = commentService.findAllCommentByHelpId(pageable, helpId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getAllCommentsByViolationId");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 }

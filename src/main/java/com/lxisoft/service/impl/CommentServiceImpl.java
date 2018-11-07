@@ -98,4 +98,15 @@ public class CommentServiceImpl implements CommentService {
 	        return commentRepository.findAllCommentByViolationId(pageable,violationId)
 	            .map(commentMapper::toDto);
 	  }
+	/**
+     * Get all the comments by helpId.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+	public Page<CommentDTO> findAllCommentByHelpId(Pageable pageable, Long helpId) {
+		 log.debug("Request to get all Comments bu helpId");
+	        return commentRepository.findAllCommentByHelpId(pageable,helpId)
+	            .map(commentMapper::toDto);
+	  }
 }
