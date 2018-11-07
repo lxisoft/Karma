@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>home</title>
+    
+</head>
+<body>
+<div class="container">
+    <th:block th:each="book,index : ${books}">
+    <h1 th:text="${book.title}">Title</h1>
+    <h3 th:text="${book.volume}">Volume</h3>
+
+    <p th:text="${book.authorName}">author</p>
+    <p th:text="${book.publisherName}">publisher name</p>
+    <a th:id="'select'+${book.id}" th:href="@{'books/'+${book.id}}">select</a>
+    <button onclick="selectBook()">select book</button>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        /* var GOOG_FIXURL_LANG = '[[${#locale.language}]]', GOOG_FIXURL_SITE = location.host; */
+        function selectBook(){
+            var book=/*[[${book.id}]]*/ "";
+            console.log(book);
+            var url=$('#select'+book).attr('href');
+            console.log("#select"+book); 
+            console.log('#select'+book);
+            $("#selection").load(url);
+            }
+            /*]]>*/
+        </script>
+    <p>__________________________________________________________________</p>
+    </th:block>
+
+    <div id="selection" th:fragment="selected-book">
+        <h2>Selected book</h2>
+        <th:block th:if="${selectedBook != null}">
+        <h1 th:text="${selectedBook.title}">Title</h1>
+        <h3 th:text="${selectedBook.volume}">Volume</h3>
+    
+        <p th:text="${selectedBook.authorName}">author</p>
+        <p th:text="${selectedBook.publisherName}">publisher name</p>
+        </th:block>
+    </div>
+    <div id="test">
+        <h2>Selected book-test</h2>
+        <th:block th:if="${selectedBook != null}">
+        <p th:text="${selectedBook.authorName}">author</p>
+        <p th:text="${selectedBook.publisherName}">publisher name</p>
+        </th:block>
+    </div>
+<!--     <script th:inline="text">
+        /*<![CDATA[*/
+        var GOOG_FIXURL_LANG = '[[${#locale.language}]]', GOOG_FIXURL_SITE = location.host;
+        /*]]>*/
+    </script>
+    <script src="https://linkhelp.clients.google.com/tbproxy/lh/wm/fixurl.js"></script> -->
+</div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+</body>
+</html>

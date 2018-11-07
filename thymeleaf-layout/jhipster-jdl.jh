@@ -1,0 +1,18 @@
+entity Book{
+  title String,
+  volume Long
+}
+entity Author {
+	name String
+}
+entity Publisher {
+	name String
+}
+
+relationship ManyToOne {
+	Book{author} to Author{books},
+	Book{publisher} to Publisher{books}
+}
+
+dto * with mapstruct
+service all with serviceImpl
