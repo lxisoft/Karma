@@ -1,20 +1,24 @@
 package com.lxisoft.service.impl;
 
+import com.lxisoft.service.MediaService;
 import com.lxisoft.service.ViolationService;
 import com.lxisoft.domain.Violation;
 import com.lxisoft.repository.ViolationRepository;
+import com.lxisoft.service.dto.MediaDTO;
 import com.lxisoft.service.dto.ViolationDTO;
 import com.lxisoft.service.mapper.ViolationMapper;
 
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -31,6 +35,9 @@ public class ViolationServiceImpl implements ViolationService {
     private final ViolationRepository violationRepository;
 
     private final ViolationMapper violationMapper;
+    
+    @Autowired
+    MediaService mediaService;
 
     public ViolationServiceImpl(ViolationRepository violationRepository, ViolationMapper violationMapper) {
         this.violationRepository = violationRepository;
@@ -42,10 +49,27 @@ public class ViolationServiceImpl implements ViolationService {
      *
      * @param violationDTO the entity to save
      * @return the persisted entity
+     * @throws IOException 
      */
     @Override
-    public ViolationDTO save(ViolationDTO violationDTO) {
+    public ViolationDTO save(ViolationDTO violationDTO) throws IOException {
         log.debug("Request to save Violation : {}", violationDTO);
+        
+        String parseDate=violationDTO.getDateInString().replace(" ","T").concat("Z");
+        
+        Instant dateInstant=Instant.parse(parseDate);
+        violationDTO.setDate(dateInstant);
+        
+   /*     for(MultipartFile file:violationDTO.getFiles()){
+        	
+        	MediaDTO mediaDTO=new MediaDTO();
+        	
+        	mediaDTO.setFile(file);
+        	mediaDTO.setViolationId(violationDTO.getId());
+        	mediaService.save(mediaDTO);
+        	  	
+        }*/
+        
         Violation violation = violationMapper.toEntity(violationDTO);
         violation = violationRepository.save(violation);
         return violationMapper.toDto(violation);

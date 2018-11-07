@@ -6,6 +6,7 @@ import org.joda.time.DateTime;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -20,8 +21,9 @@ public interface ViolationService {
      *
      * @param violationDTO the entity to save
      * @return the persisted entity
+     * @throws IOException 
      */
-    ViolationDTO save(ViolationDTO violationDTO);
+    ViolationDTO save(ViolationDTO violationDTO) throws IOException;
 
     /**
      * Get all the violations.

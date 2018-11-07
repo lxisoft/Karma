@@ -4,6 +4,8 @@ import java.time.Instant;
 import java.io.Serializable;
 import java.util.Objects;
 
+import org.springframework.web.multipart.MultipartFile;
+
 /**
  * A DTO for the Violation entity.
  */
@@ -18,8 +20,18 @@ public class ViolationDTO implements Serializable {
     private Instant date;
     
     private String dateInString;
+    
+    private MultipartFile[] files;
 
-    public Long getId() {
+    public MultipartFile[] getFiles() {
+		return files;
+	}
+
+	public void setFiles(MultipartFile[] files) {
+		this.files = files;
+	}
+
+	public Long getId() {
         return id;
     }
 

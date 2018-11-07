@@ -77,7 +77,7 @@ public class NeedResource {
             throw new BadRequestAlertException("A new need cannot already have an ID", ENTITY_NAME, "idexists");
         }
         
-if(needDTO.getApprovalStatusId()==null){
+        if(needDTO.getApprovalStatusId()==null){
         	
         	Optional<ApprovalStatusDTO> approvalStatus=approvalStatusService.findByStatus("pending");
         	
