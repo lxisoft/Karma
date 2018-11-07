@@ -54,11 +54,12 @@ public class CommentResource {
             throw new BadRequestAlertException("A new comment cannot already have an ID", ENTITY_NAME, "idexists");
         }
         
+        if(commentDTO.getDateInString()!=null){
         String parseDate=commentDTO.getDateInString().replace(" ","T").concat("Z");
         
         Instant dateInstant=Instant.parse(parseDate);
         commentDTO.setDate(dateInstant);
-        
+        }
         
         CommentDTO result = commentService.save(commentDTO);
         return ResponseEntity.created(new URI("/api/comments/" + result.getId()))
@@ -129,5 +130,20 @@ public class CommentResource {
         log.debug("REST request to delete Comment : {}", id);
         commentService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+    
+    /**
+     * GET  /comments : get all the comments by violation id.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of comments in body
+     */
+    @GetMapping("/getAllCommentsByViolationId/{violationId}")
+    @Timed
+    public ResponseEntity<List<CommentDTO>> getAllCommentsByViolationId(Pageable pageable,@PathVariable Long violationId) {
+        log.debug("REST request to get a page of Comments  by violation id");
+        Page<CommentDTO> page = commentService.findAllCommentByViolationId(pageable, violationId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getAllCommentsByViolationId");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 }

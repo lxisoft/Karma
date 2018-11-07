@@ -57,6 +57,13 @@ public class ViolationResource {
         if (violationDTO.getId() != null) {
             throw new BadRequestAlertException("A new violation cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        
+        String parseDate=violationDTO.getDateInString().replace(" ","T").concat("Z");
+        
+        Instant dateInstant=Instant.parse(parseDate);
+        violationDTO.setDate(dateInstant);
+        
+       
         ViolationDTO result = violationService.save(violationDTO);
         return ResponseEntity.created(new URI("/api/violations/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))

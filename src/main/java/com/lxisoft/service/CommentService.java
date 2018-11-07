@@ -43,4 +43,13 @@ public interface CommentService {
      * @param id the id of the entity
      */
     void delete(Long id);
+    
+
+    /**
+     * Get all the comments by violation id.
+     *
+     * @param pageable the pagination information, violationId
+     * @return the list of entities
+     */
+    Page<CommentDTO> findAllCommentByViolationId(Pageable pageable,Long violationId);
 }
