@@ -299,8 +299,11 @@ public class NeedController {
 				}
 			}
 			
-			need.setPercentageOfGenuineness(new Long((count/userCheckDTOList.size())*100));
-			
+			if(userCheckDTOList.size()==0)
+				need.setPercentageOfGenuineness(null);
+			else
+			   need.setPercentageOfGenuineness(new Long((count/userCheckDTOList.size())*100));
+								
 			// to get image url of need
 			Page<MediaDTO> mediaList=mediaService.findAllUrlByNeedId(need.getId(), pageable);
 			
