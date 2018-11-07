@@ -18,7 +18,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
@@ -43,33 +45,45 @@ public class ViolationResource {
         this.violationService = violationService;
     }
 
-    /**
+   /**
      * POST  /violations : Create a new violation.
      *
      * @param violationDTO the violationDTO to create
      * @return the ResponseEntity with status 201 (Created) and with body the new violationDTO, or with status 400 (Bad Request) if the violation has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @throws IOException 
      */
-    @PostMapping("/violations")
+    /*@PostMapping("/restviolations")
     @Timed
-    public ResponseEntity<ViolationDTO> createViolation(@RequestBody ViolationDTO violationDTO) throws URISyntaxException {
+    public ResponseEntity<ViolationDTO> createViolation(@RequestBody ViolationDTO violationDTO,@RequestParam MultipartFile[] files) throws URISyntaxException, IOException {
         log.debug("REST request to save Violation : {}", violationDTO);
         if (violationDTO.getId() != null) {
             throw new BadRequestAlertException("A new violation cannot already have an ID", ENTITY_NAME, "idexists");
         }
         
-        String parseDate=violationDTO.getDateInString().replace(" ","T").concat("Z");
+        violationDTO.setFiles(files);
+       
+        ViolationDTO result = violationService.save(violationDTO);
+        return ResponseEntity.created(new URI("/api/violations/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }*/
+
+    @PostMapping("/violations")
+    @Timed
+    public ResponseEntity<ViolationDTO> createViolation(@RequestBody ViolationDTO violationDTO) throws URISyntaxException, IOException {
+        log.debug("REST request to save Violation : {}", violationDTO);
+        if (violationDTO.getId() != null) {
+            throw new BadRequestAlertException("A new violation cannot already have an ID", ENTITY_NAME, "idexists");
+        }
         
-        Instant dateInstant=Instant.parse(parseDate);
-        violationDTO.setDate(dateInstant);
-        
+      //  violationDTO.setFiles(files);
        
         ViolationDTO result = violationService.save(violationDTO);
         return ResponseEntity.created(new URI("/api/violations/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
-
     /**
      * PUT  /violations : Updates an existing violation.
      *
@@ -78,10 +92,11 @@ public class ViolationResource {
      * or with status 400 (Bad Request) if the violationDTO is not valid,
      * or with status 500 (Internal Server Error) if the violationDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @throws IOException 
      */
     @PutMapping("/violations")
     @Timed
-    public ResponseEntity<ViolationDTO> updateViolation(@RequestBody ViolationDTO violationDTO) throws URISyntaxException {
+    public ResponseEntity<ViolationDTO> updateViolation(@RequestBody ViolationDTO violationDTO) throws URISyntaxException, IOException {
         log.debug("REST request to update Violation : {}", violationDTO);
         if (violationDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

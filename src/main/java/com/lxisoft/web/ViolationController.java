@@ -68,27 +68,43 @@ public class ViolationController {
         
     	log.debug("request to save Violation : {}", violationDTO);
     	
+    	log.info("**********anonymous?{}",violationDTO.getIsAnonymous());
+    	
         if (violationDTO.getId() != null) {
             throw new BadRequestAlertException("A new violation cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        
+        String parseDate=violationDTO.getDateInString().replace(" ","T").concat("Z");
+        
+        Instant dateInstant=Instant.parse(parseDate);
+        violationDTO.setDate(dateInstant);
+        
+        ViolationDTO violationDto = violationService.save(violationDTO);
         
         for(MultipartFile file:files){
         	
         	MediaDTO mediaDTO=new MediaDTO();
         	
         	mediaDTO.setFile(file);
-        	mediaDTO.setViolationId(violationDTO.getId());
+        	mediaDTO.setViolationId(violationDto.getId());
         	mediaService.save(mediaDTO);
-        	
-        	
-        //	violationDTO.setFiles(files);
-        	
+        	  	
         }
        
-        ViolationDTO violationDto = violationService.save(violationDTO);
+        model.addAttribute("violation", violationDto);
         
-        model.addAttribute("Violation", violationDto);
-        
-        return "home";
+        return "post-violation-result";
     }
+    
+    /*
+     * test for violation-post
+     */
+    @GetMapping("/postviolation")
+	public String showDetails(Model model){
+		
+    	ViolationDTO violationDTO=new ViolationDTO();
+		model.addAttribute("violation", new ViolationDTO());
+		return "post-violation";
+	}
+	
 }
