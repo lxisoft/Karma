@@ -1,0 +1,68 @@
+{
+    "name": "Comment",
+    "fields": [
+        {
+            "fieldName": "message",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "date",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipName": "need",
+            "otherEntityName": "need",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "help",
+            "otherEntityName": "help",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "newsFeed",
+            "otherEntityName": "newsFeed",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "replies",
+            "otherEntityName": "reply",
+            "otherEntityRelationshipName": "comment"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "commentedUser",
+            "otherEntityName": "loggedUser",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "userChecks",
+            "otherEntityName": "userCheck",
+            "otherEntityRelationshipName": "comment"
+        },
+        {
+            "relationshipName": "violation",
+            "otherEntityName": "violation",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20181029105813",
+    "javadoc": "Comment entity\n@author Deepthi E",
+    "entityTableName": "comment",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "karma",
+    "applications": "*",
+    "microserviceName": "karma"
+}
