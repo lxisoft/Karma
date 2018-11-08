@@ -3,11 +3,14 @@ package com.lxisoft.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.service.ApprovalStatusService;
 import com.lxisoft.service.HelpService;
+import com.lxisoft.service.MediaService;
 import com.lxisoft.web.rest.errors.BadRequestAlertException;
 import com.lxisoft.web.rest.util.HeaderUtil;
 import com.lxisoft.web.rest.util.PaginationUtil;
 import com.lxisoft.service.dto.ApprovalStatusDTO;
 import com.lxisoft.service.dto.HelpDTO;
+import com.lxisoft.service.dto.MediaDTO;
+
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +21,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URI;
@@ -39,6 +43,8 @@ public class HelpResource {
 
     private final HelpService helpService;
     
+    @Autowired
+	MediaService mediaService;
 
     @Autowired
    	ApprovalStatusService approvalStatusService;
@@ -57,7 +63,7 @@ public class HelpResource {
      */
     @PostMapping("/helps")
     @Timed
-    public ResponseEntity<HelpDTO> createHelp(@RequestBody HelpDTO helpDTO) throws URISyntaxException, IOException {
+    public ResponseEntity<HelpDTO> createHelp(@RequestBody HelpDTO helpDTO,@RequestParam MultipartFile[] files) throws URISyntaxException, IOException {
         log.debug("REST request to save Help : {}", helpDTO);
         if (helpDTO.getId() != null) {
             throw new BadRequestAlertException("A new help cannot already have an ID", ENTITY_NAME, "idexists");
@@ -72,10 +78,25 @@ public class HelpResource {
 			helpDTO.setApprovalStatusId(approvalStatus.get().getId());
 		}
         
-        HelpDTO result = helpService.save(helpDTO);
-        return ResponseEntity.created(new URI("/api/helps/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+        HelpDTO helpDto = helpService.save(helpDTO);
+        
+		for(MultipartFile file:files){
+			
+			log.info("********helpcontroller",file.getName());
+			
+			 MediaDTO mediaDTO=new MediaDTO();
+	    	 
+	    	 mediaDTO.setFile(file);
+	    	 
+	    	 mediaDTO.setHelpId(helpDto.getId());
+	         
+	    	 mediaService.save(mediaDTO);
+	        
+		}
+		
+        return ResponseEntity.created(new URI("/api/helps/" + helpDto.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, helpDto.getId().toString()))
+            .body(helpDto);
     }
 
     /**
@@ -158,7 +179,4 @@ public class HelpResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/helps");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
-    
-    
-    
 }

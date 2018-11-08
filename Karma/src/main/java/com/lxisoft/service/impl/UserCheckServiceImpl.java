@@ -42,8 +42,12 @@ public class UserCheckServiceImpl implements UserCheckService {
     @Override
     public UserCheckDTO save(UserCheckDTO userCheckDTO) {
         log.debug("Request to save UserCheck : {}", userCheckDTO);
+        
+        log.info("**********",userCheckDTO.getCategory());
+     
         UserCheck userCheck = userCheckMapper.toEntity(userCheckDTO);
-        userCheck = userCheckRepository.save(userCheck);
+        	userCheck = userCheckRepository.save(userCheck);
+        
         return userCheckMapper.toDto(userCheck);
     }
 
@@ -177,4 +181,21 @@ public class UserCheckServiceImpl implements UserCheckService {
 	   
 	}
 
+	 /**
+     * Get all the userChecks by category.
+     *
+     * @param pageable the pagination information,violationId to find
+     * @return the list of entities
+     */
+	@Override
+	public Page<UserCheckDTO> findByCategoryContaining(Pageable pageable, Long violationId) {
+		 log.debug("Request to get all UserChecks by violation Id");
+	        return userCheckRepository.findByCategoryContaining(pageable,violationId)
+	            .map(userCheckMapper::toDto);
+	   
+	}
+
+	
+
+	
 }

@@ -83,4 +83,6 @@ public interface UserCheckService {
 	Page<UserCheckDTO> findAllUserCheckByViolationIdAndCheckedUserId(Pageable pageable, Long violationId, Long checkedUserId);
 
 	Page<UserCheckDTO> findAllUserCheckByCommentId(Pageable pageable, Long commentId);
+
+	Page<UserCheckDTO> findByCategoryContaining(Pageable pageable, Long violationId);
 }

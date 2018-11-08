@@ -52,12 +52,4 @@ public interface CommentService {
      * @return the list of entities
      */
     Page<CommentDTO> findAllCommentByViolationId(Pageable pageable,Long violationId);
-
-    /**
-     * Get all the comments by help id.
-     *
-     * @param pageable the pagination information, helpId
-     * @return the list of entities
-     */
-	Page<CommentDTO> findAllCommentByHelpId(Pageable pageable, Long helpId);
 }

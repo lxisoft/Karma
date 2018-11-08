@@ -7,7 +7,9 @@ com\lxisoft\web\rest\CategoryResourceIntTest.class
 com\lxisoft\web\rest\errors\ExceptionTranslatorIntTest.class
 com\lxisoft\config\WebConfigurerTest.class
 com\lxisoft\web\rest\util\PaginationUtilUnitTest.class
+com\lxisoft\web\rest\ViolationResourceIntTest.class
 com\lxisoft\web\rest\VerificationTeamResourceIntTest.class
+com\lxisoft\web\rest\CommentResourceIntTest.class
 com\lxisoft\web\rest\errors\ExceptionTranslatorTestController$TestResponseStatusException.class
 com\lxisoft\web\rest\ApprovalStatusResourceIntTest.class
 com\lxisoft\config\WebConfigurerTestController.class
@@ -23,3 +25,5 @@ com\lxisoft\security\SecurityUtilsUnitTest.class
 com\lxisoft\service\UserServiceIntTest.class
 com\lxisoft\web\rest\TestUtil$ZonedDateTimeMatcher.class
 com\lxisoft\web\rest\AuditResourceIntTest.class
+com\lxisoft\web\rest\NewsFeedResourceIntTest.class
+com\lxisoft\web\rest\ReplyResourceIntTest.class

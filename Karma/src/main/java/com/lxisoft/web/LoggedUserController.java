@@ -88,7 +88,7 @@ public class LoggedUserController {
     	 
     	 mediaDTO.setFile(file);
          
-    	 mediaService.save(mediaDTO);
+    	/* mediaService.save(mediaDTO);
         
       
         Optional<MediaDTO> mediaDto=mediaService.findByFileName(file.getOriginalFilename());
@@ -100,9 +100,17 @@ public class LoggedUserController {
         loggedUserService.save(loggedUserDTO);
         
        model.addAttribute("loggedUserDTO",loggedUserDTO);
-       model.addAttribute("file",file);
-          
-       // LoggedUserDTO result = loggedUserService.save(loggedUserDTO);
+       model.addAttribute("file",file);*/
+    	 
+    	MediaDTO mediaDto=mediaService.save(mediaDTO);
+    	
+    	loggedUserDTO.setProfilePicId(mediaDto.getId());
+    	log.info("*************{}",mediaDto.getId());
+    	 loggedUserService.save(loggedUserDTO);
+         
+    	 model.addAttribute("loggedUserDTO",loggedUserDTO);
+         model.addAttribute("file",file);
+         
         return "home";
     }
 

@@ -13,12 +13,17 @@ public abstract class LoggedUser_ {
 	public static volatile SingularAttribute<LoggedUser, String> profession;
 	public static volatile SetAttribute<LoggedUser, Need> needs;
 	public static volatile SingularAttribute<LoggedUser, String> lastName;
+	public static volatile SingularAttribute<LoggedUser, Long> socialQuotient;
 	public static volatile SetAttribute<LoggedUser, Address> addresses;
 	public static volatile SingularAttribute<LoggedUser, String> gender;
+	public static volatile SingularAttribute<LoggedUser, Long> emotionalQuotient;
 	public static volatile SingularAttribute<LoggedUser, Media> profilePic;
 	public static volatile SingularAttribute<LoggedUser, Long> rating;
+	public static volatile SetAttribute<LoggedUser, UserCheck> checkedNeeds;
 	public static volatile SingularAttribute<LoggedUser, String> description;
+	public static volatile SetAttribute<LoggedUser, NewsFeed> newsFeeds;
 	public static volatile SetAttribute<LoggedUser, VerificationTeam> verificationTeams;
+	public static volatile SingularAttribute<LoggedUser, Long> happinessIndex;
 	public static volatile SingularAttribute<LoggedUser, String> firstName;
 	public static volatile SingularAttribute<LoggedUser, String> bloodGroup;
 	public static volatile SingularAttribute<LoggedUser, LocalDate> dob;
