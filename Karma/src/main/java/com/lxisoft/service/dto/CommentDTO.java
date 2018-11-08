@@ -27,6 +27,31 @@ public class CommentDTO implements Serializable {
     
     private String dateInString;
 
+    
+    private Long noOfLikes;
+    
+    private Long noOfDislikes;
+    
+    public void setNoOfLikes(Long noOfLikes){
+    	
+    	this.noOfLikes=noOfLikes;
+    }
+    
+    public Long getNoOfLikes()
+    {
+    	return noOfLikes;
+    }
+    
+ public void setNoOfDislikes(Long noOfDislikes){
+    	
+    	this.noOfDislikes=noOfDislikes;
+    }
+    
+    public Long getNoOfDislikes()
+    {
+    	return noOfDislikes;
+    }
+    
     public Long getId() {
         return id;
     }

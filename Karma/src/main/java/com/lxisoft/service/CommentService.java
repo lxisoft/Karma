@@ -46,10 +46,30 @@ public interface CommentService {
     
 
     /**
+     * get the "Need id" comment.
+     *
+     * @param id the needId of comment
+     */
+    
+    Page<CommentDTO> findByNeedId(Long id,Pageable pageable);
+    
+    
+
+
+    /**
      * Get all the comments by violation id.
      *
      * @param pageable the pagination information, violationId
      * @return the list of entities
      */
     Page<CommentDTO> findAllCommentByViolationId(Pageable pageable,Long violationId);
+    
+    /**
+     * Get all the comments by help id.
+     *
+     * @param pageable the pagination information, helpId
+     * @return the list of entities
+     */
+	Page<CommentDTO> findAllCommentByHelpId(Pageable pageable, Long helpId);
+
 }

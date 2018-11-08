@@ -25,6 +25,8 @@ public interface UserCheckRepository extends JpaRepository<UserCheck, Long> {
 	 * @return
 	 */
 	Page<UserCheck> findAllUserChecksByCheckedNeedId(Pageable pageable,Long checkedNeedId);
+	
+	Page<UserCheck> findByCommentIdIs(Long commentId, Pageable pageable);
 
 	Page<UserCheck> findAllUserCheckByCategory(Pageable pageable, String category);
 
@@ -33,8 +35,6 @@ public interface UserCheckRepository extends JpaRepository<UserCheck, Long> {
 	Page<UserCheck> findAllUserCheckByViolationIdAndCheckedUserId(Pageable pageable, Long violationId, Long checkedUserId);
 
 	Page<UserCheck> findAllUserCheckByCommentId(Pageable pageable, Long commentId);
-
-	Page<UserCheck> findByCategoryContaining(Pageable pageable, Long violationId);
 
 
 }

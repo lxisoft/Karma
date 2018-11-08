@@ -58,6 +58,60 @@ public class UserCheckResource {
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
+    
+    /**
+     * POST  /user-checks : create  userCheck with positive vote type
+     *
+     * @param userCheckDTO the userCheckDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new userCheckDTO, or with status 400 (Bad Request) if the userCheck has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping("/user-checks/like")
+    @Timed
+    public ResponseEntity<UserCheckDTO> createUserCheckLike(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException {
+        log.debug("REST request to save UserCheck as like  : {}", userCheckDTO);
+        if (userCheckDTO.getId() != null) {
+            throw new BadRequestAlertException("A new userCheck cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        
+        userCheckDTO.setVoteType("positive");
+        
+        UserCheckDTO result = userCheckService.save(userCheckDTO);
+        return ResponseEntity.created(new URI("/api/user-checks/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+    
+    
+    
+
+    /**
+     * POST  /user-checks : create user  check  with  negative vote type
+     *
+     * @param userCheckDTO the userCheckDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new userCheckDTO, or with status 400 (Bad Request) if the userCheck has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping("/user-checks/dislike")
+    @Timed
+    public ResponseEntity<UserCheckDTO> createUserCheckDislike(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException {
+        log.debug("REST request to save UserCheck as dislike  : {}", userCheckDTO);
+        if (userCheckDTO.getId() != null) {
+            throw new BadRequestAlertException("A new userCheck cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        
+        userCheckDTO.setVoteType("negative");
+        
+        UserCheckDTO result = userCheckService.save(userCheckDTO);
+        return ResponseEntity.created(new URI("/api/user-checks/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+    
+    
+    
+    
+    
 
     /**
      * PUT  /user-checks : Updates an existing userCheck.
@@ -189,11 +243,23 @@ public class UserCheckResource {
         }
     
     /**
-     * GET  /user-checks : get all the userChecks by category.
-     *
+
+     * GET  /user-checks : get all the userChecks by commentId.
+   *
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of userChecks in body
      */
+
+    @GetMapping("/user-checks/getAllUserChecksByCommentId/{commentId}")
+    @Timed
+    public ResponseEntity<List<UserCheckDTO>> getAllUserCheckByCommentId(Pageable pageable,@PathVariable Long commentId) {
+        log.debug("REST request to get a page of UserChecks");
+        Page<UserCheckDTO> page = userCheckService.findAllUserChecksByCommentId(commentId,pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/user-checks");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }  
+    
+
     @GetMapping("/getAllUserChecksByCategory/{category}")
     @Timed
     public ResponseEntity<List<UserCheckDTO>> getAllUserChecksByCategory(Pageable pageable,@PathVariable String category) {
@@ -233,6 +299,7 @@ public class UserCheckResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+
     /**
      * GET  /getAllUserChecksByCommentId : get all the userChecks by commentId.
      *
@@ -245,21 +312,6 @@ public class UserCheckResource {
         log.debug("REST request to get a page of UserChecks");
         Page<UserCheckDTO> page = userCheckService.findAllUserCheckByCommentId(pageable,commentId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getAllUserChecksByCommentId");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
-    
-    /**
-     * GET  /getAllUserChecksCategoryByViolationId : get all the userChecks by violationId.
-     *
-     * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the violation id
-     */
-    @GetMapping("/getAllUserChecksCategoryByViolationId/{violationId}")
-    @Timed
-    public ResponseEntity<List<UserCheckDTO>> getAllUserChecksCategoryByViolationId(Pageable pageable,@PathVariable Long violationId) {
-        log.debug("REST request to get a page of UserChecks");
-        Page<UserCheckDTO> page = userCheckService.findByCategoryContaining(pageable,violationId);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getAllUserChecksCategoryByViolationId");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
     

@@ -140,7 +140,7 @@ public class NeedResource {
         } else {
             page = needService.findAll(pageable);
         }
-        //
+       
         List<NeedDTO> needs = page.getContent();
 		
 for(NeedDTO need:needs){
@@ -168,8 +168,7 @@ for(NeedDTO need:needs){
 
 			need.setFileNameList(fileNameList);
 		}	
-        //
-        
+       
         
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, String.format("/api/needs?eagerload=%b", eagerload));
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);

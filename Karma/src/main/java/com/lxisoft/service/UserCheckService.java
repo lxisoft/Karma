@@ -57,12 +57,28 @@ public interface UserCheckService {
      */
     Optional<UserCheckDTO> findByCategoryAndCheckedNeedIdAndCheckedUserId(String category,Long checkedNeedId,Long checkedUserId);
 
-	/**
+	/** 
+	 * Get userChecks by needID
 	 * @param pageable
 	 * @param checkedNeedId
 	 * @return
 	 */
+    
 	Page<UserCheckDTO> findAllUserChecksByCheckedNeedId(Pageable pageable, Long checkedNeedId);
+
+
+
+	/** 
+	 * Get userChecks by CommentID
+	 * @param pageable
+	 * @param checkedNeedId
+	 * @return
+	 */
+	
+	
+	Page<UserCheckDTO> findAllUserChecksByCommentId(Long commentId, Pageable pageable);
+	
+	
 
 	   /**
      * Get all the userChecks by category.
@@ -84,5 +100,4 @@ public interface UserCheckService {
 
 	Page<UserCheckDTO> findAllUserCheckByCommentId(Pageable pageable, Long commentId);
 
-	Page<UserCheckDTO> findByCategoryContaining(Pageable pageable, Long violationId);
 }

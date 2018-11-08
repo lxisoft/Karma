@@ -1,4 +1,4 @@
- package com.lxisoft.web.rest;
+package com.lxisoft.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.service.CommentService;
@@ -45,7 +45,7 @@ public class CommentResource {
      * @param commentDTO the commentDTO to create
      * @return the ResponseEntity with status 201 (Created) and with body the new commentDTO, or with status 400 (Bad Request) if the comment has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
+     */   
     @PostMapping("/comments")
     @Timed
     public ResponseEntity<CommentDTO> createComment(@RequestBody CommentDTO commentDTO) throws URISyntaxException {
@@ -118,9 +118,8 @@ public class CommentResource {
         return ResponseUtil.wrapOrNotFound(commentDTO);
     }
 
-    /**
+    /*
      * DELETE  /comments/:id : delete the "id" comment.
-     *
      * @param id the id of the commentDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
@@ -132,6 +131,25 @@ public class CommentResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
     
+
+    
+    /**
+     * GET  /commentsByNeedId/:id : get the  comment by needId.
+     *
+     * @param id the id of the commentDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the commentDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/commentsByNeedId/{id}")
+    @Timed
+    public ResponseEntity<List<CommentDTO>> getCommentByNeedId(@PathVariable Long id) {
+        log.debug("REST request to get Comments buy needId : {}", id);
+        Pageable pageable=null;
+        Page<CommentDTO> page = commentService.findByNeedId(id,pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/commentsByNeedId");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+
+    }
+
     /**
      * GET  /comments : get all the comments by violation id.
      *
@@ -143,6 +161,21 @@ public class CommentResource {
     public ResponseEntity<List<CommentDTO>> getAllCommentsByViolationId(Pageable pageable,@PathVariable Long violationId) {
         log.debug("REST request to get a page of Comments  by violation id");
         Page<CommentDTO> page = commentService.findAllCommentByViolationId(pageable, violationId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getAllCommentsByViolationId");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /comments : get all the comments by help id.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of comments in body
+     */
+    @GetMapping("/getAllCommentsByHelpId/{helpId}")
+    @Timed
+    public ResponseEntity<List<CommentDTO>> getAllCommentsByHelpId(Pageable pageable,@PathVariable Long helpId) {
+        log.debug("REST request to get a page of Comments  by help id");
+        Page<CommentDTO> page = commentService.findAllCommentByHelpId(pageable, helpId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getAllCommentsByViolationId");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
