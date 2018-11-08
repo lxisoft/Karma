@@ -24,7 +24,8 @@ public interface HelpMapper extends EntityMapper<HelpDTO, Help> {
     Help toEntity(HelpDTO helpDTO);
 
     default Help fromId(Long id) {
-        if (id == null) {
+        if (id == null)
+        {
             return null;
         }
         Help help = new Help();

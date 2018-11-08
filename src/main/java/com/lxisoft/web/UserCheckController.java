@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+  * Copyright 2002-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package com.lxisoft.web;
 
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -33,11 +34,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.service.UserCheckService;
 import com.lxisoft.service.dto.UserCheckDTO;
 import com.lxisoft.web.rest.errors.BadRequestAlertException;
+import com.lxisoft.web.rest.util.HeaderUtil;
 import com.lxisoft.web.rest.util.PaginationUtil;
 
 /**
@@ -165,5 +168,79 @@ public class UserCheckController {
         return "home";
     }   
 	
+    
+    /**
+     * GET  /user-checks : get all the userChecks by commentId.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of userChecks in body
+     */
+    @GetMapping("/user-checks/getAllUserChecksByCommentId/{commentId}")
+    @Timed
+    public String getAllUserCheckByCommentId(Pageable pageable,@PathVariable Long commentId,Model model
+    		) {
+        log.debug("REST");
+        Page<UserCheckDTO> page = userCheckService.findAllUserChecksByCommentId(commentId,pageable);
+        
+        model.addAttribute("userCheck",page);
+        
+        return null;
+    }  
+    
+    
+    /**
+     * POST  /user-checks : create  userCheck with positive vote type
+     *
+     * @param userCheckDTO the userCheckDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new userCheckDTO, or with status 400 (Bad Request) if the userCheck has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping("/user-checks/like")
+    @Timed
+    public String createUserCheckLike(@RequestBody UserCheckDTO userCheckDTO,Model model) throws URISyntaxException {
+        log.debug("REST request to save UserCheck as like  : {}", userCheckDTO);
+        if (userCheckDTO.getId() != null) {
+            throw new BadRequestAlertException("A new userCheck cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        
+        userCheckDTO.setVoteType("positive");
+        
+        UserCheckDTO result = userCheckService.save(userCheckDTO);
+        
+        model.addAttribute("userCheck",result);
+        
+        return null;
+        
+    }
+    
+    
+    
+
+    /**
+     * POST  /user-checks : create user  check  with  negative vote type
+     *
+     * @param userCheckDTO the userCheckDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new userCheckDTO, or with status 400 (Bad Request) if the userCheck has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping("/user-checks/dislike")
+    @Timed
+    public String createUserCheckDislike(@RequestBody UserCheckDTO userCheckDTO,Model model) throws URISyntaxException {
+        log.debug("REST request to save UserCheck as dislike  : {}", userCheckDTO);
+        if (userCheckDTO.getId() != null) {
+            throw new BadRequestAlertException("A new userCheck cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        
+        userCheckDTO.setVoteType("negative");
+        
+        UserCheckDTO result = userCheckService.save(userCheckDTO);
+        model.addAttribute("userCheck",result);
+        return null;
+       
+    }
+    
+    
+    
+    
 
 }

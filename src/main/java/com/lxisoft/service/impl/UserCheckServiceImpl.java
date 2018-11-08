@@ -42,6 +42,7 @@ public class UserCheckServiceImpl implements UserCheckService {
     @Override
     public UserCheckDTO save(UserCheckDTO userCheckDTO) {
         log.debug("Request to save UserCheck : {}", userCheckDTO);
+       
         UserCheck userCheck = userCheckMapper.toEntity(userCheckDTO);
         userCheck = userCheckRepository.save(userCheck);
         return userCheckMapper.toDto(userCheck);
@@ -118,5 +119,20 @@ public class UserCheckServiceImpl implements UserCheckService {
 	        return userCheckRepository.findAllUserChecksByCheckedNeedId(pageable,checkedNeedId)
 	            .map(userCheckMapper::toDto);
 	    }
+
+	  /**
+     * Get all the userChecks by commentId.
+     *
+     * @param pageable the pagination information
+     * 
+     * @return the list of entities
+     */
+	
+	@Override
+	public Page<UserCheckDTO> findAllUserChecksByCommentId(Long commentId, Pageable pageable) {
+		log.debug("requset to get all user checks with comment Id:",commentId);
+		
+		return userCheckRepository.findByCommentIdIs(commentId,pageable).map(userCheckMapper::toDto);
+	}
 
 }
