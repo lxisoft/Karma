@@ -1,22 +1,26 @@
-G:\Projects\git-project\Karma\src\test\java\com\lxisoft\web\rest\TestUtil.java
-G:\Projects\git-project\Karma\src\test\java\com\lxisoft\web\rest\CategoryResourceIntTest.java
-G:\Projects\git-project\Karma\src\test\java\com\lxisoft\repository\CustomAuditEventRepositoryIntTest.java
-G:\Projects\git-project\Karma\src\test\java\com\lxisoft\web\rest\VerificationTeamResourceIntTest.java
-G:\Projects\git-project\Karma\src\test\java\com\lxisoft\web\rest\NeedResourceIntTest.java
-G:\Projects\git-project\Karma\src\test\java\com\lxisoft\web\rest\HelpResourceIntTest.java
-G:\Projects\git-project\Karma\src\test\java\com\lxisoft\web\rest\AuditResourceIntTest.java
-G:\Projects\git-project\Karma\src\test\java\com\lxisoft\security\SecurityUtilsUnitTest.java
-G:\Projects\git-project\Karma\src\test\java\com\lxisoft\web\rest\errors\ExceptionTranslatorIntTest.java
-G:\Projects\git-project\Karma\src\test\java\com\lxisoft\config\WebConfigurerTestController.java
-G:\Projects\git-project\Karma\src\test\java\com\lxisoft\web\rest\util\PaginationUtilUnitTest.java
-G:\Projects\git-project\Karma\src\test\java\com\lxisoft\web\rest\UserResourceIntTest.java
-G:\Projects\git-project\Karma\src\test\java\com\lxisoft\config\WebConfigurerTest.java
-G:\Projects\git-project\Karma\src\test\java\com\lxisoft\web\rest\AddressResourceIntTest.java
-G:\Projects\git-project\Karma\src\test\java\com\lxisoft\web\rest\MediaResourceIntTest.java
-G:\Projects\git-project\Karma\src\test\java\com\lxisoft\web\rest\ApprovalStatusResourceIntTest.java
-G:\Projects\git-project\Karma\src\test\java\com\lxisoft\web\rest\UserCheckResourceIntTest.java
-G:\Projects\git-project\Karma\src\test\java\com\lxisoft\web\rest\LoggedUserResourceIntTest.java
-G:\Projects\git-project\Karma\src\test\java\com\lxisoft\web\rest\LogsResourceIntTest.java
-G:\Projects\git-project\Karma\src\test\java\com\lxisoft\web\rest\SeverityResourceIntTest.java
-G:\Projects\git-project\Karma\src\test\java\com\lxisoft\service\UserServiceIntTest.java
-G:\Projects\git-project\Karma\src\test\java\com\lxisoft\web\rest\errors\ExceptionTranslatorTestController.java
+D:\karma\karma workspace\Karma\Karma\src\test\java\com\lxisoft\web\rest\TestUtil.java
+D:\karma\karma workspace\Karma\Karma\src\test\java\com\lxisoft\web\rest\AddressResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\src\test\java\com\lxisoft\web\rest\errors\ExceptionTranslatorIntTest.java
+D:\karma\karma workspace\Karma\Karma\src\test\java\com\lxisoft\service\UserServiceIntTest.java
+D:\karma\karma workspace\Karma\Karma\src\test\java\com\lxisoft\web\rest\UserCheckResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\src\test\java\com\lxisoft\web\rest\UserResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\src\test\java\com\lxisoft\web\rest\NewsFeedResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\src\test\java\com\lxisoft\web\rest\VerificationTeamResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\src\test\java\com\lxisoft\repository\CustomAuditEventRepositoryIntTest.java
+D:\karma\karma workspace\Karma\Karma\src\test\java\com\lxisoft\web\rest\SeverityResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\src\test\java\com\lxisoft\web\rest\ViolationResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\src\test\java\com\lxisoft\config\WebConfigurerTestController.java
+D:\karma\karma workspace\Karma\Karma\src\test\java\com\lxisoft\web\rest\ReplyResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\src\test\java\com\lxisoft\web\rest\CategoryResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\src\test\java\com\lxisoft\web\rest\LoggedUserResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\src\test\java\com\lxisoft\web\rest\MediaResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\src\test\java\com\lxisoft\web\rest\CommentResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\src\test\java\com\lxisoft\web\rest\ApprovalStatusResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\src\test\java\com\lxisoft\web\rest\AuditResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\src\test\java\com\lxisoft\web\rest\LogsResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\src\test\java\com\lxisoft\web\rest\HelpResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\src\test\java\com\lxisoft\config\WebConfigurerTest.java
+D:\karma\karma workspace\Karma\Karma\src\test\java\com\lxisoft\web\rest\NeedResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\src\test\java\com\lxisoft\web\rest\errors\ExceptionTranslatorTestController.java
+D:\karma\karma workspace\Karma\Karma\src\test\java\com\lxisoft\web\rest\util\PaginationUtilUnitTest.java
+D:\karma\karma workspace\Karma\Karma\src\test\java\com\lxisoft\security\SecurityUtilsUnitTest.java

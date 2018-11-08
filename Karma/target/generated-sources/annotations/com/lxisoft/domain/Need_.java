@@ -14,10 +14,11 @@ public abstract class Need_ {
 	public static volatile SingularAttribute<Need, Severity> severity;
 	public static volatile SingularAttribute<Need, ApprovalStatus> approvalStatus;
 	public static volatile SingularAttribute<Need, LoggedUser> postedUser;
+	public static volatile SetAttribute<Need, Comment> comments;
+	public static volatile SingularAttribute<Need, String> description;
 	public static volatile SingularAttribute<Need, String> beneficiaryType;
 	public static volatile SetAttribute<Need, Media> proofs;
 	public static volatile SingularAttribute<Need, VerificationTeam> verificationTeam;
-	public static volatile SingularAttribute<Need, String> description;
 	public static volatile SingularAttribute<Need, Long> id;
 	public static volatile SetAttribute<Need, Help> helps;
 	public static volatile SetAttribute<Need, Category> categories;

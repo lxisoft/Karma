@@ -193,4 +193,12 @@ public class UserCheckServiceImpl implements UserCheckService {
 		return userCheckRepository.findByCommentIdIs(commentId,pageable).map(userCheckMapper::toDto);
 	}
 
+	@Override
+	public Page<UserCheckDTO> findAllUserCheckByReplyId(Pageable pageable, Long replyId) {
+		
+log.debug("requset to get all user checks with comment Id:",replyId);
+		
+		return userCheckRepository.findAllByReplyIdIs(replyId,pageable).map(userCheckMapper::toDto);
+	}
+
 }

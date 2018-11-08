@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2018-09-29T11:00:48+0530",
+    date = "2018-11-08T15:51:22+0530",
     comments = "version: 1.2.0.Final, compiler: javac, environment: Java 1.8.0_131 (Oracle Corporation)"
 )
 @Component
@@ -70,6 +70,9 @@ public class LoggedUserMapperImpl implements LoggedUserMapper {
         loggedUserDTO.setGender( loggedUser.getGender() );
         loggedUserDTO.setDob( loggedUser.getDob() );
         loggedUserDTO.setBloodGroup( loggedUser.getBloodGroup() );
+        loggedUserDTO.setEmotionalQuotient( loggedUser.getEmotionalQuotient() );
+        loggedUserDTO.setSocialQuotient( loggedUser.getSocialQuotient() );
+        loggedUserDTO.setHappinessIndex( loggedUser.getHappinessIndex() );
 
         return loggedUserDTO;
     }
@@ -93,6 +96,9 @@ public class LoggedUserMapperImpl implements LoggedUserMapper {
         loggedUser.setGender( loggedUserDTO.getGender() );
         loggedUser.setDob( loggedUserDTO.getDob() );
         loggedUser.setBloodGroup( loggedUserDTO.getBloodGroup() );
+        loggedUser.setEmotionalQuotient( loggedUserDTO.getEmotionalQuotient() );
+        loggedUser.setSocialQuotient( loggedUserDTO.getSocialQuotient() );
+        loggedUser.setHappinessIndex( loggedUserDTO.getHappinessIndex() );
 
         return loggedUser;
     }

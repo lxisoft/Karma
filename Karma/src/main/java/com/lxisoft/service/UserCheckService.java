@@ -97,7 +97,23 @@ public interface UserCheckService {
 	Page<UserCheckDTO> findAllUserCheckByViolationId(Pageable pageable, Long violationId);
 
 	Page<UserCheckDTO> findAllUserCheckByViolationIdAndCheckedUserId(Pageable pageable, Long violationId, Long checkedUserId);
+	/**
+     * Get all the userChecks by commentId.
+     *
+     * @param pageable the pagination information, commentId to find
+     * @return the page of dtos
+     */
 
 	Page<UserCheckDTO> findAllUserCheckByCommentId(Pageable pageable, Long commentId);
+
+	/**
+     * Get all the userChecks by replaytId.
+     *
+     * @param pageable the pagination information, replyId to find
+     * @return the list of entities
+     */
+
+	
+	Page<UserCheckDTO> findAllUserCheckByReplyId(Pageable pageable, Long replyId);
 
 }

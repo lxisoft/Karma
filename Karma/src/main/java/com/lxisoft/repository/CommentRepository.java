@@ -1,10 +1,8 @@
 package com.lxisoft.repository;
 
 import com.lxisoft.domain.Comment;
-<<<<<<< HEAD:src/main/java/com/lxisoft/repository/CommentRepository.java
-=======
+
 import com.lxisoft.service.dto.CommentDTO;
->>>>>>> 73005fbe741258fe54e78e2558915cef4082a567:Karma/src/main/java/com/lxisoft/repository/CommentRepository.java
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +22,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 	 * @return comments with the given needId as page<Comment>
 	 */
 
-	Page<Comment> findAllByNeedId(Long needId, Pageable pageable);
+	Page<Comment> findByNeedIdIs(Long needId, Pageable pageable);
 
 	Page<Comment> findAllCommentByViolationId(Pageable pageable, Long violationId);
 
