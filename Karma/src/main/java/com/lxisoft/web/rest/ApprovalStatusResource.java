@@ -123,4 +123,19 @@ public class ApprovalStatusResource {
         approvalStatusService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+    
+    /**
+     * GET  /approval-statuses/:status : get the approvalStatus by status.
+     *
+     * @param id the id of the approvalStatusDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the approvalStatusDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/approval-statuses/getApprovalStatus/{status}")
+    @Timed
+    public ResponseEntity<ApprovalStatusDTO> getApprovalStatus(@PathVariable String status) {
+        log.debug("REST request to get ApprovalStatus : {}", status);
+        Optional<ApprovalStatusDTO> approvalStatusDTO = approvalStatusService.findByStatus(status);
+        return ResponseUtil.wrapOrNotFound(approvalStatusDTO);
+    }
+
 }

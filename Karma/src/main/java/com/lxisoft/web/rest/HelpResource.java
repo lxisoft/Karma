@@ -26,7 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -176,7 +176,30 @@ public class HelpResource {
     public ResponseEntity<List<HelpDTO>> getAllHelpsByApprovedStatus(Pageable pageable,@PathVariable String approvalStatus) {
         log.debug("REST request to get a page of Helps");
         Page<HelpDTO> page = helpService.findAllHelpsByApprovedStatus(pageable,approvalStatus);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/helps");
+        
+        List<HelpDTO> helps = page.getContent();
+
+		for(HelpDTO helpDto:helps){
+			
+			List<String> fileNameList=new ArrayList();
+			
+			log.info("*********need");
+			
+			Page<MediaDTO> mediaList=mediaService.findAllUrlByHelpId(helpDto.getId(), pageable);
+			
+			List<MediaDTO> mediaDtoList=mediaList.getContent();
+			
+			for(MediaDTO media:mediaDtoList){
+				
+				String mediaUrl=media.getUrl();
+				fileNameList.add(mediaUrl);
+				log.info("*********media url{}",mediaUrl);
+			
+			}
+			helpDto.setFileNameList(fileNameList);
+		}
+
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/helps/getAllHelpsByApprovedStatus/");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 }
