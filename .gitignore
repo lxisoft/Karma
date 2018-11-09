@@ -1,8 +1,8 @@
 ######################
 # Project Specific
 ######################
-/Karma/target/www/**
-/Karma/src/test/javascript/coverage/
+Karma/target/www/**
+Karma/src/test/javascript/coverage/
 
 ######################
 # Node
