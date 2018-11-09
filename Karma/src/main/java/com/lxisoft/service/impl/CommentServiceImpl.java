@@ -202,6 +202,7 @@ public class CommentServiceImpl implements CommentService {
 	        return commentRepository.findAllCommentByViolationId(pageable,violationId)
 	            .map(commentMapper::toDto);
 	  }
+	
 	/**
      * Get all the comments by helpId.
      *

@@ -54,15 +54,9 @@ public class ReplyResource {
             throw new BadRequestAlertException("A new reply cannot already have an ID", ENTITY_NAME, "idexists");
         }
         
-
-     // parsing string to ISO_INSTANT format
-     	String parsedDate = replyDTO.getDateInString().replaceAll(" ", "T").concat("Z");
-
-     	// creates a date instance of type instant from a string
-     	replyDTO.setDate(Instant.parse(parsedDate));
-     	
-     	
-
+        String parseDate=replyDTO.getDateInString().replace(" ","T").concat("Z");
+        Instant date=Instant.parse(parseDate);
+        replyDTO.setDate(date);
         
         ReplyDTO result = replyService.save(replyDTO);
         return ResponseEntity.created(new URI("/api/replies/" + result.getId()))
@@ -134,21 +128,4 @@ public class ReplyResource {
         replyService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-    
-    
-    /**
-     * GET  /replies/:id : get the reply by commentId
-     *
-     * @param id the id of the replyDTO to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the replyDTO, or with status 404 (Not Found)
-     */
-    @GetMapping("/replies/comment/{id}")
-    @Timed
-    public ResponseEntity<List<ReplyDTO>> findByCommentId(Pageable pageable,@PathVariable Long id) {
-        log.debug("REST request to get Replies con the basis of comment id : {}", id);
-        Page<ReplyDTO> page = replyService.findByCommentId(pageable,id);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/replies/comment/{id}");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
-    
 }

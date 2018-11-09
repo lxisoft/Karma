@@ -149,8 +149,7 @@ public class CommentResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 
     }
-  
-    
+
 
     /**
      * GET  /comments : get all the comments by violation id.
@@ -166,8 +165,7 @@ public class CommentResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getAllCommentsByViolationId");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
-    
-    
+
     /**
      * GET  /comments : get all the comments by help id.
      *

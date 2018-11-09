@@ -33,7 +33,17 @@ public class UserCheckDTO implements Serializable {
     
     private Boolean isGenuine;
     
-    /**
+    private Boolean isReadyToSupport;
+    
+    public Boolean getIsReadyToSupport() {
+		return isReadyToSupport;
+	}
+
+	public void setIsReadyToSupport(Boolean isReadyToSupport) {
+		this.isReadyToSupport = isReadyToSupport;
+	}
+
+	/**
 	 * @return the isGenuine
 	 */
 	public Boolean getIsGenuine() {

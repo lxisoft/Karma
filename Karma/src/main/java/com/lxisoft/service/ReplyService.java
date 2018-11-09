@@ -43,22 +43,4 @@ public interface ReplyService {
      * @param id the id of the entity
      */
     void delete(Long id);
-    
-    /**
-     * to find the time difference
-     *
-     * @param time the time of the entity posted
-     */
-    String timeAgo(long time);
-
-    /**
-     * Get the reply by commentId.
-     *
-     * @param id the id of the entity
-     * @return the entity
-     */
-	Page<ReplyDTO> findByCommentId(Pageable pageable, Long id);
-    
-    
-    
 }
