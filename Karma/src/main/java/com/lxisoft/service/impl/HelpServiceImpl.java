@@ -21,6 +21,9 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.Instant;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -150,5 +153,56 @@ public class HelpServiceImpl implements HelpService {
     	
         return helpRepository.findAllHelpsByApprovalStatusId(pageable,approvalStatusId)
             .map(helpMapper::toDto);
+	}
+	
+	
+	
+	/**
+	 * @param pageable
+	 * 
+	 * @return
+	 */
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Page<HelpDTO> findAllHelps(Pageable pageable) {
+		log.debug("Request to get all NewsFeeds");
+		Page<HelpDTO> helpPage = findAll(pageable);
+		List<HelpDTO> helpList = helpPage.getContent();
+		for (HelpDTO helpDto : helpList) {
+			Instant instant = Instant.now();
+			Date helpedTime = null;
+			if (helpDto.getTime() != null) {
+				helpedTime = Date.from(helpDto.getTime());
+			}
+			Date current = Date.from(instant);
+			long diffInSecond = 0l;
+			if (helpedTime != null) {
+				diffInSecond = (current.getTime() - helpedTime.getTime()) / 1000l;
+			}
+			long postedBefore = 0l;
+			if (diffInSecond < 60l) {
+				helpDto.setTimeElapsed(diffInSecond + " seconds ago");
+			} else if (diffInSecond < 3600l) {
+				postedBefore = diffInSecond / 60l;
+				helpDto.setTimeElapsed(postedBefore + " minutes ago");
+			} else if (diffInSecond < 86400l) {
+				postedBefore = diffInSecond / 3600l;
+				helpDto.setTimeElapsed(postedBefore + " hours ago");
+			} else if (diffInSecond < 2592000l) {
+				postedBefore = diffInSecond / 86400l;
+				helpDto.setTimeElapsed(postedBefore + " days ago");
+			} else if (diffInSecond < 31104000l) {
+				postedBefore = diffInSecond / 2592000l;
+				helpDto.setTimeElapsed(postedBefore + " months ago");
+			} else {
+				postedBefore = diffInSecond / 31104000l;
+				helpDto.setTimeElapsed(postedBefore + " years ago");
+			}
+			System.out.println("how many ago " + helpDto.getTimeElapsed());
+
+		}
+		return helpRepository.findAllHelps(pageable)
+	            .map(helpMapper::toDto);
 	}
 }

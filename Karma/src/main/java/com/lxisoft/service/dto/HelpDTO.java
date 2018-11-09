@@ -29,7 +29,9 @@ public class HelpDTO implements Serializable {
 
     private Long fulfilledNeedId;
 
-  private String timeInString;
+    private String timeInString;
+  
+    private String timeElapsed;
     
     private MultipartFile[] files;
 
@@ -148,4 +150,14 @@ public class HelpDTO implements Serializable {
             ", description='" + getDescription() + "'" +
             "}";
     }
+
+	public String getTimeElapsed() {
+		return timeElapsed;
+	}
+
+	public void setTimeElapsed(String timeElapsed) {
+		this.timeElapsed = timeElapsed;
+	}
+
+	
 }

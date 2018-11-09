@@ -1,6 +1,8 @@
 package com.lxisoft.repository;
 
 import com.lxisoft.domain.Need;
+import com.lxisoft.service.dto.NeedDTO;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
@@ -30,6 +32,8 @@ public interface NeedRepository extends JpaRepository<Need, Long> {
     Page<Need> findAllNeedsByApprovalStatusId(Pageable pageable, Long approvalStatusId);
     
     Page<Need> findAllNeedsBySeverity(Pageable pageable,Long severityId);
+
+	Page<Need> findAllReplies(Pageable pageable);
 
 
 }

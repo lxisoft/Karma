@@ -13,6 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -86,4 +89,59 @@ public class ReplyServiceImpl implements ReplyService {
         log.debug("Request to delete Reply : {}", id);
         replyRepository.deleteById(id);
     }
+    
+    @Override
+	public Page<ReplyDTO> findByCommentId(Pageable pageable, Long id) {
+		log.debug("Request to get Reply from commentId : {}", id);
+        return replyRepository.findByCommentId(pageable,id)
+            .map(replyMapper::toDto);
+        
+        
+		
+	}
+
+	@Override
+	public Page<ReplyDTO> findAllReplies(Pageable pageable) {
+		
+		
+		log.debug("Request to get all replies along with time");
+		Page<ReplyDTO> replyPage = findAll(pageable);
+		List<ReplyDTO> replyList = replyPage.getContent();
+		for (ReplyDTO helpDto : replyList) {
+			Instant instant = Instant.now();
+			Date repliedTime = null;
+			if (helpDto.getDate() != null) {
+				repliedTime = Date.from(helpDto.getDate());
+			}
+			Date current = Date.from(instant);
+			long diffInSecond = 0l;
+			if (repliedTime != null) {
+				diffInSecond = (current.getTime() - repliedTime.getTime()) / 1000l;
+			}
+			long postedBefore = 0l;
+			if (diffInSecond < 60l) {
+				helpDto.setTimeElapsed(diffInSecond + " seconds ago");
+			} else if (diffInSecond < 3600l) {
+				postedBefore = diffInSecond / 60l;
+				helpDto.setTimeElapsed(postedBefore + " minutes ago");
+			} else if (diffInSecond < 86400l) {
+				postedBefore = diffInSecond / 3600l;
+				helpDto.setTimeElapsed(postedBefore + " hours ago");
+			} else if (diffInSecond < 2592000l) {
+				postedBefore = diffInSecond / 86400l;
+				helpDto.setTimeElapsed(postedBefore + " days ago");
+			} else if (diffInSecond < 31104000l) {
+				postedBefore = diffInSecond / 2592000l;
+				helpDto.setTimeElapsed(postedBefore + " months ago");
+			} else {
+				postedBefore = diffInSecond / 31104000l;
+				helpDto.setTimeElapsed(postedBefore + " years ago");
+			}
+			System.out.println("how many ago " + helpDto.getTimeElapsed());
+
+		}
+		return replyRepository.findAllReplies(pageable)
+	            .map(replyMapper::toDto);
+		
+	}
 }

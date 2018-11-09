@@ -99,7 +99,7 @@ public class CommentResource {
     @Timed
     public ResponseEntity<List<CommentDTO>> getAllComments(Pageable pageable) {
         log.debug("REST request to get a page of Comments");
-        Page<CommentDTO> page = commentService.findAll(pageable);
+        Page<CommentDTO> page = commentService.findAllComments(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/comments");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

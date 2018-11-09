@@ -20,6 +20,8 @@ public class ReplyDTO implements Serializable {
     private Long repliedUserId;
     
     private String dateInString;
+    
+    private String timeElapsed;
 
     public Long getId() {
         return id;
@@ -107,4 +109,12 @@ public class ReplyDTO implements Serializable {
             ", repliedUser=" + getRepliedUserId() +
             "}";
     }
+
+	public String getTimeElapsed() {
+		return timeElapsed;
+	}
+
+	public void setTimeElapsed(String timeElapsed) {
+		this.timeElapsed = timeElapsed;
+	}
 }

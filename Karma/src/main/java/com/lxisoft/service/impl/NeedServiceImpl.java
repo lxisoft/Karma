@@ -23,6 +23,8 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -173,4 +175,54 @@ public class NeedServiceImpl implements NeedService {
 				 .map(needMapper::toDto);
 		
 	}
+	
+	
+	
+	/**
+	    * Get all the comments with time.
+	    *
+	    * @param pageable the pagination information
+	    * @return the list of entities
+	    */
+		@Override
+		public Page<NeedDTO> findAllNeeds(Pageable pageable) {
+			log.debug("Request to get all comments");
+			Page<NeedDTO> needPage = findAll(pageable);
+			List<NeedDTO> needList = needPage.getContent();
+			for (NeedDTO needDto : needList) {
+				Instant instant = Instant.now();
+				Date repliedTime = null;
+				if (needDto.getDate() != null) {
+					repliedTime = Date.from(needDto.getDate());
+				}
+				Date current = Date.from(instant);
+				long diffInSecond = 0l;
+				if (repliedTime != null) {
+					diffInSecond = (current.getTime() - repliedTime.getTime()) / 1000l;
+				}
+				long postedBefore = 0l;
+				if (diffInSecond < 60l) {
+					needDto.setTimeElapsed(diffInSecond + " seconds ago");
+				} else if (diffInSecond < 3600l) {
+					postedBefore = diffInSecond / 60l;
+					needDto.setTimeElapsed(postedBefore + " minutes ago");
+				} else if (diffInSecond < 86400l) {
+					postedBefore = diffInSecond / 3600l;
+					needDto.setTimeElapsed(postedBefore + " hours ago");
+				} else if (diffInSecond < 2592000l) {
+					postedBefore = diffInSecond / 86400l;
+					needDto.setTimeElapsed(postedBefore + " days ago");
+				} else if (diffInSecond < 31104000l) {
+					postedBefore = diffInSecond / 2592000l;
+					needDto.setTimeElapsed(postedBefore + " months ago");
+				} else {
+					postedBefore = diffInSecond / 31104000l;
+					needDto.setTimeElapsed(postedBefore + " years ago");
+				}
+				System.out.println("how many ago " + needDto.getTimeElapsed());
+
+			}
+			return needRepository.findAllReplies(pageable)
+		            .map(needMapper::toDto);
+		}
 }
