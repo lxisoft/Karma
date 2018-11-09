@@ -74,9 +74,9 @@ public class UserCheckResource {
             throw new BadRequestAlertException("A new userCheck cannot already have an ID", ENTITY_NAME, "idexists");
         }
         
-        userCheckDTO.setVoteType("positive");
         
-        UserCheckDTO result = userCheckService.save(userCheckDTO);
+        
+        UserCheckDTO result = userCheckService.createUserCheckLike(userCheckDTO).get();
         return ResponseEntity.created(new URI("/api/user-checks/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -299,7 +299,7 @@ public class UserCheckResource {
      * GET  /getAllUserChecksByCommentId : get all the userChecks by commentId.
      *
      * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the violation id
+     * @return the ResponseEntity with status 200 (OK) and the 
      */
     @GetMapping("/getAllUserChecksByCommentId/{commentId}")
     @Timed
@@ -310,6 +310,25 @@ public class UserCheckResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
     
+
+    /**Get /getAllUserCheksByReplayId :get all userChecks by replayId
+     * @param pageable and replayId
+     * @Return list of userChecks
+     */
+     
+    @GetMapping("/getAllUserCheckByReplayId/{replyId}")
+    @Timed
+    public ResponseEntity<List<UserCheckDTO>> getAllUserChecksByReplayId(@PathVariable Long replyId)
+    {
+    	
+    	log.debug("Rest request to get all userChecks by replayId",replyId);
+    	Pageable pageable=null;
+    	 Page<UserCheckDTO> page = userCheckService.findAllUserCheckByReplyId(pageable,replyId);
+         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getAllUserChecksByCommentId");
+         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+    
+
     /**
      * POST  /user-checks : Create a new userCheck for violation support.
      *
@@ -455,4 +474,5 @@ public class UserCheckResource {
     }
 
     
+
 }

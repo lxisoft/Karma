@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 E:\jhipsterprojects\Karma\src\test\java\com\lxisoft\web\rest\AddressResourceIntTest.java
 E:\jhipsterprojects\Karma\src\test\java\com\lxisoft\web\rest\util\PaginationUtilUnitTest.java
 E:\jhipsterprojects\Karma\src\test\java\com\lxisoft\service\UserServiceIntTest.java
@@ -24,3 +25,31 @@ E:\jhipsterprojects\Karma\src\test\java\com\lxisoft\web\rest\CommentResourceIntT
 E:\jhipsterprojects\Karma\src\test\java\com\lxisoft\web\rest\ReplyResourceIntTest.java
 E:\jhipsterprojects\Karma\src\test\java\com\lxisoft\web\rest\errors\ExceptionTranslatorIntTest.java
 E:\jhipsterprojects\Karma\src\test\java\com\lxisoft\web\rest\MediaResourceIntTest.java
+=======
+D:\karma\karma workspace\Karma\Karma\Karma\src\test\java\com\lxisoft\web\rest\UserCheckResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\Karma\src\test\java\com\lxisoft\service\UserServiceIntTest.java
+D:\karma\karma workspace\Karma\Karma\Karma\src\test\java\com\lxisoft\web\rest\LoggedUserResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\Karma\src\test\java\com\lxisoft\web\rest\ApprovalStatusResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\Karma\src\test\java\com\lxisoft\repository\CustomAuditEventRepositoryIntTest.java
+D:\karma\karma workspace\Karma\Karma\Karma\src\test\java\com\lxisoft\security\SecurityUtilsUnitTest.java
+D:\karma\karma workspace\Karma\Karma\Karma\src\test\java\com\lxisoft\web\rest\NeedResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\Karma\src\test\java\com\lxisoft\web\rest\SeverityResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\Karma\src\test\java\com\lxisoft\web\rest\NewsFeedResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\Karma\src\test\java\com\lxisoft\web\rest\AuditResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\Karma\src\test\java\com\lxisoft\web\rest\VerificationTeamResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\Karma\src\test\java\com\lxisoft\web\rest\util\PaginationUtilUnitTest.java
+D:\karma\karma workspace\Karma\Karma\Karma\src\test\java\com\lxisoft\web\rest\LogsResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\Karma\src\test\java\com\lxisoft\web\rest\AddressResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\Karma\src\test\java\com\lxisoft\web\rest\UserResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\Karma\src\test\java\com\lxisoft\web\rest\errors\ExceptionTranslatorIntTest.java
+D:\karma\karma workspace\Karma\Karma\Karma\src\test\java\com\lxisoft\web\rest\ReplyResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\Karma\src\test\java\com\lxisoft\web\rest\CommentResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\Karma\src\test\java\com\lxisoft\web\rest\errors\ExceptionTranslatorTestController.java
+D:\karma\karma workspace\Karma\Karma\Karma\src\test\java\com\lxisoft\web\rest\HelpResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\Karma\src\test\java\com\lxisoft\web\rest\TestUtil.java
+D:\karma\karma workspace\Karma\Karma\Karma\src\test\java\com\lxisoft\web\rest\CategoryResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\Karma\src\test\java\com\lxisoft\config\WebConfigurerTest.java
+D:\karma\karma workspace\Karma\Karma\Karma\src\test\java\com\lxisoft\web\rest\ViolationResourceIntTest.java
+D:\karma\karma workspace\Karma\Karma\Karma\src\test\java\com\lxisoft\config\WebConfigurerTestController.java
+D:\karma\karma workspace\Karma\Karma\Karma\src\test\java\com\lxisoft\web\rest\MediaResourceIntTest.java
+>>>>>>> 286daa0f48f7603a1565b0a98ebcac706c5abbed
