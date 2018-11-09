@@ -115,5 +115,15 @@ public interface UserCheckService {
 
 	
 	Page<UserCheckDTO> findAllUserCheckByReplyId(Pageable pageable, Long replyId);
+	
 
+	/**
+     *  create new  userChecks with positive vote.
+     *
+     * @param userCheck
+     * @return optional<userCheck>
+     */
+	
+	Optional<UserCheckDTO> createUserCheckLike(UserCheckDTO userCheckDTO);
+	
 }
