@@ -74,9 +74,9 @@ public class UserCheckResource {
             throw new BadRequestAlertException("A new userCheck cannot already have an ID", ENTITY_NAME, "idexists");
         }
         
-        userCheckDTO.setVoteType("positive");
         
-        UserCheckDTO result = userCheckService.save(userCheckDTO);
+        
+        UserCheckDTO result = userCheckService.createUserCheckLike(userCheckDTO).get();
         return ResponseEntity.created(new URI("/api/user-checks/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
