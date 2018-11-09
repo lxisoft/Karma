@@ -89,17 +89,25 @@ public class ReplyServiceImpl implements ReplyService {
         log.debug("Request to delete Reply : {}", id);
         replyRepository.deleteById(id);
     }
+
     
     @Override
 	public Page<ReplyDTO> findByCommentId(Pageable pageable, Long id) {
 		log.debug("Request to get Reply from commentId : {}", id);
         return replyRepository.findByCommentId(pageable,id)
             .map(replyMapper::toDto);
-        
-        
-		
-	}
+        }
 
+    
+    
+    /**
+     * find all replies along with time
+     *
+     * @param pageable
+     * @return the entities
+     */
+    
+    
 	@Override
 	public Page<ReplyDTO> findAllReplies(Pageable pageable) {
 		
@@ -142,5 +150,15 @@ public class ReplyServiceImpl implements ReplyService {
 		}
 		return replyPage;
 		
+	}
+
+
+	@Override
+	public Page<ReplyDTO> findAllRepliesByCommentId(Pageable pageable, Long commentId) {
+		 log.debug("Request to get all Replies by comment id");
+	        return replyRepository.findAllRepliesByCommentId(pageable,commentId)
+	            .map(replyMapper::toDto);
+	   
+
 	}
 }

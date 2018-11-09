@@ -16,7 +16,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReplyRepository extends JpaRepository<Reply, Long> {
 
-	
+
 	Page<Reply> findByCommentId(Pageable pageable, Long id);
+
+	Page<Reply> findAllRepliesByCommentId(Pageable pageable,Long commentId);
+
 
 }

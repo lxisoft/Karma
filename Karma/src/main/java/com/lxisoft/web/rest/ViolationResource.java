@@ -61,28 +61,19 @@ public class ViolationResource {
      */
     @PostMapping("/violations")
     @Timed
-    public ResponseEntity<ViolationDTO> createViolation(@RequestBody ViolationDTO violationDTO,@RequestParam MultipartFile[] files) throws URISyntaxException, IOException {
+    public ResponseEntity<ViolationDTO> createViolation(@RequestBody ViolationDTO violationDTO) throws URISyntaxException, IOException {
         log.debug("REST request to save Violation : {}", violationDTO);
         if (violationDTO.getId() != null) {
             throw new BadRequestAlertException("A new violation cannot already have an ID", ENTITY_NAME, "idexists");
         }
         
         ViolationDTO violationDto = violationService.save(violationDTO);
-        
-        for(MultipartFile file:files){
-        	
-        	MediaDTO mediaDTO=new MediaDTO();
-        	
-        	mediaDTO.setFile(file);
-        	mediaDTO.setViolationId(violationDto.getId());
-        	mediaService.save(mediaDTO);
-        	  	
-        }
        
         return ResponseEntity.created(new URI("/api/violations/" + violationDto.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, violationDto.getId().toString()))
             .body(violationDto);
     }
+    
     /**
      * PUT  /violations : Updates an existing violation.
      *
@@ -210,4 +201,36 @@ public class ViolationResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    /**
+     * POST  /violations : Create a new violation with media.
+     *
+     * @param violationDTO the violationDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new violationDTO, or with status 400 (Bad Request) if the violation has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @throws IOException 
+     */
+    @PostMapping("/violations/createViolationWithMedia")
+    @Timed
+    public ResponseEntity<ViolationDTO> createViolationWithMedia(@RequestBody ViolationDTO violationDTO,@RequestParam MultipartFile[] files) throws URISyntaxException, IOException {
+        log.debug("REST request to save Violation : {}", violationDTO);
+        if (violationDTO.getId() != null) {
+            throw new BadRequestAlertException("A new violation cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        
+        ViolationDTO violationDto = violationService.save(violationDTO);
+        
+        for(MultipartFile file:files){
+        	
+        	MediaDTO mediaDTO=new MediaDTO();
+        	
+        	mediaDTO.setFile(file);
+        	mediaDTO.setViolationId(violationDto.getId());
+        	mediaService.save(mediaDTO);
+        	  	
+        }
+       
+        return ResponseEntity.created(new URI("/api/violations/createViolationWithMedia" + violationDto.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, violationDto.getId().toString()))
+            .body(violationDto);
+    }
 }

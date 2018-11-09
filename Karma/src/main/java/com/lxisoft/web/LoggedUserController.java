@@ -87,25 +87,11 @@ public class LoggedUserController {
     	 MediaDTO mediaDTO=new MediaDTO();
     	 
     	 mediaDTO.setFile(file);
-         
-    	/* mediaService.save(mediaDTO);
-        
-      
-        Optional<MediaDTO> mediaDto=mediaService.findByFileName(file.getOriginalFilename());
-        
-        Long mediaId=mediaDto.get().getId();
-        loggedUserDTO.setProfilePicId(mediaId);
-        log.info("*************{}",mediaId);
-       
-        loggedUserService.save(loggedUserDTO);
-        
-       model.addAttribute("loggedUserDTO",loggedUserDTO);
-       model.addAttribute("file",file);*/
-    	 
-    	MediaDTO mediaDto=mediaService.save(mediaDTO);
+         	 
+    	 MediaDTO mediaDto=mediaService.save(mediaDTO);
     	
-    	loggedUserDTO.setProfilePicId(mediaDto.getId());
-    	log.info("*************{}",mediaDto.getId());
+    	 loggedUserDTO.setProfilePicId(mediaDto.getId());
+    	 log.info("*************{}",mediaDto.getId());
     	 loggedUserService.save(loggedUserDTO);
          
     	 model.addAttribute("loggedUserDTO",loggedUserDTO);
@@ -113,72 +99,6 @@ public class LoggedUserController {
          
         return "home";
     }
-
-    /**
-     * PUT  /logged-users : Updates an existing loggedUser.
-     *
-     * @param loggedUserDTO the loggedUserDTO to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated loggedUserDTO,
-     * or with status 400 (Bad Request) if the loggedUserDTO is not valid,
-     * or with status 500 (Internal Server Error) if the loggedUserDTO couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PutMapping("/logged-users")
-    @Timed
-    public ResponseEntity<LoggedUserDTO> updateLoggedUser(@RequestBody LoggedUserDTO loggedUserDTO) throws URISyntaxException {
-        log.debug("REST request to update LoggedUser : {}", loggedUserDTO);
-        if (loggedUserDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        LoggedUserDTO result = loggedUserService.save(loggedUserDTO);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, loggedUserDTO.getId().toString()))
-            .body(result);
-    }
-
-    /**
-     * GET  /logged-users : get all the loggedUsers.
-     *
-     * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of loggedUsers in body
-     */
-    @GetMapping("/logged-users")
-    @Timed
-    public ResponseEntity<List<LoggedUserDTO>> getAllLoggedUsers(Pageable pageable) {
-        log.debug("REST request to get a page of LoggedUsers");
-        Page<LoggedUserDTO> page = loggedUserService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/logged-users");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
-
-    /**
-     * GET  /logged-users/:id : get the "id" loggedUser.
-     *
-     * @param id the id of the loggedUserDTO to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the loggedUserDTO, or with status 404 (Not Found)
-     */
-    @GetMapping("/logged-users/{id}")
-    @Timed
-    public ResponseEntity<LoggedUserDTO> getLoggedUser(@PathVariable Long id) {
-        log.debug("REST request to get LoggedUser : {}", id);
-        Optional<LoggedUserDTO> loggedUserDTO = loggedUserService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(loggedUserDTO);
-    }
-
-    /**
-     * DELETE  /logged-users/:id : delete the "id" loggedUser.
-     *
-     * @param id the id of the loggedUserDTO to delete
-     * @return the ResponseEntity with status 200 (OK)
-     */
-    @DeleteMapping("/logged-users/{id}")
-    @Timed
-    public ResponseEntity<Void> deleteLoggedUser(@PathVariable Long id) {
-        log.debug("REST request to delete LoggedUser : {}", id);
-        loggedUserService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-    }
-    
     
     /*
      * test

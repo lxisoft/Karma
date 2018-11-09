@@ -22,6 +22,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URI;
@@ -223,5 +224,61 @@ for(NeedDTO need:needs){
        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);    
        
        }
+   
+   /**
+    * POST  /needs : Create a new need with multipart file.
+    *
+    * @param needDTO the needDTO to create
+    * @return the ResponseEntity with status 201 (Created) and with body the new needDTO, or with status 400 (Bad Request) if the need has already an ID
+    * @throws URISyntaxException if the Location URI syntax is incorrect
+    * @throws IOException 
+    */
+   @PostMapping("/needs/createNeedWithMedia")
+   @Timed
+   public ResponseEntity<NeedDTO> createNeedWithMedia(@RequestBody NeedDTO needDTO,@RequestParam MultipartFile[] files) throws URISyntaxException, IOException {
+       log.debug("REST request to save Need : {}", needDTO);
+       
+       Set<CategoryDTO> categorySet=new HashSet<CategoryDTO>();
+       
+       if (needDTO.getId() != null) {
+           throw new BadRequestAlertException("A new need cannot already have an ID", ENTITY_NAME, "idexists");
+       }
+       
+       if(needDTO.getApprovalStatusId()==null){
+       	
+       	Optional<ApprovalStatusDTO> approvalStatus=approvalStatusService.findByStatus("pending");
+       	
+       	Long id=approvalStatus.get().getId();
+       	log.debug("***************{}"+id);
+       	needDTO.setApprovalStatusId(approvalStatus.get().getId());
+       }
+       
+       Set<CategoryDTO> categories=needDTO.getCategories();
+      
+       for(CategoryDTO categori:categories){
+       		Long id=categori.getId();
+       		CategoryDTO categorie=categoryService.findOne(id).orElse(null);
+          	categorySet.add(categorie);
+          }
+       needDTO.setCategories(categorySet);
+       
+       NeedDTO needDto = needService.save(needDTO);
+       
+       for(MultipartFile file:files){
+			
+			 MediaDTO mediaDTO=new MediaDTO();
+	    	 
+	    	 mediaDTO.setFile(file);
+	    	 
+	    	 mediaDTO.setNeedId(needDto.getId());
+	         
+	    	 mediaService.save(mediaDTO);
+	        
+		}
+       return ResponseEntity.created(new URI("/api/needs/createNeedWithMedia" + needDto.getId()))
+           .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, needDto.getId().toString()))
+           .body(needDto);
+   }
+
 
 }
