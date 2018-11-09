@@ -22,6 +22,26 @@ public class ViolationDTO implements Serializable {
     private String dateInString;
     
     private MultipartFile[] files;
+    
+    private Long numberOfViolationSupporters;
+    
+	private Long numberOfViolationUnSupporters;
+
+    public Long getNumberOfViolationSupporters() {
+		return numberOfViolationSupporters;
+	}
+
+	public void setNumberOfViolationSupporters(Long numberOfViolationSupporters) {
+		this.numberOfViolationSupporters = numberOfViolationSupporters;
+	}
+
+	public Long getNumberOfViolationUnSupporters() {
+		return numberOfViolationUnSupporters;
+	}
+
+	public void setNumberOfViolationUnSupporters(Long numberOfViolationUnSupporters) {
+		this.numberOfViolationUnSupporters = numberOfViolationUnSupporters;
+	}    
 
     public MultipartFile[] getFiles() {
 		return files;

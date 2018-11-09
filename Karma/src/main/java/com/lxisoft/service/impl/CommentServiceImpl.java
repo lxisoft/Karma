@@ -182,7 +182,7 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public Page<CommentDTO> findByNeedId(Long needId,Pageable pageable) {
 		log.debug("request to get all comment by needId :"+needId);
-		Page<Comment> comments=commentRepository.findByNeedIdIs(needId,pageable);
+		Page<Comment> comments=commentRepository.findAllByNeedId(needId,pageable);
 		Page<CommentDTO> commentDtos=comments.map(commentMapper::toDto);
 		countLikes(commentDtos.getContent());
 		return  commentDtos;
