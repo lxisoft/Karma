@@ -107,11 +107,6 @@ public class UserCheckResource {
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
-    
-    
-    
-    
-    
 
     /**
      * PUT  /user-checks : Updates an existing userCheck.
@@ -322,10 +317,10 @@ public class UserCheckResource {
      * @return the ResponseEntity with status 201 (Created) and with body the new userCheckDTO, or with status 400 (Bad Request) if the userCheck has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PostMapping("/user-checks/violation-support")
+    @PostMapping("/createUserCheckforViolationSupport/violation-support")
     @Timed
     public ResponseEntity<UserCheckDTO> createUserCheckforViolationSupport(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException {
-        log.debug("REST request to save UserCheck : {}", userCheckDTO);
+        log.debug("REST request to save UserCheck for violation support : {}", userCheckDTO);
         if (userCheckDTO.getId() != null) {
             throw new BadRequestAlertException("A new userCheck cannot already have an ID", ENTITY_NAME, "idexists");
         }
@@ -334,7 +329,7 @@ public class UserCheckResource {
         userCheckDTO.setVoteType("support");
         
         UserCheckDTO result = userCheckService.save(userCheckDTO);
-        return ResponseEntity.created(new URI("/api/user-checks/violation-support" + result.getId()))
+        return ResponseEntity.created(new URI("/api/createUserCheckforViolationSupport/violation-support" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
@@ -346,10 +341,10 @@ public class UserCheckResource {
      * @return the ResponseEntity with status 201 (Created) and with body the new userCheckDTO, or with status 400 (Bad Request) if the userCheck has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PostMapping("/user-checks/violation-unsupport")
+    @PostMapping("/createUserCheckforViolationUnSupport/violation-unsupport")
     @Timed
     public ResponseEntity<UserCheckDTO> createUserCheckforViolationUnSupport(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException {
-        log.debug("REST request to save UserCheck : {}", userCheckDTO);
+        log.debug("REST request to save UserCheck for violation unsupport : {}", userCheckDTO);
         if (userCheckDTO.getId() != null) {
             throw new BadRequestAlertException("A new userCheck cannot already have an ID", ENTITY_NAME, "idexists");
         }
@@ -358,35 +353,106 @@ public class UserCheckResource {
         userCheckDTO.setVoteType("unsupport");
         
         UserCheckDTO result = userCheckService.save(userCheckDTO);
-        return ResponseEntity.created(new URI("/api//user-checks/violation-unsupport/" + result.getId()))
+        return ResponseEntity.created(new URI("/api/createUserCheckforViolationUnSupport/violation-unsupport" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * POST  /user-checks : Create a new userCheck for violation comment.
+     * POST  /user-checks : Create a new userCheck for violation comment like.
      *
      * @param userCheckDTO the userCheckDTO to create
      * @return the ResponseEntity with status 201 (Created) and with body the new userCheckDTO, or with status 400 (Bad Request) if the userCheck has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PostMapping("/user-checks/violation-comment/like")
+    @PostMapping("/createUserCheckforViolationCommentLike/like")
     @Timed
-    public ResponseEntity<UserCheckDTO> createUserCheckforViolationComment(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException {
-        log.debug("REST request to save UserCheck : {}", userCheckDTO);
+    public ResponseEntity<UserCheckDTO> createUserCheckforViolationCommentLike(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException {
+        log.debug("REST request to save UserCheck to like violation comment: {}", userCheckDTO);
         if (userCheckDTO.getId() != null) {
             throw new BadRequestAlertException("A new userCheck cannot already have an ID", ENTITY_NAME, "idexists");
         }
         
-        userCheckDTO.setCategory("readytosupport");
-        userCheckDTO.setVoteType("support");
+        userCheckDTO.setCategory("commentresponse");
+        userCheckDTO.setVoteType("like");
         
         UserCheckDTO result = userCheckService.save(userCheckDTO);
-        return ResponseEntity.created(new URI("/api/user-checks/violation-support" + result.getId()))
+        return ResponseEntity.created(new URI("/api/createUserCheckforViolationCommentLike/like" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
    
+    /**
+     * POST  /user-checks : Create a new userCheck for violation comment dislike.
+     *
+     * @param userCheckDTO the userCheckDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new userCheckDTO, or with status 400 (Bad Request) if the userCheck has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping("/createUserCheckforViolationCommentDislike/dislike")
+    @Timed
+    public ResponseEntity<UserCheckDTO> createUserCheckforViolationCommentDislike(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException {
+        log.debug("REST request to save UserCheck to dislike Violation comment : {}", userCheckDTO);
+        if (userCheckDTO.getId() != null) {
+            throw new BadRequestAlertException("A new userCheck cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        
+        userCheckDTO.setCategory("commentresponse");
+        userCheckDTO.setVoteType("dislike");
+        
+        UserCheckDTO result = userCheckService.save(userCheckDTO);
+        return ResponseEntity.created(new URI("/api/createUserCheckforViolationCommentDislike/dislike" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+   
+    /**
+     * POST  /user-checks : Create a new userCheck for violation reply like.
+     *
+     * @param userCheckDTO the userCheckDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new userCheckDTO, or with status 400 (Bad Request) if the userCheck has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping("/createUserCheckforViolationReplyLike/like")
+    @Timed
+    public ResponseEntity<UserCheckDTO> createUserCheckforViolationReplyLike(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException {
+        log.debug("REST request to save UserCheck to like violation reply : {}", userCheckDTO);
+        if (userCheckDTO.getId() != null) {
+            throw new BadRequestAlertException("A new userCheck cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        
+        userCheckDTO.setCategory("replyresponse");
+        userCheckDTO.setVoteType("like");
+        
+        UserCheckDTO result = userCheckService.save(userCheckDTO);
+        return ResponseEntity.created(new URI("/api/createUserCheckforViolationReplyLike/like" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+  
+    /**
+     * POST  /user-checks : Create a new userCheck for violation reply dislike.
+     *
+     * @param userCheckDTO the userCheckDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new userCheckDTO, or with status 400 (Bad Request) if the userCheck has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping("/createUserCheckforViolationReplyDisLike/dislike")
+    @Timed
+    public ResponseEntity<UserCheckDTO> createUserCheckforViolationReplyDisLike(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException {
+        log.debug("REST request to save UserCheck to like violation reply : {}", userCheckDTO);
+        if (userCheckDTO.getId() != null) {
+            throw new BadRequestAlertException("A new userCheck cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        
+        userCheckDTO.setCategory("replyresponse");
+        userCheckDTO.setVoteType("dislike");
+        
+        UserCheckDTO result = userCheckService.save(userCheckDTO);
+        return ResponseEntity.created(new URI("/api/createUserCheckforViolationReplyDisLike/dislike" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
 
     
 }

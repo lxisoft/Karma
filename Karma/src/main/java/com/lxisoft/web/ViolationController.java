@@ -3,6 +3,7 @@ package com.lxisoft.web;
 import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.service.MediaService;
 import com.lxisoft.service.ViolationService;
+import com.lxisoft.web.rest.ViolationResource;
 import com.lxisoft.web.rest.errors.BadRequestAlertException;
 import com.lxisoft.web.rest.util.HeaderUtil;
 import com.lxisoft.web.rest.util.PaginationUtil;
@@ -46,9 +47,12 @@ public class ViolationController {
     private static final String ENTITY_NAME = "karmaViolation";
 
     private final ViolationService violationService;
-    
+     
     @Autowired
     MediaService mediaService;
+    
+    @Autowired
+    ViolationResource violationResource;
 
     public ViolationController(ViolationService violationService) {
         this.violationService = violationService;
@@ -68,34 +72,92 @@ public class ViolationController {
         
     	log.debug("request to save Violation : {}", violationDTO);
     	
-    	log.info("**********anonymous?{}",violationDTO.getIsAnonymous());
-    	
-        if (violationDTO.getId() != null) {
-            throw new BadRequestAlertException("A new violation cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        
-        String parseDate=violationDTO.getDateInString().replace(" ","T").concat("Z");
-        
-        Instant dateInstant=Instant.parse(parseDate);
-        violationDTO.setDate(dateInstant);
-        
-        ViolationDTO violationDto = violationService.save(violationDTO);
-        
-        for(MultipartFile file:files){
-        	
-        	MediaDTO mediaDTO=new MediaDTO();
-        	
-        	mediaDTO.setFile(file);
-        	mediaDTO.setViolationId(violationDto.getId());
-        	mediaService.save(mediaDTO);
-        	  	
-        }
+    	ViolationDTO violationDto = violationResource.createViolationWithMedia(violationDTO,files).getBody();
        
         model.addAttribute("violation", violationDto);
         
         return "post-violation-result";
+        
     }
     
+    /**
+     * PUT  /violations : Updates an existing violation.
+     *
+     * @param violationDTO the violationDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated violationDTO,
+     * or with status 400 (Bad Request) if the violationDTO is not valid,
+     * or with status 500 (Internal Server Error) if the violationDTO couldn't be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @throws IOException 
+     */
+    @PutMapping("/violations")
+    @Timed
+    public String updateViolation(@ModelAttribute ViolationDTO violationDTO,Model model) throws URISyntaxException, IOException {
+        log.debug("REST request to update Violation : {}", violationDTO);
+       
+        ViolationDTO violationDto = violationResource.updateViolation(violationDTO).getBody();
+      
+        model.addAttribute("violation", violationDto);
+        
+        return "post-violation-result";
+               
+    }
+
+    /**
+     * GET  /violations : get all the violations.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of violations in body
+     */
+    @GetMapping("/violations")
+    @Timed
+    public String getAllViolations(Pageable pageable,Model model) {
+  
+        log.debug("request to get a page of Violations");
+        
+        List<ViolationDTO> violationDto = violationResource.getAllViolations(pageable).getBody();
+        
+        model.addAttribute("violation", violationDto);
+        
+        return "post-violation-result";
+    
+    }
+    
+    /**
+     * GET  /violations/:id : get the "id" violation.
+     *
+     * @param id the id of the violationDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the violationDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/violations/{id}")
+    @Timed
+    public String getViolation(@PathVariable Long id,Model model) {
+        log.debug("request to get Violation : {}", id);
+        ViolationDTO violationDTO = violationResource.getViolation(id).getBody();
+      
+        model.addAttribute("violation", violationDTO);
+        
+        return "post-violation-result";
+       }
+    
+    /**
+     * GET  /violations : get all the violations by anonymous user type.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of violations in body
+     */
+    @GetMapping("/getViolationByIsAnonymous/{isAnonymous}")
+    @Timed
+    public String getViolationByIsAnonymous(Pageable pageable,@PathVariable Boolean isAnonymous,Model model) {
+        log.debug("request to get all the violations by anonymous user type");
+        
+        List<ViolationDTO> violationDto = violationResource.getViolationByIsAnonymous(pageable,isAnonymous).getBody();
+       
+        model.addAttribute("violation",violationDto);
+		
+        return "post-violation-result";
+    }
+	
     /*
      * test for violation-post
      */
@@ -106,5 +168,5 @@ public class ViolationController {
 		model.addAttribute("violation", new ViolationDTO());
 		return "post-violation";
 	}
-	
+    
 }

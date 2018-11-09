@@ -43,4 +43,12 @@ public interface ReplyService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    /**
+     * Get all the replies by comment id.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+	Page<ReplyDTO> findAllRepliesByCommentId(Pageable pageable, Long commentId);
 }

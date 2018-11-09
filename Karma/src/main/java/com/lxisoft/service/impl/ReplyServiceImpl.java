@@ -86,4 +86,12 @@ public class ReplyServiceImpl implements ReplyService {
         log.debug("Request to delete Reply : {}", id);
         replyRepository.deleteById(id);
     }
+
+	@Override
+	public Page<ReplyDTO> findAllRepliesByCommentId(Pageable pageable, Long commentId) {
+		 log.debug("Request to get all Replies by comment id");
+	        return replyRepository.findAllRepliesByCommentId(pageable,commentId)
+	            .map(replyMapper::toDto);
+	   
+	}
 }
