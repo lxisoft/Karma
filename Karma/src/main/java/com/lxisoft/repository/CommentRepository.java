@@ -30,6 +30,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 	
 	Page<Comment> findAllCommentByHelpId(Pageable pageable, Long helpId);
 
-	Page<Comment> findAllComments(Pageable pageable);
+	
 
 }

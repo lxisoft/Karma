@@ -33,7 +33,7 @@ public interface NeedRepository extends JpaRepository<Need, Long> {
     
     Page<Need> findAllNeedsBySeverity(Pageable pageable,Long severityId);
 
-	Page<Need> findAllReplies(Pageable pageable);
+	
 
 
 }

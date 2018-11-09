@@ -38,6 +38,7 @@ public class CommentResource {
     public CommentResource(CommentService commentService) {
         this.commentService = commentService;
     }
+   
 
     /**
      * POST  /comments : Create a new comment.
@@ -46,7 +47,7 @@ public class CommentResource {
      * @return the ResponseEntity with status 201 (Created) and with body the new commentDTO, or with status 400 (Bad Request) if the comment has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */   
-    @PostMapping("/comments")
+     @PostMapping("/comments")
     @Timed
     public ResponseEntity<CommentDTO> createComment(@RequestBody CommentDTO commentDTO) throws URISyntaxException {
         log.debug("REST request to save Comment : {}", commentDTO);

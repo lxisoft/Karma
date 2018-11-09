@@ -222,7 +222,6 @@ public class NeedServiceImpl implements NeedService {
 				System.out.println("how many ago " + needDto.getTimeElapsed());
 
 			}
-			return needRepository.findAllReplies(pageable)
-		            .map(needMapper::toDto);
+			return needPage;
 		}
 }

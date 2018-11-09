@@ -202,7 +202,6 @@ public class HelpServiceImpl implements HelpService {
 			System.out.println("how many ago " + helpDto.getTimeElapsed());
 
 		}
-		return helpRepository.findAllHelps(pageable)
-	            .map(helpMapper::toDto);
+		return helpPage;
 	}
 }

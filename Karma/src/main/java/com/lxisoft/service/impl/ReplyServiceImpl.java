@@ -140,8 +140,7 @@ public class ReplyServiceImpl implements ReplyService {
 			System.out.println("how many ago " + helpDto.getTimeElapsed());
 
 		}
-		return replyRepository.findAllReplies(pageable)
-	            .map(replyMapper::toDto);
+		return replyPage;
 		
 	}
 }

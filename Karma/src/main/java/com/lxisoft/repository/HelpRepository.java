@@ -24,12 +24,7 @@ public interface HelpRepository extends JpaRepository<Help, Long> {
 	Page<Help> findAllHelpsByApprovalStatusId(Pageable pageable, Long approvalStatusId);
 
 	
-	/**
-	 * @param pageable
-	 * 
-	 * @return
-	 */
-	Page<Help> findAllHelps(Pageable pageable);
+	
 
 
 }

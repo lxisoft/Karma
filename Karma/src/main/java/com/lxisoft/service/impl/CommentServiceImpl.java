@@ -263,7 +263,6 @@ public class CommentServiceImpl implements CommentService {
 			System.out.println("how many ago " + commentDto.getTimeElapsed());
 
 		}
-		return commentRepository.findAllComments(pageable)
-	            .map(commentMapper::toDto);
+		return commentPage;
 	}
 }
