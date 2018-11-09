@@ -1,0 +1,16 @@
+version: '2'
+services:
+    karmawebclient-app:
+        image: karmawebclient
+        environment:
+            - _JAVA_OPTIONS=-Xmx512m -Xms256m
+            - SPRING_PROFILES_ACTIVE=prod,swagger
+            - SPRING_DATASOURCE_URL=jdbc:mysql://karmawebclient-mysql:3306/karmawebclient?useUnicode=true&characterEncoding=utf8&useSSL=false
+            - SECURITY_OAUTH2_CLIENT_CLIENT_ID=internal
+            - SECURITY_OAUTH2_CLIENT_CLIENT_SECRET=internal
+            - SECURITY_OAUTH2_RESOURCE_USER_INFO_URI=http://keycloak:9080/auth/realms/jhipster/protocol/openid-connect/userinfo
+            - JHIPSTER_SLEEP=10 # gives time for the database to boot before the application
+    karmawebclient-mysql:
+        extends:
+            file: mysql.yml
+            service: karmawebclient-mysql
