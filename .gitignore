@@ -1,144 +1,144 @@
 ######################
 # Project Specific
 ######################
-/target/www/**
-/src/test/javascript/coverage/
+/Karma/target/www/**
+/Karma/src/test/javascript/coverage/
 
 ######################
 # Node
 ######################
-/node/
-node_tmp/
-node_modules/
-npm-debug.log.*
-/.awcache/*
-/.cache-loader/*
+Karma/node/
+Karma/node_tmp/
+Karma/node_modules/
+Karma/npm-debug.log.*
+Karma/.awcache/*
+Karma/.cache-loader/*
 
 ######################
 # SASS
 ######################
-.sass-cache/
+Karma/.sass-cache/
 
 ######################
 # Eclipse
 ######################
-*.pydevproject
-.project
-.metadata
-tmp/
-tmp/**/*
-*.tmp
-*.bak
-*.swp
-*~.nib
-local.properties
-.classpath
-.settings/
-.loadpath
-.factorypath
-/src/main/resources/rebel.xml
+Karma/*.pydevproject
+Karma/.project
+Karma/.metadata
+Karma/tmp/
+Karma/tmp/**/*
+Karma/*.tmp
+Karma/*.bak
+Karma/*.swp
+Karma/*~.nib
+Karma/local.properties
+Karma/.classpath
+Karma/.settings/
+Karma/.loadpath
+Karma/.factorypath
+Karma/src/main/resources/rebel.xml
 
 # External tool builders
-.externalToolBuilders/**
+Karma/.externalToolBuilders/**
 
 # Locally stored "Eclipse launch configurations"
-*.launch
+Karma/*.launch
 
 # CDT-specific
-.cproject
+Karma/.cproject
 
 # PDT-specific
-.buildpath
+Karma/.buildpath
 
 ######################
 # Intellij
 ######################
-.idea/
-*.iml
-*.iws
-*.ipr
-*.ids
-*.orig
-classes/
-out/
+Karma/.idea/
+Karma/*.iml
+Karma/*.iws
+Karma/*.ipr
+Karma/*.ids
+Karma/*.orig
+Karma/classes/
+Karma/out/
 
 ######################
 # Visual Studio Code
 ######################
-.vscode/
+Karma/.vscode/
 
 ######################
 # Maven
 ######################
-/log/
-/target/
+Karma/log/
+Karma/target/
 
 ######################
 # Gradle
 ######################
-.gradle/
-/build/
+Karma/.gradle/
+Karma/build/
 
 ######################
 # Package Files
 ######################
-*.jar
-*.war
-*.ear
-*.db
+Karma/*.jar
+Karma/*.war
+Karma/*.ear
+Karma/*.db
 
 ######################
 # Windows
 ######################
 # Windows image file caches
-Thumbs.db
+Karma/Thumbs.db
 
 # Folder config file
-Desktop.ini
+Karma/Desktop.ini
 
 ######################
 # Mac OSX
 ######################
-.DS_Store
-.svn
+Karma/.DS_Store
+Karma/.svn
 
 # Thumbnails
-._*
+Karma/._*
 
 # Files that might appear on external disk
-.Spotlight-V100
-.Trashes
+Karma/.Spotlight-V100
+Karma/.Trashes
 
 ######################
 # Directories
 ######################
-/bin/
-/deploy/
+Karma/bin/
+Karma/deploy/
 
 ######################
 # Logs
 ######################
-*.log*
+Karma/*.log*
 
 ######################
 # Others
 ######################
-*.class
-*.*~
-*~
-.merge_file*
+Karma/*.class
+Karma/*.*~
+Karma/*~
+Karma/.merge_file*
 
 ######################
 # Gradle Wrapper
 ######################
-!gradle/wrapper/gradle-wrapper.jar
+Karma/!gradle/wrapper/gradle-wrapper.jar
 
 ######################
 # Maven Wrapper
 ######################
-!.mvn/wrapper/maven-wrapper.jar
+Karma/!.mvn/wrapper/maven-wrapper.jar
 
 ######################
 # ESLint
 ######################
-.eslintcache
+Karma/.eslintcache
