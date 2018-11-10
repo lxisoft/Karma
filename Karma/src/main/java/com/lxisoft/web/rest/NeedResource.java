@@ -139,7 +139,7 @@ public class NeedResource {
         if (eagerload) {
             page = needService.findAllWithEagerRelationships(pageable);
         } else {
-            page = needService.findAll(pageable);
+            page = needService.findAllNeeds(pageable);
         }
        
         List<NeedDTO> needs = page.getContent();

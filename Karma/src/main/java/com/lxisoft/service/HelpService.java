@@ -60,4 +60,11 @@ public interface HelpService {
    	 */
    	
    	Page<HelpDTO> findAllHelpsByApprovedStatusId(Pageable pageable, Long approvalStatusId);
+
+   	/**
+   	 * @param pageable
+   	 *
+   	 * @return
+   	 */
+	Page<HelpDTO> findAllHelps(Pageable pageable);
 }

@@ -96,7 +96,7 @@ public class ReplyResource {
     @Timed
     public ResponseEntity<List<ReplyDTO>> getAllReplies(Pageable pageable) {
         log.debug("REST request to get a page of Replies");
-        Page<ReplyDTO> page = replyService.findAll(pageable);
+        Page<ReplyDTO> page = replyService.findAllReplies(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/replies");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
