@@ -142,3 +142,149 @@ Karma/!.mvn/wrapper/maven-wrapper.jar
 # ESLint
 ######################
 Karma/.eslintcache
+
+######################
+# Project Specific
+######################
+KarmaWebClient/target/www/**
+KarmaWebClient/src/test/javascript/coverage/
+
+######################
+# Node
+######################
+KarmaWebClient/node/
+KarmaWebClient/node_tmp/
+KarmaWebClient/node_modules/
+KarmaWebClient/npm-debug.log.*
+KarmaWebClient/.awcache/*
+KarmaWebClient/.cache-loader/*
+
+######################
+# SASS
+######################
+KarmaWebClient/.sass-cache/
+
+######################
+# Eclipse
+######################
+KarmaWebClient/*.pydevproject
+KarmaWebClient/.project
+KarmaWebClient/.metadata
+KarmaWebClient/tmp/
+KarmaWebClient/tmp/**/*
+KarmaWebClient/*.tmp
+KarmaWebClient/*.bak
+KarmaWebClient/*.swp
+KarmaWebClient/*~.nib
+KarmaWebClient/local.properties
+KarmaWebClient/.classpath
+KarmaWebClient/.settings/
+KarmaWebClient/.loadpath
+KarmaWebClient/.factorypath
+KarmaWebClient/src/main/resources/rebel.xml
+
+# External tool builders
+KarmaWebClient/.externalToolBuilders/**
+
+# Locally stored "Eclipse launch configurations"
+KarmaWebClient/*.launch
+
+# CDT-specific
+KarmaWebClient/.cproject
+
+# PDT-specific
+KarmaWebClient/.buildpath
+
+######################
+# Intellij
+######################
+KarmaWebClient/.idea/
+KarmaWebClient/*.iml
+KarmaWebClient/*.iws
+KarmaWebClient/*.ipr
+KarmaWebClient/*.ids
+KarmaWebClient/*.orig
+KarmaWebClient/classes/
+KarmaWebClient/out/
+
+######################
+# Visual Studio Code
+######################
+KarmaWebClient/.vscode/
+
+######################
+# Maven
+######################
+KarmaWebClient/log/
+KarmaWebClient/target/
+
+######################
+# Gradle
+######################
+KarmaWebClient/.gradle/
+KarmaWebClient/build/
+
+######################
+# Package Files
+######################
+KarmaWebClient/*.jar
+KarmaWebClient/*.war
+KarmaWebClient/*.ear
+KarmaWebClient/*.db
+
+######################
+# Windows
+######################
+# Windows image file caches
+KarmaWebClient/Thumbs.db
+
+# Folder config file
+KarmaWebClient/Desktop.ini
+
+######################
+# Mac OSX
+######################
+KarmaWebClient/.DS_Store
+KarmaWebClient/.svn
+
+# Thumbnails
+KarmaWebClient/._*
+
+# Files that might appear on external disk
+KarmaWebClient/.Spotlight-V100
+KarmaWebClient/.Trashes
+
+######################
+# Directories
+######################
+KarmaWebClient/bin/
+KarmaWebClient/deploy/
+
+######################
+# Logs
+######################
+KarmaWebClient/*.log*
+
+######################
+# Others
+######################
+KarmaWebClient/*.class
+KarmaWebClient/*.*~
+KarmaWebClient/*~
+KarmaWebClient/.merge_file*
+
+######################
+# Gradle Wrapper
+######################
+KarmaWebClient/!gradle/wrapper/gradle-wrapper.jar
+
+######################
+# Maven Wrapper
+######################
+KarmaWebClient/!.mvn/wrapper/maven-wrapper.jar
+
+######################
+# ESLint
+######################
+KarmaWebClient/.eslintcache
+

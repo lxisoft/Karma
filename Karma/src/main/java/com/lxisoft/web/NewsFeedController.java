@@ -20,12 +20,11 @@ import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.service.MediaService;
 import com.lxisoft.service.NewsFeedService;
 import com.lxisoft.service.dto.NewsFeedDTO;
-import com.lxisoft.web.rest.HelpResource;
 
 @Controller
 public class NewsFeedController {
 
-	private final Logger log = LoggerFactory.getLogger(HelpResource.class);
+	private final Logger log = LoggerFactory.getLogger(NewsFeedController.class);
 
 	private static final String ENTITY_NAME = "karmaNewsFeed";
 
