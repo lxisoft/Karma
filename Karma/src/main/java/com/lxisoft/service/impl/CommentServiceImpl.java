@@ -18,6 +18,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -92,7 +94,7 @@ public class CommentServiceImpl implements CommentService {
     
     
      /*
-      * to  count totel likes,dislikes and set to the commentDTo
+      * to  count total likes,dislikes and set to the commentDTo
       * @Param commentDTO
       */
    
@@ -215,4 +217,52 @@ public class CommentServiceImpl implements CommentService {
 	            .map(commentMapper::toDto);
 	  }
 
+	
+	
+	/**
+    * Get all the comments with time.
+    *
+    * @param pageable the pagination information
+    * @return the list of entities
+    */
+	@Override
+	public Page<CommentDTO> findAllComments(Pageable pageable) {
+		log.debug("Request to get all comments");
+		Page<CommentDTO> commentPage = findAll(pageable);
+		List<CommentDTO> commentList = commentPage.getContent();
+		for (CommentDTO commentDto : commentList) {
+			Instant instant = Instant.now();
+			Date repliedTime = null;
+			if (commentDto.getDate() != null) {
+				repliedTime = Date.from(commentDto.getDate());
+			}
+			Date current = Date.from(instant);
+			long diffInSecond = 0l;
+			if (repliedTime != null) {
+				diffInSecond = (current.getTime() - repliedTime.getTime()) / 1000l;
+			}
+			long postedBefore = 0l;
+			if (diffInSecond < 60l) {
+				commentDto.setTimeElapsed(diffInSecond + " seconds ago");
+			} else if (diffInSecond < 3600l) {
+				postedBefore = diffInSecond / 60l;
+				commentDto.setTimeElapsed(postedBefore + " minutes ago");
+			} else if (diffInSecond < 86400l) {
+				postedBefore = diffInSecond / 3600l;
+				commentDto.setTimeElapsed(postedBefore + " hours ago");
+			} else if (diffInSecond < 2592000l) {
+				postedBefore = diffInSecond / 86400l;
+				commentDto.setTimeElapsed(postedBefore + " days ago");
+			} else if (diffInSecond < 31104000l) {
+				postedBefore = diffInSecond / 2592000l;
+				commentDto.setTimeElapsed(postedBefore + " months ago");
+			} else {
+				postedBefore = diffInSecond / 31104000l;
+				commentDto.setTimeElapsed(postedBefore + " years ago");
+			}
+			System.out.println("how many ago " + commentDto.getTimeElapsed());
+
+		}
+		return commentPage;
+	}
 }

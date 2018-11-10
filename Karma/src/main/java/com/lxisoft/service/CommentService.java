@@ -72,4 +72,13 @@ public interface CommentService {
      */
 	Page<CommentDTO> findAllCommentByHelpId(Pageable pageable, Long helpId);
 
+	
+	/**
+     * Get all the comments along with time.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+	Page<CommentDTO> findAllComments(Pageable pageable);
+
 }

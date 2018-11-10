@@ -26,6 +26,8 @@ public class CommentDTO implements Serializable {
     private Long violationId;
     
     private String dateInString;
+    
+    private String timeElapsed;
 
     
     private Long noOfLikes;
@@ -164,4 +166,12 @@ public class CommentDTO implements Serializable {
             ", violation=" + getViolationId() +
             "}";
     }
+
+	public String getTimeElapsed() {
+		return timeElapsed;
+	}
+
+	public void setTimeElapsed(String timeElapsed) {
+		this.timeElapsed = timeElapsed;
+	}
 }

@@ -118,10 +118,9 @@ public class HelpResource {
     @Timed
     public ResponseEntity<List<HelpDTO>> getAllHelps(Pageable pageable) {
         log.debug("REST request to get a page of Helps");
-        Page<HelpDTO> page = helpService.findAll(pageable);
-        //
-        
-        
+
+        Page<HelpDTO> page = helpService.findAllHelps(pageable);
+
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/helps");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

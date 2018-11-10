@@ -1,0 +1,42 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.lxisoft"
+    },
+    "jhipsterVersion": "5.6.1",
+    "applicationType": "microservice",
+    "baseName": "KarmaWebClient",
+    "packageName": "com.lxisoft",
+    "packageFolder": "com/lxisoft",
+    "serverPort": "8082",
+    "authenticationType": "oauth2",
+    "cacheProvider": "no",
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "mysql",
+    "prodDatabaseType": "mysql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "YzZjOWFjMzQyZjVmYjZhNmM4YWJkODU5MzYwNDcyYzNlNDEyYjI1YTAwMWFkNmE1NGU4OWE5MmI5OWVhNzBiZWI0MzM0NmY2MmNkOGNmNjhiMTQ4MjA2YjM4NDhkMjMwOTU5NTY2YzRlZWE1Yjc2YjhmZDlkMDgwNGFjMmI3ODk=",
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "enableTranslation": false,
+    "clientPackageManager": "npm",
+    "skipClient": true,
+    "skipUserManagement": true
+  },
+  "generator-jhipster-swagger-cli": {
+    "promptValues": {
+      "inputSpec": "http://localhost:8081/v2/api-docs",
+      "cliName": "karma"
+    },
+    "apis": {
+      "karma": {
+        "spec": "http://localhost:8081/v2/api-docs"
+      }
+    }
+  }
+}
