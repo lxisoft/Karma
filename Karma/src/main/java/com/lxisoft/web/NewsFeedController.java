@@ -21,6 +21,12 @@ import com.lxisoft.service.MediaService;
 import com.lxisoft.service.NewsFeedService;
 import com.lxisoft.service.dto.NewsFeedDTO;
 
+/**
+ * TODO Provide a detailed description here
+ * 
+ * @author Muhammed Ruhail, muhammed.ruhail@lxisoft.com
+ */
+
 @Controller
 public class NewsFeedController {
 
@@ -34,11 +40,31 @@ public class NewsFeedController {
 	@Autowired
 	MediaService mediaService;
 
+	/**
+	 * GET /postnewsfeed : to create model.
+	 *
+	 * @param model
+	 *            the form model
+	 * @return the string value
+	 */
+
 	@GetMapping("/postnewsfeed")
 	public String showPostNewsFeed(Model model) {
 		// model.addAttribute("car", new Car());
 		return "post-newsfeed";
 	}
+
+	/**
+	 * POST /postnewsfeed : Create a new need.
+	 *
+	 * @param newsFeedDTO
+	 *            the newsFeedDTO to create
+	 * @return the string value
+	 * @throws URISyntaxException
+	 *             if the Location URI syntax is incorrect
+	 * @throws IOException
+	 * @throws IllegalStateException
+	 */
 
 	@PostMapping("/postnewsfeed")
 	@Timed
@@ -48,6 +74,14 @@ public class NewsFeedController {
 		NewsFeedDTO newsFeedDto = newsFeedService.saveNewsFeed(newsFeedDTO);
 		return "post-newsfeed";
 	}
+
+	/**
+	 * GET /allNewsFeeds : get all the newsfeeds.
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @return the string value
+	 */
 
 	@GetMapping("/allNewsFeeds")
 	@Timed

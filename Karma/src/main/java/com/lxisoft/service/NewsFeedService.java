@@ -49,8 +49,22 @@ public interface NewsFeedService {
 	 */
 	void delete(Long id);
 
+	/**
+	 * Get all the newsFeeds.
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @return the list of entities
+	 */
 	public Page<NewsFeedDTO> findAllNewsFeeds(Pageable pageable);
 
+	/**
+	 * Save a newsFeed.
+	 *
+	 * @param newsFeedDTO
+	 *            the entity to save
+	 * @return the persisted entity
+	 */
 	public NewsFeedDTO saveNewsFeed(NewsFeedDTO newsFeedDTO)
 			throws URISyntaxException, IllegalStateException, IOException;
 }

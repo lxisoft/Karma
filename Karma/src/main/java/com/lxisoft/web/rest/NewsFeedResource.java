@@ -150,6 +150,21 @@ public class NewsFeedResource {
 		return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
 	}
 
+	/**
+	 * POST /postnewsfeeds : Create a new newsFeed.
+	 *
+	 * @param newsFeedDTO
+	 *            the newsFeedDTO to create
+	 * 
+	 * @param attachedFiles
+	 *            the files attached with newsFeedDTO
+	 * @return the ResponseEntity with status 201 (Created) and with body the
+	 *         new newsFeedDTO, or with status 400 (Bad Request) if the newsFeed
+	 *         has already an ID
+	 * @throws URISyntaxException
+	 *             if the Location URI syntax is incorrect
+	 */
+
 	@PostMapping("/postnewsfeed")
 	@Timed
 	public ResponseEntity<NewsFeedDTO> createNewsFeed(@RequestBody NewsFeedDTO newsFeedDTO,

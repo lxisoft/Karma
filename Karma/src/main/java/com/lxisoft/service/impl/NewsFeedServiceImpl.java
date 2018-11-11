@@ -104,6 +104,14 @@ public class NewsFeedServiceImpl implements NewsFeedService {
 		newsFeedRepository.deleteById(id);
 	}
 
+	/**
+	 * Get all the newsFeeds.
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @return the list of entities
+	 */
+
 	@Override
 	@Transactional(readOnly = true)
 	public Page<NewsFeedDTO> findAllNewsFeeds(Pageable pageable) {
@@ -113,6 +121,9 @@ public class NewsFeedServiceImpl implements NewsFeedService {
 		List<NewsFeed> newsFeedsList = newsFeedsPage.getContent();
 		Page<NewsFeedDTO> newsFeedsDtoPage = newsFeedsPage.map(newsFeedMapper::toDto);
 		List<NewsFeedDTO> newsFeedsDtoList = newsFeedsDtoPage.getContent();
+
+		// populating urls of newsfeed from returned domain objects to
+		// corresponding dtos
 
 		for (NewsFeed newsFeed : newsFeedsList) {
 			Set<Media> medias = newsFeed.getAttachments();
@@ -128,6 +139,9 @@ public class NewsFeedServiceImpl implements NewsFeedService {
 				}
 			}
 		}
+
+		// Calculating and populating the postedBefore time for each newsFeed
+		// dtos
 
 		for (NewsFeedDTO newsFeedDto : newsFeedsDtoList) {
 			Instant instant = Instant.now();
@@ -165,6 +179,17 @@ public class NewsFeedServiceImpl implements NewsFeedService {
 		return newsFeedDtos;
 	}
 
+	/**
+	 * Save a newsFeed and corresponding supported medias.
+	 *
+	 * @param newsFeedDTO
+	 *            the entity to save
+	 * @throws URISyntaxException
+	 *             if the Location URI syntax is incorrect
+	 * @throws IOException
+	 * 
+	 * @return the persisted entity
+	 */
 	@Override
 	public NewsFeedDTO saveNewsFeed(NewsFeedDTO newsFeedDTO)
 			throws URISyntaxException, IllegalStateException, IOException {
