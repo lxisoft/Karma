@@ -16,7 +16,7 @@ import javax.validation.constraints.*;
  * HelpDTO
  */
 @Validated
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-11T16:15:16.814+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-11T21:56:15.510+05:30[Asia/Calcutta]")
 
 public class HelpDTO   {
   @JsonProperty("approvalStatusId")
@@ -34,10 +34,6 @@ public class HelpDTO   {
 
   @JsonProperty("id")
   private Long id = null;
-
-  @JsonProperty("multipartFiles")
-  @Valid
-  private List<org.springframework.core.io.Resource> multipartFiles = null;
 
   @JsonProperty("providedUserId")
   private Long providedUserId = null;
@@ -156,35 +152,6 @@ public class HelpDTO   {
     this.id = id;
   }
 
-  public HelpDTO multipartFiles(List<org.springframework.core.io.Resource> multipartFiles) {
-    this.multipartFiles = multipartFiles;
-    return this;
-  }
-
-  public HelpDTO addMultipartFilesItem(org.springframework.core.io.Resource multipartFilesItem) {
-    if (this.multipartFiles == null) {
-      this.multipartFiles = new ArrayList<org.springframework.core.io.Resource>();
-    }
-    this.multipartFiles.add(multipartFilesItem);
-    return this;
-  }
-
-  /**
-   * Get multipartFiles
-   * @return multipartFiles
-  **/
-  @ApiModelProperty(value = "")
-
-  @Valid
-
-  public List<org.springframework.core.io.Resource> getMultipartFiles() {
-    return multipartFiles;
-  }
-
-  public void setMultipartFiles(List<org.springframework.core.io.Resource> multipartFiles) {
-    this.multipartFiles = multipartFiles;
-  }
-
   public HelpDTO providedUserId(Long providedUserId) {
     this.providedUserId = providedUserId;
     return this;
@@ -261,7 +228,6 @@ public class HelpDTO   {
         Objects.equals(this.fileNameList, helpDTO.fileNameList) &&
         Objects.equals(this.fulfilledNeedId, helpDTO.fulfilledNeedId) &&
         Objects.equals(this.id, helpDTO.id) &&
-        Objects.equals(this.multipartFiles, helpDTO.multipartFiles) &&
         Objects.equals(this.providedUserId, helpDTO.providedUserId) &&
         Objects.equals(this.time, helpDTO.time) &&
         Objects.equals(this.timeInString, helpDTO.timeInString);
@@ -269,7 +235,7 @@ public class HelpDTO   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(approvalStatusId, description, fileNameList, fulfilledNeedId, id, multipartFiles, providedUserId, time, timeInString);
+    return Objects.hash(approvalStatusId, description, fileNameList, fulfilledNeedId, id, providedUserId, time, timeInString);
   }
 
   @Override
@@ -282,7 +248,6 @@ public class HelpDTO   {
     sb.append("    fileNameList: ").append(toIndentedString(fileNameList)).append("\n");
     sb.append("    fulfilledNeedId: ").append(toIndentedString(fulfilledNeedId)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    multipartFiles: ").append(toIndentedString(multipartFiles)).append("\n");
     sb.append("    providedUserId: ").append(toIndentedString(providedUserId)).append("\n");
     sb.append("    time: ").append(toIndentedString(time)).append("\n");
     sb.append("    timeInString: ").append(toIndentedString(timeInString)).append("\n");

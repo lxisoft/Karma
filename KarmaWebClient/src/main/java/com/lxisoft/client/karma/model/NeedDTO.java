@@ -17,7 +17,7 @@ import javax.validation.constraints.*;
  * NeedDTO
  */
 @Validated
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-11T16:15:16.814+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-11T21:56:15.510+05:30[Asia/Calcutta]")
 
 public class NeedDTO   {
   @JsonProperty("approvalStatusId")
@@ -43,16 +43,15 @@ public class NeedDTO   {
   @JsonProperty("description")
   private String description = null;
 
+  @JsonProperty("file")
+  private org.springframework.core.io.Resource file = null;
+
   @JsonProperty("fileNameList")
   @Valid
   private List<String> fileNameList = null;
 
   @JsonProperty("id")
   private Long id = null;
-
-  @JsonProperty("multipartFiles")
-  @Valid
-  private List<org.springframework.core.io.Resource> multipartFiles = null;
 
   @JsonProperty("percentageOfGenuineness")
   private Long percentageOfGenuineness = null;
@@ -225,6 +224,27 @@ public class NeedDTO   {
     this.description = description;
   }
 
+  public NeedDTO file(org.springframework.core.io.Resource file) {
+    this.file = file;
+    return this;
+  }
+
+  /**
+   * Get file
+   * @return file
+  **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public org.springframework.core.io.Resource getFile() {
+    return file;
+  }
+
+  public void setFile(org.springframework.core.io.Resource file) {
+    this.file = file;
+  }
+
   public NeedDTO fileNameList(List<String> fileNameList) {
     this.fileNameList = fileNameList;
     return this;
@@ -271,35 +291,6 @@ public class NeedDTO   {
 
   public void setId(Long id) {
     this.id = id;
-  }
-
-  public NeedDTO multipartFiles(List<org.springframework.core.io.Resource> multipartFiles) {
-    this.multipartFiles = multipartFiles;
-    return this;
-  }
-
-  public NeedDTO addMultipartFilesItem(org.springframework.core.io.Resource multipartFilesItem) {
-    if (this.multipartFiles == null) {
-      this.multipartFiles = new ArrayList<org.springframework.core.io.Resource>();
-    }
-    this.multipartFiles.add(multipartFilesItem);
-    return this;
-  }
-
-  /**
-   * Get multipartFiles
-   * @return multipartFiles
-  **/
-  @ApiModelProperty(value = "")
-
-  @Valid
-
-  public List<org.springframework.core.io.Resource> getMultipartFiles() {
-    return multipartFiles;
-  }
-
-  public void setMultipartFiles(List<org.springframework.core.io.Resource> multipartFiles) {
-    this.multipartFiles = multipartFiles;
   }
 
   public NeedDTO percentageOfGenuineness(Long percentageOfGenuineness) {
@@ -399,9 +390,9 @@ public class NeedDTO   {
         Objects.equals(this.date, needDTO.date) &&
         Objects.equals(this.dateInString, needDTO.dateInString) &&
         Objects.equals(this.description, needDTO.description) &&
+        Objects.equals(this.file, needDTO.file) &&
         Objects.equals(this.fileNameList, needDTO.fileNameList) &&
         Objects.equals(this.id, needDTO.id) &&
-        Objects.equals(this.multipartFiles, needDTO.multipartFiles) &&
         Objects.equals(this.percentageOfGenuineness, needDTO.percentageOfGenuineness) &&
         Objects.equals(this.postedUserId, needDTO.postedUserId) &&
         Objects.equals(this.severityId, needDTO.severityId) &&
@@ -410,7 +401,7 @@ public class NeedDTO   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(approvalStatusId, beneficiaryType, categories, categoryList, date, dateInString, description, fileNameList, id, multipartFiles, percentageOfGenuineness, postedUserId, severityId, verificationTeamId);
+    return Objects.hash(approvalStatusId, beneficiaryType, categories, categoryList, date, dateInString, description, file, fileNameList, id, percentageOfGenuineness, postedUserId, severityId, verificationTeamId);
   }
 
   @Override
@@ -425,9 +416,9 @@ public class NeedDTO   {
     sb.append("    date: ").append(toIndentedString(date)).append("\n");
     sb.append("    dateInString: ").append(toIndentedString(dateInString)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
+    sb.append("    file: ").append(toIndentedString(file)).append("\n");
     sb.append("    fileNameList: ").append(toIndentedString(fileNameList)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    multipartFiles: ").append(toIndentedString(multipartFiles)).append("\n");
     sb.append("    percentageOfGenuineness: ").append(toIndentedString(percentageOfGenuineness)).append("\n");
     sb.append("    postedUserId: ").append(toIndentedString(postedUserId)).append("\n");
     sb.append("    severityId: ").append(toIndentedString(severityId)).append("\n");

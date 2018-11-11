@@ -82,18 +82,18 @@ public class NeedController {
 	 */
 	@PostMapping("/needs")
 	@Timed
-	public String createNeed(@ModelAttribute NeedDTO needDTO,@RequestParam MultipartFile[] filesAsMultipart,Model model) throws URISyntaxException, IllegalStateException, IOException {
-		log.debug(" request to save Need : {},{}", needDTO,filesAsMultipart);
+	public String createNeed(@ModelAttribute NeedDTO needDTO,Model model) throws URISyntaxException, IllegalStateException, IOException {
+		log.debug(" request to save Need : {},{}", needDTO);
 				
 	    //NeedDTO need = needResourceApi.createNeedUsingPOST(needDTO).getBody();
-	     List<Resource> resourceFiles=new ArrayList<Resource>();
+	    /* List<Resource> resourceFiles=new ArrayList<Resource>();
 	     
 	     for(MultipartFile multipartFile : filesAsMultipart) {
 	    	 log.debug("in loop");
 	    	 resourceFiles.add(new ByteArrayResource(multipartFile.getBytes()));
-	     }
+	     }*/
 	     
-	     needDTO.setMultipartFiles(resourceFiles);
+	    // needDTO.setFile(new ByteArrayResource(filesAsMultipart.getBytes()));
 	     
 	     log.debug("save Need : {}", needDTO);
 	     
@@ -169,7 +169,7 @@ public class NeedController {
 			@PathVariable(value = "approvalStatus") String approvalStatus, Model model) {
 		log.debug("request to get a page of Needs");
 		
-		List<NeedDTO> needs=null; //= needResourceApi.getAllNeedsByApprovedStatusUsingGET(pageable, approvalStatus).getBody();
+		List<NeedDTO> needs=needResourceApi.getAllNeedsByApprovedStatusUsingGET(approvalStatus, eagerload, null, null, null, null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
 					
 		model.addAttribute("needs", needs);
 		
