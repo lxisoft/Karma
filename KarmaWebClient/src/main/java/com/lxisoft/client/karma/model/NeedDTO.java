@@ -1,24 +1,23 @@
 package com.lxisoft.client.karma.model;
 
+import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.lxisoft.client.karma.model.CategoryDTO;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
-import javax.validation.Valid;
-
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import io.swagger.annotations.ApiModelProperty;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * NeedDTO
  */
 @Validated
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-09T14:03:13.373+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-11T16:15:16.814+05:30[Asia/Calcutta]")
 
 public class NeedDTO   {
   @JsonProperty("approvalStatusId")
@@ -48,12 +47,12 @@ public class NeedDTO   {
   @Valid
   private List<String> fileNameList = null;
 
-  @JsonProperty("files")
-  @Valid
-  private List<MultipartFile> files = null;
-
   @JsonProperty("id")
   private Long id = null;
+
+  @JsonProperty("multipartFiles")
+  @Valid
+  private List<org.springframework.core.io.Resource> multipartFiles = null;
 
   @JsonProperty("percentageOfGenuineness")
   private Long percentageOfGenuineness = null;
@@ -254,35 +253,6 @@ public class NeedDTO   {
     this.fileNameList = fileNameList;
   }
 
-  public NeedDTO files(List<MultipartFile> files) {
-    this.files = files;
-    return this;
-  }
-
-  public NeedDTO addFilesItem(MultipartFile filesItem) {
-    if (this.files == null) {
-      this.files = new ArrayList<MultipartFile>();
-    }
-    this.files.add(filesItem);
-    return this;
-  }
-
-  /**
-   * Get files
-   * @return files
-  **/
-  @ApiModelProperty(value = "")
-
-  @Valid
-
-  public List<MultipartFile> getFiles() {
-    return files;
-  }
-
-  public void setFiles(List<MultipartFile> files) {
-    this.files = files;
-  }
-
   public NeedDTO id(Long id) {
     this.id = id;
     return this;
@@ -301,6 +271,35 @@ public class NeedDTO   {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public NeedDTO multipartFiles(List<org.springframework.core.io.Resource> multipartFiles) {
+    this.multipartFiles = multipartFiles;
+    return this;
+  }
+
+  public NeedDTO addMultipartFilesItem(org.springframework.core.io.Resource multipartFilesItem) {
+    if (this.multipartFiles == null) {
+      this.multipartFiles = new ArrayList<org.springframework.core.io.Resource>();
+    }
+    this.multipartFiles.add(multipartFilesItem);
+    return this;
+  }
+
+  /**
+   * Get multipartFiles
+   * @return multipartFiles
+  **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public List<org.springframework.core.io.Resource> getMultipartFiles() {
+    return multipartFiles;
+  }
+
+  public void setMultipartFiles(List<org.springframework.core.io.Resource> multipartFiles) {
+    this.multipartFiles = multipartFiles;
   }
 
   public NeedDTO percentageOfGenuineness(Long percentageOfGenuineness) {
@@ -401,8 +400,8 @@ public class NeedDTO   {
         Objects.equals(this.dateInString, needDTO.dateInString) &&
         Objects.equals(this.description, needDTO.description) &&
         Objects.equals(this.fileNameList, needDTO.fileNameList) &&
-        Objects.equals(this.files, needDTO.files) &&
         Objects.equals(this.id, needDTO.id) &&
+        Objects.equals(this.multipartFiles, needDTO.multipartFiles) &&
         Objects.equals(this.percentageOfGenuineness, needDTO.percentageOfGenuineness) &&
         Objects.equals(this.postedUserId, needDTO.postedUserId) &&
         Objects.equals(this.severityId, needDTO.severityId) &&
@@ -411,7 +410,7 @@ public class NeedDTO   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(approvalStatusId, beneficiaryType, categories, categoryList, date, dateInString, description, fileNameList, files, id, percentageOfGenuineness, postedUserId, severityId, verificationTeamId);
+    return Objects.hash(approvalStatusId, beneficiaryType, categories, categoryList, date, dateInString, description, fileNameList, id, multipartFiles, percentageOfGenuineness, postedUserId, severityId, verificationTeamId);
   }
 
   @Override
@@ -427,8 +426,8 @@ public class NeedDTO   {
     sb.append("    dateInString: ").append(toIndentedString(dateInString)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    fileNameList: ").append(toIndentedString(fileNameList)).append("\n");
-    sb.append("    files: ").append(toIndentedString(files)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    multipartFiles: ").append(toIndentedString(multipartFiles)).append("\n");
     sb.append("    percentageOfGenuineness: ").append(toIndentedString(percentageOfGenuineness)).append("\n");
     sb.append("    postedUserId: ").append(toIndentedString(postedUserId)).append("\n");
     sb.append("    severityId: ").append(toIndentedString(severityId)).append("\n");

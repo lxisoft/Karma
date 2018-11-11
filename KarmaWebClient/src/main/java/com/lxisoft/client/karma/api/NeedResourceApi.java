@@ -25,7 +25,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-09T14:03:13.373+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-11T16:15:16.814+05:30[Asia/Calcutta]")
 
 @Api(value = "NeedResource", description = "the NeedResource API")
 public interface NeedResourceApi {
@@ -42,20 +42,6 @@ public interface NeedResourceApi {
         consumes = "application/json",
         method = RequestMethod.POST)
     ResponseEntity<NeedDTO> createNeedUsingPOST(@ApiParam(value = "needDTO" ,required=true )  @Valid @RequestBody NeedDTO needDTO);
-
-
-    @ApiOperation(value = "createNeedWithMedia", nickname = "createNeedWithMediaUsingPOST", notes = "", response = NeedDTO.class, tags={ "need-resource", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "OK", response = NeedDTO.class),
-        @ApiResponse(code = 201, message = "Created"),
-        @ApiResponse(code = 401, message = "Unauthorized"),
-        @ApiResponse(code = 403, message = "Forbidden"),
-        @ApiResponse(code = 404, message = "Not Found") })
-    @RequestMapping(value = "/api/needs/createNeedWithMedia",
-        produces = "*/*", 
-        consumes = "application/json",
-        method = RequestMethod.POST)
-    ResponseEntity<NeedDTO> createNeedWithMediaUsingPOST(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Object UNKNOWN_BASE_TYPE);
 
 
     @ApiOperation(value = "deleteNeed", nickname = "deleteNeedUsingDELETE", notes = "", tags={ "need-resource", })

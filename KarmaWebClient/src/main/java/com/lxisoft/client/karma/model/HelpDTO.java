@@ -8,7 +8,6 @@ import io.swagger.annotations.ApiModelProperty;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.core.io.Resource;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -17,7 +16,7 @@ import javax.validation.constraints.*;
  * HelpDTO
  */
 @Validated
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-09T14:03:13.373+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-11T16:15:16.814+05:30[Asia/Calcutta]")
 
 public class HelpDTO   {
   @JsonProperty("approvalStatusId")
@@ -30,15 +29,15 @@ public class HelpDTO   {
   @Valid
   private List<String> fileNameList = null;
 
-  @JsonProperty("files")
-  @Valid
-  private List<Resource> files = null;
-
   @JsonProperty("fulfilledNeedId")
   private Long fulfilledNeedId = null;
 
   @JsonProperty("id")
   private Long id = null;
+
+  @JsonProperty("multipartFiles")
+  @Valid
+  private List<org.springframework.core.io.Resource> multipartFiles = null;
 
   @JsonProperty("providedUserId")
   private Long providedUserId = null;
@@ -117,35 +116,6 @@ public class HelpDTO   {
     this.fileNameList = fileNameList;
   }
 
-  public HelpDTO files(List<Resource> files) {
-    this.files = files;
-    return this;
-  }
-
-  public HelpDTO addFilesItem(Resource filesItem) {
-    if (this.files == null) {
-      this.files = new ArrayList<Resource>();
-    }
-    this.files.add(filesItem);
-    return this;
-  }
-
-  /**
-   * Get files
-   * @return files
-  **/
-  @ApiModelProperty(value = "")
-
-  @Valid
-
-  public List<Resource> getFiles() {
-    return files;
-  }
-
-  public void setFiles(List<Resource> files) {
-    this.files = files;
-  }
-
   public HelpDTO fulfilledNeedId(Long fulfilledNeedId) {
     this.fulfilledNeedId = fulfilledNeedId;
     return this;
@@ -184,6 +154,35 @@ public class HelpDTO   {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public HelpDTO multipartFiles(List<org.springframework.core.io.Resource> multipartFiles) {
+    this.multipartFiles = multipartFiles;
+    return this;
+  }
+
+  public HelpDTO addMultipartFilesItem(org.springframework.core.io.Resource multipartFilesItem) {
+    if (this.multipartFiles == null) {
+      this.multipartFiles = new ArrayList<org.springframework.core.io.Resource>();
+    }
+    this.multipartFiles.add(multipartFilesItem);
+    return this;
+  }
+
+  /**
+   * Get multipartFiles
+   * @return multipartFiles
+  **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public List<org.springframework.core.io.Resource> getMultipartFiles() {
+    return multipartFiles;
+  }
+
+  public void setMultipartFiles(List<org.springframework.core.io.Resource> multipartFiles) {
+    this.multipartFiles = multipartFiles;
   }
 
   public HelpDTO providedUserId(Long providedUserId) {
@@ -260,9 +259,9 @@ public class HelpDTO   {
     return Objects.equals(this.approvalStatusId, helpDTO.approvalStatusId) &&
         Objects.equals(this.description, helpDTO.description) &&
         Objects.equals(this.fileNameList, helpDTO.fileNameList) &&
-        Objects.equals(this.files, helpDTO.files) &&
         Objects.equals(this.fulfilledNeedId, helpDTO.fulfilledNeedId) &&
         Objects.equals(this.id, helpDTO.id) &&
+        Objects.equals(this.multipartFiles, helpDTO.multipartFiles) &&
         Objects.equals(this.providedUserId, helpDTO.providedUserId) &&
         Objects.equals(this.time, helpDTO.time) &&
         Objects.equals(this.timeInString, helpDTO.timeInString);
@@ -270,7 +269,7 @@ public class HelpDTO   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(approvalStatusId, description, fileNameList, files, fulfilledNeedId, id, providedUserId, time, timeInString);
+    return Objects.hash(approvalStatusId, description, fileNameList, fulfilledNeedId, id, multipartFiles, providedUserId, time, timeInString);
   }
 
   @Override
@@ -281,9 +280,9 @@ public class HelpDTO   {
     sb.append("    approvalStatusId: ").append(toIndentedString(approvalStatusId)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    fileNameList: ").append(toIndentedString(fileNameList)).append("\n");
-    sb.append("    files: ").append(toIndentedString(files)).append("\n");
     sb.append("    fulfilledNeedId: ").append(toIndentedString(fulfilledNeedId)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    multipartFiles: ").append(toIndentedString(multipartFiles)).append("\n");
     sb.append("    providedUserId: ").append(toIndentedString(providedUserId)).append("\n");
     sb.append("    time: ").append(toIndentedString(time)).append("\n");
     sb.append("    timeInString: ").append(toIndentedString(timeInString)).append("\n");

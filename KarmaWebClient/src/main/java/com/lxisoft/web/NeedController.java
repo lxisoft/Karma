@@ -18,12 +18,15 @@ package com.lxisoft.web;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,6 +63,7 @@ public class NeedController {
 	
 	@Autowired
 	NeedResourceApi needResourceApi;
+	
 
 	@Autowired
 	ApprovalStatusResourceApi approvalStatusResourceApi;
@@ -78,10 +82,20 @@ public class NeedController {
 	 */
 	@PostMapping("/needs")
 	@Timed
-	public String createNeed(@ModelAttribute NeedDTO needDTO,Model model) throws URISyntaxException, IllegalStateException, IOException {
-		log.debug(" request to save Need : {}", needDTO);
+	public String createNeed(@ModelAttribute NeedDTO needDTO,@RequestParam MultipartFile[] filesAsMultipart,Model model) throws URISyntaxException, IllegalStateException, IOException {
+		log.debug(" request to save Need : {},{}", needDTO,filesAsMultipart);
 				
 	    //NeedDTO need = needResourceApi.createNeedUsingPOST(needDTO).getBody();
+	     List<Resource> resourceFiles=new ArrayList<Resource>();
+	     
+	     for(MultipartFile multipartFile : filesAsMultipart) {
+	    	 log.debug("in loop");
+	    	 resourceFiles.add(new ByteArrayResource(multipartFile.getBytes()));
+	     }
+	     
+	     needDTO.setMultipartFiles(resourceFiles);
+	     
+	     log.debug("save Need : {}", needDTO);
 	     
 	    model.addAttribute("need", needResourceApi.createNeedUsingPOST(needDTO).getBody());
 		return "help-post-result";

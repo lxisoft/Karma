@@ -76,7 +76,7 @@ public class HelpController {
 	 */
 	@PostMapping("/helps")
 	@Timed
-	public String createHelp(@ModelAttribute HelpDTO helpDTO,@RequestParam MultipartFile[] files,Model model) throws URISyntaxException, IOException {
+	public String createHelp(@ModelAttribute HelpDTO helpDTO,Model model) throws URISyntaxException, IOException {
 
 		log.debug("REST request to save Help : {}", helpDTO);
 		
