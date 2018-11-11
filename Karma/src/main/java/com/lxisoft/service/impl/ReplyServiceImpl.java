@@ -153,12 +153,5 @@ public class ReplyServiceImpl implements ReplyService {
 	}
 
 
-	@Override
-	public Page<ReplyDTO> findAllRepliesByCommentId(Pageable pageable, Long commentId) {
-		 log.debug("Request to get all Replies by comment id");
-	        return replyRepository.findAllRepliesByCommentId(pageable,commentId)
-	            .map(replyMapper::toDto);
-	   
-
-	}
+	
 }
