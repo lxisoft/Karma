@@ -68,7 +68,7 @@ public class NeedServiceImpl implements NeedService {
     public NeedDTO save(NeedDTO needDTO) throws IOException {
         log.debug("Request to save Need : {}", needDTO);
         
-        if (needDTO.getFiles() != null && needDTO.getFiles().length > 0) {
+       /* if (needDTO.getFiles() != null && needDTO.getFiles().length > 0) {
             for (MultipartFile aFile : needDTO.getFiles()){
                  
                 System.out.println("Saving file: " + aFile.getOriginalFilename());
@@ -83,7 +83,7 @@ public class NeedServiceImpl implements NeedService {
                     }    
                 
             }
-        }
+        }*/
 
         Need need = needMapper.toEntity(needDTO);
         need = needRepository.save(need);

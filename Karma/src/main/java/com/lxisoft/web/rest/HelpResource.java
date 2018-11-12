@@ -168,7 +168,7 @@ public class HelpResource {
         
         List<HelpDTO> helps = page.getContent();
 
-		for(HelpDTO helpDto:helps){
+		/*for(HelpDTO helpDto:helps){
 			
 			List<String> fileNameList=new ArrayList();
 			
@@ -186,7 +186,7 @@ public class HelpResource {
 			
 			}
 			helpDto.setFileNameList(fileNameList);
-		}
+		}*/
 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/helps/getAllHelpsByApprovedStatus/");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
