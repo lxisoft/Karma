@@ -76,7 +76,7 @@ public class HelpController {
 	 */
 	@PostMapping("/helps")
 	@Timed
-	public String createHelp(@ModelAttribute HelpDTO helpDTO,@RequestParam MultipartFile[] files,Model model) throws URISyntaxException, IOException {
+	public String createHelp(@ModelAttribute HelpDTO helpDTO,Model model) throws URISyntaxException, IOException {
 
 		log.debug("REST request to save Help : {}", helpDTO);
 		
@@ -104,7 +104,7 @@ public class HelpController {
 	public String updateHelp(@ModelAttribute HelpDTO helpDTO, Model model) throws URISyntaxException, IOException {
 		log.debug("request to update Need : {}", helpDTO);	
 		
-		HelpDTO help = helpResourceApi.createHelpUsingPOST(helpDTO).getBody();
+		HelpDTO help = helpResourceApi.updateHelpUsingPUT(helpDTO).getBody();
 		ApprovalStatusDTO approvalStatusDTO = approvalStatusResourceApi.getApprovalStatusUsingGET(help.getApprovalStatusId()).getBody();
 		
 		model.addAttribute("help", help);

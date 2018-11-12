@@ -25,7 +25,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-09T14:03:13.373+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-11T21:56:15.510+05:30[Asia/Calcutta]")
 
 @Api(value = "HelpResource", description = "the HelpResource API")
 public interface HelpResourceApi {
@@ -42,20 +42,6 @@ public interface HelpResourceApi {
         consumes = "application/json",
         method = RequestMethod.POST)
     ResponseEntity<HelpDTO> createHelpUsingPOST(@ApiParam(value = "helpDTO" ,required=true )  @Valid @RequestBody HelpDTO helpDTO);
-
-
-    @ApiOperation(value = "createHelpWithMedia", nickname = "createHelpWithMediaUsingPOST", notes = "", response = HelpDTO.class, tags={ "help-resource", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "OK", response = HelpDTO.class),
-        @ApiResponse(code = 201, message = "Created"),
-        @ApiResponse(code = 401, message = "Unauthorized"),
-        @ApiResponse(code = 403, message = "Forbidden"),
-        @ApiResponse(code = 404, message = "Not Found") })
-    @RequestMapping(value = "/api/helps/createHelpWithMedia",
-        produces = "*/*", 
-        consumes = "application/json",
-        method = RequestMethod.POST)
-    ResponseEntity<HelpDTO> createHelpWithMediaUsingPOST(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Object UNKNOWN_BASE_TYPE);
 
 
     @ApiOperation(value = "deleteHelp", nickname = "deleteHelpUsingDELETE", notes = "", tags={ "help-resource", })

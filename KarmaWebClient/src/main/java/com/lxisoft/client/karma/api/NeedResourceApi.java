@@ -25,7 +25,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-09T14:03:13.373+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-11T21:56:15.510+05:30[Asia/Calcutta]")
 
 @Api(value = "NeedResource", description = "the NeedResource API")
 public interface NeedResourceApi {
@@ -42,20 +42,6 @@ public interface NeedResourceApi {
         consumes = "application/json",
         method = RequestMethod.POST)
     ResponseEntity<NeedDTO> createNeedUsingPOST(@ApiParam(value = "needDTO" ,required=true )  @Valid @RequestBody NeedDTO needDTO);
-
-
-    @ApiOperation(value = "createNeedWithMedia", nickname = "createNeedWithMediaUsingPOST", notes = "", response = NeedDTO.class, tags={ "need-resource", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "OK", response = NeedDTO.class),
-        @ApiResponse(code = 201, message = "Created"),
-        @ApiResponse(code = 401, message = "Unauthorized"),
-        @ApiResponse(code = 403, message = "Forbidden"),
-        @ApiResponse(code = 404, message = "Not Found") })
-    @RequestMapping(value = "/api/needs/createNeedWithMedia",
-        produces = "*/*", 
-        consumes = "application/json",
-        method = RequestMethod.POST)
-    ResponseEntity<NeedDTO> createNeedWithMediaUsingPOST(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Object UNKNOWN_BASE_TYPE);
 
 
     @ApiOperation(value = "deleteNeed", nickname = "deleteNeedUsingDELETE", notes = "", tags={ "need-resource", })
@@ -75,7 +61,7 @@ public interface NeedResourceApi {
         @ApiResponse(code = 401, message = "Unauthorized"),
         @ApiResponse(code = 403, message = "Forbidden"),
         @ApiResponse(code = 404, message = "Not Found") })
-    @RequestMapping(value = "/api/needs/{approvalStatus}",
+    @RequestMapping(value = "/api/needs/getAllNeedsByApprovedStatus/{approvalStatus}",
         produces = "*/*", 
         method = RequestMethod.GET)
     ResponseEntity<List<NeedDTO>> getAllNeedsByApprovedStatusUsingGET(@ApiParam(value = "approvalStatus",required=true) @PathVariable("approvalStatus") String approvalStatus,@ApiParam(value = "eagerload", defaultValue = "false") @Valid @RequestParam(value = "eagerload", required = false, defaultValue="false") Boolean eagerload,@ApiParam(value = "") @Valid @RequestParam(value = "offset", required = false) Long offset,@ApiParam(value = "Page number of the requested page") @Valid @RequestParam(value = "page", required = false) Integer page,@ApiParam(value = "") @Valid @RequestParam(value = "pageNumber", required = false) Integer pageNumber,@ApiParam(value = "") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "") @Valid @RequestParam(value = "paged", required = false) Boolean paged,@ApiParam(value = "Size of a page") @Valid @RequestParam(value = "size", required = false) Integer size,@ApiParam(value = "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.") @Valid @RequestParam(value = "sort", required = false) List<String> sort,@ApiParam(value = "") @Valid @RequestParam(value = "sort.sorted", required = false) Boolean sortSorted,@ApiParam(value = "") @Valid @RequestParam(value = "sort.unsorted", required = false) Boolean sortUnsorted,@ApiParam(value = "") @Valid @RequestParam(value = "unpaged", required = false) Boolean unpaged);

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.springframework.core.io.Resource;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -14,14 +13,11 @@ import javax.validation.constraints.*;
  * MediaDTO
  */
 @Validated
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-09T14:03:13.373+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-11T21:56:15.510+05:30[Asia/Calcutta]")
 
 public class MediaDTO   {
   @JsonProperty("extension")
   private String extension = null;
-
-  @JsonProperty("file")
-  private Resource file = null;
 
   @JsonProperty("fileName")
   private String fileName = null;
@@ -31,6 +27,9 @@ public class MediaDTO   {
 
   @JsonProperty("id")
   private Long id = null;
+
+  @JsonProperty("multipartFile")
+  private org.springframework.core.io.Resource multipartFile = null;
 
   @JsonProperty("needId")
   private Long needId = null;
@@ -62,27 +61,6 @@ public class MediaDTO   {
 
   public void setExtension(String extension) {
     this.extension = extension;
-  }
-
-  public MediaDTO file(Resource file) {
-    this.file = file;
-    return this;
-  }
-
-  /**
-   * Get file
-   * @return file
-  **/
-  @ApiModelProperty(value = "")
-
-  @Valid
-
-  public Resource getFile() {
-    return file;
-  }
-
-  public void setFile(Resource file) {
-    this.file = file;
   }
 
   public MediaDTO fileName(String fileName) {
@@ -143,6 +121,27 @@ public class MediaDTO   {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public MediaDTO multipartFile(org.springframework.core.io.Resource multipartFile) {
+    this.multipartFile = multipartFile;
+    return this;
+  }
+
+  /**
+   * Get multipartFile
+   * @return multipartFile
+  **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public org.springframework.core.io.Resource getMultipartFile() {
+    return multipartFile;
+  }
+
+  public void setMultipartFile(org.springframework.core.io.Resource multipartFile) {
+    this.multipartFile = multipartFile;
   }
 
   public MediaDTO needId(Long needId) {
@@ -236,10 +235,10 @@ public class MediaDTO   {
     }
     MediaDTO mediaDTO = (MediaDTO) o;
     return Objects.equals(this.extension, mediaDTO.extension) &&
-        Objects.equals(this.file, mediaDTO.file) &&
         Objects.equals(this.fileName, mediaDTO.fileName) &&
         Objects.equals(this.helpId, mediaDTO.helpId) &&
         Objects.equals(this.id, mediaDTO.id) &&
+        Objects.equals(this.multipartFile, mediaDTO.multipartFile) &&
         Objects.equals(this.needId, mediaDTO.needId) &&
         Objects.equals(this.newsFeedId, mediaDTO.newsFeedId) &&
         Objects.equals(this.url, mediaDTO.url) &&
@@ -248,7 +247,7 @@ public class MediaDTO   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(extension, file, fileName, helpId, id, needId, newsFeedId, url, violationId);
+    return Objects.hash(extension, fileName, helpId, id, multipartFile, needId, newsFeedId, url, violationId);
   }
 
   @Override
@@ -257,10 +256,10 @@ public class MediaDTO   {
     sb.append("class MediaDTO {\n");
     
     sb.append("    extension: ").append(toIndentedString(extension)).append("\n");
-    sb.append("    file: ").append(toIndentedString(file)).append("\n");
     sb.append("    fileName: ").append(toIndentedString(fileName)).append("\n");
     sb.append("    helpId: ").append(toIndentedString(helpId)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    multipartFile: ").append(toIndentedString(multipartFile)).append("\n");
     sb.append("    needId: ").append(toIndentedString(needId)).append("\n");
     sb.append("    newsFeedId: ").append(toIndentedString(newsFeedId)).append("\n");
     sb.append("    url: ").append(toIndentedString(url)).append("\n");

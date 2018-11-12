@@ -139,7 +139,7 @@ public class ReplyResource {
     @Timed
     public ResponseEntity<List<ReplyDTO>> getAllRepliesByCommentId(Pageable pageable,@PathVariable Long commentId) {
         log.debug("REST request to get a page of Replies");
-        Page<ReplyDTO> page = replyService.findAllRepliesByCommentId(pageable,commentId);
+        Page<ReplyDTO> page = replyService.findByCommentId(pageable,commentId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/replies");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

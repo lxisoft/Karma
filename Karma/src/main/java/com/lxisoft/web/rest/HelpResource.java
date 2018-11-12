@@ -192,51 +192,6 @@ public class HelpResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
     
-    /**
-     * POST  /helps : Create a new help with media.
-     *
-     * @param helpDTO the helpDTO to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new helpDTO, or with status 400 (Bad Request) if the help has already an ID
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     * @throws IOException 
-     */
-    @PostMapping("/helps/createHelpWithMedia")
-    @Timed
-    public ResponseEntity<HelpDTO> createHelpWithMedia(@RequestBody HelpDTO helpDTO,@RequestParam MultipartFile[] files) throws URISyntaxException, IOException {
-        log.debug("REST request to save Help : {}", helpDTO);
-        if (helpDTO.getId() != null) {
-            throw new BadRequestAlertException("A new help cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        
-        if (helpDTO.getApprovalStatusId() == null) {
-
-			Optional<ApprovalStatusDTO> approvalStatus = approvalStatusService.findByStatus("incompleted");
-
-			Long id = approvalStatus.get().getId();
-			log.debug("***************{}" + id);
-			helpDTO.setApprovalStatusId(approvalStatus.get().getId());
-		}
-        
-        HelpDTO helpDto = helpService.save(helpDTO);
-        
-		for(MultipartFile file:files){
-			
-			log.info("********helpcontroller",file.getName());
-			
-			 MediaDTO mediaDTO=new MediaDTO();
-	    	 
-	    	 mediaDTO.setFile(file);
-	    	 
-	    	 mediaDTO.setHelpId(helpDto.getId());
-	         
-	    	 mediaService.save(mediaDTO);
-	        
-		}
-		
-        return ResponseEntity.created(new URI("/api/helps/createHelpWithMedia" + helpDto.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, helpDto.getId().toString()))
-            .body(helpDto);
-    }
-
+   
 
 }
