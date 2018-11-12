@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
@@ -51,19 +52,11 @@ public class CommentController {
     @Timed
     public String createComment(@RequestParam(required = false, defaultValue = "false") CommentDTO commentDTO,Model model) throws URISyntaxException {
         log.debug("REST request to save Comment : {}", commentDTO);
-        if (commentDTO.getId() != null) {
-            throw new BadRequestAlertException("A new comment cannot already have an ID", ENTITY_NAME, "idexists");
-        }
+       
         
-        String parseDate=commentDTO.getDateInString().replace(" ","T").concat("Z");
-        
-        Instant dateInstant=Instant.parse(parseDate);
-        commentDTO.setDate(dateInstant);
-        
-        
-        CommentDTO result = commentService.save(commentDTO);
-        model.addAttribute("comment",result);
-        return null;
+        //CommentDTO comment =commentResourceApi.createCommentUsingPOST(CommentDTO).getBody();
+       // model.addAttribute("comment",result);
+        return "comment-post-result";
     }
     
     
@@ -78,12 +71,14 @@ public class CommentController {
      */
     @GetMapping("/commentsByNeedId/{id}")
     @Timed
-    public String getCommentByNeedId(@RequestParam(required=false,defaultValue="false") @PathVariable Long id,Model model) {
+    public String getCommentsByNeedId(@RequestParam(required=false,defaultValue="false") @PathVariable Long id,Model model) {
         log.debug("REST request to get Comments buy needId : {}", id);
-        Pageable pageable=null;
-        Page<CommentDTO> result = commentService.findByNeedId(id,pageable);
-        model.addAttribute("comments",result);
-        return null;
+        
+        //Page<CommentDTO> commentDTO =  commentResourceApi.getCommentUsingGET(id).getBody();
+
+		//model.addAttribute("comment", commentDTO);
+
+		return "comment";
 
     }
     
@@ -97,11 +92,95 @@ public class CommentController {
     @Timed
     public String getComment(@RequestParam(required=false,defaultValue="false") @PathVariable Long id,Model model) {
         log.debug("REST request to get Comment : {}", id);
-        Optional<CommentDTO> commentDTO = commentService.findOne(id);
-        model.addAttribute("comment",commentDTO);
-        return null;
+       // CommentDTO commentDTO =  commentResourceApi.getCommentUsingGET(id).getBody();
+
+		//model.addAttribute("comment", commentDTO);
+        return "comment";
+    }
+    
+    /**
+	 * PUT /needs : Updates an existing comment.
+	 *
+	 * @param commentDTO
+	 *            the needDTO to update
+	 * @return the string value, or with status 400 (Bad Request) if the commentDTO
+	 *         is not valid, or with status 500 (Internal Server Error) if the
+	 *         commentDTO couldn't be updated
+	 * @throws URISyntaxException
+	 *             if the Location URI syntax is incorrect
+	 * @throws IOException 
+	 */
+	@PutMapping("/needs")
+	@Timed
+	public String updateComment(@ModelAttribute CommentDTO commentDTO, Model model) throws URISyntaxException, IOException {
+		
+		log.debug("request to update comment : {}", commentDTO);
+		
+		//CommentDTO commentDto = commentResourceApi.updateCommentUsingPUT(commentDTO).getBody();
+		
+		//ApprovalStatusDTO approvalStatusDTO=approvalStatusResourceApi.getApprovalStatusUsingGET(commentDTO.getApprovalStatusId()).getBody();
+		
+		//model.addAttribute("comment", commentDto);
+		//model.addAttribute("message",approvalStatusDTO );
+		return "approve-decline";
+	}
+	
+	/**
+	 * GET /needs : get all the comment.
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @param eagerload
+	 *            flag to eager load entities from relationships (This is
+	 *            applicable for many-to-many)
+	 * @return the string value
+	 */
+	@GetMapping("/comments")
+	@Timed
+	public String getAllComments(Pageable pageable,
+			@RequestParam(required = false, defaultValue = "false") boolean eagerload, Model model) {
+		log.debug("request to get a page of Needs");
+	
+		//List<CommentDTO> comments = commentResourceApi.getAllCommentUsingGET(eagerload, null, null, null, null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
+				
+		//model.addAttribute("comment", comments);
+		return "home";
+
+	}
+	
+	
+	/**
+     * GET  /commentsBYVoilationId/id : get the "id" comment.
+     *
+     * @param id the id of the commentDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the commentDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/getAllcommentByViolationId/{violationId}")
+    @Timed
+    public String getAllCommentsByViolationId(@RequestParam(required=false,defaultValue="false") @PathVariable Long id,Model model) {
+        log.debug("REST request to get Comment : {}", id);
+       //Page<CommentDTO> commentDTO =  commentResourceApi.getCommentUsingGET(id).getBody();
+
+		//model.addAttribute("comment", commentDTO);
+        return "comment";
     }
     
     
+    /**
+     * GET  /commentsByHelpId/id : get the "id" comment.
+     *
+     * @param id the id of the commentDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the commentDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/getAllcommentByViolationId/{violationId}")
+    @Timed
+    public String getAllCommentsByHelpId(@RequestParam(required=false,defaultValue="false") @PathVariable Long id,Model model) {
+        log.debug("REST request to get Comment : {}", id);
+       //Page<CommentDTO> commentDTO =  commentResourceApi.getCommentUsingGET(id).getBody();
+
+		//model.addAttribute("comment", commentDTO);
+        return "comment";
+    }
+	
 
 } 
