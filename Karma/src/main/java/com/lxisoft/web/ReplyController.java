@@ -69,8 +69,8 @@ public class ReplyController {
 	 */
 	@PostMapping("/replies")
 	@Timed
-	public String createNeed(@ModelAttribute ReplyDTO replyDTO,Model model) throws URISyntaxException, IllegalStateException, IOException {
-		log.debug(" request to save Need : {}", replyDTO);
+	public String createReply(@ModelAttribute ReplyDTO replyDTO,Model model) throws URISyntaxException, IllegalStateException, IOException {
+		log.debug(" request to save Reply : {}", replyDTO);
 
 	   // ReplyDTO reply = replyResourceApi.createReplyUsingPOST(replyDTO).getBody();
 	     
@@ -95,9 +95,9 @@ public class ReplyController {
 	 */
 	@PutMapping("/replies")
 	@Timed
-	public String updateNeed(@ModelAttribute ReplyDTO replyDTO, Model model) throws URISyntaxException, IOException {
+	public String updateReply(@ModelAttribute ReplyDTO replyDTO, Model model) throws URISyntaxException, IOException {
 		
-		log.debug("request to update Need : {}", replyDTO);
+		log.debug("request to update Reply : {}", replyDTO);
 		
 		//ReplyDTO needDto = needResourceApi.updateNeedUsingPUT(replyDTO).getBody();
 		
@@ -124,7 +124,7 @@ public class ReplyController {
 	 */
 	@GetMapping("/replies")
 	@Timed
-	public String getAllNeeds(Pageable pageable,
+	public String getAllReplies(Pageable pageable,
 			@RequestParam(required = false, defaultValue = "false") boolean eagerload, Model model) {
 		log.debug("request to get a page of replies");
 	
@@ -146,8 +146,8 @@ public class ReplyController {
 	 */
 	@GetMapping("/replies/{id}")
 	@Timed
-	public String getNeed(@PathVariable(value = "id") Long id, Model model) {
-		log.debug("request to get Need : {}", id);
+	public String getReply(@PathVariable(value = "id") Long id, Model model) {
+		log.debug("request to get reply by id : {}", id);
 
 		//ReplyDTO replyDTO =  needResourceApi.getNeedUsingGET(id).getBody();
 
@@ -157,10 +157,30 @@ public class ReplyController {
 	}
 
     
-    
-    
-    
-    
+	
+	/**
+    * GET  /replies : get all the replies.
+    *
+    * @param pageable the pagination information
+    * @return the ResponseEntity with status 200 (OK) and the list of replies in body
+    */
+   @GetMapping("/getAllRepliesByCommentId/{commentId}")
+   @Timed
+   public String getAllRepliesByCommentId(Pageable pageable,@PathVariable Long commentId) {
+       log.debug("REST request to get a page of Replies");
+       
+       
+       
+     //List<ReplyDTO> replies = needResourceApi.getAllReplyUsingGET(eagerload, null, null, null, null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
+		
+     		//model.addAttribute("replies", replies);
+       
+       
+       
+     
+       
+       return "replies";
+   }   
     
     
 }

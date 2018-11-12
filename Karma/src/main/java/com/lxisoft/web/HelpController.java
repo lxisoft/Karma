@@ -52,7 +52,7 @@ import com.lxisoft.web.rest.errors.BadRequestAlertException;
 /**
  * TODO Provide a detailed description here
  * 
- * @author Sarangi Balu sarangibalu, sarangibalu.a@lxisoft.com
+ * @author Neeraja.M, neeraja.m@lxisoft.com
  */
 
 @Controller
@@ -89,43 +89,11 @@ public class HelpController {
 	public String createHelp(@ModelAttribute HelpDTO helpDTO,@RequestParam MultipartFile[] files,Model model) throws URISyntaxException, IOException {
 
 		log.debug("REST request to save Help : {}", helpDTO);
-		if (helpDTO.getId() != null) {
-			throw new BadRequestAlertException("A new help cannot already have an ID", ENTITY_NAME, "idexists");
-		}
-		if (helpDTO.getApprovalStatusId() == null) {
-
-			Optional<ApprovalStatusDTO> approvalStatus = approvalStatusService.findByStatus("incompleted");
-
-			Long id = approvalStatus.get().getId();
-			log.debug("***************{}" + id);
-			helpDTO.setApprovalStatusId(approvalStatus.get().getId());
-		}
-
-		String parsedDate = helpDTO.getTimeInString().replaceAll(" ", "T").concat("Z");
-
-		// creates a date instance of type instant from a string
-		helpDTO.setTime(Instant.parse(parsedDate));
-
-		HelpDTO helpdto = helpService.save(helpDTO);
 		
-		//
-		for(MultipartFile file:files){
-			
-			log.info("********helpcontroller",file.getName());
-			
-			 MediaDTO mediaDTO=new MediaDTO();
-	    	 
-	    	 mediaDTO.setFile(file);
-	    	 
-	    	 mediaDTO.setHelpId(helpdto.getId());
-	         
-	    	 mediaService.save(mediaDTO);
-	        
-		}
-		//
-		
-		model.addAttribute("help", helpdto);
-		model.addAttribute("message", "submitted");
+		//HelpDTO helpDto=helpResourceApi.createHelpUsingPOST(helpDTO).getBody();
+				
+		//model.addAttribute("help", helpdto);
+		//model.addAttribute("message", "submitted");
 		return "approve-decline";
 	}
 
@@ -145,13 +113,10 @@ public class HelpController {
 	@Timed
 	public String updateHelp(@ModelAttribute HelpDTO helpDTO, Model model) throws URISyntaxException, IOException {
 		log.debug("request to update Need : {}", helpDTO);
-		if (helpDTO.getId() == null) {
-			throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-		}
-
-		HelpDTO help = helpService.save(helpDTO);
-		model.addAttribute("help", help);
-		model.addAttribute("message", approvalStatusService.findOne(help.getApprovalStatusId()).orElse(null));
+		
+		//HelpDTO helpDto=helpResourceApi.createHelpUsingPOST(helpDTO).getBody();
+		//model.addAttribute("help", help);
+		//model.addAttribute("message", approvalStatusService.findOne(help.getApprovalStatusId()).orElse(null));
 		return "approve-decline";
 	}
 
@@ -173,37 +138,12 @@ public class HelpController {
 			@PathVariable(value = "approvalStatus") String approvalStatus, Model model) {
 		log.debug("request to get a page of helps");
 
-		Page<HelpDTO> page = helpService.findAllHelpsByApprovedStatus(pageable, approvalStatus);
-
-		List<HelpDTO> helps = page.getContent();
-
-		for(HelpDTO helpDto:helps){
-			
-			List<String> fileNameList=new ArrayList();
-			
-			log.info("*********need");
-			
-			Page<MediaDTO> mediaList=mediaService.findAllUrlByHelpId(helpDto.getId(), pageable);
-			
-			List<MediaDTO> mediaDtoList=mediaList.getContent();
-			
-			for(MediaDTO media:mediaDtoList){
-				
-				String mediaUrl=media.getUrl();
-				fileNameList.add(mediaUrl);
-				log.info("*********media url{}",mediaUrl);
-			
-			}
-			helpDto.setFileNameList(fileNameList);
-		}
-		model.addAttribute("helps", helps);
-
-		if (approvalStatus.equals(("completed")))
-			return "completed-helps";
-		else if (approvalStatus.equals(("incompleted")))
-			return "incompleted-helps";
-		else
-			return "home";
+		//HelpDTO helpDto=helpResourceApi.createHelpUsingPOST(helpDTO).getBody();
+				//model.addAttribute("help", help);
+				//model.addAttribute("message", approvalStatusService.findOne(help.getApprovalStatusId()).orElse(null));
+		
+		
+		return "approve-decline";
 	}
 
 	/**
