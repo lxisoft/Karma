@@ -51,6 +51,8 @@ public class NeedDTO implements Serializable {
     
     private Long noOfComments;
     
+    
+    
     public void setNoOfComments(Long noOfComments)
     {
     	
@@ -252,4 +254,6 @@ public class NeedDTO implements Serializable {
 	public void setTimeElapsed(String timeElapsed) {
 		this.timeElapsed = timeElapsed;
 	}
+
+	
 }

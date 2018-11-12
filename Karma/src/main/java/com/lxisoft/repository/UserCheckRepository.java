@@ -26,19 +26,80 @@ public interface UserCheckRepository extends JpaRepository<UserCheck, Long> {
 	 */
 	Page<UserCheck> findAllUserChecksByCheckedNeedId(Pageable pageable,Long checkedNeedId);
 	
+	/**
+	 * 
+	 * @param commentId
+	 * @param pageable
+	 * @return userCheck entities
+	 */
 	Page<UserCheck> findByCommentIdIs(Long commentId, Pageable pageable);
 
+	/**
+	 * 
+	 * @param pageable
+	 * @param category
+	 * @return user check entities
+	 */
+	
 	Page<UserCheck> findAllUserCheckByCategory(Pageable pageable, String category);
 
+	/**
+	 * 
+	 * @param pageable
+	 * @param violationId
+	 * @return user check entities
+	 */
 	Page<UserCheck> findAllUserCheckByViolationId(Pageable pageable, Long violationId);
 
+	/**
+	 * 
+	 * @param pageable
+	 * @param violationId
+	 * @param checkedUserId
+	 * @return user check entities
+	 */
 	Page<UserCheck> findAllUserCheckByViolationIdAndCheckedUserId(Pageable pageable, Long violationId, Long checkedUserId);
 
+	/**
+	 * 
+	 * @param pageable
+	 * @param commentId
+	 * @return user check entities
+	 */
 	Page<UserCheck> findAllUserCheckByCommentId(Pageable pageable, Long commentId);
 
+	/**
+	 * 
+	 * @param pageable
+	 * @param voteType
+	 * @return user check entities
+	 */
 	Page<UserCheck> findAllUserCheckByVoteType(Pageable pageable, String voteType);
 
+	/**
+	 * 
+	 * @param replyId
+	 * @param pageable
+	 * @return user check entities
+	 */
+	
 	Page<UserCheck> findAllByReplyIdIs(Long replyId, Pageable pageable);
+
+	/**
+	 * 
+	 * @param helpId
+	 * @param pageable
+	 * @return userCheck entities
+	 */
+	Page<UserCheck> findAllByHelpId(Long helpId, Pageable pageable);
+
+	/**
+	 * 
+	 * @param needId
+	 * @param pageable
+	 * @return
+	 */
+	Page<UserCheck> findAllByNeedId(Long needId, Pageable pageable);
 
 
 }

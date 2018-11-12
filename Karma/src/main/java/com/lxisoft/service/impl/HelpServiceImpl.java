@@ -3,10 +3,13 @@ package com.lxisoft.service.impl;
 import com.lxisoft.service.ApprovalStatusService;
 import com.lxisoft.service.CommentService;
 import com.lxisoft.service.HelpService;
+import com.lxisoft.service.UserCheckService;
 import com.lxisoft.domain.Help;
 import com.lxisoft.repository.HelpRepository;
 import com.lxisoft.service.dto.CommentDTO;
 import com.lxisoft.service.dto.HelpDTO;
+import com.lxisoft.service.dto.ReplyDTO;
+import com.lxisoft.service.dto.UserCheckDTO;
 import com.lxisoft.service.mapper.HelpMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +49,9 @@ public class HelpServiceImpl implements HelpService {
     
     @Autowired
     CommentService commentService;
+    
+    @Autowired
+    UserCheckService userCheckService;
 
     @Value("${upload.path}")
     private String path;
@@ -150,6 +156,7 @@ public class HelpServiceImpl implements HelpService {
 	}
 
 	/**
+	 * get all helps by approved status id
 	 * @param pageable
 	 * @param approvalStatusId
 	 * @return
@@ -163,7 +170,13 @@ public class HelpServiceImpl implements HelpService {
 	}
 
 
-
+    /**
+     * To set the number of votes.
+     *
+     * @param pageable the pagination information
+     * @param approvedStatus the approvedStatus of the entity
+     *
+     */
 
 	@Override
 	public void countComments(HelpDTO helpDTO) {
@@ -184,9 +197,10 @@ public class HelpServiceImpl implements HelpService {
 	
 	
 	/**
+	 * get all helps with time
 	 * @param pageable
 	 * 
-	 * @return
+	 * @return list of entities along with time
 	 */
 	
 	@Override
@@ -196,6 +210,7 @@ public class HelpServiceImpl implements HelpService {
 		Page<HelpDTO> helpPage = findAll(pageable);
 		List<HelpDTO> helpList = helpPage.getContent();
 		for (HelpDTO helpDto : helpList) {
+			countVotes(helpDto);
 			Instant instant = Instant.now();
 			Date helpedTime = null;
 			if (helpDto.getTime() != null) {
@@ -231,4 +246,38 @@ public class HelpServiceImpl implements HelpService {
 		return helpPage;
 
 	}
+	
+	/**
+	 * get the number of positive and negative votes
+	 * @param helpDTO
+	 */
+	
+	
+	public void countVotes(HelpDTO helpDTO)
+    {
+    	log.debug("method call to count likes and dislikes and set it to commentDto");
+    	Pageable pageable=null;
+    	Long helpId=helpDTO.getId();
+    	Long noOfLikes=0l;
+    	Long noOfDislikes=0l;
+    	
+    	Page<UserCheckDTO> userCheckDTOs=userCheckService.findAllUserCheckByHelpId(pageable,helpId);
+    	for(UserCheckDTO userCheckDTO:userCheckDTOs.getContent())
+    	{
+    		if(userCheckDTO.getVoteType().equals("positive"))
+    		{
+    			noOfLikes++;
+    		}
+    		else
+    		{
+    			noOfDislikes++;
+    		}
+    	}
+    	helpDTO.setNoOfLikes(noOfLikes);
+    	helpDTO.setNoOfDislikes(noOfDislikes);
+    
+   
+    	
+    }
+	
 }

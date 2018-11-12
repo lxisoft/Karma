@@ -123,11 +123,12 @@ public class ReplyServiceImpl implements ReplyService {
 		log.debug("Request to get all replies along with time");
 		Page<ReplyDTO> replyPage = findAll(pageable);
 		List<ReplyDTO> replyList = replyPage.getContent();
-		for (ReplyDTO helpDto : replyList) {
+		for (ReplyDTO replyDto : replyList) {
+			countVotes(replyDto);
 			Instant instant = Instant.now();
 			Date repliedTime = null;
-			if (helpDto.getDate() != null) {
-				repliedTime = Date.from(helpDto.getDate());
+			if (replyDto.getDate() != null) {
+				repliedTime = Date.from(replyDto.getDate());
 			}
 			Date current = Date.from(instant);
 			long diffInSecond = 0l;
@@ -136,24 +137,24 @@ public class ReplyServiceImpl implements ReplyService {
 			}
 			long postedBefore = 0l;
 			if (diffInSecond < 60l) {
-				helpDto.setTimeElapsed(diffInSecond + " seconds ago");
+				replyDto.setTimeElapsed(diffInSecond + " seconds ago");
 			} else if (diffInSecond < 3600l) {
 				postedBefore = diffInSecond / 60l;
-				helpDto.setTimeElapsed(postedBefore + " minutes ago");
+				replyDto.setTimeElapsed(postedBefore + " minutes ago");
 			} else if (diffInSecond < 86400l) {
 				postedBefore = diffInSecond / 3600l;
-				helpDto.setTimeElapsed(postedBefore + " hours ago");
+				replyDto.setTimeElapsed(postedBefore + " hours ago");
 			} else if (diffInSecond < 2592000l) {
 				postedBefore = diffInSecond / 86400l;
-				helpDto.setTimeElapsed(postedBefore + " days ago");
+				replyDto.setTimeElapsed(postedBefore + " days ago");
 			} else if (diffInSecond < 31104000l) {
 				postedBefore = diffInSecond / 2592000l;
-				helpDto.setTimeElapsed(postedBefore + " months ago");
+				replyDto.setTimeElapsed(postedBefore + " months ago");
 			} else {
 				postedBefore = diffInSecond / 31104000l;
-				helpDto.setTimeElapsed(postedBefore + " years ago");
+				replyDto.setTimeElapsed(postedBefore + " years ago");
 			}
-			System.out.println("how many ago " + helpDto.getTimeElapsed());
+			System.out.println("how many ago " + replyDto.getTimeElapsed());
 
 		}
 		return replyPage;
