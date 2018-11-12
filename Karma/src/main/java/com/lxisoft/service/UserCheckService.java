@@ -101,7 +101,7 @@ public interface UserCheckService {
      * Get all the userChecks by commentId.
      *
      * @param pageable the pagination information, commentId to find
-     * @return the page of dtos
+     * @return the page of dto
      */
 
 	Page<UserCheckDTO> findAllUserCheckByCommentId(Pageable pageable, Long commentId);
@@ -124,6 +124,18 @@ public interface UserCheckService {
      * @return optional<userCheck>
      */
 	
-	Optional<UserCheckDTO> createUserCheckLike(UserCheckDTO userCheckDTO);
+	Optional<UserCheckDTO> saveUserCheckLike(UserCheckDTO userCheckDTO);
+	
+
+	/**
+     *  create new  userChecks with negative vote.
+     *
+     * @param userCheck
+     * @return optional<userCheck>
+     */
+	
+	
+	Optional<UserCheckDTO> saveUserCheckDislike(UserCheckDTO userCheckDTO);
 	
 }
+ 

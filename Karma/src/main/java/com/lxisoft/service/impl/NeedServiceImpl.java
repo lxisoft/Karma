@@ -7,6 +7,7 @@ import com.lxisoft.domain.Need;
 import com.lxisoft.repository.NeedRepository;
 import com.lxisoft.service.dto.CommentDTO;
 import com.lxisoft.service.dto.NeedDTO;
+import com.lxisoft.service.dto.UserCheckDTO;
 import com.lxisoft.service.mapper.NeedMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,8 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -127,6 +130,7 @@ public class NeedServiceImpl implements NeedService {
         Pageable pageable=null;
        List<CommentDTO> commentList=commentService.findByNeedId(id,pageable).getContent();
        optional.get().setCommentList(commentList);
+       countComments(optional.get());
         return  optional;
     }
 
@@ -173,4 +177,70 @@ public class NeedServiceImpl implements NeedService {
 				 .map(needMapper::toDto);
 		
 	}
+	
+	
+	
+
+	 public void countComments(NeedDTO needDTO)
+	    {
+	    	log.debug("method call to count total comments and set it to NeedDto");
+	    	Pageable pageable=null;
+	    	Long needId=needDTO.getId();
+	    	Page<CommentDTO> commentDTO=commentService.findByNeedId(needId,pageable);
+	    	needDTO.setNoOfComments((commentDTO.getContent().size())+0l);
+	   
+	  
+	    }
+	    
+
+	
+
+
+
+	/**
+	    * Get all the comments with time.
+	    *
+	    * @param pageable the pagination information
+	    * @return the list of entities
+	    */
+		@Override
+		public Page<NeedDTO> findAllNeeds(Pageable pageable) {
+			log.debug("Request to get all comments");
+			Page<NeedDTO> needPage = findAll(pageable);
+			List<NeedDTO> needList = needPage.getContent();
+			for (NeedDTO needDto : needList) {
+				Instant instant = Instant.now();
+				Date repliedTime = null;
+				if (needDto.getDate() != null) {
+					repliedTime = Date.from(needDto.getDate());
+				}
+				Date current = Date.from(instant);
+				long diffInSecond = 0l;
+				if (repliedTime != null) {
+					diffInSecond = (current.getTime() - repliedTime.getTime()) / 1000l;
+				}
+				long postedBefore = 0l;
+				if (diffInSecond < 60l) {
+					needDto.setTimeElapsed(diffInSecond + " seconds ago");
+				} else if (diffInSecond < 3600l) {
+					postedBefore = diffInSecond / 60l;
+					needDto.setTimeElapsed(postedBefore + " minutes ago");
+				} else if (diffInSecond < 86400l) {
+					postedBefore = diffInSecond / 3600l;
+					needDto.setTimeElapsed(postedBefore + " hours ago");
+				} else if (diffInSecond < 2592000l) {
+					postedBefore = diffInSecond / 86400l;
+					needDto.setTimeElapsed(postedBefore + " days ago");
+				} else if (diffInSecond < 31104000l) {
+					postedBefore = diffInSecond / 2592000l;
+					needDto.setTimeElapsed(postedBefore + " months ago");
+				} else {
+					postedBefore = diffInSecond / 31104000l;
+					needDto.setTimeElapsed(postedBefore + " years ago");
+				}
+				System.out.println("how many ago " + needDto.getTimeElapsed());
+
+			}
+			return needPage;
+		}
 }

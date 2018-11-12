@@ -216,7 +216,7 @@ log.debug("requset to get all user checks with comment Id:",replyId);
      */
 	
 	@Override
-	public Optional<UserCheckDTO> createUserCheckLike(UserCheckDTO userCheckDTO) {
+	public Optional<UserCheckDTO> saveUserCheckLike(UserCheckDTO userCheckDTO) {
 		
 		log.debug("requset to set userCheck with positive vote :",userCheckDTO);
 		userCheckDTO.setVoteType("positive");
@@ -227,4 +227,26 @@ log.debug("requset to get all user checks with comment Id:",replyId);
 		return result;
 	}
 
+	
+	  /**
+     * set the userChecks with negative vouteType.
+     *
+     * @param pageable the pagination information
+     * 
+     * @return the list of entities
+     */
+	
+	@Override
+	public Optional<UserCheckDTO> saveUserCheckDislike(UserCheckDTO userCheckDTO) {
+		
+		log.debug("requset to set userCheck with positive vote :",userCheckDTO);
+		userCheckDTO.setVoteType("negative");
+		UserCheck userCheck=userCheckMapper.toEntity(userCheckDTO);
+		userCheck=userCheckRepository.save(userCheck);
+		userCheckDTO=userCheckMapper.toDto(userCheck);
+		Optional<UserCheckDTO> result=Optional.of(userCheckDTO);
+		return result;
+	}
+
+	
 }

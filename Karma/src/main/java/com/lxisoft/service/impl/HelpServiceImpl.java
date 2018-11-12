@@ -1,9 +1,11 @@
 package com.lxisoft.service.impl;
 
 import com.lxisoft.service.ApprovalStatusService;
+import com.lxisoft.service.CommentService;
 import com.lxisoft.service.HelpService;
 import com.lxisoft.domain.Help;
 import com.lxisoft.repository.HelpRepository;
+import com.lxisoft.service.dto.CommentDTO;
 import com.lxisoft.service.dto.HelpDTO;
 import com.lxisoft.service.mapper.HelpMapper;
 import org.slf4j.Logger;
@@ -21,6 +23,9 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.Instant;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -38,6 +43,9 @@ public class HelpServiceImpl implements HelpService {
     
     @Autowired
     ApprovalStatusService approvalStatusService;
+    
+    @Autowired
+    CommentService commentService;
 
     @Value("${upload.path}")
     private String path;
@@ -104,8 +112,10 @@ public class HelpServiceImpl implements HelpService {
     @Transactional(readOnly = true)
     public Optional<HelpDTO> findOne(Long id) {
         log.debug("Request to get Help : {}", id);
-        return helpRepository.findById(id)
+        Optional<HelpDTO> result=helpRepository.findById(id)
             .map(helpMapper::toDto);
+        countComments(result.get());
+        return result;
     }
 
     /**
@@ -150,5 +160,75 @@ public class HelpServiceImpl implements HelpService {
     	
         return helpRepository.findAllHelpsByApprovalStatusId(pageable,approvalStatusId)
             .map(helpMapper::toDto);
+	}
+
+
+
+	@Override
+	public void countComments(HelpDTO helpDTO) {
+		
+		log.debug("method call to count total comments and set it to NeedDto");
+		Long helpId=helpDTO.getId();
+	
+    	Pageable pageable=null;
+    	
+    	Page<CommentDTO> commentDTOs=commentService.findByNeedId(helpId,pageable);
+    	helpDTO.setNoOfComments((commentDTOs.getContent().size())+0l);
+	}
+		
+
+
+	
+	
+	
+	/**
+	 * @param pageable
+	 * 
+	 * @return
+	 */
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Page<HelpDTO> findAllHelps(Pageable pageable) {
+		log.debug("Request to get all NewsFeeds");
+		Page<HelpDTO> helpPage = findAll(pageable);
+		List<HelpDTO> helpList = helpPage.getContent();
+		for (HelpDTO helpDto : helpList) {
+			Instant instant = Instant.now();
+			Date helpedTime = null;
+			if (helpDto.getTime() != null) {
+				helpedTime = Date.from(helpDto.getTime());
+			}
+			Date current = Date.from(instant);
+			long diffInSecond = 0l;
+			if (helpedTime != null) {
+				diffInSecond = (current.getTime() - helpedTime.getTime()) / 1000l;
+			}
+			long postedBefore = 0l;
+			if (diffInSecond < 60l) {
+				helpDto.setTimeElapsed(diffInSecond + " seconds ago");
+			} else if (diffInSecond < 3600l) {
+				postedBefore = diffInSecond / 60l;
+				helpDto.setTimeElapsed(postedBefore + " minutes ago");
+			} else if (diffInSecond < 86400l) {
+				postedBefore = diffInSecond / 3600l;
+				helpDto.setTimeElapsed(postedBefore + " hours ago");
+			} else if (diffInSecond < 2592000l) {
+				postedBefore = diffInSecond / 86400l;
+				helpDto.setTimeElapsed(postedBefore + " days ago");
+			} else if (diffInSecond < 31104000l) {
+				postedBefore = diffInSecond / 2592000l;
+				helpDto.setTimeElapsed(postedBefore + " months ago");
+			} else {
+				postedBefore = diffInSecond / 31104000l;
+				helpDto.setTimeElapsed(postedBefore + " years ago");
+			}
+			System.out.println("how many ago " + helpDto.getTimeElapsed());
+
+		}
+		return helpPage;
+
+
+
 	}
 }

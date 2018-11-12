@@ -60,16 +60,6 @@ public class ViolationServiceImpl implements ViolationService {
         Instant dateInstant=Instant.parse(parseDate);
         violationDTO.setDate(dateInstant);
         
-   /*     for(MultipartFile file:violationDTO.getFiles()){
-        	
-        	MediaDTO mediaDTO=new MediaDTO();
-        	
-        	mediaDTO.setFile(file);
-        	mediaDTO.setViolationId(violationDTO.getId());
-        	mediaService.save(mediaDTO);
-        	  	
-        }*/
-        
         Violation violation = violationMapper.toEntity(violationDTO);
         violation = violationRepository.save(violation);
         return violationMapper.toDto(violation);

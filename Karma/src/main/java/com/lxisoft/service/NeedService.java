@@ -1,5 +1,6 @@
 package com.lxisoft.service;
 
+import com.lxisoft.service.dto.CommentDTO;
 import com.lxisoft.service.dto.NeedDTO;
 
 import org.springframework.data.domain.Page;
@@ -62,13 +63,28 @@ public interface NeedService {
     Page<NeedDTO> findAllNeedsByApprovedStatus(Pageable pageable, String approvalStatus);
     
     /**
-     * Get all the approvedstatus needs.
+     * Get all the approved status needs.
      *
      * @param pageable the pagination information
-     * @return the list of approvedstatus entities
+     * @return the list of approved status entities
      */
 	Page<NeedDTO> findAllNeedsByApprovalStatusId(Pageable pageable,Long approvalStatusId);
 	
+	
+	 /**
+     * Get all the needs by severity id.
+     *
+     * @param pageable the pagination information, severityId
+     * @return the list of approved status entities
+     */
 	Page<NeedDTO> findAllNeedsBySeverity(Pageable pageable,Long severityId);
+
+	/**
+     * Get all needs along with time.
+     *
+     * @param pageable the pagination information
+     * @return the list of approved status entities
+     */
+	Page<NeedDTO> findAllNeeds(Pageable pageable);
 	
 }

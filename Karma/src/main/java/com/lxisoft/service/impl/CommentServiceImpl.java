@@ -1,14 +1,9 @@
 package com.lxisoft.service.impl;
 
-import com.lxisoft.service.CommentService;
-import com.lxisoft.service.UserCheckService;
-import com.lxisoft.domain.Comment;
-import com.lxisoft.repository.CommentRepository;
-import com.lxisoft.service.dto.CommentDTO;
-import com.lxisoft.service.dto.UserCheckDTO;
-import com.lxisoft.service.mapper.CommentMapper;
-
-import ch.qos.logback.core.net.SyslogOutputStream;
+import java.time.Instant;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +13,23 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+import com.lxisoft.domain.Comment;
+import com.lxisoft.repository.CommentRepository;
+import com.lxisoft.service.CommentService;
+import com.lxisoft.service.ReplyService;
+import com.lxisoft.service.UserCheckService;
+import com.lxisoft.service.dto.CommentDTO;
+import com.lxisoft.service.dto.ReplyDTO;
+import com.lxisoft.service.dto.UserCheckDTO;
+import com.lxisoft.service.mapper.CommentMapper;
+
+
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
 
 /**
  * Service Implementation for managing Comment.
@@ -35,8 +45,13 @@ public class CommentServiceImpl implements CommentService {
     private final CommentMapper commentMapper;
     
     @Autowired
+    
     private  UserCheckService userCheckService;
-
+    
+    @Autowired
+    
+    private ReplyService replyService; 
+    
     public CommentServiceImpl(CommentRepository commentRepository, CommentMapper commentMapper) {
         this.commentRepository = commentRepository;
         this.commentMapper = commentMapper;
@@ -84,21 +99,21 @@ public class CommentServiceImpl implements CommentService {
         Optional<CommentDTO>commentDto=commentRepository.findById(id)
             .map(commentMapper::toDto);
          
-       countLikes(commentDto.get());
-        
+       countVotes(commentDto.get());
+       countReplys(commentDto.get());
         return commentDto;
     }
     
     
     
      /*
-      * to  count totel likes,dislikes and set to the commentDTo
+      * to  count total likes,dislikes and set to the commentDTo
       * @Param commentDTO
       */
    
     
-    
-    public void countLikes(CommentDTO commentDTO)
+    @Override
+    public void countVotes(CommentDTO commentDTO)
     {
     	log.debug("method call to count likes and dislikes and set it to commentDto");
     	Pageable pageable=null;
@@ -132,8 +147,8 @@ public class CommentServiceImpl implements CommentService {
      */
   
    
-   
-   public void countLikes(List<CommentDTO> commentDTOs)
+   @Override
+   public void countVotes(List<CommentDTO> commentDTOs)
    {
    	log.debug("method call to count likes and dislikes and set it to commentDto");
    	Pageable pageable=null;
@@ -154,7 +169,7 @@ public class CommentServiceImpl implements CommentService {
 				   		}
 				   		else
 				   		{
-				   			noOfDislikes--;
+				   			noOfDislikes++;
 				   		}
 				   	}
 				   	commentDTO.setNoOfLikes(noOfLikes);
@@ -184,7 +199,7 @@ public class CommentServiceImpl implements CommentService {
 		log.debug("request to get all comment by needId :"+needId);
 		Page<Comment> comments=commentRepository.findByNeedIdIs(needId,pageable);
 		Page<CommentDTO> commentDtos=comments.map(commentMapper::toDto);
-		countLikes(commentDtos.getContent());
+		countVotes(commentDtos.getContent());
 		return  commentDtos;
 		
 	}
@@ -215,4 +230,74 @@ public class CommentServiceImpl implements CommentService {
 	            .map(commentMapper::toDto);
 	  }
 
+	
+	
+
+	@Override
+	public void countReplys(CommentDTO commentDTO)
+	{
+		Long commentId=commentDTO.getId();
+		Pageable pageable=null;
+		Page<ReplyDTO> replyDTOs=replyService.findByCommentId(pageable,commentId);
+		commentDTO.setNoOfReplies((replyDTOs.getContent().size())+0l);
+	}
+	
+
+
+	
+	
+
+
+	/**
+    * Get all the comments with time.
+    *
+    * @param pageable the pagination information
+    * @return the list of entities
+    */
+	@Override
+	public Page<CommentDTO> findAllComments(Pageable pageable) {
+		log.debug("Request to get all comments");
+		Page<CommentDTO> commentPage = findAll(pageable);
+		List<CommentDTO> commentList = commentPage.getContent();
+		for (CommentDTO commentDto : commentList) {
+			Instant instant = Instant.now();
+			Date repliedTime = null;
+			if (commentDto.getDate() != null) {
+				repliedTime = Date.from(commentDto.getDate());
+			}
+			Date current = Date.from(instant);
+			long diffInSecond = 0l;
+			if (repliedTime != null) {
+				diffInSecond = (current.getTime() - repliedTime.getTime()) / 1000l;
+			}
+			long postedBefore = 0l;
+			if (diffInSecond < 60l) {
+				commentDto.setTimeElapsed(diffInSecond + " seconds ago");
+			} else if (diffInSecond < 3600l) {
+				postedBefore = diffInSecond / 60l;
+				commentDto.setTimeElapsed(postedBefore + " minutes ago");
+			} else if (diffInSecond < 86400l) {
+				postedBefore = diffInSecond / 3600l;
+				commentDto.setTimeElapsed(postedBefore + " hours ago");
+			} else if (diffInSecond < 2592000l) {
+				postedBefore = diffInSecond / 86400l;
+				commentDto.setTimeElapsed(postedBefore + " days ago");
+			} else if (diffInSecond < 31104000l) {
+				postedBefore = diffInSecond / 2592000l;
+				commentDto.setTimeElapsed(postedBefore + " months ago");
+			} else {
+				postedBefore = diffInSecond / 31104000l;
+				commentDto.setTimeElapsed(postedBefore + " years ago");
+			}
+			System.out.println("how many ago " + commentDto.getTimeElapsed());
+
+		}
+		return commentPage;
+	}
+
+
+
+
 }
+
+	

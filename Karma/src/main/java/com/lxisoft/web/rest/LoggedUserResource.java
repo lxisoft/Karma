@@ -58,24 +58,16 @@ public class LoggedUserResource {
      */
     @PostMapping("/logged-users")
     @Timed
-    public ResponseEntity<LoggedUserDTO> createLoggedUser(@RequestBody LoggedUserDTO loggedUserDTO,@RequestParam MultipartFile file) throws URISyntaxException, IOException {
+    public ResponseEntity<LoggedUserDTO> createLoggedUser(@RequestBody LoggedUserDTO loggedUserDTO) throws URISyntaxException, IOException {
         log.debug("REST request to save LoggedUser : {}", loggedUserDTO);
         if (loggedUserDTO.getId() != null) {
             throw new BadRequestAlertException("A new loggedUser cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        MediaDTO mediaDTO=new MediaDTO();
-   	 
-        mediaDTO.setFile(file);
-        
-        MediaDTO mediaDto=mediaService.save(mediaDTO);
-   	
-        loggedUserDTO.setProfilePicId(mediaDto.getId());
-        log.info("*************{}",mediaDto.getId());
-   	
-        LoggedUserDTO result = loggedUserService.save(loggedUserDTO);
-        return ResponseEntity.created(new URI("/api/logged-users/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+      
+        LoggedUserDTO loggedUserDto = loggedUserService.save(loggedUserDTO);
+        return ResponseEntity.created(new URI("/api/logged-users/" + loggedUserDto.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, loggedUserDto.getId().toString()))
+            .body(loggedUserDto);
     }
 
     /**
@@ -142,4 +134,35 @@ public class LoggedUserResource {
         loggedUserService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+    
+    /**
+     * POST  /logged-users : Create a new loggedUser with profile picture.
+     *
+     * @param loggedUserDTO the loggedUserDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new loggedUserDTO, or with status 400 (Bad Request) if the loggedUser has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @throws IOException 
+     */
+    @PostMapping("/logged-users/createLoggedUserWithMedia")
+    @Timed
+    public ResponseEntity<LoggedUserDTO> createLoggedUserWithMedia(@RequestBody LoggedUserDTO loggedUserDTO,@RequestParam MultipartFile file) throws URISyntaxException, IOException {
+        log.debug("REST request to save LoggedUser : {}", loggedUserDTO);
+        if (loggedUserDTO.getId() != null) {
+            throw new BadRequestAlertException("A new loggedUser cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        MediaDTO mediaDTO=new MediaDTO();
+   	 
+        mediaDTO.setFile(file);
+        
+        MediaDTO mediaDto=mediaService.save(mediaDTO);
+   	
+        loggedUserDTO.setProfilePicId(mediaDto.getId());
+        log.info("*************{}",mediaDto.getId());
+   	
+        LoggedUserDTO loggedUserDto = loggedUserService.save(loggedUserDTO);
+        return ResponseEntity.created(new URI("/api/logged-users/createLoggedUserWithMedia" + loggedUserDto.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, loggedUserDto.getId().toString()))
+            .body(loggedUserDto);
+    }
+
 }

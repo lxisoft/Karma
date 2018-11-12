@@ -20,8 +20,31 @@ public class ReplyDTO implements Serializable {
     private Long repliedUserId;
     
     private String dateInString;
+    
+    private String timeElapsed;
+    
+    private Long noOfLikes;
+    
+    private Long noOfDislikes;
+    
+    
+    public Long getNoOfLikes() {
+		return noOfLikes;
+	}
 
-    public Long getId() {
+	public void setNoOfLikes(Long noOfLikes) {
+		this.noOfLikes = noOfLikes;
+	}
+
+	public Long getNoOfDislikes() {
+		return noOfDislikes;
+	}
+
+	public void setNoOfDislikes(Long noDislikes) {
+		this.noOfDislikes = noOfDislikes;
+	}
+
+	public Long getId() {
         return id;
     }
 
@@ -107,4 +130,12 @@ public class ReplyDTO implements Serializable {
             ", repliedUser=" + getRepliedUserId() +
             "}";
     }
+
+	public String getTimeElapsed() {
+		return timeElapsed;
+	}
+
+	public void setTimeElapsed(String timeElapsed) {
+		this.timeElapsed = timeElapsed;
+	}
 }

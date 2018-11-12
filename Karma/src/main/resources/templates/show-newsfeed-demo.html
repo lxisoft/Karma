@@ -1,0 +1,9 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<th:block th:each="newsFeed:${newsFeedList}">
+<p th:text="${newsFeed.description}"></p>
+<p th:text="${newsFeed.postedBefore}"></p>
+</th:block>
+</body>
+</html>

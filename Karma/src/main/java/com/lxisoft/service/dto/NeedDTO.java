@@ -41,12 +41,26 @@ public class NeedDTO implements Serializable {
 
     private Long percentageOfGenuineness;
     
+    private String timeElapsed;
+    
     private List<String> fileNameList=new ArrayList<>();
     
     private MultipartFile[] files;
     
     private List<CommentDTO> commentList=new ArrayList<>();
     
+    private Long noOfComments;
+    
+    public void setNoOfComments(Long noOfComments)
+    {
+    	
+    	this.noOfComments=noOfComments;
+    }
+    
+    public Long getNoOfComments()
+    {
+    	return noOfComments;
+    }
     
     public void  setCommentList(List<CommentDTO> commentList)
     {
@@ -230,4 +244,12 @@ public class NeedDTO implements Serializable {
             ", postedUser=" + getPostedUserId() +
             "}";
     }
+
+	public String getTimeElapsed() {
+		return timeElapsed;
+	}
+
+	public void setTimeElapsed(String timeElapsed) {
+		this.timeElapsed = timeElapsed;
+	}
 }
