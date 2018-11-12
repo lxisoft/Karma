@@ -60,7 +60,7 @@ public class HelpServiceImpl implements HelpService {
     @Override
     public HelpDTO save(HelpDTO helpDTO) throws IOException {
         log.debug("Request to save Help : {}", helpDTO);
-        if (helpDTO.getFiles() != null && helpDTO.getFiles().length > 0) {
+      /*  if (helpDTO.getFiles() != null && helpDTO.getFiles().length > 0) {
             for (MultipartFile aFile : helpDTO.getFiles()){
                  
                 System.out.println("Saving file: " + aFile.getOriginalFilename());
@@ -76,7 +76,7 @@ public class HelpServiceImpl implements HelpService {
                                StandardCopyOption.REPLACE_EXISTING);                   
                     }           
             }
-		}
+		}*/
         Help help = helpMapper.toEntity(helpDTO);
         help = helpRepository.save(help);
         return helpMapper.toDto(help);

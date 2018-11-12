@@ -225,7 +225,7 @@ public class ViolationResource {
         
         ViolationDTO violationDto = violationService.save(violationDTO);
         
-        for(MultipartFile file:files){
+        /*for(MultipartFile file:files){
         	
         	MediaDTO mediaDTO=new MediaDTO();
         	
@@ -234,7 +234,7 @@ public class ViolationResource {
         	mediaService.save(mediaDTO);
         	  	
         }
-       
+       */
         return ResponseEntity.created(new URI("/api/violations/createViolationWithMedia" + violationDto.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, violationDto.getId().toString()))
             .body(violationDto);
