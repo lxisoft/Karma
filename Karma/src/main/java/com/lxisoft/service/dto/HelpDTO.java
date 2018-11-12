@@ -35,10 +35,6 @@ public class HelpDTO implements Serializable {
 
     private String timeElapsed;
 
-
-
-    
-    
     public Long getNoOfComments() {
 		return noOfComments;
 	}

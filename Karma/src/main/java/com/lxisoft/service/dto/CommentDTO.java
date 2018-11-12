@@ -28,11 +28,7 @@ public class CommentDTO implements Serializable {
     private String dateInString;
     
 
-   
-    	
     private Long noOfReplies;
-
-    
 
     private String timeElapsed;
 

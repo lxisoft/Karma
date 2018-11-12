@@ -33,22 +33,12 @@ public interface UserCheckRepository extends JpaRepository<UserCheck, Long> {
 	Page<UserCheck> findAllUserCheckByViolationId(Pageable pageable, Long violationId);
 
 	Page<UserCheck> findAllUserCheckByViolationIdAndCheckedUserId(Pageable pageable, Long violationId, Long checkedUserId);
-	
-	/**
-	 * method to get All user checks with the given comment id
-	 * @param pageable,comment id
-	 * @return page of entity
-	 */
-	Page<UserCheck> findAllUserCheckByCommentId(Pageable pageable, Long commentId);
-	
-	/**
-	 * method to get All user checks with the given reply id
-	 * @param pageable,reply id
-	 * @return page of entity
-	 */
-	Page<UserCheck> findAllByReplyIdIs(Long replyId,Pageable pageable);
 
-	
+	Page<UserCheck> findAllUserCheckByCommentId(Pageable pageable, Long commentId);
+
+	Page<UserCheck> findAllUserCheckByVoteType(Pageable pageable, String voteType);
+
+	Page<UserCheck> findAllByReplyIdIs(Long replyId, Pageable pageable);
 
 
 }

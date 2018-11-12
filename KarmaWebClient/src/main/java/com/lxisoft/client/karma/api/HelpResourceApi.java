@@ -25,7 +25,11 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+<<<<<<< HEAD
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-09T14:03:13.373+05:30[Asia/Calcutta]")
+=======
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-11T21:56:15.510+05:30[Asia/Calcutta]")
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
 
 @Api(value = "HelpResource", description = "the HelpResource API")
 public interface HelpResourceApi {
@@ -44,6 +48,7 @@ public interface HelpResourceApi {
     ResponseEntity<HelpDTO> createHelpUsingPOST(@ApiParam(value = "helpDTO" ,required=true )  @Valid @RequestBody HelpDTO helpDTO);
 
 
+<<<<<<< HEAD
     @ApiOperation(value = "createHelpWithMedia", nickname = "createHelpWithMediaUsingPOST", notes = "", response = HelpDTO.class, tags={ "help-resource", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = HelpDTO.class),
@@ -58,6 +63,8 @@ public interface HelpResourceApi {
     ResponseEntity<HelpDTO> createHelpWithMediaUsingPOST(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Object UNKNOWN_BASE_TYPE);
 
 
+=======
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
     @ApiOperation(value = "deleteHelp", nickname = "deleteHelpUsingDELETE", notes = "", tags={ "help-resource", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK"),

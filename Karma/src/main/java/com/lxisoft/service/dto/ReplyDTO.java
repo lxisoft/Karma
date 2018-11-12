@@ -36,6 +36,7 @@ public class ReplyDTO implements Serializable {
 		this.noOfLikes = noOfLikes;
 	}
 
+
 	public Long getNoOfDislikes() {
 		return noOfDislikes;
 	}

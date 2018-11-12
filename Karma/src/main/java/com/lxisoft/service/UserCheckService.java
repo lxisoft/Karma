@@ -97,6 +97,7 @@ public interface UserCheckService {
 	Page<UserCheckDTO> findAllUserCheckByViolationId(Pageable pageable, Long violationId);
 
 	Page<UserCheckDTO> findAllUserCheckByViolationIdAndCheckedUserId(Pageable pageable, Long violationId, Long checkedUserId);
+
 	/**
      * Get all the userChecks by commentId.
      *
@@ -104,18 +105,11 @@ public interface UserCheckService {
      * @return the page of dto
      */
 
+
 	Page<UserCheckDTO> findAllUserCheckByCommentId(Pageable pageable, Long commentId);
 
-	/**
-     * Get all the userChecks by replaytId.
-     *
-     * @param pageable the pagination information, replyId to find
-     * @return the list of entities
-     */
+	Page<UserCheckDTO> findAllUserCheckByVoteType(Pageable pageable, String voteType);
 
-	
-	Page<UserCheckDTO> findAllUserCheckByReplyId(Pageable pageable, Long replyId);
-	
 
 	/**
      *  create new  userChecks with positive vote.
@@ -136,6 +130,9 @@ public interface UserCheckService {
 	
 	
 	Optional<UserCheckDTO> saveUserCheckDislike(UserCheckDTO userCheckDTO);
+
+	Page<UserCheckDTO> findAllUserCheckByReplyId(Pageable pageable, Long replyId);
 	
+
 }
  

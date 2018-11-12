@@ -159,6 +159,7 @@ public class ReplyServiceImpl implements ReplyService {
 		return replyPage;
 		
 	}
+
 	
 	
 	public void countVotes(ReplyDTO replyDTO)
@@ -191,6 +192,7 @@ public class ReplyServiceImpl implements ReplyService {
 
 
 	
+
 
 	
 }

@@ -192,6 +192,7 @@ public class HelpResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
     
+
     /**
      * POST  /helps : Create a new help with media.
      *
@@ -237,6 +238,7 @@ public class HelpResource {
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, helpDto.getId().toString()))
             .body(helpDto);
     }
+
 
 
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+
 import com.lxisoft.domain.Comment;
 import com.lxisoft.repository.CommentRepository;
 import com.lxisoft.service.CommentService;
@@ -23,6 +24,7 @@ import com.lxisoft.service.dto.CommentDTO;
 import com.lxisoft.service.dto.ReplyDTO;
 import com.lxisoft.service.dto.UserCheckDTO;
 import com.lxisoft.service.mapper.CommentMapper;
+
 
 
 import java.time.Instant;
@@ -197,7 +199,7 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public Page<CommentDTO> findByNeedId(Long needId,Pageable pageable) {
 		log.debug("request to get all comment by needId :"+needId);
-		Page<Comment> comments=commentRepository.findByNeedIdIs(needId,pageable);
+		Page<Comment> comments=commentRepository.findAllByNeedId(needId,pageable);
 		Page<CommentDTO> commentDtos=comments.map(commentMapper::toDto);
 		countVotes(commentDtos.getContent());
 		return  commentDtos;
@@ -233,6 +235,7 @@ public class CommentServiceImpl implements CommentService {
 	
 	
 
+
 	@Override
 	public void countReplys(CommentDTO commentDTO)
 	{
@@ -242,11 +245,6 @@ public class CommentServiceImpl implements CommentService {
 		commentDTO.setNoOfReplies((replyDTOs.getContent().size())+0l);
 	}
 	
-
-
-	
-	
-
 
 	/**
     * Get all the comments with time.
@@ -294,9 +292,6 @@ public class CommentServiceImpl implements CommentService {
 		}
 		return commentPage;
 	}
-
-
-
 
 }
 

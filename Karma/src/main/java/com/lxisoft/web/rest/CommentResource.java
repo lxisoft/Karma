@@ -151,7 +151,6 @@ public class CommentResource {
 
     }
 
-
     /**
      * GET  /comments : get all the comments by violation id.
      *

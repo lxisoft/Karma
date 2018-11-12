@@ -179,7 +179,7 @@ public class NeedServiceImpl implements NeedService {
 	}
 	
 	
-	
+
 
 	 public void countComments(NeedDTO needDTO)
 	    {
@@ -192,11 +192,6 @@ public class NeedServiceImpl implements NeedService {
 	  
 	    }
 	    
-
-	
-
-
-
 	/**
 	    * Get all the comments with time.
 	    *

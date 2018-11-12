@@ -16,7 +16,11 @@
 
 feign:
     hystrix:
+<<<<<<< HEAD
         enabled: true
+=======
+        enabled: false
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
 #    client:
 #        config:
 #            default:

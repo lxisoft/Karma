@@ -164,6 +164,7 @@ public class HelpServiceImpl implements HelpService {
 
 
 
+
 	@Override
 	public void countComments(HelpDTO helpDTO) {
 		
@@ -176,6 +177,7 @@ public class HelpServiceImpl implements HelpService {
     	helpDTO.setNoOfComments((commentDTOs.getContent().size())+0l);
 	}
 		
+
 
 
 	
@@ -227,8 +229,6 @@ public class HelpServiceImpl implements HelpService {
 
 		}
 		return helpPage;
-
-
 
 	}
 }

@@ -71,18 +71,11 @@ public interface HelpService {
    	public void countComments(HelpDTO helpDTO);
    	
 
-
-
-
    	/**
    	 * @param pageable
    	 *
    	 * @return
    	 */
 	Page<HelpDTO> findAllHelps(Pageable pageable);
-
-
-
-
 
 }

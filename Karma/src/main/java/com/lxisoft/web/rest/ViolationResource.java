@@ -2,11 +2,13 @@ package com.lxisoft.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.service.MediaService;
+import com.lxisoft.service.UserCheckService;
 import com.lxisoft.service.ViolationService;
 import com.lxisoft.web.rest.errors.BadRequestAlertException;
 import com.lxisoft.web.rest.util.HeaderUtil;
 import com.lxisoft.web.rest.util.PaginationUtil;
 import com.lxisoft.service.dto.MediaDTO;
+import com.lxisoft.service.dto.UserCheckDTO;
 import com.lxisoft.service.dto.ViolationDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 
@@ -15,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
@@ -43,6 +46,9 @@ public class ViolationResource {
     private static final String ENTITY_NAME = "karmaViolation";
 
     private final ViolationService violationService;
+    
+    @Autowired
+    UserCheckService userCheckService;
     
     @Autowired
     MediaService mediaService;
@@ -233,4 +239,41 @@ public class ViolationResource {
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, violationDto.getId().toString()))
             .body(violationDto);
     }
+
+    
+
+    /**
+     * GET  /violations : get number of violation support.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of violations in body
+     */
+    @GetMapping("/violations/getNumberOfViolationSupport/{votetype}")
+    @Timed
+    public ResponseEntity<ViolationDTO> getNumberOfViolationSupport(Pageable pageable,@PathVariable String votetype) {
+        log.debug("REST request to get a page of Violations");
+        Page<UserCheckDTO> page = userCheckService.findAllUserCheckByVoteType(pageable,votetype);
+        
+        ViolationDTO violationDto=new ViolationDTO();
+        
+        List<UserCheckDTO> userCheckList=page.getContent();
+        Long number=(long) userCheckList.size();
+       
+        log.info("+++++{}",userCheckList.get(0).getVoteType());
+        
+        if(userCheckList.get(0).getVoteType().equals("support")){
+        violationDto.setNumberOfViolationSupporters(number);
+        }
+        if(userCheckList.get(0).getVoteType().equals("unsupport")){
+            violationDto.setNumberOfViolationUnSupporters(number);
+
+        }
+        Page<UserCheckDTO> page1 = new PageImpl<UserCheckDTO>(userCheckList, pageable, number);
+        
+        return ResponseUtil.wrapOrNotFound((Optional.of(violationDto)));
+   
+
 }
+
+}
+    
