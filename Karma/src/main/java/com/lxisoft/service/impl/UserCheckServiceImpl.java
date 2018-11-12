@@ -188,43 +188,25 @@ public class UserCheckServiceImpl implements UserCheckService {
      */
 	@Override
 	public Page<UserCheckDTO> findAllUserChecksByCommentId(Long commentId, Pageable pageable) {
-		log.debug("requset to get all user checks with comment Id:",commentId);
+		log.debug("request to get all user checks with comment Id:",commentId);
 		
 		return userCheckRepository.findByCommentIdIs(commentId,pageable).map(userCheckMapper::toDto);
 	}
-	  /**
-     * Get all the userChecks by replyId.
-     *
-     * @param pageable the pagination information
-     * 
-     * @return the list of entities
-     */
-	@Override
-	public Page<UserCheckDTO> findAllUserCheckByReplyId(Pageable pageable, Long replyId) {
-		
-log.debug("requset to get all user checks with comment Id:",replyId);
-		
-		return userCheckRepository.findAllByReplyIdIs(replyId,pageable).map(userCheckMapper::toDto);
-	}
 
-	  /**
-     * set the userChecks with positive vouteType.
+	 /**
+     * Get all the userChecks by vote type.
      *
      * @param pageable the pagination information
      * 
      * @return the list of entities
      */
-	
 	@Override
-	public Optional<UserCheckDTO> createUserCheckLike(UserCheckDTO userCheckDTO) {
+	public Page<UserCheckDTO> findAllUserCheckByVoteType(Pageable pageable, String voteType) {
+		log.debug("request to get all user checks with vote type:",voteType);
 		
-		log.debug("requset to set userCheck with positive vote :",userCheckDTO);
-		userCheckDTO.setVoteType("positive");
-		UserCheck userCheck=userCheckMapper.toEntity(userCheckDTO);
-		userCheck=userCheckRepository.save(userCheck);
-		userCheckDTO=userCheckMapper.toDto(userCheck);
-		Optional<UserCheckDTO> result=Optional.of(userCheckDTO);
-		return result;
+		return userCheckRepository.findAllUserCheckByVoteType(pageable,voteType)
+				.map(userCheckMapper::toDto);
+	
 	}
 
 }
