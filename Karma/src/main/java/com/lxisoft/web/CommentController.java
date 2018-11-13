@@ -99,10 +99,10 @@ public class CommentController {
     }
     
     /**
-	 * PUT /needs : Updates an existing comment.
+	 * PUT /comment : Updates an existing comment.
 	 *
 	 * @param commentDTO
-	 *            the needDTO to update
+	 *            the commentDTO to update
 	 * @return the string value, or with status 400 (Bad Request) if the commentDTO
 	 *         is not valid, or with status 500 (Internal Server Error) if the
 	 *         commentDTO couldn't be updated
@@ -110,7 +110,7 @@ public class CommentController {
 	 *             if the Location URI syntax is incorrect
 	 * @throws IOException 
 	 */
-	@PutMapping("/needs")
+	@PutMapping("/comments")
 	@Timed
 	public String updateComment(@ModelAttribute CommentDTO commentDTO, Model model) throws URISyntaxException, IOException {
 		
@@ -126,7 +126,7 @@ public class CommentController {
 	}
 	
 	/**
-	 * GET /needs : get all the comment.
+	 * GET /comments : get all the comment.
 	 *
 	 * @param pageable
 	 *            the pagination information
@@ -139,7 +139,7 @@ public class CommentController {
 	@Timed
 	public String getAllComments(Pageable pageable,
 			@RequestParam(required = false, defaultValue = "false") boolean eagerload, Model model) {
-		log.debug("request to get a page of Needs");
+		log.debug("request to get a page of comments");
 	
 		//List<CommentDTO> comments = commentResourceApi.getAllCommentUsingGET(eagerload, null, null, null, null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
 				
@@ -172,7 +172,7 @@ public class CommentController {
      * @param id the id of the commentDTO to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the commentDTO, or with status 404 (Not Found)
      */
-    @GetMapping("/getAllcommentByViolationId/{violationId}")
+    @GetMapping("/getAllcommentByHelpId/{violationId}")
     @Timed
     public String getAllCommentsByHelpId(@RequestParam(required=false,defaultValue="false") @PathVariable Long id,Model model) {
         log.debug("REST request to get Comment : {}", id);

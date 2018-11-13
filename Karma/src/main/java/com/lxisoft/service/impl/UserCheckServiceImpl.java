@@ -272,7 +272,7 @@ public class UserCheckServiceImpl implements UserCheckService {
 		
 		log.debug("requset to get all user checks with help Id:",helpId);
 		
-		return userCheckRepository.findAllByHelpId(helpId,pageable).map(userCheckMapper::toDto);
+		return userCheckRepository.findAllByCheckedHelpId(helpId,pageable).map(userCheckMapper::toDto);
 		
 	}
 
@@ -281,7 +281,7 @@ public class UserCheckServiceImpl implements UserCheckService {
 		
 		log.debug("requset to get all user checks with help Id:",needId);
 		
-		return userCheckRepository.findAllByNeedId(needId,pageable).map(userCheckMapper::toDto);
+		return userCheckRepository.findAllByCheckedNeedId(needId,pageable).map(userCheckMapper::toDto);
 	}
 	
 	
