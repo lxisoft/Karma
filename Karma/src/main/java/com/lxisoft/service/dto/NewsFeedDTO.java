@@ -24,6 +24,16 @@ public class NewsFeedDTO implements Serializable {
 
 	private String postedBefore;
 
+	private Long totalComments;
+
+	public Long getTotalComments() {
+		return totalComments;
+	}
+
+	public void setTotalComments(Long totalComments) {
+		this.totalComments = totalComments;
+	}
+
 	private MultipartFile[] attachedFiles;
 
 	private Set<String> attachedFilesUrls;

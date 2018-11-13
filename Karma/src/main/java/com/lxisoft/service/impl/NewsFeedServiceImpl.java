@@ -22,8 +22,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.lxisoft.domain.Media;
 import com.lxisoft.domain.NewsFeed;
 import com.lxisoft.repository.NewsFeedRepository;
+import com.lxisoft.service.CommentService;
 import com.lxisoft.service.MediaService;
 import com.lxisoft.service.NewsFeedService;
+import com.lxisoft.service.dto.CommentDTO;
 import com.lxisoft.service.dto.MediaDTO;
 import com.lxisoft.service.dto.NewsFeedDTO;
 import com.lxisoft.service.mapper.NewsFeedMapper;
@@ -41,6 +43,9 @@ public class NewsFeedServiceImpl implements NewsFeedService {
 
 	@Autowired
 	private MediaService mediaService;
+
+	@Autowired
+	private CommentService commentService;
 
 	private final NewsFeedMapper newsFeedMapper;
 
@@ -137,6 +142,11 @@ public class NewsFeedServiceImpl implements NewsFeedService {
 				if (newsFeed.getId() == newsFeedDto.getId()) {
 					newsFeedDto.setAttachedFilesUrls(urls);
 				}
+				Page<CommentDTO> commentsPage = commentService.findAllCommentsByNewsFeedId(pageable,
+						newsFeedDto.getId());
+				List<CommentDTO> commentsList = commentsPage.getContent();
+				newsFeedDto.setTotalComments((long) commentsList.size());
+
 			}
 		}
 
