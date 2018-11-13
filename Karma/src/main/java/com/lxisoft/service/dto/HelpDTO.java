@@ -34,6 +34,10 @@ public class HelpDTO implements Serializable {
     private String timeInString;
 
     private String timeElapsed;
+    
+    private Long noOfLikes;
+    
+    private Long noOfDislikes;
 
     public Long getNoOfComments() {
 		return noOfComments;
@@ -167,6 +171,22 @@ public class HelpDTO implements Serializable {
 
 	public void setTimeElapsed(String timeElapsed) {
 		this.timeElapsed = timeElapsed;
+	}
+
+	public Long getNoOfLikes() {
+		return noOfLikes;
+	}
+
+	public void setNoOfLikes(Long noOfLikes) {
+		this.noOfLikes = noOfLikes;
+	}
+
+	public Long getNoOfDislikes() {
+		return noOfDislikes;
+	}
+
+	public void setNoOfDislikes(Long noOfDislikes) {
+		this.noOfDislikes = noOfDislikes;
 	}
 
 	

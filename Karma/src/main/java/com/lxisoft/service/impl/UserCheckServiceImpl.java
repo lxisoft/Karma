@@ -253,9 +253,35 @@ public class UserCheckServiceImpl implements UserCheckService {
 	@Override
 	public Page<UserCheckDTO> findAllUserCheckByReplyId(Pageable pageable, Long replyId) {
 		
-log.debug("requset to get all user checks with comment Id:",replyId);
+		log.debug("requset to get all user checks with reply Id:",replyId);
 		
 		return userCheckRepository.findAllByReplyIdIs(replyId,pageable).map(userCheckMapper::toDto);
+	}
+
+	
+	
+	 /**
+     * Get all the userChecks by helpId.
+     *
+     * @param pageable the pagination information,helpId
+     * 
+     * @return the list of entities
+     */
+	@Override
+	public Page<UserCheckDTO> findAllUserCheckByHelpId(Pageable pageable, Long helpId) {
+		
+		log.debug("requset to get all user checks with help Id:",helpId);
+		
+		return userCheckRepository.findAllByHelpId(helpId,pageable).map(userCheckMapper::toDto);
+		
+	}
+
+	@Override
+	public Page<UserCheckDTO> findAllUserCheckByNeedId(Pageable pageable, Long needId) {
+		
+		log.debug("requset to get all user checks with help Id:",needId);
+		
+		return userCheckRepository.findAllByNeedId(needId,pageable).map(userCheckMapper::toDto);
 	}
 	
 	

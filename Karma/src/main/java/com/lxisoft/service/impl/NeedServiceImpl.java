@@ -3,9 +3,11 @@ package com.lxisoft.service.impl;
 import com.lxisoft.service.ApprovalStatusService;
 import com.lxisoft.service.CommentService;
 import com.lxisoft.service.NeedService;
+import com.lxisoft.service.UserCheckService;
 import com.lxisoft.domain.Need;
 import com.lxisoft.repository.NeedRepository;
 import com.lxisoft.service.dto.CommentDTO;
+import com.lxisoft.service.dto.HelpDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.service.dto.UserCheckDTO;
 import com.lxisoft.service.mapper.NeedMapper;
@@ -47,6 +49,9 @@ public class NeedServiceImpl implements NeedService {
     
     @Autowired
     CommentService commentService;
+    
+    @Autowired
+    UserCheckService userCheckService;
     
     @Value("${upload.path}")
     private String path;
@@ -104,11 +109,7 @@ public class NeedServiceImpl implements NeedService {
             .map(needMapper::toDto);
     }
 
-    /**
-     * Get all the Need with eager load of many-to-many relationships.
-     *
-     * @return the list of entities
-     */
+   
     public Page<NeedDTO> findAllWithEagerRelationships(Pageable pageable) {
         return needRepository.findAllWithEagerRelationships(pageable).map(needMapper::toDto);
     }
@@ -205,6 +206,7 @@ public class NeedServiceImpl implements NeedService {
 			List<NeedDTO> needList = needPage.getContent();
 			for (NeedDTO needDto : needList) {
 				Instant instant = Instant.now();
+				
 				Date repliedTime = null;
 				if (needDto.getDate() != null) {
 					repliedTime = Date.from(needDto.getDate());
@@ -238,4 +240,8 @@ public class NeedServiceImpl implements NeedService {
 			}
 			return needPage;
 		}
+		
+		
+		
+		
 }

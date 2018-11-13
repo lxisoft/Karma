@@ -131,7 +131,33 @@ public interface UserCheckService {
 	
 	Optional<UserCheckDTO> saveUserCheckDislike(UserCheckDTO userCheckDTO);
 
+	
+	/**
+     * Get all the userChecks by replyId.
+     *
+     * @param pageable the pagination information, replyId to find
+     * @return the list of entities
+     */
+	
 	Page<UserCheckDTO> findAllUserCheckByReplyId(Pageable pageable, Long replyId);
+
+	/**
+     * Get all the userChecks by helpId.
+     *
+     * @param pageable the pagination information, commentId to find
+     * @return the list of entities
+     */
+	
+	Page<UserCheckDTO> findAllUserCheckByHelpId(Pageable pageable, Long helpId);
+
+	/**
+     * Get all the userChecks by needId.
+     *
+     * @param pageable the pagination information, needId to find
+     * @return the list of entities
+     */
+	
+	Page<UserCheckDTO> findAllUserCheckByNeedId(Pageable pageable, Long needId);
 	
 
 }
