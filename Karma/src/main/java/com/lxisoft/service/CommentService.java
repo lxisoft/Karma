@@ -77,8 +77,14 @@ public interface CommentService {
 	 * method to count how many replay get for the comment 
 	 * @Param commentDTO
 	 */
-	void countReplys(CommentDTO commentDTO);
+	void countReplies(CommentDTO commentDTO);
 	
+	/**
+	 * method to count how many replay get for the comments 
+	 * @Param List of commentDTO
+	 */
+	
+	void countReplies(List<CommentDTO> commentDTO);
 	/**
 	 * method to count how many positive vote and negative vote
 	 * @Param commentDTO
