@@ -92,12 +92,13 @@ public class NewsFeedResource {
 	 */
 	@PutMapping("/news-feeds")
 	@Timed
-	public ResponseEntity<NewsFeedDTO> updateNewsFeed(@RequestBody NewsFeedDTO newsFeedDTO) throws URISyntaxException {
+	public ResponseEntity<NewsFeedDTO> updateNewsFeed(@RequestBody NewsFeedDTO newsFeedDTO)
+			throws URISyntaxException, IllegalStateException, IOException {
 		log.debug("REST request to update NewsFeed : {}", newsFeedDTO);
 		if (newsFeedDTO.getId() == null) {
 			throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
 		}
-		NewsFeedDTO result = newsFeedService.save(newsFeedDTO);
+		NewsFeedDTO result = newsFeedService.saveNewsFeed(newsFeedDTO);
 		return ResponseEntity.ok()
 				.headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, newsFeedDTO.getId().toString())).body(result);
 	}

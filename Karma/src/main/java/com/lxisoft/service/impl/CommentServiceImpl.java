@@ -9,11 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-
 
 import com.lxisoft.domain.Comment;
 import com.lxisoft.repository.CommentRepository;
@@ -25,14 +24,6 @@ import com.lxisoft.service.dto.ReplyDTO;
 import com.lxisoft.service.dto.UserCheckDTO;
 import com.lxisoft.service.mapper.CommentMapper;
 
-
-
-import java.time.Instant;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-
-
 /**
  * Service Implementation for managing Comment.
  */
@@ -40,237 +31,218 @@ import java.util.Optional;
 @Transactional
 public class CommentServiceImpl implements CommentService {
 
-    private final Logger log = LoggerFactory.getLogger(CommentServiceImpl.class);
+	private final Logger log = LoggerFactory.getLogger(CommentServiceImpl.class);
 
-    private final CommentRepository commentRepository;
+	private final CommentRepository commentRepository;
 
-    private final CommentMapper commentMapper;
-    
-    @Autowired
-    
-    private  UserCheckService userCheckService;
-    
-    @Autowired
-    
-    private ReplyService replyService; 
-    
-    public CommentServiceImpl(CommentRepository commentRepository, CommentMapper commentMapper) {
-        this.commentRepository = commentRepository;
-        this.commentMapper = commentMapper;
-    }
+	private final CommentMapper commentMapper;
 
-    /**
-     * Save a comment.
-     *
-     * @param commentDTO the entity to save
-     * @return the persisted entity
-     */
-    @Override
-    public CommentDTO save(CommentDTO commentDTO) {
-        log.debug("Request to save Comment : {}", commentDTO);
-        Comment comment = commentMapper.toEntity(commentDTO);
-        comment = commentRepository.save(comment);
-        return commentMapper.toDto(comment);
-    }
+	@Autowired
 
-    /**
-     * Get all the comments.
-     *
-     * @param pageable the pagination information
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public Page<CommentDTO> findAll(Pageable pageable) {
-        log.debug("Request to get all Comments");
-        Page<CommentDTO> result=commentRepository.findAll(pageable)
-            .map(commentMapper::toDto);
-        countVotes(result.getContent());
-        countReplies(result.getContent());
-        return result;
-    }
+	private UserCheckService userCheckService;
 
+	@Autowired
 
-    /**
-     * Get one comment by id.
-     *
-     * @param id the id of the entity
-     * @return the entity
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public Optional<CommentDTO> findOne(Long id) {
-        log.debug("Request to get Comment : {}", id);
-        Optional<CommentDTO>commentDto=commentRepository.findById(id)
-            .map(commentMapper::toDto);
-     
-       countVotes(commentDto.get());
-       countReplies(commentDto.get());
-        return commentDto;
-    }
-    
-    
-    
-     /*
-      * to  count total likes,dislikes and set to the commentDTo
-      * @Param commentDTO
-      */
-   
-    
-    @Override
-    public void countVotes(CommentDTO commentDTO)
-    {
-    	log.debug("method call to count likes and dislikes and set it to commentDto");
-    	Pageable pageable=null;
-    	Long commentId=commentDTO.getId();
-    	Long noOfLikes=0l;
-    	Long noOfDislikes=0l;
-    	
-    	Page<UserCheckDTO> userCheckDTOs=userCheckService.findAllUserChecksByCommentId(commentId,pageable);
-    	for(UserCheckDTO userCheckDTO:userCheckDTOs.getContent())
-    	{
-    		if(userCheckDTO.getVoteType().equals("positive"))
-    		{
-    			noOfLikes++;
-    		}
-    		else
-    		{
-    			noOfDislikes++;
-    		}
-    	}
-    	commentDTO.setNoOfLikes(noOfLikes);
-    	commentDTO.setNoOfDislikes(noOfDislikes);
-    
-   
-    	
-    }
-    
-    
-    /*
-     * to  count totel likes,dislikes of list of commentDto and set to the commentDTo
-     * @Param commentDTO
-     */
-  
-   
-   @Override
-   public void countVotes(List<CommentDTO> commentDTOs)
-   {
-   	log.debug("method call to count likes and dislikes and set it to commentDto");
-   	Pageable pageable=null;
-   	
-	   	for(CommentDTO commentDTO:commentDTOs)
-	   	{
-	   	
-				   	Long commentId=commentDTO.getId();
-				   	Long noOfLikes=0l;
-				   	Long noOfDislikes=0l;
-				   	
-				   	Page<UserCheckDTO> userCheckDTOs=userCheckService.findAllUserChecksByCommentId(commentId,pageable);
-				   	for(UserCheckDTO userCheckDTO:userCheckDTOs.getContent())
-				   	{
-				   		if(userCheckDTO.getVoteType().equals("positive"))
-				   		{
-				   			noOfLikes++;
-				   		}
-				   		else
-				   		{
-				   			noOfDislikes++;
-				   		}
-				   	}
-				   	commentDTO.setNoOfLikes(noOfLikes);
-				   	commentDTO.setNoOfDislikes(noOfDislikes);
-	  
-	   	}
-   }
+	private ReplyService replyService;
 
-    /**
-     * Delete the comment by id.
-     *
-     * @param id the id of the entity
-     */
-    @Override
-    public void delete(Long id) {
-        log.debug("Request to delete Comment : {}", id);
-        commentRepository.deleteById(id);
-    }
+	public CommentServiceImpl(CommentRepository commentRepository, CommentMapper commentMapper) {
+		this.commentRepository = commentRepository;
+		this.commentMapper = commentMapper;
+	}
 
-     /* 
-     *find all comment By NeedId
-     *@Param needId 
-     */
+	/**
+	 * Save a comment.
+	 *
+	 * @param commentDTO
+	 *            the entity to save
+	 * @return the persisted entity
+	 */
+	@Override
+	public CommentDTO save(CommentDTO commentDTO) {
+		log.debug("Request to save Comment : {}", commentDTO);
+		Comment comment = commentMapper.toEntity(commentDTO);
+		comment = commentRepository.save(comment);
+		return commentMapper.toDto(comment);
+	}
+
+	/**
+	 * Get all the comments.
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @return the list of entities
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public Page<CommentDTO> findAll(Pageable pageable) {
+		log.debug("Request to get all Comments");
+		Page<CommentDTO> result = commentRepository.findAll(pageable).map(commentMapper::toDto);
+		countVotes(result.getContent());
+		countReplies(result.getContent());
+		return result;
+	}
+
+	/**
+	 * Get one comment by id.
+	 *
+	 * @param id
+	 *            the id of the entity
+	 * @return the entity
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public Optional<CommentDTO> findOne(Long id) {
+		log.debug("Request to get Comment : {}", id);
+		Optional<CommentDTO> commentDto = commentRepository.findById(id).map(commentMapper::toDto);
+
+		countVotes(commentDto.get());
+		countReplies(commentDto.get());
+		return commentDto;
+	}
+
+	/*
+	 * to count total likes,dislikes and set to the commentDTo
+	 * 
+	 * @Param commentDTO
+	 */
 
 	@Override
-	public Page<CommentDTO> findByNeedId(Long needId,Pageable pageable) {
-		log.debug("request to get all comment by needId :"+needId);
-		Page<Comment> comments=commentRepository.findAllByNeedId(needId,pageable);
-		Page<CommentDTO> commentDtos=comments.map(commentMapper::toDto);
+	public void countVotes(CommentDTO commentDTO) {
+		log.debug("method call to count likes and dislikes and set it to commentDto");
+		Pageable pageable = null;
+		Long commentId = commentDTO.getId();
+		Long noOfLikes = 0l;
+		Long noOfDislikes = 0l;
+
+		Page<UserCheckDTO> userCheckDTOs = userCheckService.findAllUserChecksByCommentId(commentId, pageable);
+		for (UserCheckDTO userCheckDTO : userCheckDTOs.getContent()) {
+			if (userCheckDTO.getVoteType().equals("positive")) {
+				noOfLikes++;
+			} else {
+				noOfDislikes++;
+			}
+		}
+		commentDTO.setNoOfLikes(noOfLikes);
+		commentDTO.setNoOfDislikes(noOfDislikes);
+
+	}
+
+	/*
+	 * to count totel likes,dislikes of list of commentDto and set to the
+	 * commentDTo
+	 * 
+	 * @Param commentDTO
+	 */
+
+	@Override
+	public void countVotes(List<CommentDTO> commentDTOs) {
+		log.debug("method call to count likes and dislikes and set it to commentDto");
+		Pageable pageable = null;
+
+		for (CommentDTO commentDTO : commentDTOs) {
+
+			Long commentId = commentDTO.getId();
+			Long noOfLikes = 0l;
+			Long noOfDislikes = 0l;
+
+			Page<UserCheckDTO> userCheckDTOs = userCheckService.findAllUserChecksByCommentId(commentId, pageable);
+			for (UserCheckDTO userCheckDTO : userCheckDTOs.getContent()) {
+				if (userCheckDTO.getVoteType().equals("positive")) {
+					noOfLikes++;
+				} else {
+					noOfDislikes++;
+				}
+			}
+			commentDTO.setNoOfLikes(noOfLikes);
+			commentDTO.setNoOfDislikes(noOfDislikes);
+
+		}
+	}
+
+	/**
+	 * Delete the comment by id.
+	 *
+	 * @param id
+	 *            the id of the entity
+	 */
+	@Override
+	public void delete(Long id) {
+		log.debug("Request to delete Comment : {}", id);
+		commentRepository.deleteById(id);
+	}
+
+	/*
+	 * find all comment By NeedId
+	 * 
+	 * @Param needId
+	 */
+
+	@Override
+	public Page<CommentDTO> findByNeedId(Long needId, Pageable pageable) {
+		log.debug("request to get all comment by needId :" + needId);
+		Page<Comment> comments = commentRepository.findAllByNeedId(needId, pageable);
+		Page<CommentDTO> commentDtos = comments.map(commentMapper::toDto);
 		countVotes(commentDtos.getContent());
 		countReplies(commentDtos.getContent());
-		return  commentDtos;
-		
+		return commentDtos;
+
 	}
 
-
-    
-    /**
-     * Get all the comments by violationId.
-     *
-     * @param pageable the pagination information
-     * @return the list of entities
-     */
+	/**
+	 * Get all the comments by violationId.
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @return the list of entities
+	 */
+	@Override
 	public Page<CommentDTO> findAllCommentByViolationId(Pageable pageable, Long violationId) {
-		 log.debug("Request to get all Comments bu violationId");
-	  
-	        
-	        Page<Comment> comments=commentRepository.findAllCommentByViolationId(pageable,violationId);
-			Page<CommentDTO> commentDtos=comments.map(commentMapper::toDto);
-			countVotes(commentDtos.getContent());
-			countReplies(commentDtos.getContent());
-			return  commentDtos;
-	  }
-	
-	/**
-     * Get all the comments by helpId.
-     *
-     * @param pageable the pagination information
-     * @return the list of entities
-     */
-	public Page<CommentDTO> findAllCommentByHelpId(Pageable pageable, Long helpId) {
-		
-	        
-	        
-	        Page<CommentDTO> commentDtos=commentRepository.findAllCommentByHelpId(pageable,helpId).map(commentMapper::toDto);
-			countVotes(commentDtos.getContent());
-			countReplies(commentDtos.getContent());
-			return  commentDtos;
-	  
-	  }
+		log.debug("Request to get all Comments bu violationId");
 
-	
-	
-
-
-	@Override
-	public void countReplies(CommentDTO commentDTO)
-	{
-		Long commentId=commentDTO.getId();
-		Pageable pageable=null;
-		Page<ReplyDTO> replyDTOs=replyService.findByCommentId(pageable,commentId);
-		commentDTO.setNoOfReplies((replyDTOs.getContent().size())+0l);
+		Page<Comment> comments = commentRepository.findAllCommentByViolationId(pageable, violationId);
+		Page<CommentDTO> commentDtos = comments.map(commentMapper::toDto);
+		countVotes(commentDtos.getContent());
+		countReplies(commentDtos.getContent());
+		return commentDtos;
 	}
-	
 
 	/**
-    * Get all the comments with time.
-    *
-    * @param pageable the pagination information
-    * @return the list of entities
-    */
+	 * Get all the comments by helpId.
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @return the list of entities
+	 */
 	@Override
-	public Page<CommentDTO> findAllComments(Pageable pageable) {
+	public Page<CommentDTO> findAllCommentByHelpId(Pageable pageable, Long helpId) {
+
+		Page<CommentDTO> commentDtos = commentRepository.findAllCommentByHelpId(pageable, helpId)
+				.map(commentMapper::toDto);
+		countVotes(commentDtos.getContent());
+		countReplies(commentDtos.getContent());
+		return commentDtos;
+
+	}
+
+	@Override
+	public void countReplies(CommentDTO commentDTO) {
+		Long commentId = commentDTO.getId();
+		Pageable pageable = null;
+		Page<ReplyDTO> replyDTOs = replyService.findByCommentId(pageable, commentId);
+		commentDTO.setNoOfReplies((replyDTOs.getContent().size()) + 0l);
+	}
+
+	/**
+	 * Get all the comments with time.
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @return the list of entities
+	 */
+	@Override
+	public List<CommentDTO> calculatePostedBefore(Page<CommentDTO> comments) {
 		log.debug("Request to get all comments");
-		Page<CommentDTO> commentPage = findAll(pageable);
-		List<CommentDTO> commentList = commentPage.getContent();
+		List<CommentDTO> commentList = comments.getContent();
 		for (CommentDTO commentDto : commentList) {
 			Instant instant = Instant.now();
 			Date repliedTime = null;
@@ -304,18 +276,34 @@ public class CommentServiceImpl implements CommentService {
 			System.out.println("how many ago " + commentDto.getTimeElapsed());
 
 		}
-		return commentPage;
+		return commentList;
 	}
 
 	@Override
 	public void countReplies(List<CommentDTO> commentDTOs) {
-		for(CommentDTO commentDTO:commentDTOs)
-		{
-		Long commentId=commentDTO.getId();
-		Pageable pageable=null;
-		Page<ReplyDTO> replyDTOs=replyService.findByCommentId(pageable,commentId);
-		commentDTO.setNoOfReplies((replyDTOs.getContent().size())+0l);
+		for (CommentDTO commentDTO : commentDTOs) {
+			Long commentId = commentDTO.getId();
+			Pageable pageable = null;
+			Page<ReplyDTO> replyDTOs = replyService.findByCommentId(pageable, commentId);
+			commentDTO.setNoOfReplies((replyDTOs.getContent().size()) + 0l);
 		}
 	}
 
-}	
+	/**
+	 * Get all the comments by newsFeedId.
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @return the list of entities
+	 */
+
+	@Override
+	public Page<CommentDTO> findAllCommentsByNewsFeedId(Pageable pageable, Long newsFeedId) {
+		Page<CommentDTO> commentDtoPage = commentRepository.findAllCommentsByNewsFeedId(pageable, newsFeedId)
+				.map(commentMapper::toDto);
+		List<CommentDTO> commentsDtoList = calculatePostedBefore(commentDtoPage);
+		Page<CommentDTO> commentsDtoPage = new PageImpl<CommentDTO>(commentsDtoList, pageable, commentsDtoList.size());
+		return commentsDtoPage;
+	}
+
+}
