@@ -91,7 +91,7 @@ public interface UserCheckRepository extends JpaRepository<UserCheck, Long> {
 	 * @param pageable
 	 * @return userCheck entities
 	 */
-	Page<UserCheck> findAllByHelpId(Long helpId, Pageable pageable);
+	Page<UserCheck> findAllByCheckedHelpId(Long helpId, Pageable pageable);
 
 	/**
 	 * 
@@ -99,7 +99,7 @@ public interface UserCheckRepository extends JpaRepository<UserCheck, Long> {
 	 * @param pageable
 	 * @return
 	 */
-	Page<UserCheck> findAllByNeedId(Long needId, Pageable pageable);
+	Page<UserCheck> findAllByCheckedNeedId(Long needId, Pageable pageable);
 
 
 }

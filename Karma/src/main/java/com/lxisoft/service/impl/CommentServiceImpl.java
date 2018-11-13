@@ -83,8 +83,11 @@ public class CommentServiceImpl implements CommentService {
     @Transactional(readOnly = true)
     public Page<CommentDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Comments");
-        return commentRepository.findAll(pageable)
+        Page<CommentDTO> result=commentRepository.findAll(pageable)
             .map(commentMapper::toDto);
+        countVotes(result.getContent());
+        countReplies(result.getContent());
+        return result;
     }
 
 
@@ -100,9 +103,9 @@ public class CommentServiceImpl implements CommentService {
         log.debug("Request to get Comment : {}", id);
         Optional<CommentDTO>commentDto=commentRepository.findById(id)
             .map(commentMapper::toDto);
-         
+     
        countVotes(commentDto.get());
-       countReplys(commentDto.get());
+       countReplies(commentDto.get());
         return commentDto;
     }
     
@@ -202,6 +205,7 @@ public class CommentServiceImpl implements CommentService {
 		Page<Comment> comments=commentRepository.findAllByNeedId(needId,pageable);
 		Page<CommentDTO> commentDtos=comments.map(commentMapper::toDto);
 		countVotes(commentDtos.getContent());
+		countReplies(commentDtos.getContent());
 		return  commentDtos;
 		
 	}
@@ -216,8 +220,13 @@ public class CommentServiceImpl implements CommentService {
      */
 	public Page<CommentDTO> findAllCommentByViolationId(Pageable pageable, Long violationId) {
 		 log.debug("Request to get all Comments bu violationId");
-	        return commentRepository.findAllCommentByViolationId(pageable,violationId)
-	            .map(commentMapper::toDto);
+	  
+	        
+	        Page<Comment> comments=commentRepository.findAllCommentByViolationId(pageable,violationId);
+			Page<CommentDTO> commentDtos=comments.map(commentMapper::toDto);
+			countVotes(commentDtos.getContent());
+			countReplies(commentDtos.getContent());
+			return  commentDtos;
 	  }
 	
 	/**
@@ -227,9 +236,14 @@ public class CommentServiceImpl implements CommentService {
      * @return the list of entities
      */
 	public Page<CommentDTO> findAllCommentByHelpId(Pageable pageable, Long helpId) {
-		 log.debug("Request to get all Comments bu helpId");
-	        return commentRepository.findAllCommentByHelpId(pageable,helpId)
-	            .map(commentMapper::toDto);
+		
+	        
+	        
+	        Page<CommentDTO> commentDtos=commentRepository.findAllCommentByHelpId(pageable,helpId).map(commentMapper::toDto);
+			countVotes(commentDtos.getContent());
+			countReplies(commentDtos.getContent());
+			return  commentDtos;
+	  
 	  }
 
 	
@@ -237,7 +251,7 @@ public class CommentServiceImpl implements CommentService {
 
 
 	@Override
-	public void countReplys(CommentDTO commentDTO)
+	public void countReplies(CommentDTO commentDTO)
 	{
 		Long commentId=commentDTO.getId();
 		Pageable pageable=null;
@@ -293,6 +307,15 @@ public class CommentServiceImpl implements CommentService {
 		return commentPage;
 	}
 
-}
+	@Override
+	public void countReplies(List<CommentDTO> commentDTOs) {
+		for(CommentDTO commentDTO:commentDTOs)
+		{
+		Long commentId=commentDTO.getId();
+		Pageable pageable=null;
+		Page<ReplyDTO> replyDTOs=replyService.findByCommentId(pageable,commentId);
+		commentDTO.setNoOfReplies((replyDTOs.getContent().size())+0l);
+		}
+	}
 
-	
+}	
