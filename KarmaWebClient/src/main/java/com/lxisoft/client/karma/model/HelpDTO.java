@@ -8,7 +8,10 @@ import io.swagger.annotations.ApiModelProperty;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+<<<<<<< HEAD
 import org.springframework.core.io.Resource;
+=======
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -17,7 +20,11 @@ import javax.validation.constraints.*;
  * HelpDTO
  */
 @Validated
+<<<<<<< HEAD
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-09T14:03:13.373+05:30[Asia/Calcutta]")
+=======
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-11T21:56:15.510+05:30[Asia/Calcutta]")
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
 
 public class HelpDTO   {
   @JsonProperty("approvalStatusId")
@@ -30,10 +37,13 @@ public class HelpDTO   {
   @Valid
   private List<String> fileNameList = null;
 
+<<<<<<< HEAD
   @JsonProperty("files")
   @Valid
   private List<Resource> files = null;
 
+=======
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
   @JsonProperty("fulfilledNeedId")
   private Long fulfilledNeedId = null;
 
@@ -117,6 +127,7 @@ public class HelpDTO   {
     this.fileNameList = fileNameList;
   }
 
+<<<<<<< HEAD
   public HelpDTO files(List<Resource> files) {
     this.files = files;
     return this;
@@ -146,6 +157,8 @@ public class HelpDTO   {
     this.files = files;
   }
 
+=======
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
   public HelpDTO fulfilledNeedId(Long fulfilledNeedId) {
     this.fulfilledNeedId = fulfilledNeedId;
     return this;
@@ -260,7 +273,10 @@ public class HelpDTO   {
     return Objects.equals(this.approvalStatusId, helpDTO.approvalStatusId) &&
         Objects.equals(this.description, helpDTO.description) &&
         Objects.equals(this.fileNameList, helpDTO.fileNameList) &&
+<<<<<<< HEAD
         Objects.equals(this.files, helpDTO.files) &&
+=======
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
         Objects.equals(this.fulfilledNeedId, helpDTO.fulfilledNeedId) &&
         Objects.equals(this.id, helpDTO.id) &&
         Objects.equals(this.providedUserId, helpDTO.providedUserId) &&
@@ -270,7 +286,11 @@ public class HelpDTO   {
 
   @Override
   public int hashCode() {
+<<<<<<< HEAD
     return Objects.hash(approvalStatusId, description, fileNameList, files, fulfilledNeedId, id, providedUserId, time, timeInString);
+=======
+    return Objects.hash(approvalStatusId, description, fileNameList, fulfilledNeedId, id, providedUserId, time, timeInString);
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
   }
 
   @Override
@@ -281,7 +301,10 @@ public class HelpDTO   {
     sb.append("    approvalStatusId: ").append(toIndentedString(approvalStatusId)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    fileNameList: ").append(toIndentedString(fileNameList)).append("\n");
+<<<<<<< HEAD
     sb.append("    files: ").append(toIndentedString(files)).append("\n");
+=======
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
     sb.append("    fulfilledNeedId: ").append(toIndentedString(fulfilledNeedId)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    providedUserId: ").append(toIndentedString(providedUserId)).append("\n");

@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -83,16 +84,7 @@ public class NeedController {
 		this.needService = needService;
 	}
 
-	/**
-	 * POST /needs : Create a new need.
-	 *
-	 * @param needDTO
-	 *            the needDTO to create
-	 * @return the string value
-	 * @throws URISyntaxException
-	 *             if the Location URI syntax is incorrect
-	 * @throws IOException 
-	 */
+	
 	/**
 	 * POST /needs : Create a new need.
 	 *
@@ -106,60 +98,17 @@ public class NeedController {
 	 */
 	@PostMapping("/needs")
 	@Timed
-	public String createNeed(@ModelAttribute NeedDTO needDTO,@RequestParam MultipartFile[] files ,Model model) throws URISyntaxException, IllegalStateException, IOException {
+	
+	public String createNeed(@ModelAttribute NeedDTO needDTO,Model model) throws URISyntaxException, IllegalStateException, IOException {
 		log.debug(" request to save Need : {}", needDTO);
 
-		Set<CategoryDTO> categorySet = new HashSet<CategoryDTO>();
-
-		if (needDTO.getId() != null) {
-			throw new BadRequestAlertException("A new need cannot already have an ID", ENTITY_NAME, "idexists");
-		}
-
-		if (needDTO.getApprovalStatusId() == null) {
-
-			Optional<ApprovalStatusDTO> approvalStatus = approvalStatusService.findByStatus("pending");
-
-			long id = approvalStatus.get().getId();
-			log.debug("***************{}" + id);
-			needDTO.setApprovalStatusId(approvalStatus.get().getId());
-		}
-
-		needDTO.setCategories(new HashSet<CategoryDTO>(needDTO.getCategoryList()));
-
-		Set<CategoryDTO> categories = needDTO.getCategories();
-
-		for (CategoryDTO category : categories) {
-			Long id = category.getId();
-			CategoryDTO categoryDTO = categoryService.findOne(id).orElse(null);
-			categorySet.add(categoryDTO);
-		}
-
-		needDTO.setCategories(categorySet);
-
-		// parsing string to ISO_INSTANT format
-		String parsedDate = needDTO.getDateInString().replaceAll(" ", "T").concat("Z");
-
-		// creates a date instance of type instant from a string
-		needDTO.setDate(Instant.parse(parsedDate));
-		
-		NeedDTO need = needService.save(needDTO);
-		
-		for(MultipartFile file:files){
-			
-			 MediaDTO mediaDTO=new MediaDTO();
-	    	 
-	    	 mediaDTO.setFile(file);
-	    	 
-	    	 mediaDTO.setNeedId(need.getId());
-	         
-	    	 mediaService.save(mediaDTO);
-	        
-		}
-		
-		model.addAttribute("need", need);
+	    //NeedDTO need = needResourceApi.createNeedUsingPOST(needDTO).getBody();
+	     
+	    //model.addAttribute("need", need);
 		return "help-post-result";
 
 	}
+	
 	/**
 	 * PUT /needs : Updates an existing need.
 	 *
@@ -175,26 +124,18 @@ public class NeedController {
 	@PutMapping("/needs")
 	@Timed
 	public String updateNeed(@ModelAttribute NeedDTO needDTO, Model model) throws URISyntaxException, IOException {
+		
 		log.debug("request to update Need : {}", needDTO);
-		if (needDTO.getId() == null) {
-			throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-		}
-		Set<CategoryDTO> categorySet = new HashSet<CategoryDTO>();
-		needDTO.setCategories(new HashSet<CategoryDTO>(needDTO.getCategoryList()));
-		Set<CategoryDTO> categories = needDTO.getCategories();
-
-		for (CategoryDTO category : categories) {
-			Long id = category.getId();
-			CategoryDTO categoryDTO = categoryService.findOne(id).orElse(null);
-			categorySet.add(categoryDTO);
-		}
-
-		needDTO.setCategories(categorySet);
-		NeedDTO needDto = needService.save(needDTO);
-		model.addAttribute("need", needDto);
-		model.addAttribute("message", approvalStatusService.findOne(needDTO.getApprovalStatusId()).orElse(null));
+		
+	//	NeedDTO needDto = needResourceApi.updateNeedUsingPUT(needDTO).getBody();
+		
+		//ApprovalStatusDTO approvalStatusDTO=approvalStatusResourceApi.getApprovalStatusUsingGET(needDTO.getApprovalStatusId()).getBody();
+		
+		//model.addAttribute("need", needDto);
+		//model.addAttribute("message",approvalStatusDTO );
 		return "approve-decline";
 	}
+
 
 	/**
 	 * GET /needs : get all the needs.
@@ -211,44 +152,14 @@ public class NeedController {
 	public String getAllNeeds(Pageable pageable,
 			@RequestParam(required = false, defaultValue = "false") boolean eagerload, Model model) {
 		log.debug("request to get a page of Needs");
-		Page<NeedDTO> page;
-		if (eagerload) {
-			page = needService.findAllWithEagerRelationships(pageable);
-		} else {
-			page = needService.findAll(pageable);
-		}
-		List<NeedDTO> needs = page.getContent();
-		
-		for(NeedDTO need:needs){
-			
-			List<String> fileNameList=new ArrayList();
-			
-			//List<String> fileNameList=need.getFileNameList();
-			//Page<MediaDTO> media=mediaService.findAllUrlByNeedId(need.getId(), pageable);
-			
-			log.info("*********need");
-			
-			//List<MediaDTO> mediaDtoList=(List<MediaDTO>) mediaService.findAllUrlByNeedId(need.getId(), pageable);
 	
-			Page<MediaDTO> mediaList=mediaService.findAllUrlByNeedId(need.getId(), pageable);
-			
-			List<MediaDTO> mediaDtoList=mediaList.getContent();
-			
-			for(MediaDTO media:mediaDtoList){
+		//List<NeedDTO> needs = needResourceApi.getAllNeedsUsingGET(eagerload, null, null, null, null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
 				
-				String mediaUrl=media.getUrl();
-				fileNameList.add(mediaUrl);
-				log.info("*********media url{}",mediaUrl);
-			
-			}
-			need.setFileNameList(fileNameList);
-		}
-		
-		model.addAttribute("needs", needs);
+		//model.addAttribute("needs", needs);
 		return "home";
 
 	}
-
+	
 	/**
 	 * GET /needs : get all the needs by approvalStatus.
 	 *
@@ -266,62 +177,11 @@ public class NeedController {
 			@RequestParam(required = false, defaultValue = "false") boolean eagerload,
 			@PathVariable(value = "approvalStatus") String approvalStatus, Model model) {
 		log.debug("request to get a page of Needs");
-		Page<NeedDTO> page;
-		if (eagerload) {
-			page = needService.findAllWithEagerRelationships(pageable);
-		} else {
-			page = needService.findAllNeedsByApprovedStatus(pageable, approvalStatus);
-		}
-		List<NeedDTO> needs = page.getContent();
-		//
-		for(NeedDTO needDto:needs){
-			log.info("*****************{}",needDto.getId());
-		}
 		
-		int count=0;
-		
-		List<String> fileNameList=new ArrayList();
-		
-		for(NeedDTO need:needs)
-		{
-			
-			log.info("*****************{}",need.getId());
-			
-			Page<UserCheckDTO> userCheckDTOs=userCheckService.findAllUserChecksByCheckedNeedId(pageable,need.getId());
-			List<UserCheckDTO> userCheckDTOList = userCheckDTOs.getContent();
-			
-			for(UserCheckDTO userChecks:userCheckDTOList)
-			{
-				log.info("*************{}",userChecks.getId());
-				if(userChecks.getVoteType()=="postive")
-				{
-					count=count+1;
-				}
-			}
-			
-			if(userCheckDTOList.size()==0)
-				need.setPercentageOfGenuineness(null);
-			else
-			   need.setPercentageOfGenuineness(new Long((count/userCheckDTOList.size())*100));
-								
-			// to get image url of need
-			Page<MediaDTO> mediaList=mediaService.findAllUrlByNeedId(need.getId(), pageable);
-			
-			List<MediaDTO> mediaDtoList=mediaList.getContent();
-			
-			for(MediaDTO media:mediaDtoList){
-				
-				String mediaUrl=media.getUrl();
-				fileNameList.add(mediaUrl);
-				log.info("*********media url{}",mediaUrl);
-			
-			}
-			need.setFileNameList(fileNameList);
-		
-			//			
-				}
-		
+		List<NeedDTO> needs=null; //= needResourceApi.getAllNeedsByApprovedStatusUsingGET(pageable, approvalStatus).getBody();
+					
 		model.addAttribute("needs", needs);
+		
 		if (approvalStatus.equals("approved"))
 			return "home";
 		else if (approvalStatus.equals("pending"))
@@ -329,6 +189,7 @@ public class NeedController {
 		else
 			return "home";
 	}
+
 
 	/**
 	 * GET /needs/:id : get the "id" need.
@@ -339,35 +200,21 @@ public class NeedController {
 	 */
 	@GetMapping("/needs/statuses/{id}")
 	@Timed
-	public String getNeedWithStatuses(@PathVariable(value = "id") Long id, Model model) {
+	public String getNeedWithStatusesById(@PathVariable(value = "id") Long id, Model model) {
 		log.debug("request to get Need : {}", id);
-		Pageable pageable = PageRequest.of(0, 20);
 		
-		List<String> fileNameList=new ArrayList();
-
-		NeedDTO needDTO = needService.findOne(id).orElse(null);
-
-		// to get image url of need
-		Page<MediaDTO> mediaList=mediaService.findAllUrlByNeedId(needDTO.getId(), pageable);
+		//Pageable pageable = PageRequest.of(0, 20);
 		
-		List<MediaDTO> mediaDtoList=mediaList.getContent();
+		//NeedDTO needDTO =  needResourceApi.getNeedUsingGET(id).getBody();
+	//	List<ApprovalStatusDTO> approvalStatusDTOs =  approvalStatusResourceApi.getAllApprovalStatusesUsingGET(id, null, null, null, null, null, null, null, null, null).getBody();  
 		
-		for(MediaDTO media:mediaDtoList){
-			
-			String mediaUrl=media.getUrl();
-			fileNameList.add(mediaUrl);
-			log.info("*********media url{}",mediaUrl);
+		//model.addAttribute("need", needDTO);
+		//model.addAttribute("approvalStatuses",approvalStatusDTOs);
 		
-		}
-		needDTO.setFileNameList(fileNameList);
-	//
-
-		model.addAttribute("need", needDTO);
-		model.addAttribute("approvalStatuses", approvalStatusService.findAll(pageable).getContent());
-
+		//model.addAttribute("approvalStatuses", approvalStatusService.findAll(pageable).getContent());
 		return "pending-need";
 	}
-
+	
 	/**
 	 * GET /needs/:id : get the "id" need.
 	 *
@@ -377,30 +224,60 @@ public class NeedController {
 	 */
 	@GetMapping("/needs/{id}")
 	@Timed
-	public String getNeed(@PathVariable(value = "id") Long id, Model model,Pageable pageable) {
+	public String getNeed(@PathVariable(value = "id") Long id, Model model) {
 		log.debug("request to get Need : {}", id);
 
-		List<String> fileNameList=new ArrayList();
+		//NeedDTO needDTO =  needResourceApi.getNeedUsingGET(id).getBody();
 
-		NeedDTO needDTO = needService.findOne(id).orElse(null);
-
-		// to get image url of need
-					Page<MediaDTO> mediaList=mediaService.findAllUrlByNeedId(needDTO.getId(), pageable);
-					
-					List<MediaDTO> mediaDtoList=mediaList.getContent();
-					
-					for(MediaDTO media:mediaDtoList){
-						
-						String mediaUrl=media.getUrl();
-						fileNameList.add(mediaUrl);
-						log.info("*********media url{}",mediaUrl);
-					
-					}
-					needDTO.setFileNameList(fileNameList);
-				//
-		model.addAttribute("need", needDTO);
+		//model.addAttribute("need", needDTO);
 
 		return "need";
 	}
 
+	 /**
+    *
+    * @param severityId the id of the needDTO to retrieve
+    * @return the String
+    */
+   @GetMapping("/needs/getNeedsBySeverityId/{severityId}")
+   @Timed
+   public String getNeedsBySeverityId(Pageable pageable,@PathVariable Long severityId, @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
+       log.debug("REST request to get Need by severity id: {}", severityId);
+       
+      //NeedDTO needDTO =  needResourceApi.getNeedUsingGET(id).getBody();
+
+		//model.addAttribute("need", needDTO);
+
+		return "need";
+       }
+   
+   
+   
+   
+
+   /**
+    * POST  /needs : Create a new need with multi part file.
+    *
+    * @param needDTO the needDTO to create
+    * @return the String
+    * @throws URISyntaxException if the Location URI syntax is incorrect
+    * @throws IOException 
+    */
+   @PostMapping("/needs/createNeedWithMedia")
+   @Timed
+   public String createNeedWithMedia(@RequestBody NeedDTO needDTO,@RequestParam MultipartFile[] files) throws URISyntaxException, IOException {
+       log.debug("REST request to save Need with media : {}", needDTO);
+     //NeedDTO need = needResourceApi.createNeedUsingPOST(needDTO).getBody();
+	     
+	    //model.addAttribute("need", need);
+		return "help-post-result";
+       
+   }
+
+   
+   
+   
+   
+	
+	
 }

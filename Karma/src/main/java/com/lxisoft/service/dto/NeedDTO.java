@@ -49,6 +49,20 @@ public class NeedDTO implements Serializable {
     
     private List<CommentDTO> commentList=new ArrayList<>();
     
+    private Long noOfComments;
+    
+    
+    
+    public void setNoOfComments(Long noOfComments)
+    {
+    	
+    	this.noOfComments=noOfComments;
+    }
+    
+    public Long getNoOfComments()
+    {
+    	return noOfComments;
+    }
     
     public void  setCommentList(List<CommentDTO> commentList)
     {
@@ -240,4 +254,6 @@ public class NeedDTO implements Serializable {
 	public void setTimeElapsed(String timeElapsed) {
 		this.timeElapsed = timeElapsed;
 	}
+
+	
 }

@@ -97,25 +97,19 @@ public interface UserCheckService {
 	Page<UserCheckDTO> findAllUserCheckByViolationId(Pageable pageable, Long violationId);
 
 	Page<UserCheckDTO> findAllUserCheckByViolationIdAndCheckedUserId(Pageable pageable, Long violationId, Long checkedUserId);
+
 	/**
      * Get all the userChecks by commentId.
      *
      * @param pageable the pagination information, commentId to find
-     * @return the page of dtos
+     * @return the page of dto
      */
+
 
 	Page<UserCheckDTO> findAllUserCheckByCommentId(Pageable pageable, Long commentId);
 
-	/**
-     * Get all the userChecks by replaytId.
-     *
-     * @param pageable the pagination information, replyId to find
-     * @return the list of entities
-     */
+	Page<UserCheckDTO> findAllUserCheckByVoteType(Pageable pageable, String voteType);
 
-	
-	Page<UserCheckDTO> findAllUserCheckByReplyId(Pageable pageable, Long replyId);
-	
 
 	/**
      *  create new  userChecks with positive vote.
@@ -124,6 +118,47 @@ public interface UserCheckService {
      * @return optional<userCheck>
      */
 	
-	Optional<UserCheckDTO> createUserCheckLike(UserCheckDTO userCheckDTO);
+	Optional<UserCheckDTO> saveUserCheckLike(UserCheckDTO userCheckDTO);
 	
+
+	/**
+     *  create new  userChecks with negative vote.
+     *
+     * @param userCheck
+     * @return optional<userCheck>
+     */
+	
+	
+	Optional<UserCheckDTO> saveUserCheckDislike(UserCheckDTO userCheckDTO);
+
+	
+	/**
+     * Get all the userChecks by replyId.
+     *
+     * @param pageable the pagination information, replyId to find
+     * @return the list of entities
+     */
+	
+	Page<UserCheckDTO> findAllUserCheckByReplyId(Pageable pageable, Long replyId);
+
+	/**
+     * Get all the userChecks by helpId.
+     *
+     * @param pageable the pagination information, commentId to find
+     * @return the list of entities
+     */
+	
+	Page<UserCheckDTO> findAllUserCheckByHelpId(Pageable pageable, Long helpId);
+
+	/**
+     * Get all the userChecks by needId.
+     *
+     * @param pageable the pagination information, needId to find
+     * @return the list of entities
+     */
+	
+	Page<UserCheckDTO> findAllUserCheckByNeedId(Pageable pageable, Long needId);
+	
+
 }
+ 

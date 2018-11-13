@@ -28,12 +28,26 @@ public class HelpDTO implements Serializable {
     private Long providedUserId;
 
     private Long fulfilledNeedId;
+    
+    private Long noOfComments;
 
     private String timeInString;
-  
+
     private String timeElapsed;
     
-    private MultipartFile[] files;
+    private Long noOfLikes;
+    
+    private Long noOfDislikes;
+
+    public Long getNoOfComments() {
+		return noOfComments;
+	}
+
+	public void setNoOfComments(Long noOfComments) {
+		this.noOfComments = noOfComments;
+	}
+
+	private MultipartFile[] files;
 
     private List<String> fileNameList=new ArrayList<>();
 
@@ -157,6 +171,22 @@ public class HelpDTO implements Serializable {
 
 	public void setTimeElapsed(String timeElapsed) {
 		this.timeElapsed = timeElapsed;
+	}
+
+	public Long getNoOfLikes() {
+		return noOfLikes;
+	}
+
+	public void setNoOfLikes(Long noOfLikes) {
+		this.noOfLikes = noOfLikes;
+	}
+
+	public Long getNoOfDislikes() {
+		return noOfDislikes;
+	}
+
+	public void setNoOfDislikes(Long noOfDislikes) {
+		this.noOfDislikes = noOfDislikes;
 	}
 
 	

@@ -1,14 +1,9 @@
 package com.lxisoft.service.impl;
 
-import com.lxisoft.service.CommentService;
-import com.lxisoft.service.UserCheckService;
-import com.lxisoft.domain.Comment;
-import com.lxisoft.repository.CommentRepository;
-import com.lxisoft.service.dto.CommentDTO;
-import com.lxisoft.service.dto.UserCheckDTO;
-import com.lxisoft.service.mapper.CommentMapper;
-
-import ch.qos.logback.core.net.SyslogOutputStream;
+import java.time.Instant;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,10 +13,25 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+
+import com.lxisoft.domain.Comment;
+import com.lxisoft.repository.CommentRepository;
+import com.lxisoft.service.CommentService;
+import com.lxisoft.service.ReplyService;
+import com.lxisoft.service.UserCheckService;
+import com.lxisoft.service.dto.CommentDTO;
+import com.lxisoft.service.dto.ReplyDTO;
+import com.lxisoft.service.dto.UserCheckDTO;
+import com.lxisoft.service.mapper.CommentMapper;
+
+
+
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
 
 /**
  * Service Implementation for managing Comment.
@@ -37,8 +47,13 @@ public class CommentServiceImpl implements CommentService {
     private final CommentMapper commentMapper;
     
     @Autowired
+    
     private  UserCheckService userCheckService;
-
+    
+    @Autowired
+    
+    private ReplyService replyService; 
+    
     public CommentServiceImpl(CommentRepository commentRepository, CommentMapper commentMapper) {
         this.commentRepository = commentRepository;
         this.commentMapper = commentMapper;
@@ -68,8 +83,11 @@ public class CommentServiceImpl implements CommentService {
     @Transactional(readOnly = true)
     public Page<CommentDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Comments");
-        return commentRepository.findAll(pageable)
+        Page<CommentDTO> result=commentRepository.findAll(pageable)
             .map(commentMapper::toDto);
+        countVotes(result.getContent());
+        countReplies(result.getContent());
+        return result;
     }
 
 
@@ -85,9 +103,9 @@ public class CommentServiceImpl implements CommentService {
         log.debug("Request to get Comment : {}", id);
         Optional<CommentDTO>commentDto=commentRepository.findById(id)
             .map(commentMapper::toDto);
-         
-       countLikes(commentDto.get());
-        
+     
+       countVotes(commentDto.get());
+       countReplies(commentDto.get());
         return commentDto;
     }
     
@@ -99,8 +117,8 @@ public class CommentServiceImpl implements CommentService {
       */
    
     
-    
-    public void countLikes(CommentDTO commentDTO)
+    @Override
+    public void countVotes(CommentDTO commentDTO)
     {
     	log.debug("method call to count likes and dislikes and set it to commentDto");
     	Pageable pageable=null;
@@ -134,8 +152,8 @@ public class CommentServiceImpl implements CommentService {
      */
   
    
-   
-   public void countLikes(List<CommentDTO> commentDTOs)
+   @Override
+   public void countVotes(List<CommentDTO> commentDTOs)
    {
    	log.debug("method call to count likes and dislikes and set it to commentDto");
    	Pageable pageable=null;
@@ -156,7 +174,7 @@ public class CommentServiceImpl implements CommentService {
 				   		}
 				   		else
 				   		{
-				   			noOfDislikes--;
+				   			noOfDislikes++;
 				   		}
 				   	}
 				   	commentDTO.setNoOfLikes(noOfLikes);
@@ -184,9 +202,10 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public Page<CommentDTO> findByNeedId(Long needId,Pageable pageable) {
 		log.debug("request to get all comment by needId :"+needId);
-		Page<Comment> comments=commentRepository.findByNeedIdIs(needId,pageable);
+		Page<Comment> comments=commentRepository.findAllByNeedId(needId,pageable);
 		Page<CommentDTO> commentDtos=comments.map(commentMapper::toDto);
-		countLikes(commentDtos.getContent());
+		countVotes(commentDtos.getContent());
+		countReplies(commentDtos.getContent());
 		return  commentDtos;
 		
 	}
@@ -201,8 +220,13 @@ public class CommentServiceImpl implements CommentService {
      */
 	public Page<CommentDTO> findAllCommentByViolationId(Pageable pageable, Long violationId) {
 		 log.debug("Request to get all Comments bu violationId");
-	        return commentRepository.findAllCommentByViolationId(pageable,violationId)
-	            .map(commentMapper::toDto);
+	  
+	        
+	        Page<Comment> comments=commentRepository.findAllCommentByViolationId(pageable,violationId);
+			Page<CommentDTO> commentDtos=comments.map(commentMapper::toDto);
+			countVotes(commentDtos.getContent());
+			countReplies(commentDtos.getContent());
+			return  commentDtos;
 	  }
 	
 	/**
@@ -212,13 +236,30 @@ public class CommentServiceImpl implements CommentService {
      * @return the list of entities
      */
 	public Page<CommentDTO> findAllCommentByHelpId(Pageable pageable, Long helpId) {
-		 log.debug("Request to get all Comments bu helpId");
-	        return commentRepository.findAllCommentByHelpId(pageable,helpId)
-	            .map(commentMapper::toDto);
+		
+	        
+	        
+	        Page<CommentDTO> commentDtos=commentRepository.findAllCommentByHelpId(pageable,helpId).map(commentMapper::toDto);
+			countVotes(commentDtos.getContent());
+			countReplies(commentDtos.getContent());
+			return  commentDtos;
+	  
 	  }
 
 	
 	
+
+
+	@Override
+	public void countReplies(CommentDTO commentDTO)
+	{
+		Long commentId=commentDTO.getId();
+		Pageable pageable=null;
+		Page<ReplyDTO> replyDTOs=replyService.findByCommentId(pageable,commentId);
+		commentDTO.setNoOfReplies((replyDTOs.getContent().size())+0l);
+	}
+	
+
 	/**
     * Get all the comments with time.
     *
@@ -265,4 +306,16 @@ public class CommentServiceImpl implements CommentService {
 		}
 		return commentPage;
 	}
-}
+
+	@Override
+	public void countReplies(List<CommentDTO> commentDTOs) {
+		for(CommentDTO commentDTO:commentDTOs)
+		{
+		Long commentId=commentDTO.getId();
+		Pageable pageable=null;
+		Page<ReplyDTO> replyDTOs=replyService.findByCommentId(pageable,commentId);
+		commentDTO.setNoOfReplies((replyDTOs.getContent().size())+0l);
+		}
+	}
+
+}	

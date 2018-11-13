@@ -168,7 +168,7 @@ public class HelpResource {
         
         List<HelpDTO> helps = page.getContent();
 
-		for(HelpDTO helpDto:helps){
+		/*for(HelpDTO helpDto:helps){
 			
 			List<String> fileNameList=new ArrayList();
 			
@@ -186,12 +186,13 @@ public class HelpResource {
 			
 			}
 			helpDto.setFileNameList(fileNameList);
-		}
+		}*/
 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/helps/getAllHelpsByApprovedStatus/");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
     
+
     /**
      * POST  /helps : Create a new help with media.
      *
@@ -237,6 +238,7 @@ public class HelpResource {
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, helpDto.getId().toString()))
             .body(helpDto);
     }
+
 
 
 }

@@ -5,7 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+<<<<<<< HEAD
 import org.springframework.core.io.Resource;
+=======
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -14,15 +17,22 @@ import javax.validation.constraints.*;
  * MediaDTO
  */
 @Validated
+<<<<<<< HEAD
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-09T14:03:13.373+05:30[Asia/Calcutta]")
+=======
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-11T21:56:15.510+05:30[Asia/Calcutta]")
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
 
 public class MediaDTO   {
   @JsonProperty("extension")
   private String extension = null;
 
+<<<<<<< HEAD
   @JsonProperty("file")
   private Resource file = null;
 
+=======
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
   @JsonProperty("fileName")
   private String fileName = null;
 
@@ -32,6 +42,12 @@ public class MediaDTO   {
   @JsonProperty("id")
   private Long id = null;
 
+<<<<<<< HEAD
+=======
+  @JsonProperty("multipartFile")
+  private org.springframework.core.io.Resource multipartFile = null;
+
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
   @JsonProperty("needId")
   private Long needId = null;
 
@@ -64,6 +80,7 @@ public class MediaDTO   {
     this.extension = extension;
   }
 
+<<<<<<< HEAD
   public MediaDTO file(Resource file) {
     this.file = file;
     return this;
@@ -85,6 +102,8 @@ public class MediaDTO   {
     this.file = file;
   }
 
+=======
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
   public MediaDTO fileName(String fileName) {
     this.fileName = fileName;
     return this;
@@ -145,6 +164,30 @@ public class MediaDTO   {
     this.id = id;
   }
 
+<<<<<<< HEAD
+=======
+  public MediaDTO multipartFile(org.springframework.core.io.Resource multipartFile) {
+    this.multipartFile = multipartFile;
+    return this;
+  }
+
+  /**
+   * Get multipartFile
+   * @return multipartFile
+  **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public org.springframework.core.io.Resource getMultipartFile() {
+    return multipartFile;
+  }
+
+  public void setMultipartFile(org.springframework.core.io.Resource multipartFile) {
+    this.multipartFile = multipartFile;
+  }
+
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
   public MediaDTO needId(Long needId) {
     this.needId = needId;
     return this;
@@ -236,10 +279,17 @@ public class MediaDTO   {
     }
     MediaDTO mediaDTO = (MediaDTO) o;
     return Objects.equals(this.extension, mediaDTO.extension) &&
+<<<<<<< HEAD
         Objects.equals(this.file, mediaDTO.file) &&
         Objects.equals(this.fileName, mediaDTO.fileName) &&
         Objects.equals(this.helpId, mediaDTO.helpId) &&
         Objects.equals(this.id, mediaDTO.id) &&
+=======
+        Objects.equals(this.fileName, mediaDTO.fileName) &&
+        Objects.equals(this.helpId, mediaDTO.helpId) &&
+        Objects.equals(this.id, mediaDTO.id) &&
+        Objects.equals(this.multipartFile, mediaDTO.multipartFile) &&
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
         Objects.equals(this.needId, mediaDTO.needId) &&
         Objects.equals(this.newsFeedId, mediaDTO.newsFeedId) &&
         Objects.equals(this.url, mediaDTO.url) &&
@@ -248,7 +298,11 @@ public class MediaDTO   {
 
   @Override
   public int hashCode() {
+<<<<<<< HEAD
     return Objects.hash(extension, file, fileName, helpId, id, needId, newsFeedId, url, violationId);
+=======
+    return Objects.hash(extension, fileName, helpId, id, multipartFile, needId, newsFeedId, url, violationId);
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
   }
 
   @Override
@@ -257,10 +311,17 @@ public class MediaDTO   {
     sb.append("class MediaDTO {\n");
     
     sb.append("    extension: ").append(toIndentedString(extension)).append("\n");
+<<<<<<< HEAD
     sb.append("    file: ").append(toIndentedString(file)).append("\n");
     sb.append("    fileName: ").append(toIndentedString(fileName)).append("\n");
     sb.append("    helpId: ").append(toIndentedString(helpId)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+=======
+    sb.append("    fileName: ").append(toIndentedString(fileName)).append("\n");
+    sb.append("    helpId: ").append(toIndentedString(helpId)).append("\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    multipartFile: ").append(toIndentedString(multipartFile)).append("\n");
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
     sb.append("    needId: ").append(toIndentedString(needId)).append("\n");
     sb.append("    newsFeedId: ").append(toIndentedString(newsFeedId)).append("\n");
     sb.append("    url: ").append(toIndentedString(url)).append("\n");

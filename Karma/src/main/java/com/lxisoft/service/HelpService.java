@@ -61,10 +61,21 @@ public interface HelpService {
    	
    	Page<HelpDTO> findAllHelpsByApprovedStatusId(Pageable pageable, Long approvalStatusId);
 
+
+
+   	
+	/**
+   	 * @param helpDto
+   	 * @return
+   	 */
+   	public void countComments(HelpDTO helpDTO);
+   	
+
    	/**
    	 * @param pageable
    	 *
    	 * @return
    	 */
 	Page<HelpDTO> findAllHelps(Pageable pageable);
+
 }

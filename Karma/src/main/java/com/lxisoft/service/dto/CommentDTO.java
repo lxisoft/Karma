@@ -27,10 +27,21 @@ public class CommentDTO implements Serializable {
     
     private String dateInString;
     
+
+    private Long noOfReplies;
+
     private String timeElapsed;
 
     
-    private Long noOfLikes;
+    public Long getNoOfReplies() {
+		return noOfReplies;
+	}
+
+	public void setNoOfReplies(Long noOfReplies) {
+		this.noOfReplies = noOfReplies;
+	}
+
+	private Long noOfLikes;
     
     private Long noOfDislikes;
     

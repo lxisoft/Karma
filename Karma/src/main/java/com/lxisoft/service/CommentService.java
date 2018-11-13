@@ -5,6 +5,7 @@ import com.lxisoft.service.dto.CommentDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -71,6 +72,38 @@ public interface CommentService {
      * @return the list of entities
      */
 	Page<CommentDTO> findAllCommentByHelpId(Pageable pageable, Long helpId);
+	
+	/**
+	 * method to count how many replay get for the comment 
+	 * @Param commentDTO
+	 */
+	void countReplies(CommentDTO commentDTO);
+	
+	/**
+	 * method to count how many replay get for the comments 
+	 * @Param List of commentDTO
+	 */
+	
+	void countReplies(List<CommentDTO> commentDTO);
+	/**
+	 * method to count how many positive vote and negative vote
+	 * @Param commentDTO
+	 */
+	void countVotes(CommentDTO commentDTO);
+	
+
+
+	/**
+	 * method to count how many positive vote and negative vote
+	 * @Param commentDTO
+	 */
+	void countVotes(List<CommentDTO>commentDTO);
+	
+	
+	
+
+	
+	 
 
 	
 	/**
@@ -80,5 +113,7 @@ public interface CommentService {
      * @return the list of entities
      */
 	Page<CommentDTO> findAllComments(Pageable pageable);
+
+	
 
 }

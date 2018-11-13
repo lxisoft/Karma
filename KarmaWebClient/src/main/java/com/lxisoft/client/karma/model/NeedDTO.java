@@ -1,5 +1,6 @@
 package com.lxisoft.client.karma.model;
 
+<<<<<<< HEAD
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +14,30 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
+=======
+import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.lxisoft.client.karma.model.CategoryDTO;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
 
 /**
  * NeedDTO
  */
 @Validated
+<<<<<<< HEAD
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-09T14:03:13.373+05:30[Asia/Calcutta]")
+=======
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-11T21:56:15.510+05:30[Asia/Calcutta]")
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
 
 public class NeedDTO   {
   @JsonProperty("approvalStatusId")
@@ -44,14 +63,23 @@ public class NeedDTO   {
   @JsonProperty("description")
   private String description = null;
 
+<<<<<<< HEAD
+=======
+  @JsonProperty("file")
+  private org.springframework.core.io.Resource file = null;
+
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
   @JsonProperty("fileNameList")
   @Valid
   private List<String> fileNameList = null;
 
+<<<<<<< HEAD
   @JsonProperty("files")
   @Valid
   private List<MultipartFile> files = null;
 
+=======
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
   @JsonProperty("id")
   private Long id = null;
 
@@ -226,6 +254,7 @@ public class NeedDTO   {
     this.description = description;
   }
 
+<<<<<<< HEAD
   public NeedDTO fileNameList(List<String> fileNameList) {
     this.fileNameList = fileNameList;
     return this;
@@ -236,10 +265,15 @@ public class NeedDTO   {
       this.fileNameList = new ArrayList<String>();
     }
     this.fileNameList.add(fileNameListItem);
+=======
+  public NeedDTO file(org.springframework.core.io.Resource file) {
+    this.file = file;
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
     return this;
   }
 
   /**
+<<<<<<< HEAD
    * Get fileNameList
    * @return fileNameList
   **/
@@ -264,10 +298,38 @@ public class NeedDTO   {
       this.files = new ArrayList<MultipartFile>();
     }
     this.files.add(filesItem);
+=======
+   * Get file
+   * @return file
+  **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public org.springframework.core.io.Resource getFile() {
+    return file;
+  }
+
+  public void setFile(org.springframework.core.io.Resource file) {
+    this.file = file;
+  }
+
+  public NeedDTO fileNameList(List<String> fileNameList) {
+    this.fileNameList = fileNameList;
+    return this;
+  }
+
+  public NeedDTO addFileNameListItem(String fileNameListItem) {
+    if (this.fileNameList == null) {
+      this.fileNameList = new ArrayList<String>();
+    }
+    this.fileNameList.add(fileNameListItem);
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
     return this;
   }
 
   /**
+<<<<<<< HEAD
    * Get files
    * @return files
   **/
@@ -281,6 +343,20 @@ public class NeedDTO   {
 
   public void setFiles(List<MultipartFile> files) {
     this.files = files;
+=======
+   * Get fileNameList
+   * @return fileNameList
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public List<String> getFileNameList() {
+    return fileNameList;
+  }
+
+  public void setFileNameList(List<String> fileNameList) {
+    this.fileNameList = fileNameList;
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
   }
 
   public NeedDTO id(Long id) {
@@ -400,8 +476,13 @@ public class NeedDTO   {
         Objects.equals(this.date, needDTO.date) &&
         Objects.equals(this.dateInString, needDTO.dateInString) &&
         Objects.equals(this.description, needDTO.description) &&
+<<<<<<< HEAD
         Objects.equals(this.fileNameList, needDTO.fileNameList) &&
         Objects.equals(this.files, needDTO.files) &&
+=======
+        Objects.equals(this.file, needDTO.file) &&
+        Objects.equals(this.fileNameList, needDTO.fileNameList) &&
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
         Objects.equals(this.id, needDTO.id) &&
         Objects.equals(this.percentageOfGenuineness, needDTO.percentageOfGenuineness) &&
         Objects.equals(this.postedUserId, needDTO.postedUserId) &&
@@ -411,7 +492,11 @@ public class NeedDTO   {
 
   @Override
   public int hashCode() {
+<<<<<<< HEAD
     return Objects.hash(approvalStatusId, beneficiaryType, categories, categoryList, date, dateInString, description, fileNameList, files, id, percentageOfGenuineness, postedUserId, severityId, verificationTeamId);
+=======
+    return Objects.hash(approvalStatusId, beneficiaryType, categories, categoryList, date, dateInString, description, file, fileNameList, id, percentageOfGenuineness, postedUserId, severityId, verificationTeamId);
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
   }
 
   @Override
@@ -426,8 +511,13 @@ public class NeedDTO   {
     sb.append("    date: ").append(toIndentedString(date)).append("\n");
     sb.append("    dateInString: ").append(toIndentedString(dateInString)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
+<<<<<<< HEAD
     sb.append("    fileNameList: ").append(toIndentedString(fileNameList)).append("\n");
     sb.append("    files: ").append(toIndentedString(files)).append("\n");
+=======
+    sb.append("    file: ").append(toIndentedString(file)).append("\n");
+    sb.append("    fileNameList: ").append(toIndentedString(fileNameList)).append("\n");
+>>>>>>> f9e1ba14bcabbd447198cad5bb2290f500c4d3d3
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    percentageOfGenuineness: ").append(toIndentedString(percentageOfGenuineness)).append("\n");
     sb.append("    postedUserId: ").append(toIndentedString(postedUserId)).append("\n");

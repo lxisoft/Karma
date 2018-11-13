@@ -44,7 +44,7 @@ public interface ReplyService {
      */
     void delete(Long id);
 
-    
+
     /**
      * Get all the replies along with time.
      *
@@ -61,16 +61,12 @@ public interface ReplyService {
      * @return the list of entities
      */
 	Page<ReplyDTO> findByCommentId(Pageable pageable, Long id);
+
+	
+	public void countVotes(ReplyDTO replyDTO);
+
     
     
 
-
-    /**
-     * Get all the replies by comment id.
-     *
-     * @param pageable the pagination information
-     * @return the list of entities
-     */
-	Page<ReplyDTO> findAllRepliesByCommentId(Pageable pageable, Long commentId);
 
 }
