@@ -25,6 +25,7 @@ import com.lxisoft.repository.NewsFeedRepository;
 import com.lxisoft.service.CommentService;
 import com.lxisoft.service.MediaService;
 import com.lxisoft.service.NewsFeedService;
+import com.lxisoft.service.UserCheckService;
 import com.lxisoft.service.dto.CommentDTO;
 import com.lxisoft.service.dto.MediaDTO;
 import com.lxisoft.service.dto.NewsFeedDTO;
@@ -46,6 +47,9 @@ public class NewsFeedServiceImpl implements NewsFeedService {
 
 	@Autowired
 	private CommentService commentService;
+
+	@Autowired
+	private UserCheckService userCheckService;
 
 	private final NewsFeedMapper newsFeedMapper;
 
@@ -146,6 +150,9 @@ public class NewsFeedServiceImpl implements NewsFeedService {
 						newsFeedDto.getId());
 				List<CommentDTO> commentsList = commentsPage.getContent();
 				newsFeedDto.setTotalComments((long) commentsList.size());
+				newsFeedDto.setTotalLikes((long) userCheckService.countOfNewsFeedUserChecksLike(newsFeedDto.getId()));
+				newsFeedDto.setTotalDislikes(
+						(long) userCheckService.countOfNewsFeedUserChecksDislike(newsFeedDto.getId()));
 
 			}
 		}

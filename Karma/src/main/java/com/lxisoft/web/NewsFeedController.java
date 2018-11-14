@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +21,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.service.MediaService;
 import com.lxisoft.service.NewsFeedService;
 import com.lxisoft.service.dto.NewsFeedDTO;
+import com.lxisoft.web.rest.errors.BadRequestAlertException;
 
 /**
  * TODO Provide a detailed description here
@@ -72,6 +74,7 @@ public class NewsFeedController {
 			Model model) throws URISyntaxException, IllegalStateException, IOException {
 		newsFeedDTO.setAttachedFiles(attachedFiles);
 		NewsFeedDTO newsFeedDto = newsFeedService.saveNewsFeed(newsFeedDTO);
+		model.addAttribute("newsFeed", newsFeedDto);
 		return "post-newsfeed";
 	}
 
@@ -86,10 +89,35 @@ public class NewsFeedController {
 	@GetMapping("/allNewsFeeds")
 	@Timed
 	public String getAllNewsFeeds(Pageable pageable, Model model) {
-		log.debug("REST request to get a page of Books");
+		log.debug("REST request to get newsFeeds");
 		Page<NewsFeedDTO> newsFeedDtoList = newsFeedService.findAllNewsFeeds(pageable);
 		model.addAttribute("newsFeedList", newsFeedDtoList);
 		return "show-newsfeed-demo";
+	}
+
+	/**
+	 * POST /postnewsfeed : Create a new need.
+	 *
+	 * @param newsFeedDTO
+	 *            the newsFeedDTO to create
+	 * @return the string value
+	 * @throws URISyntaxException
+	 *             if the Location URI syntax is incorrect
+	 * @throws IOException
+	 * @throws IllegalStateException
+	 */
+
+	@PutMapping("/updatenewsfeed")
+	@Timed
+	public String updateNewsFeed(@ModelAttribute NewsFeedDTO newsFeedDTO, @RequestParam MultipartFile[] attachedFiles,
+			Model model) throws URISyntaxException, IllegalStateException, IOException {
+		if (newsFeedDTO.getId() == null) {
+			throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+		}
+		newsFeedDTO.setAttachedFiles(attachedFiles);
+		NewsFeedDTO newsFeedDto = newsFeedService.saveNewsFeed(newsFeedDTO);
+		model.addAttribute("newsFeed", newsFeedDto);
+		return "post-newsfeed";
 	}
 
 }

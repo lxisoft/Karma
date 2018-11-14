@@ -1,31 +1,32 @@
 package com.lxisoft.repository;
 
-import com.lxisoft.domain.UserCheck;
-import com.lxisoft.service.dto.UserCheckDTO;
-
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.lxisoft.domain.UserCheck;
 
 /**
- * Spring Data  repository for the UserCheck entity.
+ * Spring Data repository for the UserCheck entity.
  */
 @SuppressWarnings("unused")
 @Repository
 public interface UserCheckRepository extends JpaRepository<UserCheck, Long> {
-	
-	Optional<UserCheck> findByCategoryAndCheckedNeedIdAndCheckedUserId(String category,Long checkedNeedId,Long checkedUserId);
+
+	Optional<UserCheck> findByCategoryAndCheckedNeedIdAndCheckedUserId(String category, Long checkedNeedId,
+			Long checkedUserId);
 
 	/**
 	 * @param pageable
 	 * @return
 	 */
-	Page<UserCheck> findAllUserChecksByCheckedNeedId(Pageable pageable,Long checkedNeedId);
-	
+	Page<UserCheck> findAllUserChecksByCheckedNeedId(Pageable pageable, Long checkedNeedId);
+
 	/**
 	 * 
 	 * @param commentId
@@ -40,7 +41,7 @@ public interface UserCheckRepository extends JpaRepository<UserCheck, Long> {
 	 * @param category
 	 * @return user check entities
 	 */
-	
+
 	Page<UserCheck> findAllUserCheckByCategory(Pageable pageable, String category);
 
 	/**
@@ -58,7 +59,8 @@ public interface UserCheckRepository extends JpaRepository<UserCheck, Long> {
 	 * @param checkedUserId
 	 * @return user check entities
 	 */
-	Page<UserCheck> findAllUserCheckByViolationIdAndCheckedUserId(Pageable pageable, Long violationId, Long checkedUserId);
+	Page<UserCheck> findAllUserCheckByViolationIdAndCheckedUserId(Pageable pageable, Long violationId,
+			Long checkedUserId);
 
 	/**
 	 * 
@@ -82,7 +84,7 @@ public interface UserCheckRepository extends JpaRepository<UserCheck, Long> {
 	 * @param pageable
 	 * @return user check entities
 	 */
-	
+
 	Page<UserCheck> findAllByReplyIdIs(Long replyId, Pageable pageable);
 
 	/**
@@ -101,5 +103,21 @@ public interface UserCheckRepository extends JpaRepository<UserCheck, Long> {
 	 */
 	Page<UserCheck> findAllByCheckedNeedId(Long needId, Pageable pageable);
 
+	/**
+	 * 
+	 * @param newsFeedId
+	 * @param voteType
+	 * @return
+	 */
+	@Query(value = "select count(u) from UserCheck u where u.newsFeed.id=:newsFeedId and u.voteType=:voteType")
+	Integer countOfVoteTypeLike(@Param("voteType") String voteType, @Param("newsFeedId") Long newsFeedId);
 
+	/**
+	 * 
+	 * @param newsFeedId
+	 * @param voteType,newsFeedId
+	 * @return
+	 */
+	@Query(value = "select count(u) from UserCheck u where u.newsFeed.id=:newsFeedId and u.voteType=:voteType")
+	Integer countOfVoteTypeDislike(@Param("voteType") String voteType, @Param("newsFeedId") Long newsFeedId);
 }

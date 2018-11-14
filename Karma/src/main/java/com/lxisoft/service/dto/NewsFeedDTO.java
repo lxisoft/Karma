@@ -26,6 +26,26 @@ public class NewsFeedDTO implements Serializable {
 
 	private Long totalComments;
 
+	private Long totalLikes;
+
+	private Long totalDislikes;
+
+	public Long getTotalLikes() {
+		return totalLikes;
+	}
+
+	public void setTotalLikes(Long totalLikes) {
+		this.totalLikes = totalLikes;
+	}
+
+	public Long getTotalDislikes() {
+		return totalDislikes;
+	}
+
+	public void setTotalDislikes(Long totalDislikes) {
+		this.totalDislikes = totalDislikes;
+	}
+
 	public Long getTotalComments() {
 		return totalComments;
 	}
