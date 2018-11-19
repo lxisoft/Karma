@@ -10,22 +10,19 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * CategoryDTO
+ * ApprovalStatusDTO
  */
 @Validated
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-19T12:29:01.833+05:30[Asia/Calcutta]")
 
-public class CategoryDTO   {
+public class ApprovalStatusDTO   {
   @JsonProperty("id")
   private Long id = null;
 
-  @JsonProperty("name")
-  private String name = null;
+  @JsonProperty("status")
+  private String status = null;
 
-  @JsonProperty("subCategory")
-  private String subCategory = null;
-
-  public CategoryDTO id(Long id) {
+  public ApprovalStatusDTO id(Long id) {
     this.id = id;
     return this;
   }
@@ -45,44 +42,24 @@ public class CategoryDTO   {
     this.id = id;
   }
 
-  public CategoryDTO name(String name) {
-    this.name = name;
+  public ApprovalStatusDTO status(String status) {
+    this.status = status;
     return this;
   }
 
   /**
-   * Get name
-   * @return name
+   * Get status
+   * @return status
   **/
   @ApiModelProperty(value = "")
 
 
-  public String getName() {
-    return name;
+  public String getStatus() {
+    return status;
   }
 
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public CategoryDTO subCategory(String subCategory) {
-    this.subCategory = subCategory;
-    return this;
-  }
-
-  /**
-   * Get subCategory
-   * @return subCategory
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getSubCategory() {
-    return subCategory;
-  }
-
-  public void setSubCategory(String subCategory) {
-    this.subCategory = subCategory;
+  public void setStatus(String status) {
+    this.status = status;
   }
 
 
@@ -94,25 +71,23 @@ public class CategoryDTO   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CategoryDTO categoryDTO = (CategoryDTO) o;
-    return Objects.equals(this.id, categoryDTO.id) &&
-        Objects.equals(this.name, categoryDTO.name) &&
-        Objects.equals(this.subCategory, categoryDTO.subCategory);
+    ApprovalStatusDTO approvalStatusDTO = (ApprovalStatusDTO) o;
+    return Objects.equals(this.id, approvalStatusDTO.id) &&
+        Objects.equals(this.status, approvalStatusDTO.status);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, subCategory);
+    return Objects.hash(id, status);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CategoryDTO {\n");
+    sb.append("class ApprovalStatusDTO {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    subCategory: ").append(toIndentedString(subCategory)).append("\n");
+    sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("}");
     return sb.toString();
   }

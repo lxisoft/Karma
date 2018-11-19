@@ -321,6 +321,51 @@ public class AggregateServiceImpl implements AggregateService {
 	    }
 
 
+	 /**
+     * Get all the approvalStatuses.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+    @Override
+    @Transactional(readOnly = true)
+	public Page<ApprovalStatusDTO> findAllApprovalStatuses(Pageable pageable) {
+    	log.debug("Request to get all ApprovalStatuses");
+        return approvalStatusRepository.findAll(pageable)
+        .map(approvalStatusMapper::toDto);
+	}
+
+
+    /**
+     * Get one approvalStatus by id.
+     *
+     * @param id the id of the entity
+     * 
+     * @return the entity
+     */
+    @Override
+    @Transactional(readOnly = true)
+	public Optional<ApprovalStatusDTO> findOneApprovalStatus(Long id) {
+    	log.debug("Request to get ApprovalStatus : {}", id);
+        return approvalStatusRepository.findById(id)
+        .map(approvalStatusMapper::toDto);
+	}
+
+
+    /**
+     * Get all the categories.
+     *
+     * @param pageable the pagination information
+     * 
+     * @return the list of entities
+     */
+	public Page<CategoryDTO> findAllCategories(Pageable pageable) {
+		log.debug("Request to get all Categories");
+        return categoryRepository.findAll(pageable)
+            .map(categoryMapper::toDto);
+	}
+
+
 	
 
 

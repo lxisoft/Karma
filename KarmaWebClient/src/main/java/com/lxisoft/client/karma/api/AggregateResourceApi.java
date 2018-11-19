@@ -5,6 +5,8 @@
  */
 package com.lxisoft.client.karma.api;
 
+import com.lxisoft.client.karma.model.ApprovalStatusDTO;
+import com.lxisoft.client.karma.model.CategoryDTO;
 import com.lxisoft.client.karma.model.NeedDTO;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
@@ -25,7 +27,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-19T00:03:59.400+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-19T12:29:01.833+05:30[Asia/Calcutta]")
 
 @Api(value = "AggregateResource", description = "the AggregateResource API")
 public interface AggregateResourceApi {
@@ -39,6 +41,30 @@ public interface AggregateResourceApi {
     @RequestMapping(value = "/api/needs/{id}",
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteNeedUsingDELETE(@ApiParam(value = "id",required=true) @PathVariable("id") Long id);
+
+
+    @ApiOperation(value = "getAllApprovalStatuses", nickname = "getAllApprovalStatusesUsingGET", notes = "", response = ApprovalStatusDTO.class, responseContainer = "List", tags={ "aggregate-resource", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "OK", response = ApprovalStatusDTO.class, responseContainer = "List"),
+        @ApiResponse(code = 401, message = "Unauthorized"),
+        @ApiResponse(code = 403, message = "Forbidden"),
+        @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/api/approval-statuses",
+        produces = "*/*", 
+        method = RequestMethod.GET)
+    ResponseEntity<List<ApprovalStatusDTO>> getAllApprovalStatusesUsingGET(@ApiParam(value = "") @Valid @RequestParam(value = "offset", required = false) Long offset,@ApiParam(value = "Page number of the requested page") @Valid @RequestParam(value = "page", required = false) Integer page,@ApiParam(value = "") @Valid @RequestParam(value = "pageNumber", required = false) Integer pageNumber,@ApiParam(value = "") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "") @Valid @RequestParam(value = "paged", required = false) Boolean paged,@ApiParam(value = "Size of a page") @Valid @RequestParam(value = "size", required = false) Integer size,@ApiParam(value = "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.") @Valid @RequestParam(value = "sort", required = false) List<String> sort,@ApiParam(value = "") @Valid @RequestParam(value = "sort.sorted", required = false) Boolean sortSorted,@ApiParam(value = "") @Valid @RequestParam(value = "sort.unsorted", required = false) Boolean sortUnsorted,@ApiParam(value = "") @Valid @RequestParam(value = "unpaged", required = false) Boolean unpaged);
+
+
+    @ApiOperation(value = "getAllCategories", nickname = "getAllCategoriesUsingGET", notes = "", response = CategoryDTO.class, responseContainer = "List", tags={ "aggregate-resource", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "OK", response = CategoryDTO.class, responseContainer = "List"),
+        @ApiResponse(code = 401, message = "Unauthorized"),
+        @ApiResponse(code = 403, message = "Forbidden"),
+        @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/api/categories",
+        produces = "*/*", 
+        method = RequestMethod.GET)
+    ResponseEntity<List<CategoryDTO>> getAllCategoriesUsingGET(@ApiParam(value = "") @Valid @RequestParam(value = "offset", required = false) Long offset,@ApiParam(value = "Page number of the requested page") @Valid @RequestParam(value = "page", required = false) Integer page,@ApiParam(value = "") @Valid @RequestParam(value = "pageNumber", required = false) Integer pageNumber,@ApiParam(value = "") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "") @Valid @RequestParam(value = "paged", required = false) Boolean paged,@ApiParam(value = "Size of a page") @Valid @RequestParam(value = "size", required = false) Integer size,@ApiParam(value = "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.") @Valid @RequestParam(value = "sort", required = false) List<String> sort,@ApiParam(value = "") @Valid @RequestParam(value = "sort.sorted", required = false) Boolean sortSorted,@ApiParam(value = "") @Valid @RequestParam(value = "sort.unsorted", required = false) Boolean sortUnsorted,@ApiParam(value = "") @Valid @RequestParam(value = "unpaged", required = false) Boolean unpaged);
 
 
     @ApiOperation(value = "getAllNeedsByApprovedStatus", nickname = "getAllNeedsByApprovedStatusUsingGET", notes = "", response = NeedDTO.class, responseContainer = "List", tags={ "aggregate-resource", })
@@ -75,6 +101,18 @@ public interface AggregateResourceApi {
         produces = "*/*", 
         method = RequestMethod.GET)
     ResponseEntity<List<NeedDTO>> getAllNeedsUsingGET(@ApiParam(value = "eagerload", defaultValue = "false") @Valid @RequestParam(value = "eagerload", required = false, defaultValue="false") Boolean eagerload,@ApiParam(value = "") @Valid @RequestParam(value = "offset", required = false) Long offset,@ApiParam(value = "Page number of the requested page") @Valid @RequestParam(value = "page", required = false) Integer page,@ApiParam(value = "") @Valid @RequestParam(value = "pageNumber", required = false) Integer pageNumber,@ApiParam(value = "") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "") @Valid @RequestParam(value = "paged", required = false) Boolean paged,@ApiParam(value = "Size of a page") @Valid @RequestParam(value = "size", required = false) Integer size,@ApiParam(value = "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.") @Valid @RequestParam(value = "sort", required = false) List<String> sort,@ApiParam(value = "") @Valid @RequestParam(value = "sort.sorted", required = false) Boolean sortSorted,@ApiParam(value = "") @Valid @RequestParam(value = "sort.unsorted", required = false) Boolean sortUnsorted,@ApiParam(value = "") @Valid @RequestParam(value = "unpaged", required = false) Boolean unpaged);
+
+
+    @ApiOperation(value = "getApprovalStatus", nickname = "getApprovalStatusUsingGET", notes = "", response = ApprovalStatusDTO.class, tags={ "aggregate-resource", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "OK", response = ApprovalStatusDTO.class),
+        @ApiResponse(code = 401, message = "Unauthorized"),
+        @ApiResponse(code = 403, message = "Forbidden"),
+        @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/api/approval-statuses/{id}",
+        produces = "*/*", 
+        method = RequestMethod.GET)
+    ResponseEntity<ApprovalStatusDTO> getApprovalStatusUsingGET(@ApiParam(value = "id",required=true) @PathVariable("id") Long id);
 
 
     @ApiOperation(value = "getNeed", nickname = "getNeedUsingGET", notes = "", response = NeedDTO.class, tags={ "aggregate-resource", })

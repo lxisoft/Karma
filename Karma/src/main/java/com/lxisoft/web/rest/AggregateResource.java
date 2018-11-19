@@ -43,6 +43,8 @@ import io.github.jhipster.web.util.ResponseUtil;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.service.AggregateService;
+import com.lxisoft.service.dto.ApprovalStatusDTO;
+import com.lxisoft.service.dto.CategoryDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.web.rest.errors.BadRequestAlertException;
 import com.lxisoft.web.rest.util.HeaderUtil;
@@ -219,6 +221,53 @@ public class AggregateResource {
        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);    
        
        }
+   
+   
+   /**
+    * GET  /approval-statuses : get all the approvalStatuses.
+    *
+    * @param pageable the pagination information
+    * @return the ResponseEntity with status 200 (OK) and the list of approvalStatuses in body
+    */
+   @GetMapping("/approval-statuses")
+   @Timed
+   public ResponseEntity<List<ApprovalStatusDTO>> getAllApprovalStatuses(Pageable pageable) {
+       log.debug("REST request to get a page of ApprovalStatuses");
+       Page<ApprovalStatusDTO> page = aggregateService.findAllApprovalStatuses(pageable);
+       HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/approval-statuses");
+       return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+   }
+   
+   
+   /**
+    * GET  /approval-statuses/:id : get the "id" approvalStatus.
+    *
+    * @param id the id of the approvalStatusDTO to retrieve
+    * @return the ResponseEntity with status 200 (OK) and with body the approvalStatusDTO, or with status 404 (Not Found)
+    */
+   @GetMapping("/approval-statuses/{id}")
+   @Timed
+   public ResponseEntity<ApprovalStatusDTO> getApprovalStatus(@PathVariable Long id) {
+       log.debug("REST request to get ApprovalStatus : {}", id);
+       Optional<ApprovalStatusDTO> approvalStatusDTO = aggregateService.findOneApprovalStatus(id);
+       return ResponseUtil.wrapOrNotFound(approvalStatusDTO);
+   }
+   
+   /**
+    * GET  /categories : get all the categories.
+    *
+    * @param pageable the pagination information
+    * @return the ResponseEntity with status 200 (OK) and the list of categories in body
+    */
+   @GetMapping("/categories")
+   @Timed
+   public ResponseEntity<List<CategoryDTO>> getAllCategories(Pageable pageable) {
+       log.debug("REST request to get a page of Categories");
+       Page<CategoryDTO> page = aggregateService.findAllCategories(pageable);
+       HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/categories");
+       return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+   }
+
 
 
 

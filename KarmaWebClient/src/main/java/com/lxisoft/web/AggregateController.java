@@ -27,11 +27,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.client.karma.api.AggregateResourceApi;
+import com.lxisoft.client.karma.model.ApprovalStatusDTO;
+import com.lxisoft.client.karma.model.CategoryDTO;
 import com.lxisoft.client.karma.model.NeedDTO;
 
 /**
@@ -93,6 +97,108 @@ public class AggregateController {
 		return "home";
 
 	}
+	
+	/**
+	 * GET /needs/:id : get the "id" need.
+	 *
+	 * @param id
+	 *            the id of the needDTO to retrieve
+	 * @return the string value
+	 */
+	@GetMapping("/needs/{id}")
+	@Timed
+	public String getNeed(@PathVariable(value = "id") Long id, Model model) {
+		log.debug("request to get Need : {}", id);
+
+		NeedDTO needDTO =  aggregateResourceApi.getNeedUsingGET(id).getBody();
+
+		model.addAttribute("need", needDTO);
+
+		return "need";
+	}
+	
+	/**
+	 * GET /needs/:id : get the "id" need.
+	 *
+	 * @param id
+	 *            the id of the needDTO to retrieve
+	 * @return the string value
+	 */
+	@GetMapping("/needs/statuses/{id}")
+	@Timed
+	public String getNeedWithStatusesById(@PathVariable(value = "id") Long id, Model model) {
+		log.debug("request to get Need : {}", id);
+				
+		NeedDTO needDTO =  aggregateResourceApi.getNeedUsingGET(id).getBody();
+		List<ApprovalStatusDTO> approvalStatusDTOs =  aggregateResourceApi.getAllApprovalStatusesUsingGET(id, null, null, null, null, null, null, null, null, null).getBody();  
+		
+		model.addAttribute("need", needDTO);
+		model.addAttribute("approvalStatuses",approvalStatusDTOs);
+				
+		return "pending-need";
+	}
+
+	/**
+	 * GET /needs : get all the needs by approvalStatus.
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @param eagerload
+	 *            flag to eager load entities from relationships (This is
+	 *            applicable for many-to-many)
+	 * @return the string value
+	 */
+
+	@GetMapping("home/{approvalStatus}")
+	@Timed
+	public String getAllNeedsByApprovedStatus(Pageable pageable,
+			@RequestParam(required = false, defaultValue = "false") boolean eagerload,
+			@PathVariable(value = "approvalStatus") String approvalStatus, Model model) {
+		log.debug("request to get a page of Needs");
+		
+		List<NeedDTO> needs=aggregateResourceApi.getAllNeedsByApprovedStatusUsingGET(approvalStatus, eagerload, null, null, null, null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
+		
+		List<CategoryDTO> categories=aggregateResourceApi.getAllCategoriesUsingGET(null, null, null, null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
+		
+		model.addAttribute("needs", needs);
+		
+		model.addAttribute("categories", categories);
+		
+		if (approvalStatus.equals("approved"))
+			return "home";
+		else if (approvalStatus.equals("pending"))
+			return "pending-requests";
+		else
+			return "home";
+	}
+	
+	/**
+	 * PUT /needs : Updates an existing need.
+	 *
+	 * @param needDTO
+	 *            the needDTO to update
+	 * @return the string value, or with status 400 (Bad Request) if the needDTO
+	 *         is not valid, or with status 500 (Internal Server Error) if the
+	 *         needDTO couldn't be updated
+	 * @throws URISyntaxException
+	 *             if the Location URI syntax is incorrect
+	 * @throws IOException 
+	 */
+	@PutMapping("/needs")
+	@Timed
+	public String updateNeed(@ModelAttribute NeedDTO needDTO,Model model) throws URISyntaxException, IOException {
+		
+		log.debug("request to update Need : {}", needDTO);
+		
+		NeedDTO needDto = aggregateResourceApi.updateNeedUsingPUT(needDTO).getBody();
+		
+		ApprovalStatusDTO approvalStatusDTO=aggregateResourceApi.getApprovalStatusUsingGET(needDTO.getApprovalStatusId()).getBody();
+		
+		model.addAttribute("need", needDto);
+		model.addAttribute("message",approvalStatusDTO );
+		return "approve-decline";
+	}
+
 
 
 
