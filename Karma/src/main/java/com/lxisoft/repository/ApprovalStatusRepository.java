@@ -20,6 +20,6 @@ public interface ApprovalStatusRepository extends JpaRepository<ApprovalStatus, 
 	 * @param approvalStatus
 	 * @return
 	 */
-	Optional<ApprovalStatus> findNeedByStatus(String approvalStatus);
+	Optional<ApprovalStatus> findByStatus(String approvalStatus);
 
 }

@@ -45,6 +45,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.service.AggregateService;
 import com.lxisoft.service.dto.ApprovalStatusDTO;
 import com.lxisoft.service.dto.CategoryDTO;
+import com.lxisoft.service.dto.HelpDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.web.rest.errors.BadRequestAlertException;
 import com.lxisoft.web.rest.util.HeaderUtil;
@@ -267,7 +268,114 @@ public class AggregateResource {
        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/categories");
        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
    }
+   
+   /**
+    * POST  /helps : Create a new help.
+    *
+    * @param helpDTO the helpDTO to create
+    * @return the ResponseEntity with status 201 (Created) and with body the new helpDTO, or with status 400 (Bad Request) if the help has already an ID
+    * @throws URISyntaxException if the Location URI syntax is incorrect
+    * @throws IOException 
+    */
+   @PostMapping("/helps")
+   @Timed
+   public ResponseEntity<HelpDTO> helpNeedy(@RequestBody HelpDTO helpDTO) throws URISyntaxException, IOException {
+       log.debug("REST request to save Help : {}", helpDTO);
+       if (helpDTO.getId() != null) {
+           throw new BadRequestAlertException("A new help cannot already have an ID","Help", "idexists");
+       }
+            
+       HelpDTO helpDto = aggregateService.saveHelpAsIncomplete(helpDTO);
+       
+       return ResponseEntity.created(new URI("/api/helps/createHelpWithMedia" + helpDto.getId()))
+		            .headers(HeaderUtil.createEntityCreationAlert("Help", helpDto.getId().toString()))
+		            .body(helpDto);
+   }
+   
+   
+   /**
+    * PUT  /helps : Updates an existing help.
+    *
+    * @param helpDTO the helpDTO to update
+    * @return the ResponseEntity with status 200 (OK) and with body the updated helpDTO,
+    * or with status 400 (Bad Request) if the helpDTO is not valid,
+    * or with status 500 (Internal Server Error) if the helpDTO couldn't be updated
+    * @throws URISyntaxException if the Location URI syntax is incorrect
+    * @throws IOException 
+    */
+   @PutMapping("/helps")
+   @Timed
+   public ResponseEntity<HelpDTO> updateHelp(@RequestBody HelpDTO helpDTO) throws URISyntaxException, IOException {
+       log.debug("REST request to update Help : {}", helpDTO);
+       if (helpDTO.getId() == null) {
+           throw new BadRequestAlertException("Invalid id","Help", "idnull");
+       }
+       HelpDTO result = aggregateService.saveHelpAsComplete(helpDTO);
+       return ResponseEntity.ok()
+           .headers(HeaderUtil.createEntityUpdateAlert("Help", helpDTO.getId().toString()))
+           .body(result);
+   }
 
+
+   /**
+    * GET  /helps : get all the helps.
+    *
+    * @param pageable the pagination information
+    * @return the ResponseEntity with status 200 (OK) and the list of helps in body
+    */
+   @GetMapping("/helps")
+   @Timed
+   public ResponseEntity<List<HelpDTO>> getAllHelps(Pageable pageable) {
+       log.debug("REST request to get a page of Helps");
+       Page<HelpDTO> page = aggregateService.findAllHelps(pageable);
+       HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/helps");
+       return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+   }
+
+
+   /**
+    * GET  /helps/:id : get the "id" help.
+    *
+    * @param id the id of the helpDTO to retrieve
+    * @return the ResponseEntity with status 200 (OK) and with body the helpDTO, or with status 404 (Not Found)
+    */
+   @GetMapping("/helps/{id}")
+   @Timed
+   public ResponseEntity<HelpDTO> getHelp(@PathVariable Long id) {
+       log.debug("REST request to get Help : {}", id);
+             
+       Optional<HelpDTO> helpDTO = aggregateService.findOneHelp(id);     
+       return ResponseUtil.wrapOrNotFound(helpDTO);
+   }
+   
+   /**
+    * DELETE  /helps/:id : delete the "id" help.
+    *
+    * @param id the id of the helpDTO to delete
+    * @return the ResponseEntity with status 200 (OK)
+    */
+   @DeleteMapping("/helps/{id}")
+   @Timed
+   public ResponseEntity<Void> deleteHelp(@PathVariable Long id) {
+       log.debug("REST request to delete Help : {}", id);
+       aggregateService.deleteHelp(id);
+       return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("Help",id.toString())).build();
+   }
+   
+   /**
+    * GET  /helps : get all the helps.
+    *
+    * @param pageable the pagination information
+    * @return the ResponseEntity with status 200 (OK) and the list of helps in body
+    */
+   @GetMapping("/helps/getAllHelpsByApprovedStatus/{approvalStatus}")
+   @Timed
+   public ResponseEntity<List<HelpDTO>> getAllHelpsByApprovedStatus(Pageable pageable,@PathVariable String approvalStatus) {
+       log.debug("REST request to get a page of Helps");
+       Page<HelpDTO> page = aggregateService.findAllHelpsByApprovedStatus(pageable,approvalStatus);           
+       HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/helps");
+       return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+   }
 
 
 

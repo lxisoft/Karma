@@ -36,6 +36,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.client.karma.api.AggregateResourceApi;
 import com.lxisoft.client.karma.model.ApprovalStatusDTO;
 import com.lxisoft.client.karma.model.CategoryDTO;
+import com.lxisoft.client.karma.model.HelpDTO;
 import com.lxisoft.client.karma.model.NeedDTO;
 
 /**
@@ -198,6 +199,128 @@ public class AggregateController {
 		model.addAttribute("message",approvalStatusDTO );
 		return "approve-decline";
 	}
+	
+    /**
+	 * POST /helps : Create a new help.
+	 *
+	 * @param helpDTO
+	 *            the helpDTO to create
+	 * @return the String value
+	 * @throws URISyntaxException
+	 *             if the Location URI syntax is incorrect
+	 * @throws IOException 
+	 */
+	@PostMapping("/helps")
+	@Timed
+	public String helpNeedy(@ModelAttribute HelpDTO helpDTO,Model model) throws URISyntaxException, IOException {
+
+		log.debug("REST request to save Help : {}", helpDTO);
+		
+		HelpDTO helpdto=aggregateResourceApi.helpNeedyUsingPOST(helpDTO).getBody();
+		
+		model.addAttribute("help", helpdto);
+		model.addAttribute("message", "submitted");
+		return "approve-decline";
+	}
+	
+	/**
+	 * PUT /helps : Updates an existing need.
+	 *
+	 * @param helpDTO
+	 *            the needDTO to update
+	 * @return the string value, or with status 400 (Bad Request) if the needDTO
+	 *         is not valid, or with status 500 (Internal Server Error) if the
+	 *         needDTO couldn't be updated
+	 * @throws URISyntaxException
+	 *             if the Location URI syntax is incorrect
+	 * @throws IOException 
+	 */
+	@PutMapping("/helps")
+	@Timed
+	public String updateHelp(@ModelAttribute HelpDTO helpDTO, Model model) throws URISyntaxException, IOException {
+		log.debug("request to update Need : {}", helpDTO);	
+		
+		HelpDTO help = aggregateResourceApi.updateHelpUsingPUT(helpDTO).getBody();
+		ApprovalStatusDTO approvalStatusDTO = aggregateResourceApi.getApprovalStatusUsingGET(help.getApprovalStatusId()).getBody();
+		
+		model.addAttribute("help", help);
+		model.addAttribute("message", approvalStatusDTO);
+		return "approve-decline";
+	}
+	
+	/**
+	 * GET /needs : get all the needs by approvalStatus.
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @param eagerload
+	 *            flag to eager load entities from relationships (This is
+	 *            applicable for many-to-many)
+	 * @return the string value
+	 */
+
+	@GetMapping("/helps/{approvalStatus}")
+	@Timed
+	public String getAllHelpsByApprovedStatus(Pageable pageable,
+			@RequestParam(required = false, defaultValue = "false") boolean eagerload,
+			@PathVariable(value = "approvalStatus") String approvalStatus, Model model) {
+		log.debug("request to get a page of helps");
+
+		List<HelpDTO> helps =aggregateResourceApi.getAllHelpsByApprovedStatusUsingGET(approvalStatus, null, null, null, null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
+		
+		model.addAttribute("helps", helps);
+
+		if (approvalStatus.equals(("completed")))
+			return "completed-helps";
+		else if (approvalStatus.equals(("incompleted")))
+			return "incompleted-helps";
+		else
+			return "home";
+	}
+
+	/**
+	 * GET /help-need/:id : get the "id" need.
+	 *
+	 * @param id
+	 *            the id of the needDTO to retrieve
+	 * @return the string value
+	 */
+	@GetMapping("/help-need/{id}")
+	@Timed
+	public String getHelpWithNeed(@PathVariable(value = "id") Long id, Model model) {
+		log.debug("request to get Need : {}", id);
+
+		HelpDTO help = new HelpDTO();
+		help.setFulfilledNeedId(id);
+
+		model.addAttribute("help", help);
+
+		return "help-submission";
+	}
+
+	/**
+	 * GET /help-need/:id : get the "id" need.
+	 *
+	 * @param id
+	 *            the id of the needDTO to retrieve
+	 * @return the string value
+	 */
+	@GetMapping("helps/incomplete/{id}")
+	@Timed
+	public String getHelpForApproval(@PathVariable(value = "id") Long id, Model model,Pageable pageable) {
+
+		log.debug("request to get Need : {}", id);
+
+		HelpDTO helpDto = aggregateResourceApi.getHelpUsingGET(id).getBody();
+
+		List<ApprovalStatusDTO> approvalStatuses = aggregateResourceApi.getAllApprovalStatusesUsingGET(id, null, null, null, null, null, null, null, null, null).getBody();
+				
+		model.addAttribute("help", helpDto);
+		model.addAttribute("approvalStatuses", approvalStatuses);
+
+		return "incompleted-help";
+	}
+
 
 
 

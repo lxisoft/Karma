@@ -33,18 +33,22 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lxisoft.domain.ApprovalStatus;
 import com.lxisoft.domain.Category;
+import com.lxisoft.domain.Help;
 import com.lxisoft.domain.Need;
 import com.lxisoft.repository.ApprovalStatusRepository;
 import com.lxisoft.repository.CategoryRepository;
+import com.lxisoft.repository.HelpRepository;
 import com.lxisoft.repository.NeedRepository;
 import com.lxisoft.repository.UserCheckRepository;
 import com.lxisoft.service.AggregateService;
 import com.lxisoft.service.dto.ApprovalStatusDTO;
 import com.lxisoft.service.dto.CategoryDTO;
+import com.lxisoft.service.dto.HelpDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.service.dto.UserCheckDTO;
 import com.lxisoft.service.mapper.ApprovalStatusMapper;
 import com.lxisoft.service.mapper.CategoryMapper;
+import com.lxisoft.service.mapper.HelpMapper;
 import com.lxisoft.service.mapper.NeedMapper;
 import com.lxisoft.service.mapper.UserCheckMapper;
 
@@ -76,6 +80,9 @@ public class AggregateServiceImpl implements AggregateService {
 	
 	@Autowired
 	UserCheckRepository userCheckRepository;
+	
+	@Autowired
+	HelpRepository helpRepository;
 
 	@Autowired
     NeedMapper needMapper;
@@ -88,6 +95,9 @@ public class AggregateServiceImpl implements AggregateService {
 	
 	@Autowired
 	UserCheckMapper userCheckMapper;
+	
+	@Autowired
+	HelpMapper helpMapper;
 		
 	
 	 /**
@@ -120,7 +130,7 @@ public class AggregateServiceImpl implements AggregateService {
         
         if(needDTO.getApprovalStatusId()==null){
         	
-        	Optional<ApprovalStatus> approvalStatus=approvalStatusRepository.findNeedByStatus("pending");
+        	Optional<ApprovalStatus> approvalStatus=approvalStatusRepository.findByStatus("pending");
         	
         	Long id=approvalStatus.get().getId();
         	log.debug("***************{}"+id);
@@ -300,7 +310,7 @@ public class AggregateServiceImpl implements AggregateService {
     @Override
     public Optional<ApprovalStatusDTO> findNeedByApprovalStatus(String approvalStatus){
     	log.debug("Request to retreive pending status: {}",approvalStatus);
-    	return approvalStatusRepository.findNeedByStatus(approvalStatus)
+    	return approvalStatusRepository.findByStatus(approvalStatus)
     			.map(approvalStatusMapper::toDto);
     		  
     }
@@ -363,6 +373,119 @@ public class AggregateServiceImpl implements AggregateService {
 		log.debug("Request to get all Categories");
         return categoryRepository.findAll(pageable)
             .map(categoryMapper::toDto);
+	}
+
+
+	/**
+     * Save a help.
+     *
+     * @param helpDTO the entity to save
+     * 
+     * @return the persisted entity
+     * 
+     * @throws IOException 
+     */
+	@Override
+	public HelpDTO saveHelpAsIncomplete(HelpDTO helpDTO) {
+		log.debug("Request to save Help : {}", helpDTO);
+		
+		if (helpDTO.getApprovalStatusId() == null) {
+
+			Optional<ApprovalStatus> approvalStatus = approvalStatusRepository.findByStatus("incompleted");
+
+			Long id = approvalStatus.get().getId();
+			log.debug("***************{}" + id);
+			helpDTO.setApprovalStatusId(approvalStatus.get().getId());
+		}
+       
+       String parsedDate = helpDTO.getTimeInString().replaceAll(" ", "T").concat("Z");
+
+		// creates a date instance of type instant from a string
+	    helpDTO.setTime(Instant.parse(parsedDate));
+		
+		
+	    Help help = helpMapper.toEntity(helpDTO);
+	    help = helpRepository.save(help);
+	    return helpMapper.toDto(help);
+	}
+
+
+	/**
+     * Save a help.
+     *
+     * @param helpDTO the entity to save
+     * @return the persisted entity
+     * @throws IOException 
+     */
+	@Override
+	public HelpDTO saveHelpAsComplete(HelpDTO helpDTO) {
+		log.debug("Request to save Help : {}", helpDTO);
+		Help help = helpMapper.toEntity(helpDTO);
+        help = helpRepository.save(help);
+        return helpMapper.toDto(help);
+	}
+
+
+	/**
+     * Get all the helps.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+    @Override
+    @Transactional(readOnly = true)
+	public Page<HelpDTO> findAllHelps(Pageable pageable) {
+    	 log.debug("Request to get all Helps");
+         return helpRepository.findAll(pageable)
+             .map(helpMapper::toDto);
+	}
+
+
+    /**
+     * Get one help by id.
+     *
+     * @param id the id of the entity
+     * 
+     * @return the entity
+     */
+	@Override
+	public Optional<HelpDTO> findOneHelp(Long id) {
+		log.debug("Request to get Help : {}", id);
+        return helpRepository.findById(id)
+            .map(helpMapper::toDto);
+	}
+
+
+	/**
+     * Delete the help by id.
+     *
+     * @param id the id of the entity
+     */
+    @Override
+	public void deleteHelp(Long id) {
+    	log.debug("Request to delete Help : {}", id);
+        helpRepository.deleteById(id);		
+	}
+
+
+    /**
+     * Get all the helpsByApprovedStatus.
+     *
+     * @param pageable the pagination information
+     * @param approvedStatus the approvedStatus of the entity
+     * @return the list of entities
+     */
+	@Override
+	public Page<HelpDTO> findAllHelpsByApprovedStatus(Pageable pageable, String approvalStatus) {
+       
+		log.debug("Request to get all Helps by approval status");
+	    
+	    Long approvalStatusId=approvalStatusRepository.findByStatus(approvalStatus).get().getId();
+         	           	
+        return helpRepository.findAllHelpsByApprovalStatusId(pageable,approvalStatusId)
+            .map(helpMapper::toDto);
+         	
+   	    
 	}
 
 

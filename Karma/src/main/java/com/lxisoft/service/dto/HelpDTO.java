@@ -20,8 +20,24 @@ public class HelpDTO implements Serializable {
     private Long providedUserId;
 
     private Long fulfilledNeedId;
+    
+    private String timeInString;
 
-    public Long getId() {
+    /**
+	 * @return the timeInString
+	 */
+	public String getTimeInString() {
+		return timeInString;
+	}
+
+	/**
+	 * @param timeInString the timeInString to set
+	 */
+	public void setTimeInString(String timeInString) {
+		this.timeInString = timeInString;
+	}
+
+	public Long getId() {
         return id;
     }
 

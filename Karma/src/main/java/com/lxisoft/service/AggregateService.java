@@ -23,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.lxisoft.service.dto.ApprovalStatusDTO;
 import com.lxisoft.service.dto.CategoryDTO;
+import com.lxisoft.service.dto.HelpDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.service.dto.UserCheckDTO;
 
@@ -158,7 +159,60 @@ public interface AggregateService {
      * @return the list of entities
      */
 	Page<CategoryDTO> findAllCategories(Pageable pageable);
+
+	 /**
+     * Save a help.
+     *
+     * @param helpDTO the entity to save
+     * 
+     * @return the persisted entity
+     * 
+     * @throws IOException 
+     */
+	HelpDTO saveHelpAsIncomplete(HelpDTO helpDTO);
     
+	 /**
+     * Save a help.
+     *
+     * @param helpDTO the entity to save
+     * 
+     * @return the persisted entity
+     * 
+     * @throws IOException 
+     */
+	HelpDTO saveHelpAsComplete(HelpDTO helpDTO);
+
+	/**
+     * Get all the helps.
+     *
+     * @param pageable the pagination information
+     * 
+     * @return the list of entities
+     */
+	Page<HelpDTO> findAllHelps(Pageable pageable);
+
+	/**
+     * Get the "id" help.
+     *
+     * @param id the id of the entity
+     * 
+     * @return the entity
+     */
+	Optional<HelpDTO> findOneHelp(Long id);
+
+	/**
+     * Delete the "id" help.
+     *
+     * @param id the id of the entity
+     */
+	void deleteHelp(Long id);
+
+	/**
+   	 * @param pageable
+   	 * @param approvalStatus
+   	 * @return
+   	 */
+	Page<HelpDTO> findAllHelpsByApprovedStatus(Pageable pageable, String approvalStatus);
 
 
 
