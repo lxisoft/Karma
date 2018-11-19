@@ -1,0 +1,86 @@
+{
+    "name": "Need",
+    "fields": [
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "beneficiaryType",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "date",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "proofs",
+            "otherEntityName": "media",
+            "otherEntityRelationshipName": "need"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "helps",
+            "otherEntityName": "help",
+            "otherEntityRelationshipName": "fulfilledNeed"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "comments",
+            "otherEntityName": "comment",
+            "otherEntityRelationshipName": "need"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "severity",
+            "otherEntityName": "severity",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "verificationTeam",
+            "otherEntityName": "verificationTeam",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "approvalStatus",
+            "otherEntityName": "approvalStatus",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "needs",
+            "relationshipName": "categories",
+            "otherEntityName": "category",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "postedUser",
+            "otherEntityName": "registeredUser",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "userChecks",
+            "otherEntityName": "userCheck",
+            "otherEntityRelationshipName": "checkedNeed"
+        }
+    ],
+    "changelogDate": "20181118103750",
+    "javadoc": "Need entity\n@author Balagopal v",
+    "entityTableName": "need",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "Karma",
+    "applications": "*",
+    "microserviceName": "Karma"
+}

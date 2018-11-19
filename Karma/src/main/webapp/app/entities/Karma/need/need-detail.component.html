@@ -1,0 +1,65 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="need">
+            <h2><span jhiTranslate="karmaApp.karmaNeed.detail.title">Need</span> {{need.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="karmaApp.karmaNeed.description">Description</span></dt>
+                <dd>
+                    <span>{{need.description}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaNeed.beneficiaryType">Beneficiary Type</span></dt>
+                <dd>
+                    <span>{{need.beneficiaryType}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaNeed.date">Date</span></dt>
+                <dd>
+                    <span>{{need.date}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaNeed.severity">Severity</span></dt>
+                <dd>
+                    <div *ngIf="need.severityId">
+                        <a [routerLink]="['/severity', need.severityId, 'view']">{{need.severityId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaNeed.verificationTeam">Verification Team</span></dt>
+                <dd>
+                    <div *ngIf="need.verificationTeamId">
+                        <a [routerLink]="['/verification-team', need.verificationTeamId, 'view']">{{need.verificationTeamId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaNeed.approvalStatus">Approval Status</span></dt>
+                <dd>
+                    <div *ngIf="need.approvalStatusId">
+                        <a [routerLink]="['/approval-status', need.approvalStatusId, 'view']">{{need.approvalStatusId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaNeed.categories">Categories</span></dt>
+                <dd>
+                    <span *ngFor="let categories of need.categories; let last = last">
+                        <a [routerLink]="['/category', categories?.id, 'view' ]">{{categories.id}}</a>{{last ? '' : ', '}}
+                    </span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaNeed.postedUser">Posted User</span></dt>
+                <dd>
+                    <div *ngIf="need.postedUserId">
+                        <a [routerLink]="['/registered-user', need.postedUserId, 'view']">{{need.postedUserId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/need', need.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,117 @@
+{
+    "name": "RegisteredUser",
+    "fields": [
+        {
+            "fieldName": "email",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "firstName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "lastName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "rating",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "profession",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "gender",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dob",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "bloodGroup",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "emotionalQuotient",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "socialQuotient",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "happinessIndex",
+            "fieldType": "Long"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "profilePic",
+            "otherEntityName": "media",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "registeredUser"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "addresses",
+            "otherEntityName": "address",
+            "otherEntityRelationshipName": "registeredUser"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "needs",
+            "otherEntityName": "need",
+            "otherEntityRelationshipName": "postedUser"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "helps",
+            "otherEntityName": "help",
+            "otherEntityRelationshipName": "providedUser"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "posts",
+            "otherEntityName": "post",
+            "otherEntityRelationshipName": "registeredUser"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "feeds",
+            "otherEntityName": "feed",
+            "otherEntityRelationshipName": "registeredUser"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "checkedNeeds",
+            "otherEntityName": "userCheck",
+            "otherEntityRelationshipName": "checkedUser"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "verificationTeams",
+            "otherEntityName": "verificationTeam",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "approvingUsers"
+        }
+    ],
+    "changelogDate": "20181118103744",
+    "javadoc": "RegisteredUser entity.\n@author Muhammed Ruhail",
+    "entityTableName": "registered_user",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "Karma",
+    "applications": "*",
+    "microserviceName": "Karma"
+}

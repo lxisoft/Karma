@@ -1,0 +1,40 @@
+{
+    "name": "Feed",
+    "fields": [
+        {
+            "fieldName": "title",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "date",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "referenceId",
+            "fieldType": "Long"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "registeredUser",
+            "otherEntityName": "registeredUser",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20181118103757",
+    "javadoc": "Feed entity\n@author Deepthi E",
+    "entityTableName": "feed",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "Karma",
+    "applications": "*",
+    "microserviceName": "Karma"
+}

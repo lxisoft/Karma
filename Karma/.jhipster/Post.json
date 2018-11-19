@@ -1,0 +1,50 @@
+{
+    "name": "Post",
+    "fields": [
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "date",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "attachments",
+            "otherEntityName": "media",
+            "otherEntityRelationshipName": "post"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "comments",
+            "otherEntityName": "comment",
+            "otherEntityRelationshipName": "post"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "registeredUser",
+            "otherEntityName": "registeredUser",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "userChecks",
+            "otherEntityName": "userCheck",
+            "otherEntityRelationshipName": "post"
+        }
+    ],
+    "changelogDate": "20181118103754",
+    "javadoc": "Post entity\n@author Deepthi E",
+    "entityTableName": "post",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "Karma",
+    "applications": "*",
+    "microserviceName": "Karma"
+}

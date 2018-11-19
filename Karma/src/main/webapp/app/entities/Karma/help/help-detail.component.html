@@ -1,0 +1,49 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="help">
+            <h2><span jhiTranslate="karmaApp.karmaHelp.detail.title">Help</span> {{help.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="karmaApp.karmaHelp.time">Time</span></dt>
+                <dd>
+                    <span>{{help.time}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaHelp.description">Description</span></dt>
+                <dd>
+                    <span>{{help.description}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaHelp.approvalStatus">Approval Status</span></dt>
+                <dd>
+                    <div *ngIf="help.approvalStatusId">
+                        <a [routerLink]="['/approval-status', help.approvalStatusId, 'view']">{{help.approvalStatusId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaHelp.providedUser">Provided User</span></dt>
+                <dd>
+                    <div *ngIf="help.providedUserId">
+                        <a [routerLink]="['/registered-user', help.providedUserId, 'view']">{{help.providedUserId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaHelp.fulfilledNeed">Fulfilled Need</span></dt>
+                <dd>
+                    <div *ngIf="help.fulfilledNeedId">
+                        <a [routerLink]="['/need', help.fulfilledNeedId, 'view']">{{help.fulfilledNeedId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/help', help.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

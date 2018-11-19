@@ -1,0 +1,53 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="address">
+            <h2><span jhiTranslate="karmaApp.karmaAddress.detail.title">Address</span> {{address.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="karmaApp.karmaAddress.houseName">House Name</span></dt>
+                <dd>
+                    <span>{{address.houseName}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaAddress.place">Place</span></dt>
+                <dd>
+                    <span>{{address.place}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaAddress.city">City</span></dt>
+                <dd>
+                    <span>{{address.city}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaAddress.state">State</span></dt>
+                <dd>
+                    <span>{{address.state}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaAddress.country">Country</span></dt>
+                <dd>
+                    <span>{{address.country}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaAddress.zip">Zip</span></dt>
+                <dd>
+                    <span>{{address.zip}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaAddress.registeredUser">Registered User</span></dt>
+                <dd>
+                    <div *ngIf="address.registeredUserId">
+                        <a [routerLink]="['/registered-user', address.registeredUserId, 'view']">{{address.registeredUserId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/address', address.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

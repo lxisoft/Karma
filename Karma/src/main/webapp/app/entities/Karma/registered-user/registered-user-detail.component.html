@@ -1,0 +1,77 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="registeredUser">
+            <h2><span jhiTranslate="karmaApp.karmaRegisteredUser.detail.title">Registered User</span> {{registeredUser.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="karmaApp.karmaRegisteredUser.email">Email</span></dt>
+                <dd>
+                    <span>{{registeredUser.email}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaRegisteredUser.firstName">First Name</span></dt>
+                <dd>
+                    <span>{{registeredUser.firstName}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaRegisteredUser.lastName">Last Name</span></dt>
+                <dd>
+                    <span>{{registeredUser.lastName}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaRegisteredUser.rating">Rating</span></dt>
+                <dd>
+                    <span>{{registeredUser.rating}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaRegisteredUser.description">Description</span></dt>
+                <dd>
+                    <span>{{registeredUser.description}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaRegisteredUser.profession">Profession</span></dt>
+                <dd>
+                    <span>{{registeredUser.profession}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaRegisteredUser.gender">Gender</span></dt>
+                <dd>
+                    <span>{{registeredUser.gender}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaRegisteredUser.dob">Dob</span></dt>
+                <dd>
+                    <span>{{registeredUser.dob}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaRegisteredUser.bloodGroup">Blood Group</span></dt>
+                <dd>
+                    <span>{{registeredUser.bloodGroup}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaRegisteredUser.emotionalQuotient">Emotional Quotient</span></dt>
+                <dd>
+                    <span>{{registeredUser.emotionalQuotient}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaRegisteredUser.socialQuotient">Social Quotient</span></dt>
+                <dd>
+                    <span>{{registeredUser.socialQuotient}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaRegisteredUser.happinessIndex">Happiness Index</span></dt>
+                <dd>
+                    <span>{{registeredUser.happinessIndex}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaRegisteredUser.profilePic">Profile Pic</span></dt>
+                <dd>
+                    <div *ngIf="registeredUser.profilePicId">
+                        <a [routerLink]="['/media', registeredUser.profilePicId, 'view']">{{registeredUser.profilePicId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/registered-user', registeredUser.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

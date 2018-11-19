@@ -1,0 +1,67 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="userCheck">
+            <h2><span jhiTranslate="karmaApp.karmaUserCheck.detail.title">User Check</span> {{userCheck.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="karmaApp.karmaUserCheck.voteType">Vote Type</span></dt>
+                <dd>
+                    <span>{{userCheck.voteType}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaUserCheck.category">Category</span></dt>
+                <dd>
+                    <span>{{userCheck.category}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaUserCheck.checkedNeed">Checked Need</span></dt>
+                <dd>
+                    <div *ngIf="userCheck.checkedNeedId">
+                        <a [routerLink]="['/need', userCheck.checkedNeedId, 'view']">{{userCheck.checkedNeedId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaUserCheck.checkedUser">Checked User</span></dt>
+                <dd>
+                    <div *ngIf="userCheck.checkedUserId">
+                        <a [routerLink]="['/registered-user', userCheck.checkedUserId, 'view']">{{userCheck.checkedUserId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaUserCheck.comment">Comment</span></dt>
+                <dd>
+                    <div *ngIf="userCheck.commentId">
+                        <a [routerLink]="['/comment', userCheck.commentId, 'view']">{{userCheck.commentId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaUserCheck.reply">Reply</span></dt>
+                <dd>
+                    <div *ngIf="userCheck.replyId">
+                        <a [routerLink]="['/reply', userCheck.replyId, 'view']">{{userCheck.replyId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaUserCheck.post">Post</span></dt>
+                <dd>
+                    <div *ngIf="userCheck.postId">
+                        <a [routerLink]="['/post', userCheck.postId, 'view']">{{userCheck.postId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaUserCheck.checkedHelp">Checked Help</span></dt>
+                <dd>
+                    <div *ngIf="userCheck.checkedHelpId">
+                        <a [routerLink]="['/help', userCheck.checkedHelpId, 'view']">{{userCheck.checkedHelpId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/user-check', userCheck.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

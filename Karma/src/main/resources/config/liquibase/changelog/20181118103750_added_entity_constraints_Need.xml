@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Need.
+    -->
+    <changeSet id="20181118103750-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="severity_id"
+                                 baseTableName="need"
+                                 constraintName="fk_need_severity_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="severity"/>
+
+        <addForeignKeyConstraint baseColumnNames="verification_team_id"
+                                 baseTableName="need"
+                                 constraintName="fk_need_verification_team_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="verification_team"/>
+
+        <addForeignKeyConstraint baseColumnNames="approval_status_id"
+                                 baseTableName="need"
+                                 constraintName="fk_need_approval_status_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="approval_status"/>
+
+        <addForeignKeyConstraint baseColumnNames="needs_id"
+                                 baseTableName="need_categories"
+                                 constraintName="fk_need_categories_needs_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="need"/>
+        <addForeignKeyConstraint baseColumnNames="categories_id"
+                                 baseTableName="need_categories"
+                                 constraintName="fk_need_categories_categories_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="category"/>
+        
+        <addForeignKeyConstraint baseColumnNames="posted_user_id"
+                                 baseTableName="need"
+                                 constraintName="fk_need_posted_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="registered_user"/>
+
+    </changeSet>
+</databaseChangeLog>

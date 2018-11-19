@@ -1,0 +1,96 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-registered-user-heading" jhiTranslate="karmaApp.karmaRegisteredUser.home.createOrEditLabel">Create or edit a Registered User</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!registeredUser.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="registeredUser.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaRegisteredUser.email" for="field_email">Email</label>
+                    <input type="text" class="form-control" name="email" id="field_email"
+                        [(ngModel)]="registeredUser.email" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaRegisteredUser.firstName" for="field_firstName">First Name</label>
+                    <input type="text" class="form-control" name="firstName" id="field_firstName"
+                        [(ngModel)]="registeredUser.firstName" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaRegisteredUser.lastName" for="field_lastName">Last Name</label>
+                    <input type="text" class="form-control" name="lastName" id="field_lastName"
+                        [(ngModel)]="registeredUser.lastName" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaRegisteredUser.rating" for="field_rating">Rating</label>
+                    <input type="number" class="form-control" name="rating" id="field_rating"
+                        [(ngModel)]="registeredUser.rating" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaRegisteredUser.description" for="field_description">Description</label>
+                    <input type="text" class="form-control" name="description" id="field_description"
+                        [(ngModel)]="registeredUser.description" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaRegisteredUser.profession" for="field_profession">Profession</label>
+                    <input type="text" class="form-control" name="profession" id="field_profession"
+                        [(ngModel)]="registeredUser.profession" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaRegisteredUser.gender" for="field_gender">Gender</label>
+                    <input type="text" class="form-control" name="gender" id="field_gender"
+                        [(ngModel)]="registeredUser.gender" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaRegisteredUser.dob" for="field_dob">Dob</label>
+                    <div class="input-group">
+                        <input id="field_dob" type="text" class="form-control" name="dob" ngbDatepicker  #dobDp="ngbDatepicker" [(ngModel)]="registeredUser.dob"
+                        />
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="dobDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaRegisteredUser.bloodGroup" for="field_bloodGroup">Blood Group</label>
+                    <input type="text" class="form-control" name="bloodGroup" id="field_bloodGroup"
+                        [(ngModel)]="registeredUser.bloodGroup" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaRegisteredUser.emotionalQuotient" for="field_emotionalQuotient">Emotional Quotient</label>
+                    <input type="number" class="form-control" name="emotionalQuotient" id="field_emotionalQuotient"
+                        [(ngModel)]="registeredUser.emotionalQuotient" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaRegisteredUser.socialQuotient" for="field_socialQuotient">Social Quotient</label>
+                    <input type="number" class="form-control" name="socialQuotient" id="field_socialQuotient"
+                        [(ngModel)]="registeredUser.socialQuotient" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaRegisteredUser.happinessIndex" for="field_happinessIndex">Happiness Index</label>
+                    <input type="number" class="form-control" name="happinessIndex" id="field_happinessIndex"
+                        [(ngModel)]="registeredUser.happinessIndex" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaRegisteredUser.profilePic" for="field_profilePic">Profile Pic</label>
+                    <select class="form-control" id="field_profilePic" name="profilePic" [(ngModel)]="registeredUser.profilePicId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="mediaOption.id" *ngFor="let mediaOption of profilepics; trackBy: trackMediaById">{{mediaOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
