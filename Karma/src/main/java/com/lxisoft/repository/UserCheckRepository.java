@@ -51,4 +51,13 @@ public interface UserCheckRepository extends JpaRepository<UserCheck, Long> {
 	@Query(value = "select count(u) from UserCheck u where u.checkedHelp.id=:checkedHelpId and u.voteType=:voteType")
 	Integer countOfVoteTypeDislike(@Param("voteType") String voteType, @Param("checkedHelpId") Long checkedHelpId);
 	
+	/**
+	 * 
+	 * @param CheckedNeedId
+	 * @param voteType
+	 * @return
+	 */
+	@Query(value = "select count(u) from UserCheck u where u.checkedNeed.id=:CheckedNeedId and u.voteType=:voteType")
+	Integer countOfVoteTypeGenuiness(@Param("voteType") String voteType, @Param("CheckedNeedId") Long CheckedNeedId);
+	
 }

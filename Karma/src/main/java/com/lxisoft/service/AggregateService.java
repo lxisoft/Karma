@@ -334,6 +334,15 @@ public interface AggregateService {
 	 */
 
 	Integer calculateLikesNumberOfHelps(Long checkedHelpId);
+	
+	/**
+	 * Get count of userChecks to newsFeed by newsFeedId.
+	 *
+	 * @param String
+	 *            to find, newsFeedId to find
+	 * @return the count of userChecks
+	 */
+	Integer calculateNoOfGenuiness(Long checkedNeedId);
 
 	/**
 	 * Get count of userChecks to newsFeed by newsFeedId.

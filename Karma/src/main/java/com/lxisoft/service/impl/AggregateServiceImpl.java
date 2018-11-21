@@ -284,23 +284,24 @@ public class AggregateServiceImpl implements AggregateService {
 				Page<UserCheckDTO> userCheckDTOs=findAllUserChecksByCheckedNeedId(pageable,need.getId());
 				
 				List<UserCheckDTO> userCheckDTOList = userCheckDTOs.getContent();
-				
-				for(UserCheckDTO userChecks:userCheckDTOList)
-				{
-					log.info("*************{}",userChecks.getId());
-					
-					if(userChecks.getVoteType()=="postive")
-					{
-						count=count+1;
-					}
-				}
-				
+								
 				if(userCheckDTOList.size()==0)
+				{
 					need.setPercentageOfGenuineness(null);
+					
+				}	
 				else
-				   need.setPercentageOfGenuineness(new Long((count/userCheckDTOList.size())*100));
+				{
+				   			   
+					Long genuinescount=(long)calculateNoOfGenuiness(need.getId());
+				
+					//need.setPercentageOfGenuineness((genuinescount/userCheckDTOList.size())*100);
+				 
+					need.setPercentageOfGenuineness(genuinescount);
 				
 				
+				
+				}
 				
 				Page<CommentDTO> commentsPage=findAllCommentsByNeedId(pageable,need.getId());
 		    	if(commentsPage.getContent()==null)
@@ -309,7 +310,8 @@ public class AggregateServiceImpl implements AggregateService {
 		    	{
 		    		List<CommentDTO> noOfComments = commentsPage.getContent();
 		    		need.setCommentList(noOfComments);
-		    		need.setNoOfComments((long)noOfComments.size());
+		    		//need.setNoOfComments((long)noOfComments.size());
+		    		need.setNoOfComments((long)(need.getCommentList()).size());
 		    	}
 		    	
 		    	
@@ -1052,6 +1054,19 @@ public class AggregateServiceImpl implements AggregateService {
 	@Override
 	public Integer calculateLikesNumberOfHelps(Long checkedHelpId) {
 		return userCheckRepository.countOfVoteTypeLike("positive", checkedHelpId);
+	}
+	
+	
+	/**
+	 * Get count of userChecks to newsFeed by newsFeedId.
+	 *
+	 * @param String
+	 *            to find, newsFeedId to find
+	 * @return the count of userChecks
+	 */
+	@Override
+	public Integer calculateNoOfGenuiness(Long checkedNeedId) {
+		return userCheckRepository.countOfVoteTypeGenuiness("postive", checkedNeedId);
 	}
 
 
