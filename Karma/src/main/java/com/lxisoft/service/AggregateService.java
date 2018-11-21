@@ -23,8 +23,11 @@ import org.springframework.data.domain.Pageable;
 
 import com.lxisoft.service.dto.ApprovalStatusDTO;
 import com.lxisoft.service.dto.CategoryDTO;
+import com.lxisoft.service.dto.CommentDTO;
 import com.lxisoft.service.dto.HelpDTO;
 import com.lxisoft.service.dto.NeedDTO;
+import com.lxisoft.service.dto.ReplyDTO;
+import com.lxisoft.service.dto.SeverityDTO;
 import com.lxisoft.service.dto.UserCheckDTO;
 
 /**
@@ -190,6 +193,15 @@ public interface AggregateService {
      * @return the list of entities
      */
 	Page<HelpDTO> findAllHelps(Pageable pageable);
+	
+	/**
+     * Get all the helps.
+     *
+     * @param pageable the pagination information
+     * 
+     * @return the list of entities
+     */
+	Page<HelpDTO> findAllHelpsWithTime(Pageable pageable);
 
 	/**
      * Get the "id" help.
@@ -213,6 +225,146 @@ public interface AggregateService {
    	 * @return
    	 */
 	Page<HelpDTO> findAllHelpsByApprovedStatus(Pageable pageable, String approvalStatus);
+
+	/**
+	 * @param pageable
+	 * @param fulfilledNeedId
+	 * @return
+	 */
+	Page<HelpDTO> findAllHelpsByfulfilledNeedId(Pageable pageable, Long fulfilledNeedId);
+
+	/**
+	 * @param userCheckDTO
+	 * @return
+	 */
+	UserCheckDTO saveUserCheck(UserCheckDTO userCheckDTO);
+
+	/**
+     * Get all the userChecks.
+     *
+     * @param pageable the pagination information
+     * 
+     * @return the list of entities
+     */
+	Page<UserCheckDTO> findAllUserChecks(Pageable pageable);
+
+	 /**
+     * Get the "id" userCheck.
+     *
+     * @param id the id of the entity
+     * 
+     * @return the entity
+     */
+	Optional<UserCheckDTO> findOneUserCheck(Long id);
+
+	/**
+     * Delete the "id" userCheck.
+     *
+     * @param id the id of the entity
+     */
+	void deleteUserCheck(Long id);
+
+	
+	/**
+	 * @param userCheckDTO
+	 * @return
+	 */
+	UserCheckDTO markingGenuinenes(UserCheckDTO userCheckDTO);
+
+	/**
+	 * create new userChecks with positive vote.
+	 *
+	 * @param userCheck
+	 * @return optional<userCheck>
+	 */
+
+	Optional<UserCheckDTO> saveUserCheckLike(UserCheckDTO userCheckDTO);
+
+	/**
+	 * create new userChecks with negative vote.
+	 *
+	 * @param userCheck
+	 * @return optional<userCheck>
+	 */
+
+	Optional<UserCheckDTO> saveUserCheckDislike(UserCheckDTO userCheckDTO);
+
+	/**
+	 * @param commentDTO
+	 * @return
+	 */
+	CommentDTO saveComment(CommentDTO commentDTO);
+
+	
+	/**
+	 * @param pageable
+	 * @param needId
+	 * @return
+	 */
+	Page<CommentDTO> findAllCommentsByNeedId(Pageable pageable, Long needId);
+	
+	/**
+	 * Get all the comments by help id.
+	 *
+	 * @param pageable
+	 *            the pagination information, helpId
+	 * @return the list of entities
+	 */
+	Page<CommentDTO> findAllCommentsByHelpId(Pageable pageable, Long helpId);
+
+	/**
+	 * @param replyDTO
+	 * @return
+	 */
+	ReplyDTO saveReply(ReplyDTO replyDTO);
+
+	/**
+	 * @param pageable
+	 * @param commentId
+	 * @return
+	 */
+	Page<ReplyDTO> findAllRepliesByCommentId(Pageable pageable, Long commentId);
+	
+	/**
+	 * Get count of userChecks to newsFeed by newsFeedId.
+	 *
+	 * @param String
+	 *            to find, newsFeedId to find
+	 * @return the count of userChecks
+	 */
+
+	Integer calculateLikesNumberOfHelps(Long checkedHelpId);
+
+	/**
+	 * Get count of userChecks to newsFeed by newsFeedId.
+	 *
+	 * @param String
+	 *            to find, newsFeedId to find
+	 * @return the count of userChecks
+	 */
+
+	Integer calculateDislikesNumberOfHelps(Long checkedHelpId);
+	
+	/**
+     * Get the "id" severity.
+     *
+     * @param id the id of the entity
+     * @return the entity
+     */
+    Optional<SeverityDTO> findOneseverity(Long id);
+    
+    /**
+     * Get all the severities.
+     *
+     * @param pageable the pagination information
+     * 
+     * @return the list of entities
+     */
+    Page<SeverityDTO> findAllSeverities(Pageable pageable);
+
+
+
+
 
 
 

@@ -42,8 +42,90 @@ public class NeedDTO implements Serializable {
     
     private List<String> fileNameList=new ArrayList<>();
     
+    private String timeElapsed;
+    
+    private List<CommentDTO> commentList=new ArrayList<>();
+    
+    private Long noOfComments;
+    
+    private Long noOfHelps;
+    
+    private String severityLevel;
+    
     //private Resource File;
 
+    
+    /**
+	 * @return the severityLevel
+	 */
+	public String getSeverityLevel() {
+		return severityLevel;
+	}
+
+	/**
+	 * @param severityLevel the severityLevel to set
+	 */
+	public void setSeverityLevel(String severityLevel) {
+		this.severityLevel = severityLevel;
+	}
+
+	/**
+	 * @return the noOfHelps
+	 */
+	public Long getNoOfHelps() {
+		return noOfHelps;
+	}
+
+	/**
+	 * @param noOfHelps the noOfHelps to set
+	 */
+	public void setNoOfHelps(Long noOfHelps) {
+		this.noOfHelps = noOfHelps;
+	}
+
+	/**
+	 * @return the timeElapsed
+	 */
+	public String getTimeElapsed() {
+		return timeElapsed;
+	}
+
+	/**
+	 * @param timeElapsed the timeElapsed to set
+	 */
+	public void setTimeElapsed(String timeElapsed) {
+		this.timeElapsed = timeElapsed;
+	}
+
+	/**
+	 * @return the commentList
+	 */
+	public List<CommentDTO> getCommentList() {
+		return commentList;
+	}
+
+	/**
+	 * @param commentList the commentList to set
+	 */
+	public void setCommentList(List<CommentDTO> commentList) {
+		this.commentList = commentList;
+	}
+
+	/**
+	 * @return the noOfComments
+	 */
+	public Long getNoOfComments() {
+		return noOfComments;
+	}
+
+	/**
+	 * @param noOfComments the noOfComments to set
+	 */
+	public void setNoOfComments(Long noOfComments) {
+		this.noOfComments = noOfComments;
+	}
+
+	
     /**
 	 * @return the categoryList
 	 */

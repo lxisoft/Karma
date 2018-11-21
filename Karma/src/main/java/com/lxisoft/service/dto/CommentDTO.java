@@ -22,6 +22,16 @@ public class CommentDTO implements Serializable {
     private Long postId;
 
     private Long commentedUserId;
+    
+    private String dateInString;
+    
+    private Long noOfReplies;
+
+    private String timeElapsed;
+    
+    private Long noOfLikes;
+    
+    private Long noOfDislikes;
 
     public Long getId() {
         return id;
@@ -78,8 +88,78 @@ public class CommentDTO implements Serializable {
     public void setCommentedUserId(Long registeredUserId) {
         this.commentedUserId = registeredUserId;
     }
+    
+    /**
+	 * @return the dateInString
+	 */
+	public String getDateInString() {
+		return dateInString;
+	}
 
-    @Override
+	/**
+	 * @param dateInString the dateInString to set
+	 */
+	public void setDateInString(String dateInString) {
+		this.dateInString = dateInString;
+	}
+
+	/**
+	 * @return the noOfReplies
+	 */
+	public Long getNoOfReplies() {
+		return noOfReplies;
+	}
+
+	/**
+	 * @param noOfReplies the noOfReplies to set
+	 */
+	public void setNoOfReplies(Long noOfReplies) {
+		this.noOfReplies = noOfReplies;
+	}
+
+	/**
+	 * @return the timeElapsed
+	 */
+	public String getTimeElapsed() {
+		return timeElapsed;
+	}
+
+	/**
+	 * @param timeElapsed the timeElapsed to set
+	 */
+	public void setTimeElapsed(String timeElapsed) {
+		this.timeElapsed = timeElapsed;
+	}
+
+	/**
+	 * @return the noOfLikes
+	 */
+	public Long getNoOfLikes() {
+		return noOfLikes;
+	}
+
+	/**
+	 * @param noOfLikes the noOfLikes to set
+	 */
+	public void setNoOfLikes(Long noOfLikes) {
+		this.noOfLikes = noOfLikes;
+	}
+
+	/**
+	 * @return the noOfDislikes
+	 */
+	public Long getNoOfDislikes() {
+		return noOfDislikes;
+	}
+
+	/**
+	 * @param noOfDislikes the noOfDislikes to set
+	 */
+	public void setNoOfDislikes(Long noOfDislikes) {
+		this.noOfDislikes = noOfDislikes;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
