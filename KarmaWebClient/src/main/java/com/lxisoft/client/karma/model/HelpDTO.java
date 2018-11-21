@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
  * HelpDTO
  */
 @Validated
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-19T16:14:59.500+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-21T14:58:30.187+05:30[Asia/Calcutta]")
 
 public class HelpDTO   {
   @JsonProperty("approvalStatusId")
@@ -29,11 +29,23 @@ public class HelpDTO   {
   @JsonProperty("id")
   private Long id = null;
 
+  @JsonProperty("noOfComments")
+  private Long noOfComments = null;
+
+  @JsonProperty("noOfDisLikes")
+  private Long noOfDisLikes = null;
+
+  @JsonProperty("noOfLikes")
+  private Long noOfLikes = null;
+
   @JsonProperty("providedUserId")
   private Long providedUserId = null;
 
   @JsonProperty("time")
   private OffsetDateTime time = null;
+
+  @JsonProperty("timeElapsed")
+  private String timeElapsed = null;
 
   @JsonProperty("timeInString")
   private String timeInString = null;
@@ -118,6 +130,66 @@ public class HelpDTO   {
     this.id = id;
   }
 
+  public HelpDTO noOfComments(Long noOfComments) {
+    this.noOfComments = noOfComments;
+    return this;
+  }
+
+  /**
+   * Get noOfComments
+   * @return noOfComments
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public Long getNoOfComments() {
+    return noOfComments;
+  }
+
+  public void setNoOfComments(Long noOfComments) {
+    this.noOfComments = noOfComments;
+  }
+
+  public HelpDTO noOfDisLikes(Long noOfDisLikes) {
+    this.noOfDisLikes = noOfDisLikes;
+    return this;
+  }
+
+  /**
+   * Get noOfDisLikes
+   * @return noOfDisLikes
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public Long getNoOfDisLikes() {
+    return noOfDisLikes;
+  }
+
+  public void setNoOfDisLikes(Long noOfDisLikes) {
+    this.noOfDisLikes = noOfDisLikes;
+  }
+
+  public HelpDTO noOfLikes(Long noOfLikes) {
+    this.noOfLikes = noOfLikes;
+    return this;
+  }
+
+  /**
+   * Get noOfLikes
+   * @return noOfLikes
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public Long getNoOfLikes() {
+    return noOfLikes;
+  }
+
+  public void setNoOfLikes(Long noOfLikes) {
+    this.noOfLikes = noOfLikes;
+  }
+
   public HelpDTO providedUserId(Long providedUserId) {
     this.providedUserId = providedUserId;
     return this;
@@ -159,6 +231,26 @@ public class HelpDTO   {
     this.time = time;
   }
 
+  public HelpDTO timeElapsed(String timeElapsed) {
+    this.timeElapsed = timeElapsed;
+    return this;
+  }
+
+  /**
+   * Get timeElapsed
+   * @return timeElapsed
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public String getTimeElapsed() {
+    return timeElapsed;
+  }
+
+  public void setTimeElapsed(String timeElapsed) {
+    this.timeElapsed = timeElapsed;
+  }
+
   public HelpDTO timeInString(String timeInString) {
     this.timeInString = timeInString;
     return this;
@@ -193,14 +285,18 @@ public class HelpDTO   {
         Objects.equals(this.description, helpDTO.description) &&
         Objects.equals(this.fulfilledNeedId, helpDTO.fulfilledNeedId) &&
         Objects.equals(this.id, helpDTO.id) &&
+        Objects.equals(this.noOfComments, helpDTO.noOfComments) &&
+        Objects.equals(this.noOfDisLikes, helpDTO.noOfDisLikes) &&
+        Objects.equals(this.noOfLikes, helpDTO.noOfLikes) &&
         Objects.equals(this.providedUserId, helpDTO.providedUserId) &&
         Objects.equals(this.time, helpDTO.time) &&
+        Objects.equals(this.timeElapsed, helpDTO.timeElapsed) &&
         Objects.equals(this.timeInString, helpDTO.timeInString);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(approvalStatusId, description, fulfilledNeedId, id, providedUserId, time, timeInString);
+    return Objects.hash(approvalStatusId, description, fulfilledNeedId, id, noOfComments, noOfDisLikes, noOfLikes, providedUserId, time, timeElapsed, timeInString);
   }
 
   @Override
@@ -212,8 +308,12 @@ public class HelpDTO   {
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    fulfilledNeedId: ").append(toIndentedString(fulfilledNeedId)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    noOfComments: ").append(toIndentedString(noOfComments)).append("\n");
+    sb.append("    noOfDisLikes: ").append(toIndentedString(noOfDisLikes)).append("\n");
+    sb.append("    noOfLikes: ").append(toIndentedString(noOfLikes)).append("\n");
     sb.append("    providedUserId: ").append(toIndentedString(providedUserId)).append("\n");
     sb.append("    time: ").append(toIndentedString(time)).append("\n");
+    sb.append("    timeElapsed: ").append(toIndentedString(timeElapsed)).append("\n");
     sb.append("    timeInString: ").append(toIndentedString(timeInString)).append("\n");
     sb.append("}");
     return sb.toString();

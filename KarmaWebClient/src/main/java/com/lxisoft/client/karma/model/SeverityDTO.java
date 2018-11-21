@@ -10,19 +10,19 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * ApprovalStatusDTO
+ * SeverityDTO
  */
 @Validated
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-21T14:58:30.187+05:30[Asia/Calcutta]")
 
-public class ApprovalStatusDTO   {
+public class SeverityDTO   {
   @JsonProperty("id")
   private Long id = null;
 
-  @JsonProperty("status")
-  private String status = null;
+  @JsonProperty("severityLevel")
+  private String severityLevel = null;
 
-  public ApprovalStatusDTO id(Long id) {
+  public SeverityDTO id(Long id) {
     this.id = id;
     return this;
   }
@@ -42,24 +42,24 @@ public class ApprovalStatusDTO   {
     this.id = id;
   }
 
-  public ApprovalStatusDTO status(String status) {
-    this.status = status;
+  public SeverityDTO severityLevel(String severityLevel) {
+    this.severityLevel = severityLevel;
     return this;
   }
 
   /**
-   * Get status
-   * @return status
+   * Get severityLevel
+   * @return severityLevel
   **/
   @ApiModelProperty(value = "")
 
 
-  public String getStatus() {
-    return status;
+  public String getSeverityLevel() {
+    return severityLevel;
   }
 
-  public void setStatus(String status) {
-    this.status = status;
+  public void setSeverityLevel(String severityLevel) {
+    this.severityLevel = severityLevel;
   }
 
 
@@ -71,23 +71,23 @@ public class ApprovalStatusDTO   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ApprovalStatusDTO approvalStatusDTO = (ApprovalStatusDTO) o;
-    return Objects.equals(this.id, approvalStatusDTO.id) &&
-        Objects.equals(this.status, approvalStatusDTO.status);
+    SeverityDTO severityDTO = (SeverityDTO) o;
+    return Objects.equals(this.id, severityDTO.id) &&
+        Objects.equals(this.severityLevel, severityDTO.severityLevel);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, status);
+    return Objects.hash(id, severityLevel);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ApprovalStatusDTO {\n");
+    sb.append("class SeverityDTO {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    status: ").append(toIndentedString(status)).append("\n");
+    sb.append("    severityLevel: ").append(toIndentedString(severityLevel)).append("\n");
     sb.append("}");
     return sb.toString();
   }

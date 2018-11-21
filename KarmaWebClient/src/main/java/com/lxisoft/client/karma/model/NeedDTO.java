@@ -4,6 +4,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.lxisoft.client.karma.model.CategoryDTO;
+import com.lxisoft.client.karma.model.CommentDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.OffsetDateTime;
@@ -17,7 +18,7 @@ import javax.validation.constraints.*;
  * NeedDTO
  */
 @Validated
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-19T16:14:59.500+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-21T14:58:30.187+05:30[Asia/Calcutta]")
 
 public class NeedDTO   {
   @JsonProperty("approvalStatusId")
@@ -33,6 +34,10 @@ public class NeedDTO   {
   @JsonProperty("categoryList")
   @Valid
   private List<CategoryDTO> categoryList = null;
+
+  @JsonProperty("commentList")
+  @Valid
+  private List<CommentDTO> commentList = null;
 
   @JsonProperty("date")
   private OffsetDateTime date = null;
@@ -50,6 +55,12 @@ public class NeedDTO   {
   @JsonProperty("id")
   private Long id = null;
 
+  @JsonProperty("noOfComments")
+  private Long noOfComments = null;
+
+  @JsonProperty("noOfHelps")
+  private Long noOfHelps = null;
+
   @JsonProperty("percentageOfGenuineness")
   private Long percentageOfGenuineness = null;
 
@@ -58,6 +69,12 @@ public class NeedDTO   {
 
   @JsonProperty("severityId")
   private Long severityId = null;
+
+  @JsonProperty("severityLevel")
+  private String severityLevel = null;
+
+  @JsonProperty("timeElapsed")
+  private String timeElapsed = null;
 
   @JsonProperty("verificationTeamId")
   private Long verificationTeamId = null;
@@ -158,6 +175,35 @@ public class NeedDTO   {
 
   public void setCategoryList(List<CategoryDTO> categoryList) {
     this.categoryList = categoryList;
+  }
+
+  public NeedDTO commentList(List<CommentDTO> commentList) {
+    this.commentList = commentList;
+    return this;
+  }
+
+  public NeedDTO addCommentListItem(CommentDTO commentListItem) {
+    if (this.commentList == null) {
+      this.commentList = new ArrayList<CommentDTO>();
+    }
+    this.commentList.add(commentListItem);
+    return this;
+  }
+
+  /**
+   * Get commentList
+   * @return commentList
+  **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public List<CommentDTO> getCommentList() {
+    return commentList;
+  }
+
+  public void setCommentList(List<CommentDTO> commentList) {
+    this.commentList = commentList;
   }
 
   public NeedDTO date(OffsetDateTime date) {
@@ -269,6 +315,46 @@ public class NeedDTO   {
     this.id = id;
   }
 
+  public NeedDTO noOfComments(Long noOfComments) {
+    this.noOfComments = noOfComments;
+    return this;
+  }
+
+  /**
+   * Get noOfComments
+   * @return noOfComments
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public Long getNoOfComments() {
+    return noOfComments;
+  }
+
+  public void setNoOfComments(Long noOfComments) {
+    this.noOfComments = noOfComments;
+  }
+
+  public NeedDTO noOfHelps(Long noOfHelps) {
+    this.noOfHelps = noOfHelps;
+    return this;
+  }
+
+  /**
+   * Get noOfHelps
+   * @return noOfHelps
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public Long getNoOfHelps() {
+    return noOfHelps;
+  }
+
+  public void setNoOfHelps(Long noOfHelps) {
+    this.noOfHelps = noOfHelps;
+  }
+
   public NeedDTO percentageOfGenuineness(Long percentageOfGenuineness) {
     this.percentageOfGenuineness = percentageOfGenuineness;
     return this;
@@ -329,6 +415,46 @@ public class NeedDTO   {
     this.severityId = severityId;
   }
 
+  public NeedDTO severityLevel(String severityLevel) {
+    this.severityLevel = severityLevel;
+    return this;
+  }
+
+  /**
+   * Get severityLevel
+   * @return severityLevel
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public String getSeverityLevel() {
+    return severityLevel;
+  }
+
+  public void setSeverityLevel(String severityLevel) {
+    this.severityLevel = severityLevel;
+  }
+
+  public NeedDTO timeElapsed(String timeElapsed) {
+    this.timeElapsed = timeElapsed;
+    return this;
+  }
+
+  /**
+   * Get timeElapsed
+   * @return timeElapsed
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public String getTimeElapsed() {
+    return timeElapsed;
+  }
+
+  public void setTimeElapsed(String timeElapsed) {
+    this.timeElapsed = timeElapsed;
+  }
+
   public NeedDTO verificationTeamId(Long verificationTeamId) {
     this.verificationTeamId = verificationTeamId;
     return this;
@@ -363,20 +489,25 @@ public class NeedDTO   {
         Objects.equals(this.beneficiaryType, needDTO.beneficiaryType) &&
         Objects.equals(this.categories, needDTO.categories) &&
         Objects.equals(this.categoryList, needDTO.categoryList) &&
+        Objects.equals(this.commentList, needDTO.commentList) &&
         Objects.equals(this.date, needDTO.date) &&
         Objects.equals(this.dateInString, needDTO.dateInString) &&
         Objects.equals(this.description, needDTO.description) &&
         Objects.equals(this.fileNameList, needDTO.fileNameList) &&
         Objects.equals(this.id, needDTO.id) &&
+        Objects.equals(this.noOfComments, needDTO.noOfComments) &&
+        Objects.equals(this.noOfHelps, needDTO.noOfHelps) &&
         Objects.equals(this.percentageOfGenuineness, needDTO.percentageOfGenuineness) &&
         Objects.equals(this.postedUserId, needDTO.postedUserId) &&
         Objects.equals(this.severityId, needDTO.severityId) &&
+        Objects.equals(this.severityLevel, needDTO.severityLevel) &&
+        Objects.equals(this.timeElapsed, needDTO.timeElapsed) &&
         Objects.equals(this.verificationTeamId, needDTO.verificationTeamId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(approvalStatusId, beneficiaryType, categories, categoryList, date, dateInString, description, fileNameList, id, percentageOfGenuineness, postedUserId, severityId, verificationTeamId);
+    return Objects.hash(approvalStatusId, beneficiaryType, categories, categoryList, commentList, date, dateInString, description, fileNameList, id, noOfComments, noOfHelps, percentageOfGenuineness, postedUserId, severityId, severityLevel, timeElapsed, verificationTeamId);
   }
 
   @Override
@@ -388,14 +519,19 @@ public class NeedDTO   {
     sb.append("    beneficiaryType: ").append(toIndentedString(beneficiaryType)).append("\n");
     sb.append("    categories: ").append(toIndentedString(categories)).append("\n");
     sb.append("    categoryList: ").append(toIndentedString(categoryList)).append("\n");
+    sb.append("    commentList: ").append(toIndentedString(commentList)).append("\n");
     sb.append("    date: ").append(toIndentedString(date)).append("\n");
     sb.append("    dateInString: ").append(toIndentedString(dateInString)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    fileNameList: ").append(toIndentedString(fileNameList)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    noOfComments: ").append(toIndentedString(noOfComments)).append("\n");
+    sb.append("    noOfHelps: ").append(toIndentedString(noOfHelps)).append("\n");
     sb.append("    percentageOfGenuineness: ").append(toIndentedString(percentageOfGenuineness)).append("\n");
     sb.append("    postedUserId: ").append(toIndentedString(postedUserId)).append("\n");
     sb.append("    severityId: ").append(toIndentedString(severityId)).append("\n");
+    sb.append("    severityLevel: ").append(toIndentedString(severityLevel)).append("\n");
+    sb.append("    timeElapsed: ").append(toIndentedString(timeElapsed)).append("\n");
     sb.append("    verificationTeamId: ").append(toIndentedString(verificationTeamId)).append("\n");
     sb.append("}");
     return sb.toString();
