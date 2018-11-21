@@ -362,7 +362,25 @@ public interface AggregateService {
      */
     Page<SeverityDTO> findAllSeverities(Pageable pageable);
 
+    /**
+	 * send email after confirmation.
+	 *
+	 * @param mail
+	 *            the mail of posted user
+	 */
+	String sendMail(String mail, String messageContent);
 
+	/**
+	 * Save a need.
+	 *
+	 * @param needDTO
+	 *            the entity to save
+	 * 
+	 * @return the persisted entity
+	 * 
+	 * @throws IOException
+	 */
+	public NeedDTO saveNeedWithApprovalStatus(NeedDTO needDTO) throws IOException;
 
 
 

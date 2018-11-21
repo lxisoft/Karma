@@ -24,12 +24,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,6 +69,7 @@ import com.lxisoft.service.mapper.NeedMapper;
 import com.lxisoft.service.mapper.ReplyMapper;
 import com.lxisoft.service.mapper.SeverityMapper;
 import com.lxisoft.service.mapper.UserCheckMapper;
+import org.springframework.mail.javamail.JavaMailSender;
 
 
 
@@ -130,6 +135,9 @@ public class AggregateServiceImpl implements AggregateService {
 	
 	@Autowired
 	SeverityMapper severityMapper;
+	
+	@Autowired
+	private JavaMailSender sender;
 		
 	
 	 /**
@@ -1090,6 +1098,67 @@ public class AggregateServiceImpl implements AggregateService {
             .map(severityMapper::toDto);
 	}
 
+
+    /**
+	 * Save a need with approval status.
+	 *
+	 * @param needDTO
+	 *            the entity to save
+	 * @return the persisted entity
+	 * @throws IOException
+	 */
+	@Override
+	public NeedDTO saveNeedWithApprovalStatus(NeedDTO needDTO) throws IOException {
+		log.debug("Request to save Need : {}", needDTO);
+		Need need = needMapper.toEntity(needDTO);
+		need = needRepository.save(need);
+		String mail;
+		if (need.getPostedUser() != null) {
+			if (need.getPostedUser().getEmail() != null) {
+				mail = need.getPostedUser().getEmail();
+			} else {
+				mail = "ruhailfatrhath@gmail.com";
+			}
+		} else {
+			mail = "ruhailfarhath@gmail.com";
+		}
+		String result = null;
+		if (need != null) {
+			if (need.getApprovalStatus().getId() == 2) {
+				sendMail(mail, "Your need is approved");
+			} else if (need.getApprovalStatus().getId() == 3) {
+				sendMail(mail, "Your need is declained");
+			} else if (need.getApprovalStatus().getId() == 6) {
+				sendMail(mail, "Your need is closed");
+			}
+			log.info("Mail sending status {}->", result);
+		}
+
+		return needMapper.toDto(need);
+	}
+
+	/**
+	 * Send mail to posted user about approval status
+	 *
+	 * @param mail
+	 *            the mail id to send mail
+	 * @return the mail sending status
+	 */
+	@Override
+	public String sendMail(String mail, String messageContent) {
+		MimeMessage message = sender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message);
+		try {
+			helper.setTo(mail);
+			helper.setText(messageContent);
+			helper.setSubject("Mail From Karma");
+		} catch (MessagingException e) {
+			e.printStackTrace();
+			return "Error while sending mail ..";
+		}
+		sender.send(message);
+		return "Mail Sent Success!";
+	}
 
 
 

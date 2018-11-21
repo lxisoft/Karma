@@ -669,6 +669,32 @@ public class AggregateResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/severities");
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     } 
+    
+    /**
+	 * PUT /needs : Updates an existing need.
+	 *
+	 * @param needDTO
+	 *            the needDTO to update
+	 * @return the ResponseEntity with status 200 (OK) and with body the updated
+	 *         needDTO, or with status 400 (Bad Request) if the needDTO is not
+	 *         valid, or with status 500 (Internal Server Error) if the needDTO
+	 *         couldn't be updated
+	 * @throws URISyntaxException
+	 *             if the Location URI syntax is incorrect
+	 * @throws IOException
+	 */
+	@PutMapping("/needsApprovalStatus")
+	@Timed
+	public ResponseEntity<NeedDTO> updateNeedApprovalStatus(@RequestBody NeedDTO needDTO)
+			throws URISyntaxException, IOException {
+		log.debug("REST request to update Need : {}", needDTO);
+		if (needDTO.getId() == null) {
+			throw new BadRequestAlertException("Invalid id", "Need", "idnull");
+		}
+		NeedDTO result = aggregateService.saveNeedWithApprovalStatus(needDTO);
+		return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert("Need", needDTO.getId().toString()))
+				.body(result);
+	}
    
 
 
