@@ -126,7 +126,6 @@ security:
         resource:
             user-info-uri: https://kcnew.bytatech.com:8443/auth/realms/ayoos/protocol/openid-connect/userinfo
 
-
 server:
     servlet:
         session:

@@ -20,7 +20,7 @@
       "inlineTemplate": false,
       "spec": false,
       "prefix": "jhi",
-      "styleExt": "scss"
+      "styleExt": "css"
     },
     "@schematics/angular:directive": {
       "spec": false,
