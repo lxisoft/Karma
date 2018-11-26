@@ -614,12 +614,12 @@ public class AggregateResource {
          return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
      }
      
-     /**
+    /* *//**
       * GET  /severities : get all the severities.
       *
       * @param pageable the pagination information
       * @return the ResponseEntity with status 200 (OK) and the list of severities in body
-      */
+      *//*
      @GetMapping("/severities")
      @Timed
      public ResponseEntity<List<SeverityDTO>> getAllSeverities(Pageable pageable) {
@@ -627,7 +627,7 @@ public class AggregateResource {
          Page<SeverityDTO> page = aggregateService.findAllSeverities(pageable);
          HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(new PageImpl<>(null),"/api/severities");
          return ResponseEntity.ok().headers(headers).body(page.getContent());
-     } 
+     } */
      
      
     
