@@ -75,6 +75,17 @@
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         
+        <createTable tableName="registered_user_followers">
+            <column name="followers_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="registered_users_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="registered_users_id, followers_id" tableName="registered_user_followers"/>
+        
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

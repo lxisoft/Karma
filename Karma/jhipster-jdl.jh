@@ -176,7 +176,8 @@ relationship ManyToOne{
 
 relationship ManyToMany{
   Need{categories} to Category{needs},
-  VerificationTeam{approvingUsers} to RegisteredUser{verificationTeams}
+  VerificationTeam{approvingUsers} to RegisteredUser{verificationTeams},
+  RegisteredUser{followers} to RegisteredUser{followingUsers}
 }
 
 paginate * with pagination

@@ -2,6 +2,8 @@ package com.lxisoft.service.dto;
 
 import java.time.LocalDate;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -36,6 +38,8 @@ public class RegisteredUserDTO implements Serializable {
     private Long happinessIndex;
 
     private Long profilePicId;
+
+    private Set<RegisteredUserDTO> followers = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -147,6 +151,14 @@ public class RegisteredUserDTO implements Serializable {
 
     public void setProfilePicId(Long mediaId) {
         this.profilePicId = mediaId;
+    }
+
+    public Set<RegisteredUserDTO> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(Set<RegisteredUserDTO> registeredUsers) {
+        this.followers = registeredUsers;
     }
 
     @Override

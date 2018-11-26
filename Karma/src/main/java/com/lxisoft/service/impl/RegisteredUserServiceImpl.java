@@ -62,6 +62,15 @@ public class RegisteredUserServiceImpl implements RegisteredUserService {
             .map(registeredUserMapper::toDto);
     }
 
+    /**
+     * Get all the RegisteredUser with eager load of many-to-many relationships.
+     *
+     * @return the list of entities
+     */
+    public Page<RegisteredUserDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return registeredUserRepository.findAllWithEagerRelationships(pageable).map(registeredUserMapper::toDto);
+    }
+    
 
     /**
      * Get one registeredUser by id.
@@ -73,7 +82,7 @@ public class RegisteredUserServiceImpl implements RegisteredUserService {
     @Transactional(readOnly = true)
     public Optional<RegisteredUserDTO> findOne(Long id) {
         log.debug("Request to get RegisteredUser : {}", id);
-        return registeredUserRepository.findById(id)
+        return registeredUserRepository.findOneWithEagerRelationships(id)
             .map(registeredUserMapper::toDto);
     }
 

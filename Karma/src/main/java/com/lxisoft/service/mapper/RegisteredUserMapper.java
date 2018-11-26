@@ -22,6 +22,7 @@ public interface RegisteredUserMapper extends EntityMapper<RegisteredUserDTO, Re
     @Mapping(target = "feeds", ignore = true)
     @Mapping(target = "checkedNeeds", ignore = true)
     @Mapping(target = "verificationTeams", ignore = true)
+    @Mapping(target = "followingUsers", ignore = true)
     RegisteredUser toEntity(RegisteredUserDTO registeredUserDTO);
 
     default RegisteredUser fromId(Long id) {

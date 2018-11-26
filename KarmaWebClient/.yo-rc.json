@@ -23,7 +23,7 @@
     "buildTool": "maven",
     "enableSwaggerCodegen": false,
     "clientFramework": "angularX",
-    "useSass": false,
+    "useSass": true,
     "clientPackageManager": "npm",
     "testFrameworks": [],
     "jhiPrefix": "jhi",

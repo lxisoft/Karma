@@ -71,11 +71,13 @@ spring:
     mail:
         host: smtp.gmail.com
         port: 587
-        username: ruhailfarhathrafan123@gmail.com
-        password: lnct oler woig qgyr
+        username: theteamkarma.official@gmail.com
+        password: kcnw trpe puac fwhz
         properties:
             mail:
                 smtp:
+                    ssl:
+                        trust: smtp.gmail.com
                     starttls:
                         enable: true
                         required: true

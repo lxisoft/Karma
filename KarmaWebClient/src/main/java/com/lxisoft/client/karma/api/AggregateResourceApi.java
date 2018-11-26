@@ -32,7 +32,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-21T14:58:30.187+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-22T13:19:16.116+05:30[Asia/Calcutta]")
 
 @Api(value = "AggregateResource", description = "the AggregateResource API")
 public interface AggregateResourceApi {
@@ -99,17 +99,6 @@ public interface AggregateResourceApi {
     @RequestMapping(value = "/api/needs/{id}",
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteNeedUsingDELETE(@ApiParam(value = "id",required=true) @PathVariable("id") Long id);
-
-
-    @ApiOperation(value = "deleteUserCheck", nickname = "deleteUserCheckUsingDELETE", notes = "", tags={ "aggregate-resource", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "OK"),
-        @ApiResponse(code = 204, message = "No Content"),
-        @ApiResponse(code = 401, message = "Unauthorized"),
-        @ApiResponse(code = 403, message = "Forbidden") })
-    @RequestMapping(value = "/api/user-checks/{id}",
-        method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteUserCheckUsingDELETE(@ApiParam(value = "id",required=true) @PathVariable("id") Long id);
 
 
     @ApiOperation(value = "doDislike", nickname = "doDislikeUsingPOST", notes = "", response = UserCheckDTO.class, tags={ "aggregate-resource", })
@@ -296,18 +285,6 @@ public interface AggregateResourceApi {
     ResponseEntity<List<UserCheckDTO>> getAllUserChecksByCheckedNeedIdUsingGET(@ApiParam(value = "checkedNeedId",required=true) @PathVariable("checkedNeedId") Long checkedNeedId,@ApiParam(value = "") @Valid @RequestParam(value = "offset", required = false) Long offset,@ApiParam(value = "Page number of the requested page") @Valid @RequestParam(value = "page", required = false) Integer page,@ApiParam(value = "") @Valid @RequestParam(value = "pageNumber", required = false) Integer pageNumber,@ApiParam(value = "") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "") @Valid @RequestParam(value = "paged", required = false) Boolean paged,@ApiParam(value = "Size of a page") @Valid @RequestParam(value = "size", required = false) Integer size,@ApiParam(value = "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.") @Valid @RequestParam(value = "sort", required = false) List<String> sort,@ApiParam(value = "") @Valid @RequestParam(value = "sort.sorted", required = false) Boolean sortSorted,@ApiParam(value = "") @Valid @RequestParam(value = "sort.unsorted", required = false) Boolean sortUnsorted,@ApiParam(value = "") @Valid @RequestParam(value = "unpaged", required = false) Boolean unpaged);
 
 
-    @ApiOperation(value = "getAllUserChecks", nickname = "getAllUserChecksUsingGET", notes = "", response = UserCheckDTO.class, responseContainer = "List", tags={ "aggregate-resource", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "OK", response = UserCheckDTO.class, responseContainer = "List"),
-        @ApiResponse(code = 401, message = "Unauthorized"),
-        @ApiResponse(code = 403, message = "Forbidden"),
-        @ApiResponse(code = 404, message = "Not Found") })
-    @RequestMapping(value = "/api/user-checks",
-        produces = "*/*", 
-        method = RequestMethod.GET)
-    ResponseEntity<List<UserCheckDTO>> getAllUserChecksUsingGET(@ApiParam(value = "") @Valid @RequestParam(value = "offset", required = false) Long offset,@ApiParam(value = "Page number of the requested page") @Valid @RequestParam(value = "page", required = false) Integer page,@ApiParam(value = "") @Valid @RequestParam(value = "pageNumber", required = false) Integer pageNumber,@ApiParam(value = "") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "") @Valid @RequestParam(value = "paged", required = false) Boolean paged,@ApiParam(value = "Size of a page") @Valid @RequestParam(value = "size", required = false) Integer size,@ApiParam(value = "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.") @Valid @RequestParam(value = "sort", required = false) List<String> sort,@ApiParam(value = "") @Valid @RequestParam(value = "sort.sorted", required = false) Boolean sortSorted,@ApiParam(value = "") @Valid @RequestParam(value = "sort.unsorted", required = false) Boolean sortUnsorted,@ApiParam(value = "") @Valid @RequestParam(value = "unpaged", required = false) Boolean unpaged);
-
-
     @ApiOperation(value = "getApprovalStatus", nickname = "getApprovalStatusUsingGET", notes = "", response = ApprovalStatusDTO.class, tags={ "aggregate-resource", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = ApprovalStatusDTO.class),
@@ -342,18 +319,6 @@ public interface AggregateResourceApi {
         produces = "*/*", 
         method = RequestMethod.GET)
     ResponseEntity<NeedDTO> getNeedUsingGET(@ApiParam(value = "id",required=true) @PathVariable("id") Long id);
-
-
-    @ApiOperation(value = "getUserCheck", nickname = "getUserCheckUsingGET", notes = "", response = UserCheckDTO.class, tags={ "aggregate-resource", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "OK", response = UserCheckDTO.class),
-        @ApiResponse(code = 401, message = "Unauthorized"),
-        @ApiResponse(code = 403, message = "Forbidden"),
-        @ApiResponse(code = 404, message = "Not Found") })
-    @RequestMapping(value = "/api/user-checks/{id}",
-        produces = "*/*", 
-        method = RequestMethod.GET)
-    ResponseEntity<UserCheckDTO> getUserCheckUsingGET(@ApiParam(value = "id",required=true) @PathVariable("id") Long id);
 
 
     @ApiOperation(value = "helpNeedy", nickname = "helpNeedyUsingPOST", notes = "", response = HelpDTO.class, tags={ "aggregate-resource", })

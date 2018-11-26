@@ -24,10 +24,6 @@ public class UserCheckDTO implements Serializable {
 
     private Long postId;
 
-    private Long checkedHelpId;
-    
-    private Boolean isGenuine;
-      
     /**
 	 * @return the isGenuine
 	 */
@@ -41,7 +37,10 @@ public class UserCheckDTO implements Serializable {
 	public void setIsGenuine(Boolean isGenuine) {
 		this.isGenuine = isGenuine;
 	}
-	
+
+	private Long checkedHelpId;
+    
+    private Boolean isGenuine;
 
     public Long getId() {
         return id;

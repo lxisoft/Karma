@@ -193,15 +193,6 @@ public interface AggregateService {
      * @return the list of entities
      */
 	Page<HelpDTO> findAllHelps(Pageable pageable);
-	
-	/**
-     * Get all the helps.
-     *
-     * @param pageable the pagination information
-     * 
-     * @return the list of entities
-     */
-	Page<HelpDTO> findAllHelpsWithTime(Pageable pageable);
 
 	/**
      * Get the "id" help.
@@ -225,52 +216,33 @@ public interface AggregateService {
    	 * @return
    	 */
 	Page<HelpDTO> findAllHelpsByApprovedStatus(Pageable pageable, String approvalStatus);
-
-	/**
-	 * @param pageable
-	 * @param fulfilledNeedId
-	 * @return
-	 */
-	Page<HelpDTO> findAllHelpsByfulfilledNeedId(Pageable pageable, Long fulfilledNeedId);
-
-	/**
-	 * @param userCheckDTO
-	 * @return
-	 */
-	UserCheckDTO saveUserCheck(UserCheckDTO userCheckDTO);
-
-	/**
-     * Get all the userChecks.
-     *
-     * @param pageable the pagination information
-     * 
-     * @return the list of entities
-     */
-	Page<UserCheckDTO> findAllUserChecks(Pageable pageable);
-
-	 /**
-     * Get the "id" userCheck.
-     *
-     * @param id the id of the entity
-     * 
-     * @return the entity
-     */
-	Optional<UserCheckDTO> findOneUserCheck(Long id);
-
-	/**
-     * Delete the "id" userCheck.
-     *
-     * @param id the id of the entity
-     */
-	void deleteUserCheck(Long id);
-
 	
+	/**
+	 * send email after confirmation.
+	 *
+	 * @param mail
+	 *            the mail of posted user
+	 */
+	String sendMail(String mail, String messageContent);
+
+	/**
+	 * Save a need.
+	 *
+	 * @param needDTO
+	 *            the entity to save
+	 * 
+	 * @return the persisted entity
+	 * 
+	 * @throws IOException
+	 */
+	public NeedDTO saveNeedWithApprovalStatus(NeedDTO needDTO) throws IOException;
+
 	/**
 	 * @param userCheckDTO
 	 * @return
 	 */
 	UserCheckDTO markingGenuinenes(UserCheckDTO userCheckDTO);
-
+	
 	/**
 	 * create new userChecks with positive vote.
 	 *
@@ -355,6 +327,13 @@ public interface AggregateService {
 	Integer calculateDislikesNumberOfHelps(Long checkedHelpId);
 	
 	/**
+	 * @param userCheckDTO
+	 * @return
+	 */
+	UserCheckDTO saveUserCheck(UserCheckDTO userCheckDTO);
+
+	
+	/**
      * Get the "id" severity.
      *
      * @param id the id of the entity
@@ -370,28 +349,17 @@ public interface AggregateService {
      * @return the list of entities
      */
     Page<SeverityDTO> findAllSeverities(Pageable pageable);
-
+    
     /**
-	 * send email after confirmation.
-	 *
-	 * @param mail
-	 *            the mail of posted user
+	 * @param pageable
+	 * @param fulfilledNeedId
+	 * @return
 	 */
-	String sendMail(String mail, String messageContent);
-
-	/**
-	 * Save a need.
-	 *
-	 * @param needDTO
-	 *            the entity to save
-	 * 
-	 * @return the persisted entity
-	 * 
-	 * @throws IOException
-	 */
-	public NeedDTO saveNeedWithApprovalStatus(NeedDTO needDTO) throws IOException;
+	Page<HelpDTO> findAllHelpsByfulfilledNeedId(Pageable pageable, Long fulfilledNeedId);
 
 
+    
+	
 
 
 

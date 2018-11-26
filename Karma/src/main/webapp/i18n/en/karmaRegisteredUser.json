@@ -33,8 +33,10 @@
       "helps": "Helps",
       "posts": "Posts",
       "feeds": "Feeds",
+      "followers": "Followers",
       "checkedNeeds": "Checked Needs",
-      "verificationTeams": "Verification Teams"
+      "verificationTeams": "Verification Teams",
+      "followingUsers": "Following Users"
     }
   }
 }

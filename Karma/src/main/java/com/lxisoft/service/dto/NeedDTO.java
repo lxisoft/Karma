@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.core.io.Resource;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Objects;
 
@@ -44,46 +45,7 @@ public class NeedDTO implements Serializable {
     
     private String timeElapsed;
     
-    private List<CommentDTO> commentList=new ArrayList<>();
-    
-    private Long noOfComments;
-    
-    private Long noOfHelps;
-    
-    private String severityLevel;
-    
-    //private Resource File;
-
-    
     /**
-	 * @return the severityLevel
-	 */
-	public String getSeverityLevel() {
-		return severityLevel;
-	}
-
-	/**
-	 * @param severityLevel the severityLevel to set
-	 */
-	public void setSeverityLevel(String severityLevel) {
-		this.severityLevel = severityLevel;
-	}
-
-	/**
-	 * @return the noOfHelps
-	 */
-	public Long getNoOfHelps() {
-		return noOfHelps;
-	}
-
-	/**
-	 * @param noOfHelps the noOfHelps to set
-	 */
-	public void setNoOfHelps(Long noOfHelps) {
-		this.noOfHelps = noOfHelps;
-	}
-
-	/**
 	 * @return the timeElapsed
 	 */
 	public String getTimeElapsed() {
@@ -125,7 +87,76 @@ public class NeedDTO implements Serializable {
 		this.noOfComments = noOfComments;
 	}
 
-	
+	/**
+	 * @return the noOfHelps
+	 */
+	public Long getNoOfHelps() {
+		return noOfHelps;
+	}
+
+	/**
+	 * @param noOfHelps the noOfHelps to set
+	 */
+	public void setNoOfHelps(Long noOfHelps) {
+		this.noOfHelps = noOfHelps;
+	}
+
+	/**
+	 * @return the severityLevel
+	 */
+	public String getSeverityLevel() {
+		return severityLevel;
+	}
+
+	/**
+	 * @param severityLevel the severityLevel to set
+	 */
+	public void setSeverityLevel(String severityLevel) {
+		this.severityLevel = severityLevel;
+	}
+
+	/**
+	 * @return the files
+	 */
+	public MultipartFile[] getFiles() {
+		return files;
+	}
+
+	/**
+	 * @param files the files to set
+	 */
+	public void setFiles(MultipartFile[] files) {
+		this.files = files;
+	}
+
+	/**
+	 * @return the resourceFiles
+	 */
+	public List<Resource> getResourceFiles() {
+		return resourceFiles;
+	}
+
+	/**
+	 * @param resourceFiles the resourceFiles to set
+	 */
+	public void setResourceFiles(List<Resource> resourceFiles) {
+		this.resourceFiles = resourceFiles;
+	}
+
+	private List<CommentDTO> commentList=new ArrayList<>();
+    
+    private Long noOfComments;
+    
+    private Long noOfHelps;
+    
+    private String severityLevel;
+    
+    private MultipartFile[] files;
+    
+    private List<Resource> resourceFiles;
+    
+    //private Resource File;
+
     /**
 	 * @return the categoryList
 	 */

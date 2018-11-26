@@ -22,6 +22,8 @@ export class RegisteredUserUpdateComponent implements OnInit {
 
   profilepics: IMedia[];
 
+  registeredusers: IRegisteredUser[];
+
   verificationteams: IVerificationTeam[];
   dobDp: any;
 
@@ -50,6 +52,12 @@ export class RegisteredUserUpdateComponent implements OnInit {
             (subRes: HttpErrorResponse) => this.onError(subRes.message)
           );
         }
+      },
+      (res: HttpErrorResponse) => this.onError(res.message)
+    );
+    this.registeredUserService.query().subscribe(
+      (res: HttpResponse<IRegisteredUser[]>) => {
+        this.registeredusers = res.body;
       },
       (res: HttpErrorResponse) => this.onError(res.message)
     );
@@ -92,6 +100,10 @@ export class RegisteredUserUpdateComponent implements OnInit {
   }
 
   trackMediaById(index: number, item: IMedia) {
+    return item.id;
+  }
+
+  trackRegisteredUserById(index: number, item: IRegisteredUser) {
     return item.id;
   }
 

@@ -11,7 +11,6 @@ import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.repository.query.Param;
 
-
 /**
  * Spring Data  repository for the UserCheck entity.
  */
@@ -59,5 +58,7 @@ public interface UserCheckRepository extends JpaRepository<UserCheck, Long> {
 	 */
 	@Query(value = "select count(u) from UserCheck u where u.checkedNeed.id=:CheckedNeedId and u.voteType=:voteType")
 	Integer countOfVoteTypeGenuiness(@Param("voteType") String voteType, @Param("CheckedNeedId") Long CheckedNeedId);
+
 	
+
 }

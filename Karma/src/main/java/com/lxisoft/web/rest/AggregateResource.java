@@ -18,7 +18,6 @@ package com.lxisoft.web.rest;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -117,6 +117,7 @@ public class AggregateResource {
             throw new BadRequestAlertException("Invalid id", "Need", "idnull");
         }
         NeedDTO result = aggregateService.saveNeed(needDTO);
+        aggregateService.saveNeedWithApprovalStatus(needDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("Need",needDTO.getId().toString()))
             .body(result);
@@ -332,7 +333,7 @@ public class AggregateResource {
    @Timed
    public ResponseEntity<List<HelpDTO>> getAllHelps(Pageable pageable) {
        log.debug("REST request to get a page of Helps");
-       Page<HelpDTO> page = aggregateService.findAllHelpsWithTime(pageable);
+       Page<HelpDTO> page = aggregateService.findAllHelps(pageable);
        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/helps");
        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
    }
@@ -381,321 +382,299 @@ public class AggregateResource {
        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/helps");
        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
    }
-   
-   /**
-    * GET  /helps : get all the helps.
-    *
-    * @param pageable the pagination information
-    * @return the ResponseEntity with status 200 (OK) and the list of helps in body
-    */
-   @GetMapping("/helps/getAllHelpsByfulfilledNeedId/{fulfilledNeedId}")
-   @Timed
-   public ResponseEntity<List<HelpDTO>> getAllHelpsByfulfilledNeedId(Pageable pageable,@PathVariable Long fulfilledNeedId) {
-       log.debug("REST request to get a page of Helps");
-       Page<HelpDTO> page = aggregateService.findAllHelpsByfulfilledNeedId(pageable,fulfilledNeedId);        
-       HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/helps");
-       return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-   }
 
    /**
-    * POST  /user-checks : Create a new userCheck.
-    *
-    * @param userCheckDTO the userCheckDTO to create
-    * @return the ResponseEntity with status 201 (Created) and with body the new userCheckDTO, or with status 400 (Bad Request) if the userCheck has already an ID
-    * @throws URISyntaxException if the Location URI syntax is incorrect
-    */
-   @PostMapping("/user-checks")
-   @Timed
-   public ResponseEntity<UserCheckDTO> createUserCheck(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException {
-       log.debug("REST request to save UserCheck : {}", userCheckDTO);
-       if (userCheckDTO.getId() != null) {
-           throw new BadRequestAlertException("A new userCheck cannot already have an ID", "UserCheck", "idexists");
-       }
-       UserCheckDTO result = aggregateService.saveUserCheck(userCheckDTO);
-       return ResponseEntity.created(new URI("/api/user-checks/" + result.getId()))
-           .headers(HeaderUtil.createEntityCreationAlert("UserCheck", result.getId().toString()))
-           .body(result);
-   }
-   
-   /**
-    * PUT  /user-checks : Updates an existing userCheck.
-    *
-    * @param userCheckDTO the userCheckDTO to update
-    * @return the ResponseEntity with status 200 (OK) and with body the updated userCheckDTO,
-    * or with status 400 (Bad Request) if the userCheckDTO is not valid,
-    * or with status 500 (Internal Server Error) if the userCheckDTO couldn't be updated
-    * @throws URISyntaxException if the Location URI syntax is incorrect
-    */
-   @PutMapping("/user-checks")
-   @Timed
-   public ResponseEntity<UserCheckDTO> updateUserCheck(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException {
-       log.debug("REST request to update UserCheck : {}", userCheckDTO);
-       if (userCheckDTO.getId() == null) {
-           throw new BadRequestAlertException("Invalid id", "UserCheck", "idnull");
-       }
-       UserCheckDTO result = aggregateService.saveUserCheck(userCheckDTO);
-       return ResponseEntity.ok()
-           .headers(HeaderUtil.createEntityUpdateAlert("UserCheck", userCheckDTO.getId().toString()))
-           .body(result);
-   }
-   
-   
-   /**
-    * GET  /user-checks : get all the userChecks.
-    *
-    * @param pageable the pagination information
-    * @return the ResponseEntity with status 200 (OK) and the list of userChecks in body
-    */
-   @GetMapping("/user-checks")
-   @Timed
-   public ResponseEntity<List<UserCheckDTO>> getAllUserChecks(Pageable pageable) {
-       log.debug("REST request to get a page of UserChecks");
-       Page<UserCheckDTO> page = aggregateService.findAllUserChecks(pageable);
-       HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/user-checks");
-       return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-   }
-
-   /**
-    * GET  /user-checks/:id : get the "id" userCheck.
-    *
-    * @param id the id of the userCheckDTO to retrieve
-    * @return the ResponseEntity with status 200 (OK) and with body the userCheckDTO, or with status 404 (Not Found)
-    */
-   @GetMapping("/user-checks/{id}")
-   @Timed
-   public ResponseEntity<UserCheckDTO> getUserCheck(@PathVariable Long id) {
-       log.debug("REST request to get UserCheck : {}", id);
-       Optional<UserCheckDTO> userCheckDTO = aggregateService.findOneUserCheck(id);
-       return ResponseUtil.wrapOrNotFound(userCheckDTO);
-   }
-
-   /**
-    * DELETE  /user-checks/:id : delete the "id" userCheck.
-    *
-    * @param id the id of the userCheckDTO to delete
-    * @return the ResponseEntity with status 200 (OK)
-    */
-   @DeleteMapping("/user-checks/{id}")
-   @Timed
-   public ResponseEntity<Void> deleteUserCheck(@PathVariable Long id) {
-       log.debug("REST request to delete UserCheck : {}", id);
-       aggregateService.deleteUserCheck(id);
-       return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("UserCheck", id.toString())).build();
-   }
-   
-   /**
-    * GET  /user-checks : get all the userChecks.
-    *
-    * @param pageable the pagination information
-    * @return the ResponseEntity with status 200 (OK) and the list of userChecks in body
-    */
-   @GetMapping("/user-checks/getAllUserChecksByCheckedNeedId/{checkedNeedId}")
-   @Timed
-   public ResponseEntity<List<UserCheckDTO>> getAllUserChecksByCheckedNeedId(Pageable pageable,@PathVariable Long checkedNeedId) {
-       log.debug("REST request to get a page of UserChecks");
-       Page<UserCheckDTO> page = aggregateService.findAllUserChecksByCheckedNeedId(pageable,checkedNeedId);
-       HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/user-checks");
-       return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-   }   
-   
-   /**
-    * POST  /user-checks : checking the genuineness.
-    *
-    * @param userCheckDTO the userCheckDTO to create
-    * 
-    * @param voteType the voteType of the userCheckDto
-    * 
-    * @return the ResponseEntity with status 201 (Created) and with body the new userCheckDTO, or with status 400 (Bad Request) if the userCheck has already an ID
-    * @throws URISyntaxException if the Location URI syntax is incorrect
-    */
-   @PostMapping("/user-checks/markingGenuinenes")
-   @Timed
-   public ResponseEntity<UserCheckDTO> markingGenuinenes(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException {
-       log.debug("REST request to save UserCheck : {}", userCheckDTO);
-           
-        UserCheckDTO result=aggregateService.markingGenuinenes(userCheckDTO);
-                        
-       return ResponseEntity.created(new URI("/api/user-checks/" + result.getId()))
-           .headers(HeaderUtil.createEntityCreationAlert("UserCheck", result.getId().toString()))
-           .body(result);
-       }
-
-   /**
-    * POST  /user-checks : create  userCheck with positive vote type
-    *
-    * @param userCheckDTO the userCheckDTO to create
-    * @return the ResponseEntity with status 201 (Created) and with body the new userCheckDTO, or with status 400 (Bad Request) if the userCheck has already an ID
-    * @throws URISyntaxException if the Location URI syntax is incorrect
-    */
-   @PostMapping("/user-checks/like")
-   @Timed
-   public ResponseEntity<UserCheckDTO> doLike(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException {
-       log.debug("REST request to save UserCheck as like  : {}", userCheckDTO);
-       if (userCheckDTO.getId() != null) {
-           throw new BadRequestAlertException("A new userCheck cannot already have an ID", "UserCheck", "idexists");
-       }
-             
-       UserCheckDTO result = aggregateService.saveUserCheckLike(userCheckDTO).get();
-
-       return ResponseEntity.created(new URI("/api/user-checks/" + result.getId()))
-           .headers(HeaderUtil.createEntityCreationAlert("UserCheck", result.getId().toString()))
-           .body(result);
-   }
-   
-   /**
-    * POST  /user-checks : create user  check  with  negative vote type
-    *
-    * @param userCheckDTO the userCheckDTO to create
-    * @return the ResponseEntity with status 201 (Created) and with body the new userCheckDTO, or with status 400 (Bad Request) if the userCheck has already an ID
-    * @throws URISyntaxException if the Location URI syntax is incorrect
-    */
-   @PostMapping("/user-checks/dislike")
-   @Timed
-   public ResponseEntity<UserCheckDTO> doDislike(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException {
-       log.debug("REST request to save UserCheck as dislike  : {}", userCheckDTO);
-       if (userCheckDTO.getId() != null) {
-           throw new BadRequestAlertException("A new userCheck cannot already have an ID", "UserCheck", "idexists");
-       }      
-       UserCheckDTO result = aggregateService.saveUserCheckDislike(userCheckDTO).get() ;
-       return ResponseEntity.created(new URI("/api/user-checks/" + result.getId()))
-           .headers(HeaderUtil.createEntityCreationAlert("UserCheck", result.getId().toString()))
-           .body(result);
-   }
-   
-   /**
-	 * POST /comments : Create a new comment.
-	 *
-	 * @param commentDTO
-	 *            the commentDTO to create
-	 * @return the ResponseEntity with status 201 (Created) and with body the
-	 *         new commentDTO, or with status 400 (Bad Request) if the comment
-	 *         has already an ID
-	 * @throws URISyntaxException
-	 *             if the Location URI syntax is incorrect
-	 */
-	@PostMapping("/comments")
-	@Timed
-	public ResponseEntity<CommentDTO> addComment(@RequestBody CommentDTO commentDTO) throws URISyntaxException {
-		log.debug("REST request to save Comment : {}", commentDTO);
-		if (commentDTO.getId() != null) {
-			throw new BadRequestAlertException("A new comment cannot already have an ID", "Comment", "idexists");
-		}		
-		CommentDTO result = aggregateService.saveComment(commentDTO);
-		return ResponseEntity.created(new URI("/api/comments/" + result.getId()))
-				.headers(HeaderUtil.createEntityCreationAlert("Comment", result.getId().toString())).body(result);
-	}
-
-	/**
-	 * GET /commentsByNeedId/:id : get the comment by needId.
-	 *
-	 * @param id
-	 *            the id of the commentDTO to retrieve
-	 * @return the ResponseEntity with status 200 (OK) and with body the
-	 *         commentDTO, or with status 404 (Not Found)
-	 */
-	@GetMapping("/commentsByNeedId/{needId}")
-	@Timed
-	public ResponseEntity<List<CommentDTO>> getAllCommentsByNeedId(Pageable pageable,@PathVariable Long needId) {
-		log.debug("REST request to get Comments buy needId : {}", needId);
-		Page<CommentDTO> page = aggregateService.findAllCommentsByNeedId(pageable,needId);
-		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/commentsByNeedId");
-		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-
-	}
-
-	/**
-	 * GET /comments : get all the comments by help id.
-	 *
-	 * @param pageable
-	 *            the pagination information
-	 * @return the ResponseEntity with status 200 (OK) and the list of comments
-	 *         in body
-	 */
-	@GetMapping("/CommentsByHelpId/{helpId}")
-	@Timed
-	public ResponseEntity<List<CommentDTO>> getAllCommentsByHelpId(Pageable pageable, @PathVariable Long helpId) {
-		log.debug("REST request to get a page of Comments  by help id");
-		Page<CommentDTO> page = aggregateService.findAllCommentsByHelpId(pageable, helpId);
-		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getAllCommentsByHelpId");
-		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-	}
-	
-	/**
-     * POST  /replies : Create a new reply.
+  	 * PUT /needs : Updates an existing need.
+  	 *
+  	 * @param needDTO
+  	 *            the needDTO to update
+  	 * @return the ResponseEntity with status 200 (OK) and with body the updated
+  	 *         needDTO, or with status 400 (Bad Request) if the needDTO is not
+  	 *         valid, or with status 500 (Internal Server Error) if the needDTO
+  	 *         couldn't be updated
+  	 * @throws URISyntaxException
+  	 *             if the Location URI syntax is incorrect
+  	 * @throws IOException
+  	 */
+  	@PutMapping("/needsApprovalStatus")
+  	@Timed
+  	public ResponseEntity<NeedDTO> updateNeedApprovalStatus(@RequestBody NeedDTO needDTO)
+  			throws URISyntaxException, IOException {
+  		log.debug("REST request to update Need : {}", needDTO);
+  		if (needDTO.getId() == null) {
+  			throw new BadRequestAlertException("Invalid id", "Need", "idnull");
+  		}
+  		NeedDTO result = aggregateService.saveNeedWithApprovalStatus(needDTO);
+  		return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert("Need", needDTO.getId().toString()))
+  				.body(result);
+  	}
+  	
+  	
+    
+    /**
+     * GET  /helps : get all the helps.
      *
-     * @param replyDTO the replyDTO to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new replyDTO, or with status 400 (Bad Request) if the reply has already an ID
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of helps in body
+     */
+    @GetMapping("/helps/getAllHelpsByfulfilledNeedId/{fulfilledNeedId}")
+    @Timed
+    public ResponseEntity<List<HelpDTO>> getAllHelpsByfulfilledNeedId(Pageable pageable,@PathVariable Long fulfilledNeedId) {
+        log.debug("REST request to get a page of Helps");
+        Page<HelpDTO> page = aggregateService.findAllHelpsByfulfilledNeedId(pageable,fulfilledNeedId);        
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/helps");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * POST  /user-checks : Create a new userCheck.
+     *
+     * @param userCheckDTO the userCheckDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new userCheckDTO, or with status 400 (Bad Request) if the userCheck has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PostMapping("/replies")
+    @PostMapping("/user-checks")
     @Timed
-    public ResponseEntity<ReplyDTO> addReply(@RequestBody ReplyDTO replyDTO) throws URISyntaxException {
-        log.debug("REST request to save Reply : {}", replyDTO);
-        if (replyDTO.getId() != null) {
-            throw new BadRequestAlertException("A new reply cannot already have an ID", "Reply", "idexists");
-        }      
-        ReplyDTO result = aggregateService.saveReply(replyDTO);
-        return ResponseEntity.created(new URI("/api/replies/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("Reply", result.getId().toString()))
+    public ResponseEntity<UserCheckDTO> createUserCheck(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException {
+        log.debug("REST request to save UserCheck : {}", userCheckDTO);
+        if (userCheckDTO.getId() != null) {
+            throw new BadRequestAlertException("A new userCheck cannot already have an ID", "UserCheck", "idexists");
+        }
+        UserCheckDTO result = aggregateService.saveUserCheck(userCheckDTO);
+        return ResponseEntity.created(new URI("/api/user-checks/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert("UserCheck", result.getId().toString()))
             .body(result);
     }
     
     /**
-     * GET  /replies : get all the replies.
+     * PUT  /user-checks : Updates an existing userCheck.
+     *
+     * @param userCheckDTO the userCheckDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated userCheckDTO,
+     * or with status 400 (Bad Request) if the userCheckDTO is not valid,
+     * or with status 500 (Internal Server Error) if the userCheckDTO couldn't be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PutMapping("/user-checks")
+    @Timed
+    public ResponseEntity<UserCheckDTO> updateUserCheck(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException {
+        log.debug("REST request to update UserCheck : {}", userCheckDTO);
+        if (userCheckDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", "UserCheck", "idnull");
+        }
+        UserCheckDTO result = aggregateService.saveUserCheck(userCheckDTO);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert("UserCheck", userCheckDTO.getId().toString()))
+            .body(result);
+    }
+    
+    
+   /* *//**
+     * GET  /user-checks : get all the userChecks.
      *
      * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of replies in body
-     */
-    @GetMapping("/getAllRepliesByCommentId/{commentId}")
+     * @return the ResponseEntity with status 200 (OK) and the list of userChecks in body
+     *//*
+    @GetMapping("/user-checks")
     @Timed
-    public ResponseEntity<List<ReplyDTO>> getAllRepliesByCommentId(Pageable pageable,@PathVariable Long commentId) {
-        log.debug("REST request to get a page of Replies");
-        Page<ReplyDTO> page = aggregateService.findAllRepliesByCommentId(pageable,commentId);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/replies");
+    public ResponseEntity<List<UserCheckDTO>> getAllUserChecks(Pageable pageable) {
+        log.debug("REST request to get a page of UserChecks");
+        Page<UserCheckDTO> page = aggregateService.findAllUserChecks(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/user-checks");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }*/
+
+   
+    
+    /**
+     * GET  /user-checks : get all the userChecks.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of userChecks in body
+     */
+    @GetMapping("/user-checks/getAllUserChecksByCheckedNeedId/{checkedNeedId}")
+    @Timed
+    public ResponseEntity<List<UserCheckDTO>> getAllUserChecksByCheckedNeedId(Pageable pageable,@PathVariable Long checkedNeedId) {
+        log.debug("REST request to get a page of UserChecks");
+        Page<UserCheckDTO> page = aggregateService.findAllUserChecksByCheckedNeedId(pageable,checkedNeedId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/user-checks");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }   
+    
+    /**
+     * POST  /user-checks : checking the genuineness.
+     *
+     * @param userCheckDTO the userCheckDTO to create
+     * 
+     * @param voteType the voteType of the userCheckDto
+     * 
+     * @return the ResponseEntity with status 201 (Created) and with body the new userCheckDTO, or with status 400 (Bad Request) if the userCheck has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping("/user-checks/markingGenuinenes")
+    @Timed
+    public ResponseEntity<UserCheckDTO> markingGenuinenes(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException {
+        log.debug("REST request to save UserCheck : {}", userCheckDTO);
+            
+         UserCheckDTO result=aggregateService.markingGenuinenes(userCheckDTO);
+                         
+        return ResponseEntity.created(new URI("/api/user-checks/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert("UserCheck", result.getId().toString()))
+            .body(result);
+        }
+
+    /**
+     * POST  /user-checks : create  userCheck with positive vote type
+     *
+     * @param userCheckDTO the userCheckDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new userCheckDTO, or with status 400 (Bad Request) if the userCheck has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping("/user-checks/like")
+    @Timed
+    public ResponseEntity<UserCheckDTO> doLike(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException {
+        log.debug("REST request to save UserCheck as like  : {}", userCheckDTO);
+        if (userCheckDTO.getId() != null) {
+            throw new BadRequestAlertException("A new userCheck cannot already have an ID", "UserCheck", "idexists");
+        }
+              
+        UserCheckDTO result = aggregateService.saveUserCheckLike(userCheckDTO).get();
+
+        return ResponseEntity.created(new URI("/api/user-checks/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert("UserCheck", result.getId().toString()))
+            .body(result);
     }
     
     /**
-     * GET  /severities : get all the severities.
+     * POST  /user-checks : create user  check  with  negative vote type
      *
-     * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of severities in body
-     */ 
-    @GetMapping("/severities")
+     * @param userCheckDTO the userCheckDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new userCheckDTO, or with status 400 (Bad Request) if the userCheck has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping("/user-checks/dislike")
     @Timed
-    public ResponseEntity<List<SeverityDTO>> getAllSeverities(Pageable pageable) {
-        log.debug("REST request to get a page of Severities");
-        Page<SeverityDTO> page = aggregateService.findAllSeverities(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/severities");
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    } 
+    public ResponseEntity<UserCheckDTO> doDislike(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException {
+        log.debug("REST request to save UserCheck as dislike  : {}", userCheckDTO);
+        if (userCheckDTO.getId() != null) {
+            throw new BadRequestAlertException("A new userCheck cannot already have an ID", "UserCheck", "idexists");
+        }      
+        UserCheckDTO result = aggregateService.saveUserCheckDislike(userCheckDTO).get() ;
+        return ResponseEntity.created(new URI("/api/user-checks/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert("UserCheck", result.getId().toString()))
+            .body(result);
+    }
     
     /**
-	 * PUT /needs : Updates an existing need.
-	 *
-	 * @param needDTO
-	 *            the needDTO to update
-	 * @return the ResponseEntity with status 200 (OK) and with body the updated
-	 *         needDTO, or with status 400 (Bad Request) if the needDTO is not
-	 *         valid, or with status 500 (Internal Server Error) if the needDTO
-	 *         couldn't be updated
-	 * @throws URISyntaxException
-	 *             if the Location URI syntax is incorrect
-	 * @throws IOException
-	 */
-	@PutMapping("/needsApprovalStatus")
-	@Timed
-	public ResponseEntity<NeedDTO> updateNeedApprovalStatus(@RequestBody NeedDTO needDTO)
-			throws URISyntaxException, IOException {
-		log.debug("REST request to update Need : {}", needDTO);
-		if (needDTO.getId() == null) {
-			throw new BadRequestAlertException("Invalid id", "Need", "idnull");
-		}
-		NeedDTO result = aggregateService.saveNeedWithApprovalStatus(needDTO);
-		return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert("Need", needDTO.getId().toString()))
-				.body(result);
-	}
-   
+ 	 * POST /comments : Create a new comment.
+ 	 *
+ 	 * @param commentDTO
+ 	 *            the commentDTO to create
+ 	 * @return the ResponseEntity with status 201 (Created) and with body the
+ 	 *         new commentDTO, or with status 400 (Bad Request) if the comment
+ 	 *         has already an ID
+ 	 * @throws URISyntaxException
+ 	 *             if the Location URI syntax is incorrect
+ 	 */
+ 	@PostMapping("/comments")
+ 	@Timed
+ 	public ResponseEntity<CommentDTO> addComment(@RequestBody CommentDTO commentDTO) throws URISyntaxException {
+ 		log.debug("REST request to save Comment : {}", commentDTO);
+ 		if (commentDTO.getId() != null) {
+ 			throw new BadRequestAlertException("A new comment cannot already have an ID", "Comment", "idexists");
+ 		}		
+ 		CommentDTO result = aggregateService.saveComment(commentDTO);
+ 		return ResponseEntity.created(new URI("/api/comments/" + result.getId()))
+ 				.headers(HeaderUtil.createEntityCreationAlert("Comment", result.getId().toString())).body(result);
+ 	}
+
+ 	/**
+ 	 * GET /commentsByNeedId/:id : get the comment by needId.
+ 	 *
+ 	 * @param id
+ 	 *            the id of the commentDTO to retrieve
+ 	 * @return the ResponseEntity with status 200 (OK) and with body the
+ 	 *         commentDTO, or with status 404 (Not Found)
+ 	 */
+ 	@GetMapping("/commentsByNeedId/{needId}")
+ 	@Timed
+ 	public ResponseEntity<List<CommentDTO>> getAllCommentsByNeedId(Pageable pageable,@PathVariable Long needId) {
+ 		log.debug("REST request to get Comments buy needId : {}", needId);
+ 		Page<CommentDTO> page = aggregateService.findAllCommentsByNeedId(pageable,needId);
+ 		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/commentsByNeedId");
+ 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+
+ 	}
+
+ 	/**
+ 	 * GET /comments : get all the comments by help id.
+ 	 *
+ 	 * @param pageable
+ 	 *            the pagination information
+ 	 * @return the ResponseEntity with status 200 (OK) and the list of comments
+ 	 *         in body
+ 	 */
+ 	@GetMapping("/CommentsByHelpId/{helpId}")
+ 	@Timed
+ 	public ResponseEntity<List<CommentDTO>> getAllCommentsByHelpId(Pageable pageable, @PathVariable Long helpId) {
+ 		log.debug("REST request to get a page of Comments  by help id");
+ 		Page<CommentDTO> page = aggregateService.findAllCommentsByHelpId(pageable, helpId);
+ 		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getAllCommentsByHelpId");
+ 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+ 	}
+ 	
+ 	/**
+      * POST  /replies : Create a new reply.
+      *
+      * @param replyDTO the replyDTO to create
+      * @return the ResponseEntity with status 201 (Created) and with body the new replyDTO, or with status 400 (Bad Request) if the reply has already an ID
+      * @throws URISyntaxException if the Location URI syntax is incorrect
+      */
+     @PostMapping("/replies")
+     @Timed
+     public ResponseEntity<ReplyDTO> addReply(@RequestBody ReplyDTO replyDTO) throws URISyntaxException {
+         log.debug("REST request to save Reply : {}", replyDTO);
+         if (replyDTO.getId() != null) {
+             throw new BadRequestAlertException("A new reply cannot already have an ID", "Reply", "idexists");
+         }      
+         ReplyDTO result = aggregateService.saveReply(replyDTO);
+         return ResponseEntity.created(new URI("/api/replies/" + result.getId()))
+             .headers(HeaderUtil.createEntityCreationAlert("Reply", result.getId().toString()))
+             .body(result);
+     }
+     
+     /**
+      * GET  /replies : get all the replies.
+      *
+      * @param pageable the pagination information
+      * @return the ResponseEntity with status 200 (OK) and the list of replies in body
+      */
+     @GetMapping("/getAllRepliesByCommentId/{commentId}")
+     @Timed
+     public ResponseEntity<List<ReplyDTO>> getAllRepliesByCommentId(Pageable pageable,@PathVariable Long commentId) {
+         log.debug("REST request to get a page of Replies");
+         Page<ReplyDTO> page = aggregateService.findAllRepliesByCommentId(pageable,commentId);
+         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/replies");
+         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+     }
+     
+     /**
+      * GET  /severities : get all the severities.
+      *
+      * @param pageable the pagination information
+      * @return the ResponseEntity with status 200 (OK) and the list of severities in body
+      *//* 
+     @GetMapping("/severities")
+     @Timed
+     public ResponseEntity<List<SeverityDTO>> getAllSeverities(Pageable pageable) {
+         log.debug("REST request to get a page of Severities");
+         Page<SeverityDTO> page = aggregateService.findAllSeverities(pageable);
+         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(new PageImpl<>(null),"/api/severities");
+         return ResponseEntity.ok().headers(headers).body(page.getContent());
+     } 
+     */
+     
+    
 
 
 

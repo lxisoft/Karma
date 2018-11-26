@@ -59,6 +59,12 @@
                         <a [routerLink]="['/media', registeredUser.profilePicId, 'view']">{{registeredUser.profilePicId}}</a>
                     </div>
                 </dd>
+                <dt><span jhiTranslate="karmaApp.karmaRegisteredUser.followers">Followers</span></dt>
+                <dd>
+                    <span *ngFor="let followers of registeredUser.followers; let last = last">
+                        <a [routerLink]="['/registered-user', followers?.id, 'view' ]">{{followers.id}}</a>{{last ? '' : ', '}}
+                    </span>
+                </dd>
             </dl>
 
             <button type="submit"

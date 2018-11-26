@@ -90,6 +90,14 @@
             "otherEntityRelationshipName": "registeredUser"
         },
         {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "followingUsers",
+            "relationshipName": "followers",
+            "otherEntityName": "registeredUser",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
             "relationshipType": "one-to-many",
             "relationshipName": "checkedNeeds",
             "otherEntityName": "userCheck",
@@ -101,6 +109,13 @@
             "otherEntityName": "verificationTeam",
             "ownerSide": false,
             "otherEntityRelationshipName": "approvingUsers"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "followingUsers",
+            "otherEntityName": "registeredUser",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "followers"
         }
     ],
     "changelogDate": "20181118103744",

@@ -1463,8 +1463,7 @@
         {
             "id": "178a868a-5f29-4d17-adbc-00572bbb6bf9",
             "alias": "first broker login",
-            "description":
-                "Actions taken after first broker login with identity provider account, which is not yet linked to any Keycloak account",
+            "description": "Actions taken after first broker login with identity provider account, which is not yet linked to any Keycloak account",
             "providerId": "basic-flow",
             "topLevel": true,
             "builtIn": true,

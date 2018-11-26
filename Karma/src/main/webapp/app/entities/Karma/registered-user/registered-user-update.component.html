@@ -82,6 +82,12 @@
                         <option [ngValue]="mediaOption.id" *ngFor="let mediaOption of profilepics; trackBy: trackMediaById">{{mediaOption.id}}</option>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label jhiTranslate="karmaApp.karmaRegisteredUser.followers" for="field_followers">Followers</label>
+                    <select class="form-control" id="field_followers" multiple name="followers" [(ngModel)]="registeredUser.followers">
+                        <option [ngValue]="getSelected(registeredUser.followers, registeredUserOption)" *ngFor="let registeredUserOption of registeredusers; trackBy: trackRegisteredUserById">{{registeredUserOption.id}}</option>
+                    </select>
+                </div>
             </div>
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
