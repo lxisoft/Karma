@@ -40,14 +40,18 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 
 import com.lxisoft.domain.ApprovalStatus;
 import com.lxisoft.domain.Category;
+import com.lxisoft.domain.Comment;
 import com.lxisoft.domain.Help;
 import com.lxisoft.domain.Need;
+import com.lxisoft.domain.Reply;
 import com.lxisoft.domain.UserCheck;
 import com.lxisoft.repository.ApprovalStatusRepository;
 import com.lxisoft.repository.CategoryRepository;
 import com.lxisoft.repository.CommentRepository;
 import com.lxisoft.repository.HelpRepository;
 import com.lxisoft.repository.NeedRepository;
+import com.lxisoft.repository.ReplyRepository;
+import com.lxisoft.repository.SeverityRepository;
 import com.lxisoft.repository.UserCheckRepository;
 import com.lxisoft.service.AggregateService;
 import com.lxisoft.service.dto.ApprovalStatusDTO;
@@ -60,8 +64,11 @@ import com.lxisoft.service.dto.SeverityDTO;
 import com.lxisoft.service.dto.UserCheckDTO;
 import com.lxisoft.service.mapper.ApprovalStatusMapper;
 import com.lxisoft.service.mapper.CategoryMapper;
+import com.lxisoft.service.mapper.CommentMapper;
 import com.lxisoft.service.mapper.HelpMapper;
 import com.lxisoft.service.mapper.NeedMapper;
+import com.lxisoft.service.mapper.ReplyMapper;
+import com.lxisoft.service.mapper.SeverityMapper;
 import com.lxisoft.service.mapper.UserCheckMapper;
 
 
@@ -94,7 +101,16 @@ public class AggregateServiceImpl implements AggregateService {
 	UserCheckRepository userCheckRepository;
 	
 	@Autowired
+	SeverityRepository severityRepository;
+	
+	@Autowired
 	HelpRepository helpRepository;
+	
+	@Autowired
+	CommentRepository commentRepository;
+	
+	@Autowired
+	ReplyRepository replyRepository;
 
 	@Autowired
     NeedMapper needMapper;
@@ -106,13 +122,19 @@ public class AggregateServiceImpl implements AggregateService {
 	ApprovalStatusMapper approvalStatusMapper;
 	
 	@Autowired
-	UserCheckMapper userCheckMapper;
-	
-	@Autowired
-	CommentRepository commentRepository;
+	UserCheckMapper userCheckMapper;	
 	
 	@Autowired
 	HelpMapper helpMapper;
+	
+	@Autowired
+	CommentMapper commentMapper;
+	
+	@Autowired
+	ReplyMapper replyMapper;
+	
+	@Autowired
+	SeverityMapper severityMapper;
 	
 	@Autowired
 	private JavaMailSender sender;
@@ -262,17 +284,7 @@ public class AggregateServiceImpl implements AggregateService {
 				Page<UserCheckDTO> userCheckDTOs=findAllUserChecksByCheckedNeedId(pageable,need.getId());
 				
 				List<UserCheckDTO> userCheckDTOList = userCheckDTOs.getContent();
-				
-				/*for(UserCheckDTO userChecks:userCheckDTOList)
-				{
-					log.info("*************{}",userChecks.getId());
-					
-					if(userChecks.getVoteType()=="postive")
-					{
-						count=count+1;
-					}
-				}*/
-				
+								
 								
 				if(userCheckDTOList.size()==0)
 				{
@@ -287,36 +299,14 @@ public class AggregateServiceImpl implements AggregateService {
 					need.setPercentageOfGenuineness((long)((genuinescount/userCheckDTOList.size())*100));
 				 
 					//need.setPercentageOfGenuineness(genuinescount);
-				
-				
-				
+								
 				}
-				
-				/*Page<CommentDTO> commentsPage=findAllCommentsByNeedId(pageable,need.getId());
-		    	if(commentsPage.getContent()==null)
-		    		need.setNoOfComments((long)0);
-		    	else
-		    	{
-		    		List<CommentDTO> noOfComments = commentsPage.getContent();
-		    		need.setCommentList(noOfComments);
-		    		//need.setNoOfComments((long)noOfComments.size());
-		    		//need.setNoOfComments((long)(need.getCommentList()).size());
-		    	}*/
-		    	
+										    	
 		    	need.setNoOfComments((long)(commentRepository.countByNeedId(need.getId())));
-				
-		    	Page<HelpDTO> HelpDTOs=findAllHelpsByfulfilledNeedId(pageable,need.getId());
-		    	if(HelpDTOs.getContent()==null)
-		    		need.setNoOfHelps((long)0);
-		    	else
-		    	{
-		    		List<HelpDTO> noOfHelps = HelpDTOs.getContent();
-		    		need.setNoOfComments((long)noOfHelps.size());
-		    	}   
+					    	
+		    	need.setNoOfHelps((long)(helpRepository.countOfHelpsByfulfilledNeedId(need.getId(),"completed")));
 		    	
-				
-		    	
-				/*need.setCategoryList(new ArrayList<CategoryDTO>(need.getCategories()));
+				need.setCategoryList(new ArrayList<CategoryDTO>(need.getCategories()));
 				SeverityDTO severityDTO=null;
 				
 				if(need.getSeverityId()!=null)
@@ -324,7 +314,7 @@ public class AggregateServiceImpl implements AggregateService {
 				
 				if(severityDTO!=null)
 					need.setSeverityLevel(severityDTO.getSeverityLevel());
-				*/
+				
 				
                 Instant instant = Instant.now();
 				
@@ -636,13 +626,66 @@ public class AggregateServiceImpl implements AggregateService {
 	@Override
 	public Page<HelpDTO> findAllHelpsByApprovedStatus(Pageable pageable, String approvalStatus) {
        
-		log.debug("Request to get all Helps by approval status");
+        log.debug("Request to get all Helps by approval status");
 	    
 	    Long approvalStatusId=approvalStatusRepository.findByStatus(approvalStatus).get().getId();
          	           	
-        return helpRepository.findAllHelpsByApprovalStatusId(pageable,approvalStatusId)
-            .map(helpMapper::toDto);
+	    Page<HelpDTO> helpDtos= helpRepository.findAllHelpsByApprovalStatusId(pageable,approvalStatusId)
+                                .map(helpMapper::toDto);
+	    
+	    List<HelpDTO> helps=helpDtos.getContent();
+	    for(HelpDTO help:helps)
+	    {	
+	    	Page<CommentDTO> commentsPage=findAllCommentsByHelpId(pageable,help.getId());
+	    	if(commentsPage.getContent()==null)
+	    		help.setNoOfComments((long)0);
+	    	else
+	    	{
+	    		List<CommentDTO> noOfComments = commentsPage.getContent();
+	    	    help.setNoOfComments((long)noOfComments.size());
+	    	}   
+	    	help.setNoOfLikes((long) calculateLikesNumberOfHelps(help.getId()));
+	    	help.setNoOfDisLikes((long)calculateDislikesNumberOfHelps(help.getId()));
+	    	
+	    	Instant instant = Instant.now();
+			
+			Date repliedTime = null;
+			if (help.getTime() != null) {
+				repliedTime = Date.from(help.getTime());
+			}
+			Date current = Date.from(instant);
+			long diffInSecond = 0l;
+			if (repliedTime != null) {
+				diffInSecond = (current.getTime() - repliedTime.getTime()) / 1000l;
+			}
+			long postedBefore = 0l;
+			if (diffInSecond < 60l) {
+				help.setTimeElapsed(diffInSecond + " seconds ago");
+			} else if (diffInSecond < 3600l) {
+				postedBefore = diffInSecond / 60l;
+				help.setTimeElapsed(postedBefore + " minutes ago");
+			} else if (diffInSecond < 86400l) {
+				postedBefore = diffInSecond / 3600l;
+				help.setTimeElapsed(postedBefore + " hours ago");
+			} else if (diffInSecond < 2592000l) {
+				postedBefore = diffInSecond / 86400l;
+				help.setTimeElapsed(postedBefore + " days ago");
+			} else if (diffInSecond < 31104000l) {
+				postedBefore = diffInSecond / 2592000l;
+				help.setTimeElapsed(postedBefore + " months ago");
+			} else {
+				postedBefore = diffInSecond / 31104000l;
+				help.setTimeElapsed(postedBefore + " years ago");
+			}
+			System.out.println("how many ago " + help.getTimeElapsed());
+
+	    	
+	    }
          	
+	    Page<HelpDTO> pagee = new PageImpl<HelpDTO>(helps, pageable, helps.size());
+     	
+   	    return pagee;
+
    	    
 	}
 
@@ -770,93 +813,267 @@ public class AggregateServiceImpl implements AggregateService {
 		}
 
 
-		/* (non-Javadoc)
-		 * @see com.lxisoft.service.AggregateService#saveUserCheckLike(com.lxisoft.service.dto.UserCheckDTO)
+		/**
+		 * Get all the userChecks by vote type.
+		 *
+		 * @param pageable
+		 *            the pagination information
+		 * 
+		 * @return the list of entities
 		 */
 		@Override
 		public Optional<UserCheckDTO> saveUserCheckLike(UserCheckDTO userCheckDTO) {
-			// TODO Auto-generated method stub
-			return null;
+			log.debug("requset to set userCheck with positive vote :", userCheckDTO);
+			userCheckDTO.setVoteType("positive");
+			UserCheck userCheck = userCheckMapper.toEntity(userCheckDTO);
+			userCheck = userCheckRepository.save(userCheck);
+			userCheckDTO = userCheckMapper.toDto(userCheck);
+			Optional<UserCheckDTO> result = Optional.of(userCheckDTO);
+			return result;	
 		}
 
 
-		/* (non-Javadoc)
-		 * @see com.lxisoft.service.AggregateService#saveUserCheckDislike(com.lxisoft.service.dto.UserCheckDTO)
+		/**
+		 * set the userChecks with negative vouteType.
+		 *
+		 * @param pageable
+		 *            the pagination information
+		 * 
+		 * @return the list of entities
 		 */
 		@Override
 		public Optional<UserCheckDTO> saveUserCheckDislike(UserCheckDTO userCheckDTO) {
-			// TODO Auto-generated method stub
-			return null;
+			log.debug("requset to set userCheck with positive vote :", userCheckDTO);
+			userCheckDTO.setVoteType("negative");
+			UserCheck userCheck = userCheckMapper.toEntity(userCheckDTO);
+			userCheck = userCheckRepository.save(userCheck);
+			userCheckDTO = userCheckMapper.toDto(userCheck);
+			Optional<UserCheckDTO> result = Optional.of(userCheckDTO);
+			return result;
 		}
 
 
-		/* (non-Javadoc)
-		 * @see com.lxisoft.service.AggregateService#saveComment(com.lxisoft.service.dto.CommentDTO)
+		/**
+		 * Save a comment.
+		 *
+		 * @param commentDTO
+		 *            the entity to save
+		 * @return the persisted entity
 		 */
 		@Override
 		public CommentDTO saveComment(CommentDTO commentDTO) {
-			// TODO Auto-generated method stub
-			return null;
+			log.debug("Request to save Comment : {}", commentDTO);
+			
+			if (commentDTO.getDateInString() != null) {
+				String parseDate = commentDTO.getDateInString().replace(" ", "T").concat("Z");
+
+				Instant dateInstant = Instant.parse(parseDate);
+				commentDTO.setDate(dateInstant);
+			}
+			
+			Comment comment = commentMapper.toEntity(commentDTO);
+			comment = commentRepository.save(comment);
+			return commentMapper.toDto(comment);	
 		}
 
 
-		/* (non-Javadoc)
-		 * @see com.lxisoft.service.AggregateService#findAllCommentsByNeedId(org.springframework.data.domain.Pageable, java.lang.Long)
+		/**
+		 * find all comments By NeedId
+		 * 
+		 *  @param pageable
+		 *            the pagination information
+		 * @Param needId
 		 */
 		@Override
 		public Page<CommentDTO> findAllCommentsByNeedId(Pageable pageable, Long needId) {
-			// TODO Auto-generated method stub
-			return null;
+			log.debug("request to get all comments by needId :" + needId);
+			Page<CommentDTO> commentDtos=commentRepository.findAllCommentsByNeedId(pageable,needId)
+		                             .map(commentMapper::toDto);
+			List<CommentDTO> commentDtoList=calculateCommentTimePostedBefore(commentDtos);
+			Page<CommentDTO> page=new PageImpl<CommentDTO>(commentDtoList, pageable, commentDtoList.size());
+			return page;
 		}
-
-
-		/* (non-Javadoc)
-		 * @see com.lxisoft.service.AggregateService#findAllCommentsByHelpId(org.springframework.data.domain.Pageable, java.lang.Long)
+        
+		
+		/**
+		 * Get all the comments by helpId.
+		 *
+		 * @param pageable
+		 *            the pagination information
+		 * @return the list of entities
 		 */
 		@Override
 		public Page<CommentDTO> findAllCommentsByHelpId(Pageable pageable, Long helpId) {
-			// TODO Auto-generated method stub
-			return null;
+			log.debug("request to get all comments by helpId :" + helpId);
+			Page<CommentDTO> commentDtos=commentRepository.findAllCommentsByHelpId(pageable, helpId)
+					                    .map(commentMapper::toDto);
+			List<CommentDTO> commentDtoList=calculateCommentTimePostedBefore(commentDtos);
+			Page<CommentDTO> page=new PageImpl<CommentDTO>(commentDtoList, pageable, commentDtoList.size());
+			return page;
+
+		}
+		
+		/**
+		 * Get all the comments with time.
+		 *
+		 * @param pageable
+		 *            the pagination information
+		 * @return the list of entities
+		 */
+		public List<CommentDTO> calculateCommentTimePostedBefore(Page<CommentDTO> comments) {
+			log.debug("Request to get all comments");
+			List<CommentDTO> commentList = comments.getContent();
+			for (CommentDTO commentDto : commentList) {
+				Instant instant = Instant.now();
+				Date repliedTime = null;
+				if (commentDto.getDate() != null) {
+					repliedTime = Date.from(commentDto.getDate());
+				}
+				Date current = Date.from(instant);
+				long diffInSecond = 0l;
+				if (repliedTime != null) {
+					diffInSecond = (current.getTime() - repliedTime.getTime()) / 1000l;
+				}
+				long postedBefore = 0l;
+				if (diffInSecond < 60l) {
+					commentDto.setTimeElapsed(diffInSecond + " seconds ago");
+				} else if (diffInSecond < 3600l) {
+					postedBefore = diffInSecond / 60l;
+					commentDto.setTimeElapsed(postedBefore + " minutes ago");
+				} else if (diffInSecond < 86400l) {
+					postedBefore = diffInSecond / 3600l;
+					commentDto.setTimeElapsed(postedBefore + " hours ago");
+				} else if (diffInSecond < 2592000l) {
+					postedBefore = diffInSecond / 86400l;
+					commentDto.setTimeElapsed(postedBefore + " days ago");
+				} else if (diffInSecond < 31104000l) {
+					postedBefore = diffInSecond / 2592000l;
+					commentDto.setTimeElapsed(postedBefore + " months ago");
+				} else {
+					postedBefore = diffInSecond / 31104000l;
+					commentDto.setTimeElapsed(postedBefore + " years ago");
+				}
+				System.out.println("how many ago " + commentDto.getTimeElapsed());
+
+			}
+			return commentList;
 		}
 
 
-		/* (non-Javadoc)
-		 * @see com.lxisoft.service.AggregateService#saveReply(com.lxisoft.service.dto.ReplyDTO)
-		 */
-		@Override
+		
+
+
+		/**
+	     * Save a reply.
+	     *
+	     * @param replyDTO the entity to save
+	     * 
+	     * @return the persisted entity
+	     */
+	    @Override
 		public ReplyDTO saveReply(ReplyDTO replyDTO) {
-			// TODO Auto-generated method stub
-			return null;
+	    	log.debug("Request to save Reply : {}", replyDTO);
+	    	String parseDate=replyDTO.getDateInString().replace(" ","T").concat("Z");
+	        Instant date=Instant.parse(parseDate);
+	        replyDTO.setDate(date);
+	        Reply reply = replyMapper.toEntity(replyDTO);
+	        reply = replyRepository.save(reply);
+	        return replyMapper.toDto(reply);
 		}
 
-
-		/* (non-Javadoc)
-		 * @see com.lxisoft.service.AggregateService#findAllRepliesByCommentId(org.springframework.data.domain.Pageable, java.lang.Long)
+	    /**
+		 * find all replys By CommentId
+		 * 
+		 *  @param pageable
+		 *            the pagination information
+		 * @Param CommentId
 		 */
-		@Override
 		public Page<ReplyDTO> findAllRepliesByCommentId(Pageable pageable, Long commentId) {
-			// TODO Auto-generated method stub
-			return null;
+			log.debug("Request to get Reply from commentId : {}", commentId);
+			Page<ReplyDTO> replyDTOs =replyRepository.findAllRepliesByCommentId(pageable,commentId)
+	               .map(replyMapper::toDto);
+			return findAllReplies(pageable,replyDTOs);
+		}
+
+		
+		/**
+	     * find all replies along with time
+	     *
+	     * @param pageable
+	     *              the pagination information
+	     * @return the entities
+	     */
+		public Page<ReplyDTO> findAllReplies(Pageable pageable,Page<ReplyDTO> replyDTOs) {				
+			log.debug("Request to get all replies along with time");		
+			List<ReplyDTO> replyList = replyDTOs.getContent();
+			for (ReplyDTO replyDto : replyList) {
+				Instant instant = Instant.now();
+				Date repliedTime = null;
+				if (replyDto.getDate() != null) {
+					repliedTime = Date.from(replyDto.getDate());
+				}
+				Date current = Date.from(instant);
+				long diffInSecond = 0l;
+				if (repliedTime != null) {
+					diffInSecond = (current.getTime() - repliedTime.getTime()) / 1000l;
+				}
+				long postedBefore = 0l;
+				if (diffInSecond < 60l) {
+					replyDto.setTimeElapsed(diffInSecond + " seconds ago");
+				} else if (diffInSecond < 3600l) {
+					postedBefore = diffInSecond / 60l;
+					replyDto.setTimeElapsed(postedBefore + " minutes ago");
+				} else if (diffInSecond < 86400l) {
+					postedBefore = diffInSecond / 3600l;
+					replyDto.setTimeElapsed(postedBefore + " hours ago");
+				} else if (diffInSecond < 2592000l) {
+					postedBefore = diffInSecond / 86400l;
+					replyDto.setTimeElapsed(postedBefore + " days ago");
+				} else if (diffInSecond < 31104000l) {
+					postedBefore = diffInSecond / 2592000l;
+					replyDto.setTimeElapsed(postedBefore + " months ago");
+				} else {
+					postedBefore = diffInSecond / 31104000l;
+					replyDto.setTimeElapsed(postedBefore + " years ago");
+				}
+				System.out.println("how many ago " + replyDto.getTimeElapsed());
+
+			}
+			
+			Page<ReplyDTO> page=new PageImpl<ReplyDTO>(replyList, pageable, replyList.size());
+			
+			return page;
+			
 		}
 
 
-		/* (non-Javadoc)
-		 * @see com.lxisoft.service.AggregateService#findOneseverity(java.lang.Long)
-		 */
-		@Override
+		/**
+	     * Get one severity by id.
+	     *
+	     * @param id the id of the entity
+	     * @return the entity
+	     */
+	    @Override
+	    @Transactional(readOnly = true)
 		public Optional<SeverityDTO> findOneseverity(Long id) {
-			// TODO Auto-generated method stub
-			return null;
+			log.debug("Request to get Severity : {}", id);
+	        return severityRepository.findById(id)
+	            .map(severityMapper::toDto);
 		}
 
 
-		/* (non-Javadoc)
-		 * @see com.lxisoft.service.AggregateService#findAllSeverities(org.springframework.data.domain.Pageable)
-		 */
-		@Override
+	    /**
+	     * Get all the severities.
+	     *
+	     * @param pageable the pagination information
+	     * @return the list of entities
+	     */
+	    @Override
+	    @Transactional(readOnly = true)
 		public Page<SeverityDTO> findAllSeverities(Pageable pageable) {
-			// TODO Auto-generated method stub
-			return null;
+			log.debug("Request to get all Severities");
+	        return severityRepository.findAll(pageable)
+	            .map(severityMapper::toDto);
 		}
 
 		

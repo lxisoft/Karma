@@ -45,6 +45,21 @@ public class NeedDTO implements Serializable {
     
     private String timeElapsed;
     
+    private List<CommentDTO> commentList=new ArrayList<>();
+    
+    private Long noOfComments;
+    
+    private Long noOfHelps;
+    
+    private String severityLevel;
+    
+    private MultipartFile[] files;
+    
+    private List<Resource> resourceFiles;
+    
+    //private Resource File;
+    
+    
     /**
 	 * @return the timeElapsed
 	 */
@@ -143,19 +158,7 @@ public class NeedDTO implements Serializable {
 		this.resourceFiles = resourceFiles;
 	}
 
-	private List<CommentDTO> commentList=new ArrayList<>();
-    
-    private Long noOfComments;
-    
-    private Long noOfHelps;
-    
-    private String severityLevel;
-    
-    private MultipartFile[] files;
-    
-    private List<Resource> resourceFiles;
-    
-    //private Resource File;
+	
 
     /**
 	 * @return the categoryList

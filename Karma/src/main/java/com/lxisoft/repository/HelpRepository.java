@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 
@@ -35,5 +36,9 @@ public interface HelpRepository extends JpaRepository<Help, Long> {
 	 * @return
 	 */
 	Page<Help> findAllHelpsByfulfilledNeedId(Pageable pageable, Long fulfilledNeedId);
+	
+	
+	@Query(value = "select count(h) from Help h where h.fulfilledNeed.id=:needId and h.approvalStatus.status=:approvalStatus")
+	public Integer countOfHelpsByfulfilledNeedId(@Param("needId") Long needId,@Param("approvalStatus") String approvalStatus); 
 
 }
