@@ -1544,8 +1544,7 @@ public class AggregateServiceImpl implements AggregateService {
 	}
 	registeredUser.get().setFollowers(registeredUsersSet);
 	registeredUserRepository.save(registeredUser.get());
-	countNoOfFollowers(registeredUserId);
-	countNoOfFollowings(registeredUserId);
+	
    return null;
 
    }
