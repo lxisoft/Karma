@@ -26,6 +26,7 @@ import com.lxisoft.domain.RegisteredUser;
 import com.lxisoft.service.dto.ApprovalStatusDTO;
 import com.lxisoft.service.dto.CategoryDTO;
 import com.lxisoft.service.dto.CommentDTO;
+import com.lxisoft.service.dto.FeedDTO;
 import com.lxisoft.service.dto.HelpDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.service.dto.PostDTO;
@@ -200,7 +201,7 @@ public interface AggregateService {
 	 * 
 	 * @throws IOException
 	 */
-	HelpDTO saveHelpAsComplete(HelpDTO helpDTO);
+	HelpDTO saveHelpAsComplete(HelpDTO helpDTO) throws IOException;
 
 	/**
 	 * Get all the helps.
@@ -260,32 +261,36 @@ public interface AggregateService {
 	/**
 	 * @param userCheckDTO
 	 * @return
+	 * @throws IOException
 	 */
-	UserCheckDTO markingGenuinenes(UserCheckDTO userCheckDTO);
+	UserCheckDTO markingGenuinenes(UserCheckDTO userCheckDTO) throws IOException;
 
 	/**
 	 * create new userChecks with positive vote.
 	 *
 	 * @param userCheck
 	 * @return optional<userCheck>
+	 * @throws IOException
 	 */
 
-	Optional<UserCheckDTO> saveUserCheckLike(UserCheckDTO userCheckDTO);
+	Optional<UserCheckDTO> saveUserCheckLike(UserCheckDTO userCheckDTO) throws IOException;
 
 	/**
 	 * create new userChecks with negative vote.
 	 *
 	 * @param userCheck
 	 * @return optional<userCheck>
+	 * @throws IOException
 	 */
 
-	Optional<UserCheckDTO> saveUserCheckDislike(UserCheckDTO userCheckDTO);
+	Optional<UserCheckDTO> saveUserCheckDislike(UserCheckDTO userCheckDTO) throws IOException;
 
 	/**
 	 * @param commentDTO
 	 * @return
+	 * @throws IOException
 	 */
-	CommentDTO saveComment(CommentDTO commentDTO);
+	CommentDTO saveComment(CommentDTO commentDTO) throws IOException;
 
 	/**
 	 * @param pageable
@@ -431,6 +436,38 @@ public interface AggregateService {
 	 * @return the count of comments
 	 */
 	Integer calculateCountOfPostCommentsByPostId(Long postId);
+
+	// Code:End
+	// anjali
+	/**
+	 * Save a feed.
+	 *
+	 * @param feedDTO
+	 *            the entity to save
+	 * @return the persisted entity
+	 * @throws IOException
+	 */
+	FeedDTO saveFeed(FeedDTO feedDTO) throws IOException;
+
+	/**
+	 * Get all the feeds.
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @return the list of entities
+	 */
+	Page<FeedDTO> findAllFeeds(Pageable pageable);
+
+	/**
+	 * Get all the feeds by Registered User Id.
+	 *
+	 * @param pageable
+	 *            the pagination information,registeredUserId the id of the user
+	 * @return the list of entities
+	 */
+	Page<FeedDTO> findAllFeedsByRegisteredUserId(Pageable pageable, Long registeredUserId);
+
+	// anjali
 
 	// Code:End
 	// Code:Ruhail

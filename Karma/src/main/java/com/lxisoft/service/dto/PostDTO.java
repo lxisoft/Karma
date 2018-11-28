@@ -36,6 +36,116 @@ public class PostDTO implements Serializable {
 
 	private Set<String> attachedFilesUrls;
 
+	/**
+	 * @return the dateInString
+	 */
+	public String getDateInString() {
+		return dateInString;
+	}
+
+	/**
+	 * @param dateInString
+	 *            the dateInString to set
+	 */
+	public void setDateInString(String dateInString) {
+		this.dateInString = dateInString;
+	}
+
+	/**
+	 * @return the postedBefore
+	 */
+	public String getPostedBefore() {
+		return postedBefore;
+	}
+
+	/**
+	 * @param postedBefore
+	 *            the postedBefore to set
+	 */
+	public void setPostedBefore(String postedBefore) {
+		this.postedBefore = postedBefore;
+	}
+
+	/**
+	 * @return the totalComments
+	 */
+	public Long getTotalComments() {
+		return totalComments;
+	}
+
+	/**
+	 * @param totalComments
+	 *            the totalComments to set
+	 */
+	public void setTotalComments(Long totalComments) {
+		this.totalComments = totalComments;
+	}
+
+	/**
+	 * @return the totalLikes
+	 */
+	public Long getTotalLikes() {
+		return totalLikes;
+	}
+
+	/**
+	 * @param totalLikes
+	 *            the totalLikes to set
+	 */
+	public void setTotalLikes(Long totalLikes) {
+		this.totalLikes = totalLikes;
+	}
+
+	/**
+	 * @return the totalDislikes
+	 */
+	public Long getTotalDislikes() {
+		return totalDislikes;
+	}
+
+	/**
+	 * @param totalDislikes
+	 *            the totalDislikes to set
+	 */
+	public void setTotalDislikes(Long totalDislikes) {
+		this.totalDislikes = totalDislikes;
+	}
+
+	/**
+	 * @return the attachedFiles
+	 */
+	public MultipartFile[] getAttachedFiles() {
+		return attachedFiles;
+	}
+
+	/**
+	 * @param attachedFiles
+	 *            the attachedFiles to set
+	 */
+	public void setAttachedFiles(MultipartFile[] attachedFiles) {
+		this.attachedFiles = attachedFiles;
+	}
+
+	public String getPostedUserName() {
+		return postedUserName;
+	}
+
+	public void setPostedUserName(String postedUserName) {
+		this.postedUserName = postedUserName;
+	}
+
+	public Set<String> getAttachedFilesUrls() {
+		return attachedFilesUrls;
+	}
+
+	/**
+	 * @param attachedFilesUrls
+	 *            the attachedFilesUrls to set
+	 */
+	public void setAttachedFilesUrls(Set<String> attachedFilesUrls) {
+		this.attachedFilesUrls = attachedFilesUrls;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -68,70 +178,6 @@ public class PostDTO implements Serializable {
 		this.registeredUserId = registeredUserId;
 	}
 
-	public String getDateInString() {
-		return dateInString;
-	}
-
-	public void setDateInString(String dateInString) {
-		this.dateInString = dateInString;
-	}
-
-	public String getPostedBefore() {
-		return postedBefore;
-	}
-
-	public void setPostedBefore(String postedBefore) {
-		this.postedBefore = postedBefore;
-	}
-
-	public Long getTotalComments() {
-		return totalComments;
-	}
-
-	public void setTotalComments(Long totalComments) {
-		this.totalComments = totalComments;
-	}
-
-	public Long getTotalLikes() {
-		return totalLikes;
-	}
-
-	public void setTotalLikes(Long totalLikes) {
-		this.totalLikes = totalLikes;
-	}
-
-	public Long getTotalDislikes() {
-		return totalDislikes;
-	}
-
-	public void setTotalDislikes(Long totalDislikes) {
-		this.totalDislikes = totalDislikes;
-	}
-
-	public MultipartFile[] getAttachedFiles() {
-		return attachedFiles;
-	}
-
-	public void setAttachedFiles(MultipartFile[] attachedFiles) {
-		this.attachedFiles = attachedFiles;
-	}
-
-	public String getPostedUserName() {
-		return postedUserName;
-	}
-
-	public void setPostedUserName(String postedUserName) {
-		this.postedUserName = postedUserName;
-	}
-
-	public Set<String> getAttachedFilesUrls() {
-		return attachedFilesUrls;
-	}
-
-	public void setAttachedFilesUrls(Set<String> attachedFilesUrls) {
-		this.attachedFilesUrls = attachedFilesUrls;
-	}
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
@@ -155,10 +201,7 @@ public class PostDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "PostDTO [id=" + id + ", description=" + description + ", date=" + date + ", registeredUserId="
-				+ registeredUserId + ", dateInString=" + dateInString + ", postedBefore=" + postedBefore
-				+ ", totalComments=" + totalComments + ", totalLikes=" + totalLikes + ", totalDislikes=" + totalDislikes
-				+ ", attachedFilesUrls=" + attachedFilesUrls + "]";
+		return "PostDTO{" + "id=" + getId() + ", description='" + getDescription() + "'" + ", date='" + getDate() + "'"
+				+ ", registeredUser=" + getRegisteredUserId() + "}";
 	}
-
 }
