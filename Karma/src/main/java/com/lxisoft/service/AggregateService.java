@@ -504,4 +504,16 @@ public interface AggregateService {
 	 */
 	Optional<RegisteredUser> findOneRegisteredUser(Long id);
 	// Code:End
+
+
+	//neeraja
+	 /**
+		 * @param registeredUserId
+		 * @return
+		 */
+	
+	RegisteredUserDTO updateRegisteredUserEmotionalQuotientSocialQuotient(Long registeredUserId);
+
+
+	//neeraja end
 }

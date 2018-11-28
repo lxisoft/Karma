@@ -12,4 +12,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
 
+ //neeraja
+	@Query(value="select count(p) from Post p where p.registeredUser.id=:registeredUserId")
+	Long findCountOfPostsByRegisteredUserId(@Param("registeredUserId") Long registeredUserId);
+
+	//neeraja
+
 }
