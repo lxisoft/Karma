@@ -4,6 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="_csrf" th:content="${_csrf.token}" />
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 	<title>Home</title>
 	<!-- Font Awesome -->
@@ -17,28 +18,29 @@
 <body>
 	<div>
 		<!-- navigation bar on top -->
-		<nav class="navbar fixed-top navbar-expand-lg navbar-dark info-color scrolling-navbar" th:fragment="navigation">
-			<a class="navbar-brand" th:href="@{/home/approved}"><strong>Karma</strong></a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-			 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarSupportedContent">
-				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active"><a class="nav-link" th:href="@{/home/approved}">Home
-							<span class="sr-only">(current)</span>
-						</a></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/home/pending}">Unapproved needs</a></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/helps/incompleted}">Incomplete
-							helps</a></li>
-				</ul>
-				<ul class="navbar-nav nav-flex-icons">
-					<li class="nav-item"><a class="nav-link"><i class="fa fa-facebook"></i></a></li>
-					<li class="nav-item"><a class="nav-link"><i class="fa fa-twitter"></i></a></li>
-					<li class="nav-item"><a class="nav-link"><i class="fa fa-instagram"></i></a></li>
-				</ul>
-			</div>
-		</nav>
+		<th:block th:with="nav1='active',nav2='',nav3=''">
+			<nav class="navbar fixed-top navbar-expand-lg navbar-dark info-color scrolling-navbar" th:fragment="navigation(nav1,nav2,nav3)">
+				<a class="navbar-brand" th:href="@{/home/approved}"><strong>Karma</strong></a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+				 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item" th:classappend="${nav1}"><a class="nav-link" th:href="@{/home/approved}">Home
+							</a></li>
+						<li class="nav-item" th:classappend="${nav2}"><a class="nav-link" th:href="@{/home/pending}">Unapproved needs</a></li>
+						<li class="nav-item" th:classappend="${nav3}"><a class="nav-link" th:href="@{/helps/incompleted}">Incomplete
+								helps</a></li>
+					</ul>
+					<ul class="navbar-nav nav-flex-icons">
+						<li class="nav-item"><a class="nav-link"><i class="fa fa-facebook"></i></a></li>
+						<li class="nav-item"><a class="nav-link"><i class="fa fa-twitter"></i></a></li>
+						<li class="nav-item"><a class="nav-link"><i class="fa fa-instagram"></i></a></li>
+					</ul>
+				</div>
+			</nav>
+		</th:block>
 	</div>
 
 	<div class="container-fluid">
@@ -59,13 +61,14 @@
 				</ul>
 
 				<!-- form to create new need request -->
-				<form id="need-post" class="border border-light mt-3 p-2" th:action="@{/needs}" th:method="post" th:fragment="need-form">
+				<form id="need-post" th:id="'need-post'" class="border border-light mt-3 p-2" th:action="@{/needs}" th:method="post"
+				 th:fragment="need-form">
 
 					<div class="md-form mt-0 mx-3 form-info mb-0">
 						<textarea type="text" id="need-post-description" class="md-textarea form-control" rows="1" onclick="$('#need-post-extended').show();"
 						 placeholder="Do you need help? Post here" th:name="description"></textarea>
 					</div>
-					<div id="need-post-extended" style="display:none">
+					<div id="need-post-extended" th:id="'need-post-extended'" style="display:none">
 						<div>
 							<select class="mdb-select md-form mx-3" name="categoryList[0].id">
 								<th:block th:each="category : ${categories}">
@@ -87,203 +90,211 @@
 
 				</form>
 
+				<!--iterate through each need-->
+				<div th:id="needs">
+					<div th:each="need,index : ${needs}" class="row my-3" th:fragment="needs">
+						<div class="card" style="width:100%" th:fragment="need" th:id="'need-'+${need.id}">
+							<div class="card-body">
+								<form th:action="@{/user-checks/markingGenuinenes}" th:id="'usercheck'+${need.id}">
+									<input type="hidden" name="id" th:value="${need.id}" id="'genuine'+${need.id}">
+									<input type="hidden" name="postedUser" th:value="${need.postedUserId}">
+									<input type="hidden" name="isGenuine" value="true">
+								</form>
 
-				<div th:each="need,index : ${needs}" class="row my-3" th:fragment="needs" th:id="needs">
-					<div class="card" style="width:100%" th:fragment="need" th:id="'need-'+${need.id}">
-						<div class="card-body">
-							<form th:action="@{/user-checks/markingGenuinenes}" th:id="'usercheck'+${need.id}">
-								<input type="hidden" name="id" th:value="${need.id}" id="'genuine'+${need.id}">
-								<input type="hidden" name="postedUser" th:value="${need.postedUserId}">
-								<input type="hidden" name="isGenuine" value="true">
-							</form>
-
-							<div class="dropleft float-right">
-								<button type="button" style="border-width:0px!important;outline:0px;box-shadow:0px!important;" class="btn-white"
-								 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									<i class="fa fa-ellipsis-v"></i>
-									<span class="sr-only">Toggle Dropdown</span>
-								</button>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" th:onclick="|markGenuine(${need.id})|">Mark as genuine</a>
-									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" th:onclick="|markFake(${need.id})|">Mark as fake</a>
-									<div class="dropdown-divider"></div>
-									<a class="dropdown-item">Help later</a>
-								</div>
-							</div>
-							<!--</i>-->
-							<h5 class="card-title mb-2 text-info">Denny Abraham is asking for help</h5>
-							<th:block th:if="${need.percentageOfGenuineness != null}">
-								<th:block th:with="percentageColor= ${(need.percentageOfGenuineness >0 && need.percentageOfGenuineness <= 25)? 'danger-color-dark': (need.percentageOfGenuineness >25 && need.percentageOfGenuineness <= 50)? 'warning-color-dark':(need.percentageOfGenuineness >50 && need.percentageOfGenuineness <= 75)? 'info-color-dark':'success-color-dark'}">
-									<div class="progress md-progress mt-1 w-25 ml-auto float-right">
-										<div class="progress-bar" th:classappend="${percentageColor}" role="progressbar" th:style="'width:'+ ${need.percentageOfGenuineness}+'%;'"
-										 style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" th:text="${need.percentageOfGenuineness}+'%'">25%
-											genuine</div>
+								<!--3 dot menu on top right-->
+								<div class="dropleft float-right">
+									<button type="button" style="border-width:0px!important;outline:0px;box-shadow:0px!important;" class="btn-white"
+									 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="fa fa-ellipsis-v"></i>
+										<span class="sr-only">Toggle Dropdown</span>
+									</button>
+									<div class="dropdown-menu">
+										<a class="dropdown-item" th:onclick="|markGenuine(${need.id})|">Mark as genuine</a>
+										<div class="dropdown-divider"></div>
+										<a class="dropdown-item" th:onclick="|markFake(${need.id})|">Mark as fake</a>
+										<div class="dropdown-divider"></div>
+										<a class="dropdown-item">Help later</a>
 									</div>
-								</th:block>
-							</th:block>
-							<label>
-								<th:block th:if="${need.categories!=null}">
-								<p class="px-1 small my-auto pb-0 bg-primary rounded" th:text="${'finance'}">Category</p>
-								</th:block>
-							</label>
-
-							<label>
-								<p class="px-1 small my-auto pb-0 bg-warning rounded" th:text="${need.severityLevel}">Severity</p>
-							</label>
-
-							<p class="card-subtitle mb-2 text-muted small mb-3 mt-1" th:text="'posted '+${need.timeElapsed}">posted just now</p>
-
-							<div class="row">
-
-
-								<div class="col-md-12 mb-3">
-
-									<img src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" class="img-fluid z-depth-1" alt="Responsive image">
-
 								</div>
 
+								<!--need-->
+								<h5 class="card-title mb-2 text-info">Denny Abraham is asking for help<span th:text="${(need.beneficiaryType =='someone else')? ' for someone else':''}"></span></h5>
 
-							</div>
-
-
-
-							<div class="row">
-
-
-								<div class="col-lg-4 col-md-12 mb-3">
-
-									<img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(115).jpg" class="img-fluid z-depth-1"
-									 alt="Responsive image">
-
-								</div>
-
-								<div class="col-lg-4 col-md-6 mb-3">
-
-									<img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(116).jpg" class="img-fluid z-depth-1"
-									 alt="Responsive image">
-
-								</div>
-
-								<div class="col-lg-4 col-md-6 mb-3">
-
-									<img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(117).jpg" class="img-fluid z-depth-1"
-									 alt="Responsive image">
-
-								</div>
-
-
-							</div>
-
-							<div class="row">
-
-								<div class="col-md-6 mb-3">
-
-									<img src="https://mdbootstrap.com/img/Photos/Horizontal/People/6-col/img(117).jpg" class="img-fluid z-depth-1"
-									 alt="Responsive image">
-
-								</div>
-
-
-
-								<div class="col-md-6 mb-3">
-
-									<img src="https://mdbootstrap.com/img/Photos/Horizontal/People/6-col/img(129).jpg" class="img-fluid z-depth-1"
-									 alt="Responsive image">
-
-								</div>
-
-
-							</div>
-
-							<p class="card-text mt-2" th:text="${need.description}">Some quick example text to build on the
-								panel title and make up the bulk of the panel's content.</p>
-
-							<div class="text-center col-xs-5 border-bottom border-light">
-								<a class="small muted-text" onclick="$('#comments').show();" th:onclick="|viewComments(${need.id})|" th:text="${#lists.size(need.commentList)+' comments'}">0
-									Comments</a>
-								<a class="small muted-text ml-4">8
-									people helped</a>
-							</div>
-						</div>
-
-						<!-- comments section -->
-						<th:block th:object="${need}">
-							<div id="comments" th:id="${'comments-'+need.id}" th:if="*{commentList != null}" style="display: none;"
-							 th:fragment="comment-section">
-
-								<!-- comment form -->
-								<div class="md-form mt-0 mx-3 form-info" id="comment-box">
-									<textarea type="text" id="comment-box" class="md-textarea form-control d-inline w-75" rows="1" th:name="description"></textarea>
-									<label for="comment-box">Comment here</label>
-									<span class="input-group-btn"><button type="button" class="btn btn-outline-info btn-sm" th:onclick="|method(*{id})|">Add
-											comment</button></span>
-
-								</div>
-
-								<!-- view all comments -->
-								<p class="text-primary text-center mt-5 d-inline ml-5 mb-4">All comments<span class="ml-2"><i class="fa fa-angle-up mr-5 mt-1 text-dark"
-										 aria-hidden="true" onclick="$('#comments').hide();" th:onlick="|$('#comments-*{id}').hide();|"></i></span></p>
-								<div class="border-light border-bottom" th:each="comment : *{commentList}">
-									<p class="ml-4 mt-2 mb-0">lkkjskdalj</p>
-									<p class="text-muted ml-4 small d-inline" th:text="'Siraj commented'+${comment.timeElapsed}">Siraj<span class="large">.</span>3
-										minutes ago</p><i class="ml-3 fa fa-heart-o" aria-hidden="true" th:onclick="|likeComment('${comment.id}')|"><span
-										 class="ml-1 text-muted">32</span></i>
-									<p class="text-primary d-inline ml-4" onclick="$('#replies').show();">10 replies</p>
-									<i class="fa fa-reply float-right small text-info mr-5" aria-hidden="true" onclick="$('#reply-box').show();$(this).hide();"></i>
-
-									<!-- reply form -->
-									<div class="md-form mt-0 form-info offset-2 mr-2" id="reply-box" style="display: none;">
-										<textarea type="text" id="comment-box" class="md-textarea form-control d-inline w-75" rows="1"></textarea>
-										<label for="comment-box">Add reply here.....</label>
-
-										<span class="input-group-btn mb-5"><button type="button" class="btn btn-outline-info btn-sm" th:onclick="|replyOnComment('${comment.id}')|">Add
-												reply</button></span><i class="fa fa-close" aria-hidden="true" onclick="$('#reply-box').hide();"></i>
-
-									</div>
-
-									<!-- view all replies -->
-									<div class="offset-1" id="replies" th:id="${'replies-'+comment.id}" style="display: none;">
-
-
-										<p class="text-primary text-center mt-1 mb-2">hide replies<span><i class="fa ml-2 clear-fix d-inline text-dark fa-angle-up mr-5 mt-1"
-												 aria-hidden="true" onclick="$('#replies').hide();" th:onlick="|$('#replies-${comment.id}').hide();|"></i></span></p>
-										<div class="border-light border-bottom" th:each="reply : ${replies}">
-											<p class="ml-4 mt-2 mb-0">lkkjskdalj</p>
-											<p class="text-muted ml-5 small d-inline" th:text="'Siraj replied'+${reply.timeElapsed}">Siraj<span class="large">.</span>3
-												minutes ago</p><i class="ml-3 fa fa-heart-o" aria-hidden="true" th:onlick="|likeReply('${reply.id}')|"><span
-												 class="ml-1 text-muted">32</span></i>
+								<!--displaying percentage of needs-->
+								<th:block th:if="${need.percentageOfGenuineness != null}">
+									<th:block th:with="percentageColor= ${(need.percentageOfGenuineness >0 && need.percentageOfGenuineness <= 25)? 'danger-color-dark': (need.percentageOfGenuineness >25 && need.percentageOfGenuineness <= 50)? 'warning-color-dark':(need.percentageOfGenuineness >50 && need.percentageOfGenuineness <= 75)? 'info-color-dark':'success-color-dark'}">
+										<div class="progress md-progress mt-1 w-25 ml-auto float-right">
+											<div class="progress-bar" th:classappend="${percentageColor}" role="progressbar" th:style="'width:'+ ${need.percentageOfGenuineness}+'%;'"
+											 style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" th:text="${need.percentageOfGenuineness}+'%'">25%
+												genuine</div>
 										</div>
+									</th:block>
+								</th:block>
+								<label>
+									<th:block th:if="${need.categories!=null && #lists.size(need.categories)>0}">
+										<p class="px-1 small my-auto pb-0 bg-primary rounded" th:text="${(need.categories[0]!=null)?need.categories[0].name:''}">Category</p>
+									</th:block>
+								</label>
+
+								<label>
+									<p class="px-1 small my-auto pb-0 bg-warning rounded" th:text="${need.severityLevel}">Severity</p>
+								</label>
+
+								<p class="card-subtitle mb-2 text-muted small mb-3 mt-1" th:text="'posted '+${need.timeElapsed}">posted just
+									now</p>
+
+								<div class="row">
+
+
+									<div class="col-md-12 mb-3">
+
+										<img src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" class="img-fluid z-depth-1" alt="Responsive image">
+
 									</div>
+
 
 								</div>
 
+
+
+								<div class="row">
+
+
+									<div class="col-lg-4 col-md-12 mb-3">
+
+										<img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(115).jpg" class="img-fluid z-depth-1"
+										 alt="Responsive image">
+
+									</div>
+
+									<div class="col-lg-4 col-md-6 mb-3">
+
+										<img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(116).jpg" class="img-fluid z-depth-1"
+										 alt="Responsive image">
+
+									</div>
+
+									<div class="col-lg-4 col-md-6 mb-3">
+
+										<img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(117).jpg" class="img-fluid z-depth-1"
+										 alt="Responsive image">
+
+									</div>
+
+
+								</div>
+
+								<div class="row">
+
+									<div class="col-md-6 mb-3">
+
+										<img src="https://mdbootstrap.com/img/Photos/Horizontal/People/6-col/img(117).jpg" class="img-fluid z-depth-1"
+										 alt="Responsive image">
+
+									</div>
+
+
+
+									<div class="col-md-6 mb-3">
+
+										<img src="https://mdbootstrap.com/img/Photos/Horizontal/People/6-col/img(129).jpg" class="img-fluid z-depth-1"
+										 alt="Responsive image">
+
+									</div>
+
+
+								</div>
+
+								<p class="card-text mt-2" th:text="${need.description}">Some quick example text to build on the
+									panel title and make up the bulk of the panel's content.</p>
+
+								<div class="text-center col-xs-5 border-bottom border-light">
+									<a class="small muted-text" onclick="$('#comments').show();" th:onclick="|viewComments(${need.id});|" th:text="${need.noOfComments+' comments'}">0
+										Comments</a>
+									<a class="small muted-text ml-4" th:text="${need.noOfHelps}+' people helped'">8
+										people helped</a>
+								</div>
 							</div>
-						</th:block>
-						<!--<p>
+
+							<!-- comments section -->
+							<div th:object="${need}" id="comments" th:id="${'comments-'+need.id}" th:with="checkedNeedId=${need.id},checkedHelpId=null,postId=null">
+								<div th:if="*{commentList != null}" style="display: none;" th:style="display:block;" th:fragment="comment-section(checkedNeedId,checkedHelpId,postId)">
+
+									<!-- comment form -->
+									<div class="md-form mt-0 mx-3 form-info" id="comment-box" th:id="'comment-box-'+*{id}">
+										<textarea type="text" id="comment-box" class="md-textarea form-control d-inline w-75" rows="1" th:name="description"></textarea>
+										<label for="comment-box">Comment here</label>
+										<span class="input-group-btn"><button type="button" class="btn btn-outline-info btn-sm" th:onclick="|method(*{id})|">Add
+												comment</button></span>
+
+									</div>
+
+									<!-- view all comments -->
+									<p class="text-primary text-center mt-5 d-inline ml-5 mb-4">All comments<span class="ml-2"><i class="fa fa-angle-up mr-5 mt-1 text-dark"
+											 aria-hidden="true" onclick="$('#comments').hide();" th:onclick="|$('#comments-*{id}').hide();|"></i></span></p>
+									<div class="border-light border-bottom" th:each="comment : *{commentList}">
+										<p class="ml-4 mt-2 mb-0">lkkjskdalj</p>
+										<p class="text-muted ml-4 small d-inline" th:text="'Siraj commented'+${comment.timeElapsed}">Siraj<span class="large">.</span>3
+											minutes ago</p><i class="ml-3 fa fa-heart-o" aria-hidden="true" th:onclick="|likeComment('${comment.id}')|"><span
+											 class="ml-1 text-muted">32</span></i>
+										<p class="text-primary d-inline ml-4" onclick="$('#replies').show();">10 replies</p>
+										<i class="fa fa-reply float-right small text-info mr-5" aria-hidden="true" onclick="$('#reply-box').show();$(this).hide();"></i>
+
+										<!-- reply form -->
+										<div class="md-form mt-0 form-info offset-2 mr-2" id="reply-box" style="display: none;">
+											<textarea type="text" id="comment-box" class="md-textarea form-control d-inline w-75" rows="1"></textarea>
+											<label for="comment-box">Add reply here.....</label>
+
+											<span class="input-group-btn mb-5"><button type="button" class="btn btn-outline-info btn-sm" th:onclick="|replyOnComment('${comment.id}')|">Add
+													reply</button></span><i class="fa fa-close" aria-hidden="true" onclick="$('#reply-box').hide();"></i>
+
+										</div>
+
+										<!-- view all replies -->
+										<div class="offset-1" id="replies" th:id="${'replies-'+comment.id}" style="display: none;">
+
+
+											<p class="text-primary text-center mt-1 mb-2">hide replies<span><i class="fa ml-2 clear-fix d-inline text-dark fa-angle-up mr-5 mt-1"
+													 aria-hidden="true" onclick="$('#replies').hide();" th:onlick="|$('#replies-${comment.id}').hide();|"></i></span></p>
+											<div class="border-light border-bottom" th:each="reply : ${replies}">
+												<p class="ml-4 mt-2 mb-0">lkkjskdalj</p>
+												<p class="text-muted ml-5 small d-inline" th:text="'Siraj replied'+${reply.timeElapsed}">Siraj<span class="large">.</span>3
+													minutes ago</p><i class="ml-3 fa fa-heart-o" aria-hidden="true" th:onlick="|likeReply('${reply.id}')|"><span
+													 class="ml-1 text-muted">32</span></i>
+											</div>
+										</div>
+
+									</div>
+
+								</div>
+							</div>
+							<!--<p>
 								<a th:href="@{'/needs/'+${need.id}}" class="card-link">Click for more</a> -->
-						<div class="row mt-2">
-							<div class="text-center col-xs-5 mx-auto">
-								<!--<a th:href="@{'/help-need/'+${need.id}}" class="ml-2 card-link text-success float-left">Help now</a>-->
-								<a th:href="@{'/helps/completed'}" class="mt-1 card-link text-success float-left">Helps received</a>
+							<div class="row mt-2">
+								<div class="text-center col-xs-5 mx-auto">
+									<!--<a th:href="@{'/help-need/'+${need.id}}" class="ml-2 card-link text-success float-left">Help now</a>-->
+									<a th:href="@{'/helps/completed'}" class="mt-1 card-link text-success float-left">Helps received</a>
+								</div>
+
+								<div class="col-xs-7 d-inline mx-auto">
+									<button type="button" class="btn btn-rounded young-passion-gradient btn-sm px-3 mt-0 mb-3 float-right"
+									 th:onclick="|markFake(${need.id})|">Fake</button>
+									<!-- <p th:text="${_csrf.token}"></p> -->
+									<button type="button" class="btn btn-round aqua-gradient btn-sm px-2 float-right mt-0 mb-3" th:onclick="|markGenuine(${need.id})|">Genuine</button>
+								</div>
 							</div>
 
-							<div class="col-xs-7 d-inline mx-auto">
-								<button type="button" class="btn btn-rounded young-passion-gradient btn-sm px-3 mt-0 mb-3 float-right"
-								 th:onclick="|markFake(${need.id})|">Fake</button>
-								<button type="button" class="btn btn-round aqua-gradient btn-sm px-2 float-right mt-0 mb-3" th:onclick="|markGenuine(${need.id})|">Genuine</button>
-							</div>
-						</div>
+							<!-- help form -->
+							<form id="help-post" th:id="'help-post-'+${need.id}" class="border border-light mt-3 p-2" th:action="@{/helps}"
+							 th:method="post" th:fragment="help-form">
 
-						<!-- help form -->
-						<form id="help-post" class="border border-light mt-3 p-2" th:action="@{/helps}" th:method="post" th:fragment="help-form">
-
-							<div class="md-form mt-0 mx-3 form-info mb-0">
-								<textarea type="text" id="help-post-description" class="md-textarea form-control" rows="1" onclick="$('#help-post-extended').show();"
-								 th:name="description" placeholder="Would you like to help? Mention if you have already helped" name="description"></textarea>
-							</div>
-							<div id="help-post-extended" style="display:none">
-								<!--<div>
+								<div class="md-form mt-0 mx-3 form-info mb-0">
+									<textarea type="text" id="help-post-description" th:id="'help-post-description-'+${need.id}" class="md-textarea form-control"
+									 rows="1" onclick="$('#help-post-extended').show();" th:onclick="|$('#help-post-extended-${need.id}').show();|"
+									 th:name="description" placeholder="Would you like to help? Mention if you have already helped" name="description"></textarea>
+								</div>
+								<div id="help-post-extended" th:id="'help-post-extended-'+${need.id}" style="display:none">
+									<!--<div>
 									<select class="mdb-select md-form mx-3" name="categoryList[0].id">
 										<th:block th:each="category : ${categories}">
 											<optgroup th:label="${category.name}">
@@ -292,23 +303,25 @@
 										</th:block>
 									</select><label class="text-info">Category</label>
 								</div>-->
-								<div class="input-group mt-3 w-75 mx-auto">
-									<div class="input-group-prepend">
-										<span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+									<div class="input-group mt-3 w-75 mx-auto">
+										<div class="input-group-prepend">
+											<span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+										</div>
+										<div class="custom-file">
+											<input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+											<label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+										</div>
 									</div>
-									<div class="custom-file">
-										<input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-										<label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-									</div>
+									<input type=hidden th:name="timeInString" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm:ss')}">
+									<input type="hidden" th:name="${need.id}">
+									<button class="btn btn-info btn-sm w-50 my-3 mx-auto btn-block" name="submit" type="submit">Post</button><i
+									 onclick="$('#help-post-extended').hide();" th:onclick="|$('#help-post-extended-${need.id}').hide();|" class="fa fa-close mx-auto"
+									 aria-hidden="true"></i>
 								</div>
-								<input type=hidden th:name="timeInString" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm:ss')}">
-								<input type="hidden" th:name="${need.id}">
-								<button class="btn btn-info btn-sm w-50 my-3 mx-auto btn-block" name="submit" type="submit">Post</button><i
-								 onclick="$('#help-post-extended').hide();" class="fa fa-close mx-auto" aria-hidden="true"></i>
-							</div>
 
-						</form>
+							</form>
 
+						</div>
 					</div>
 				</div>
 			</div>
@@ -356,15 +369,23 @@
 		function markGenuine(needId) {
 			$.ajax({
 				type: 'POST',
-				url: 'user-checks/markingGenuineness',
+				url: '/user-checks/markingGenuineness',
+				headers: {
+					'X-CSRF-TOKEN': $("input[name='_csrf']").val()
+				},
 				data: {
-					isGenuine: "true",
-					checkedNeedId: needId
+					'isGenuine': true,
+					'checkedNeedId': needId,
+					'_csrf': $("input[name='_csrf']").val()
 				},
 				success: function (response) {
 					console.log("marked genuine successfully");
+					//$("#needs").html(response);
+					//window.location.reload();
+					$("#needs").html(response);
+
 					if (response.success) {
-						$("#needs").load(" #needs");
+						console.log("marked genuine successfully in if true");
 					}
 					//document.getElementById("success-message").innerHTML="success";
 				},
@@ -376,16 +397,22 @@
 		function markFake(needId) {
 			$.ajax({
 				type: 'POST',
-				url: 'user-checks/markingGenuineness',
+				url: '/user-checks/markingGenuineness',
+				headers: {
+					'X-CSRF-TOKEN': $("input[name='_csrf']").val()
+				},
 				data: {
-					isGenuine: "false",
-					checkedNeedId: needId
+					'isGenuine': false,
+					'checkedNeedId': needId,
+					'_csrf': $("input[name='_csrf']").val()
 				},
 				success: function (response) {
 					console.log("marked fake successfully");
+					$("#needs").html(response);
 					if (response.success) {
-						$("#needs").load(" #needs");
+
 						//document.getElementById("success-message").innerHTML="success";
+						console.log("marked fake successfully in if condition");
 					}
 				},
 				error: function () {
@@ -394,9 +421,9 @@
 			});
 		}
 		function viewComments(needId) {
-			console.log("view comments worked");
-			$('#comments-' + needId).show();
-			//$('#comments-' + needId).load('/commentsByNeedId/' + needId);
+			console.log("view comments worked with needId: " + needId);
+			//$('#comments-' + needId).show();
+			$('#comments-' + needId).load('/commentsByNeedId/' + needId);
 		}
 		function viewReplies(commentId) {
 			$('#replies-' + commentId).load(url);
@@ -405,24 +432,25 @@
 
 		}
 		function likeComment(commentId) {
-			$.ajax({
-				type: 'POST',
-				url: 'user-checks/markingGenuineness',
-				data: {
-					isGenuine: "false",
-					checkedNeedId: needId
-				},
-				success: function (response) {
-					console.log("marked fake successfully");
-					if (response.success) {
-						$("#needs").load("#needs");
-						//document.getElementById("success-message").innerHTML="success";
-					}
-				},
-				error: function () {
-					console.log("marked fake failed...!");
-				}
-			});
+			/* 			$.ajax({
+							type: 'POST',
+							url: 'user-checks/markingGenuineness',
+							data: {
+								'commentId': commentId,
+								'checkedUserId': 1
+							},
+							success: function (response) {
+								console.log("marked fake successfully");
+								if (response.success) {
+									$("#needs").load("#needs");
+									//document.getElementById("success-message").innerHTML="success";
+								}
+							},
+							error: function () {
+								console.log("marked fake failed...!");
+							}
+						}); */
+			console.log("like comment worked with commentId:" + commentId);
 		}
 		function likeReply(replyId) {
 			$.ajax({
@@ -443,6 +471,10 @@
 					console.log("marked fake failed...!");
 				}
 			});
+		}
+
+		function abc(id) {
+			console.log("worked with id: " + id);
 		}
 	</script>
 </body>
