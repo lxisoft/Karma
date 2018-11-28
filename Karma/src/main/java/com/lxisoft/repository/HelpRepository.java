@@ -41,4 +41,15 @@ public interface HelpRepository extends JpaRepository<Help, Long> {
 	@Query(value = "select count(h) from Help h where h.fulfilledNeed.id=:needId and h.approvalStatus.status=:approvalStatus")
 	public Integer countOfHelpsByfulfilledNeedId(@Param("needId") Long needId,@Param("approvalStatus") String approvalStatus); 
 
+	//neeraja
+
+	/**
+	 * @param registeredUserId
+	 * @return 
+	 */
+	@Query(value="select count(h) from Help h where h.providedUser.id=:registeredUserId")
+	Long findCountOfHelpsByRegisteredUserId(@Param("registeredUserId") Long registeredUserId);
+
+	//neeraja
+
 }

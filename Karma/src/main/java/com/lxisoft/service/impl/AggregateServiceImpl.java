@@ -67,6 +67,7 @@ import com.lxisoft.service.dto.FeedDTO;
 import com.lxisoft.service.dto.HelpDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.service.dto.PostDTO;
+import com.lxisoft.service.dto.RegisteredUserDTO;
 import com.lxisoft.service.dto.ReplyDTO;
 import com.lxisoft.service.dto.SeverityDTO;
 import com.lxisoft.service.dto.UserCheckDTO;
@@ -1504,6 +1505,7 @@ public class AggregateServiceImpl implements AggregateService {
 
 
 
+
 //////////////////////////////////////////////////sooraj pn /////////////////////start///////////
 
 	 /**
@@ -1581,4 +1583,58 @@ public class AggregateServiceImpl implements AggregateService {
   }
 
 //////////////////////////////////////////////////sooraj pn//////////////////////end/////////////
+
+		// neeraja
+
+	/**
+	 * to add and update the social and emotional quotient
+	 *
+	 * @param registeredUserid
+	 *            the id of the entity
+	 * @return the dto
+	 */
+
+				@Override
+				public RegisteredUserDTO updateRegisteredUserEmotionalQuotientSocialQuotient(Long registeredUserId) {
+					
+					 log.debug("REST request to Eq Sq LoggedUser : {}", registeredUserId);
+				       RegisteredUserDTO registeredUserDto=new RegisteredUserDTO();
+				       RegisteredUser registeredUser1=new RegisteredUser();
+				    		   
+				      RegisteredUser registeredUser = registeredUserRepository.findById(registeredUserId).orElse(null);
+				      if(registeredUser.getSocialQuotient() == null)
+				      {
+				    	  registeredUser.setSocialQuotient(0l);
+				    	  registeredUser.setEmotionalQuotient(0l);
+				      }  
+				      Long pointOfHelpEq = helpRepository.findCountOfHelpsByRegisteredUserId(registeredUserId)/3;
+				      Long pointOfHelpSq = helpRepository.findCountOfHelpsByRegisteredUserId(registeredUserId);
+				      Long pointOfPostEq = postRepository.findCountOfPostsByRegisteredUserId(registeredUserId)/6;
+				      Long pointOfPostSq = postRepository.findCountOfPostsByRegisteredUserId(registeredUserId)/12;
+				      registeredUser.setEmotionalQuotient(pointOfHelpEq+pointOfPostEq);
+				      registeredUser.setSocialQuotient(pointOfHelpSq+pointOfPostSq);
+				      registeredUserDto.setFirstName(registeredUser.getFirstName());
+				      registeredUserDto.setLastName(registeredUser.getLastName());
+				      registeredUserDto.setBloodGroup(registeredUser.getBloodGroup());
+				      registeredUserDto.setEmail(registeredUser.getEmail());
+				      registeredUserDto.setDescription(registeredUser.getDescription());
+				      registeredUserDto.setDob(registeredUser.getDob());
+				      registeredUserDto.setGender(registeredUser.getGender());
+				      registeredUserDto.setHappinessIndex(registeredUser.getHappinessIndex());
+				      registeredUserDto.setProfession(registeredUser.getProfession());
+				      registeredUserDto.setEmotionalQuotient(registeredUser.getEmotionalQuotient());
+				      registeredUserDto.setSocialQuotient(registeredUser.getSocialQuotient());
+				      registeredUserDto.setProfilePicId(registeredUser.getProfilePic().getId());
+				      registeredUserDto.setRating(registeredUser.getRating());
+				      
+				     
+				      
+				      registeredUser1= registeredUserRepository.save(registeredUser);
+				     // return registeredUserMapper.toDto(registeredUser);
+				      return registeredUserDto;
+				    }
+				
+		// end neeraja
+
+
 }

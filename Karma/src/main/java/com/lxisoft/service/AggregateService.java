@@ -23,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.lxisoft.domain.RegisteredUser;
+import com.lxisoft.service.dto.RegisteredUserDTO;
 import com.lxisoft.service.dto.ApprovalStatusDTO;
 import com.lxisoft.service.dto.CategoryDTO;
 import com.lxisoft.service.dto.CommentDTO;
@@ -504,6 +505,7 @@ public interface AggregateService {
 	 */
 	Optional<RegisteredUser> findOneRegisteredUser(Long id);
 	// Code:End
+
 /////////////////////////////////////////sooraj pn///////////start/////////////////////////////////
     
     /**
@@ -530,5 +532,18 @@ public interface AggregateService {
 /////////////////////////////////////////sooraj pn ///////////end/////////////////////////////////// 
 	
 
+
+
+
+	//neeraja
+	 /**
+		 * @param registeredUserId
+		 * @return
+		 */
+	
+	RegisteredUserDTO updateRegisteredUserEmotionalQuotientSocialQuotient(Long registeredUserId);
+
+
+	//neeraja end
 
 }

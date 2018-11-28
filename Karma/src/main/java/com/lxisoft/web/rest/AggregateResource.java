@@ -48,6 +48,7 @@ import com.lxisoft.service.dto.FeedDTO;
 import com.lxisoft.service.dto.HelpDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.service.dto.PostDTO;
+import com.lxisoft.service.dto.RegisteredUserDTO;
 import com.lxisoft.service.dto.ReplyDTO;
 import com.lxisoft.service.dto.UserCheckDTO;
 import com.lxisoft.web.rest.errors.BadRequestAlertException;
@@ -856,6 +857,7 @@ public class AggregateResource {
 
 
 
+
      /////////////////////////////////////sooraj pn///////////start////////////////////////////////////
 
      
@@ -880,5 +882,22 @@ public class AggregateResource {
     //////////////////////////////////////sooraj pn//////////end///////////////////////////////////////
 
 
+
+	//neeraja
+     /**
+      * PUT  /logged-users : update emotional and social quotient of registered users
+      * 
+      * @param id
+      * @return the ResponseEntity with status 200 (OK) and the list of helps in body
+      */
+     
+     @PutMapping("/registered-users/updateEmotionalQuotientSocialQuotient/{id}")
+     @Timed
+     public ResponseEntity<RegisteredUserDTO> updateRegisteredUserEmotionalQuotientSocialQuotient(@PathVariable Long id) {
+         log.debug("REST request to update EQ & SQ LoggedUser : {}", id);
+         RegisteredUserDTO registeredUserDTO = aggregateService.updateRegisteredUserEmotionalQuotientSocialQuotient(id);   
+         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(registeredUserDTO));
+     }
+     // neeraja end
 
 }
