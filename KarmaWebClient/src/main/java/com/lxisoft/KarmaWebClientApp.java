@@ -31,9 +31,6 @@ import java.util.Collection;
 @ComponentScan( excludeFilters = {
     @ComponentScan.Filter(com.lxisoft.client.ExcludeFromComponentScan.class)
 })
-@ComponentScan( excludeFilters = {
-    @ComponentScan.Filter(com.lxisoft.client.ExcludeFromComponentScan.class)
-})
 @SpringBootApplication
 @EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
 @EnableDiscoveryClient

@@ -19,7 +19,7 @@ import javax.validation.constraints.*;
  * NeedDTO
  */
 @Validated
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-28T11:53:04.824+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-28T20:48:34.016+05:30[Asia/Calcutta]")
 
 public class NeedDTO   {
   @JsonProperty("approvalStatusId")
@@ -59,6 +59,9 @@ public class NeedDTO   {
 
   @JsonProperty("id")
   private Long id = null;
+
+  @JsonProperty("needyName")
+  private String needyName = null;
 
   @JsonProperty("noOfComments")
   private Long noOfComments = null;
@@ -353,6 +356,26 @@ public class NeedDTO   {
     this.id = id;
   }
 
+  public NeedDTO needyName(String needyName) {
+    this.needyName = needyName;
+    return this;
+  }
+
+  /**
+   * Get needyName
+   * @return needyName
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public String getNeedyName() {
+    return needyName;
+  }
+
+  public void setNeedyName(String needyName) {
+    this.needyName = needyName;
+  }
+
   public NeedDTO noOfComments(Long noOfComments) {
     this.noOfComments = noOfComments;
     return this;
@@ -563,6 +586,7 @@ public class NeedDTO   {
         Objects.equals(this.fileNameList, needDTO.fileNameList) &&
         Objects.equals(this.files, needDTO.files) &&
         Objects.equals(this.id, needDTO.id) &&
+        Objects.equals(this.needyName, needDTO.needyName) &&
         Objects.equals(this.noOfComments, needDTO.noOfComments) &&
         Objects.equals(this.noOfHelps, needDTO.noOfHelps) &&
         Objects.equals(this.percentageOfGenuineness, needDTO.percentageOfGenuineness) &&
@@ -576,7 +600,7 @@ public class NeedDTO   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(approvalStatusId, beneficiaryType, categories, categoryList, commentList, date, dateInString, description, fileNameList, files, id, noOfComments, noOfHelps, percentageOfGenuineness, postedUserId, resourceFiles, severityId, severityLevel, timeElapsed, verificationTeamId);
+    return Objects.hash(approvalStatusId, beneficiaryType, categories, categoryList, commentList, date, dateInString, description, fileNameList, files, id, needyName, noOfComments, noOfHelps, percentageOfGenuineness, postedUserId, resourceFiles, severityId, severityLevel, timeElapsed, verificationTeamId);
   }
 
   @Override
@@ -595,6 +619,7 @@ public class NeedDTO   {
     sb.append("    fileNameList: ").append(toIndentedString(fileNameList)).append("\n");
     sb.append("    files: ").append(toIndentedString(files)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    needyName: ").append(toIndentedString(needyName)).append("\n");
     sb.append("    noOfComments: ").append(toIndentedString(noOfComments)).append("\n");
     sb.append("    noOfHelps: ").append(toIndentedString(noOfHelps)).append("\n");
     sb.append("    percentageOfGenuineness: ").append(toIndentedString(percentageOfGenuineness)).append("\n");

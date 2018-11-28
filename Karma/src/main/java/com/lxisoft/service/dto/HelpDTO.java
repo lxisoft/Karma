@@ -39,9 +39,24 @@ public class HelpDTO implements Serializable {
     
     private Long noOfDisLikes;
     
+    private String helpUserName;
     
     
     /**
+	 * @return the helpUserName
+	 */
+	public String getHelpUserName() {
+		return helpUserName;
+	}
+
+	/**
+	 * @param helpUserName the helpUserName to set
+	 */
+	public void setHelpUserName(String helpUserName) {
+		this.helpUserName = helpUserName;
+	}
+
+	/**
 	 * @return the timeElapsed
 	 */
 	public String getTimeElapsed() {

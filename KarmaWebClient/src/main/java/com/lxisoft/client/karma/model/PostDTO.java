@@ -17,7 +17,7 @@ import javax.validation.constraints.*;
  * PostDTO
  */
 @Validated
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-28T11:53:04.824+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-28T20:48:34.016+05:30[Asia/Calcutta]")
 
 public class PostDTO   {
   @JsonProperty("attachedFiles")
@@ -42,6 +42,9 @@ public class PostDTO   {
 
   @JsonProperty("postedBefore")
   private String postedBefore = null;
+
+  @JsonProperty("postedUserName")
+  private String postedUserName = null;
 
   @JsonProperty("registeredUserId")
   private Long registeredUserId = null;
@@ -213,6 +216,26 @@ public class PostDTO   {
     this.postedBefore = postedBefore;
   }
 
+  public PostDTO postedUserName(String postedUserName) {
+    this.postedUserName = postedUserName;
+    return this;
+  }
+
+  /**
+   * Get postedUserName
+   * @return postedUserName
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public String getPostedUserName() {
+    return postedUserName;
+  }
+
+  public void setPostedUserName(String postedUserName) {
+    this.postedUserName = postedUserName;
+  }
+
   public PostDTO registeredUserId(Long registeredUserId) {
     this.registeredUserId = registeredUserId;
     return this;
@@ -310,6 +333,7 @@ public class PostDTO   {
         Objects.equals(this.description, postDTO.description) &&
         Objects.equals(this.id, postDTO.id) &&
         Objects.equals(this.postedBefore, postDTO.postedBefore) &&
+        Objects.equals(this.postedUserName, postDTO.postedUserName) &&
         Objects.equals(this.registeredUserId, postDTO.registeredUserId) &&
         Objects.equals(this.totalComments, postDTO.totalComments) &&
         Objects.equals(this.totalDislikes, postDTO.totalDislikes) &&
@@ -318,7 +342,7 @@ public class PostDTO   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(attachedFiles, attachedFilesUrls, date, dateInString, description, id, postedBefore, registeredUserId, totalComments, totalDislikes, totalLikes);
+    return Objects.hash(attachedFiles, attachedFilesUrls, date, dateInString, description, id, postedBefore, postedUserName, registeredUserId, totalComments, totalDislikes, totalLikes);
   }
 
   @Override
@@ -333,6 +357,7 @@ public class PostDTO   {
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    postedBefore: ").append(toIndentedString(postedBefore)).append("\n");
+    sb.append("    postedUserName: ").append(toIndentedString(postedUserName)).append("\n");
     sb.append("    registeredUserId: ").append(toIndentedString(registeredUserId)).append("\n");
     sb.append("    totalComments: ").append(toIndentedString(totalComments)).append("\n");
     sb.append("    totalDislikes: ").append(toIndentedString(totalDislikes)).append("\n");

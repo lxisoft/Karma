@@ -19,6 +19,9 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 	@Query(value = "select count(c) from Comment c where c.need.id=:needId")
 	public Integer countByNeedId(@Param("needId") Long needId); 
 	
+	@Query(value = "select count(c) from Comment c where c.help.id=:helpId")
+	public Integer countByHelpId(@Param("helpId") Long helpId); 
+	
     Page<Comment> findAllCommentsByNeedId(Pageable pageable,Long needId);
 	
 	Page<Comment> findAllCommentsByHelpId(Pageable pageable,Long helpId);

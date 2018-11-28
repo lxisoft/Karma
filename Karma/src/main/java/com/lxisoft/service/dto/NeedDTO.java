@@ -59,8 +59,24 @@ public class NeedDTO implements Serializable {
     
     //private Resource File;
     
+    private String needyName;
+    
     
     /**
+	 * @return the needyName
+	 */
+	public String getNeedyName() {
+		return needyName;
+	}
+
+	/**
+	 * @param needyName the needyName to set
+	 */
+	public void setNeedyName(String needyName) {
+		this.needyName = needyName;
+	}
+
+	/**
 	 * @return the timeElapsed
 	 */
 	public String getTimeElapsed() {

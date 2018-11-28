@@ -1,7 +1,7 @@
 package com.lxisoft.service.dto;
 
-import java.io.Serializable;
 import java.time.Instant;
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
 
@@ -12,15 +12,15 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public class PostDTO implements Serializable {
 
-	private Long id;
+    private Long id;
 
-	private String description;
+    private String description;
 
-	private Instant date;
+    private Instant date;
 
-	private Long registeredUserId;
-
-	private String dateInString;
+    private Long registeredUserId;
+    
+    private String dateInString;
 
 	private String postedBefore;
 
@@ -30,11 +30,27 @@ public class PostDTO implements Serializable {
 
 	private Long totalDislikes;
 
-	private String postedUserName;
-
 	private MultipartFile[] attachedFiles;
 
 	private Set<String> attachedFilesUrls;
+	
+	private String postedUserName;
+	
+	
+
+    /**
+	 * @return the postedUserName
+	 */
+	public String getPostedUserName() {
+		return postedUserName;
+	}
+
+	/**
+	 * @param postedUserName the postedUserName to set
+	 */
+	public void setPostedUserName(String postedUserName) {
+		this.postedUserName = postedUserName;
+	}
 
 	/**
 	 * @return the dateInString
@@ -44,8 +60,7 @@ public class PostDTO implements Serializable {
 	}
 
 	/**
-	 * @param dateInString
-	 *            the dateInString to set
+	 * @param dateInString the dateInString to set
 	 */
 	public void setDateInString(String dateInString) {
 		this.dateInString = dateInString;
@@ -59,8 +74,7 @@ public class PostDTO implements Serializable {
 	}
 
 	/**
-	 * @param postedBefore
-	 *            the postedBefore to set
+	 * @param postedBefore the postedBefore to set
 	 */
 	public void setPostedBefore(String postedBefore) {
 		this.postedBefore = postedBefore;
@@ -74,8 +88,7 @@ public class PostDTO implements Serializable {
 	}
 
 	/**
-	 * @param totalComments
-	 *            the totalComments to set
+	 * @param totalComments the totalComments to set
 	 */
 	public void setTotalComments(Long totalComments) {
 		this.totalComments = totalComments;
@@ -89,8 +102,7 @@ public class PostDTO implements Serializable {
 	}
 
 	/**
-	 * @param totalLikes
-	 *            the totalLikes to set
+	 * @param totalLikes the totalLikes to set
 	 */
 	public void setTotalLikes(Long totalLikes) {
 		this.totalLikes = totalLikes;
@@ -104,8 +116,7 @@ public class PostDTO implements Serializable {
 	}
 
 	/**
-	 * @param totalDislikes
-	 *            the totalDislikes to set
+	 * @param totalDislikes the totalDislikes to set
 	 */
 	public void setTotalDislikes(Long totalDislikes) {
 		this.totalDislikes = totalDislikes;
@@ -119,89 +130,86 @@ public class PostDTO implements Serializable {
 	}
 
 	/**
-	 * @param attachedFiles
-	 *            the attachedFiles to set
+	 * @param attachedFiles the attachedFiles to set
 	 */
 	public void setAttachedFiles(MultipartFile[] attachedFiles) {
 		this.attachedFiles = attachedFiles;
 	}
 
-	public String getPostedUserName() {
-		return postedUserName;
-	}
-
-	public void setPostedUserName(String postedUserName) {
-		this.postedUserName = postedUserName;
-	}
-
+	/**
+	 * @return the attachedFilesUrls
+	 */
 	public Set<String> getAttachedFilesUrls() {
 		return attachedFilesUrls;
 	}
 
 	/**
-	 * @param attachedFilesUrls
-	 *            the attachedFilesUrls to set
+	 * @param attachedFilesUrls the attachedFilesUrls to set
 	 */
 	public void setAttachedFilesUrls(Set<String> attachedFilesUrls) {
 		this.attachedFilesUrls = attachedFilesUrls;
 	}
 
 	public Long getId() {
-		return id;
-	}
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public Instant getDate() {
-		return date;
-	}
+    public Instant getDate() {
+        return date;
+    }
 
-	public void setDate(Instant date) {
-		this.date = date;
-	}
+    public void setDate(Instant date) {
+        this.date = date;
+    }
 
-	public Long getRegisteredUserId() {
-		return registeredUserId;
-	}
+    public Long getRegisteredUserId() {
+        return registeredUserId;
+    }
 
-	public void setRegisteredUserId(Long registeredUserId) {
-		this.registeredUserId = registeredUserId;
-	}
+    public void setRegisteredUserId(Long registeredUserId) {
+        this.registeredUserId = registeredUserId;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
-		PostDTO postDTO = (PostDTO) o;
-		if (postDTO.getId() == null || getId() == null) {
-			return false;
-		}
-		return Objects.equals(getId(), postDTO.getId());
-	}
+        PostDTO postDTO = (PostDTO) o;
+        if (postDTO.getId() == null || getId() == null) {
+            return false;
+        }
+        return Objects.equals(getId(), postDTO.getId());
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(getId());
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getId());
+    }
 
-	@Override
-	public String toString() {
-		return "PostDTO{" + "id=" + getId() + ", description='" + getDescription() + "'" + ", date='" + getDate() + "'"
-				+ ", registeredUser=" + getRegisteredUserId() + "}";
-	}
+    @Override
+    public String toString() {
+        return "PostDTO{" +
+            "id=" + getId() +
+            ", description='" + getDescription() + "'" +
+            ", date='" + getDate() + "'" +
+            ", registeredUser=" + getRegisteredUserId() +
+            "}";
+    }
 }

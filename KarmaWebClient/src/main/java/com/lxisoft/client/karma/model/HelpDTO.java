@@ -17,7 +17,7 @@ import javax.validation.constraints.*;
  * HelpDTO
  */
 @Validated
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-28T11:53:04.824+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-28T20:48:34.016+05:30[Asia/Calcutta]")
 
 public class HelpDTO   {
   @JsonProperty("approvalStatusId")
@@ -32,6 +32,9 @@ public class HelpDTO   {
 
   @JsonProperty("fulfilledNeedId")
   private Long fulfilledNeedId = null;
+
+  @JsonProperty("helpUserName")
+  private String helpUserName = null;
 
   @JsonProperty("id")
   private Long id = null;
@@ -148,6 +151,26 @@ public class HelpDTO   {
 
   public void setFulfilledNeedId(Long fulfilledNeedId) {
     this.fulfilledNeedId = fulfilledNeedId;
+  }
+
+  public HelpDTO helpUserName(String helpUserName) {
+    this.helpUserName = helpUserName;
+    return this;
+  }
+
+  /**
+   * Get helpUserName
+   * @return helpUserName
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public String getHelpUserName() {
+    return helpUserName;
+  }
+
+  public void setHelpUserName(String helpUserName) {
+    this.helpUserName = helpUserName;
   }
 
   public HelpDTO id(Long id) {
@@ -354,6 +377,7 @@ public class HelpDTO   {
         Objects.equals(this.description, helpDTO.description) &&
         Objects.equals(this.files, helpDTO.files) &&
         Objects.equals(this.fulfilledNeedId, helpDTO.fulfilledNeedId) &&
+        Objects.equals(this.helpUserName, helpDTO.helpUserName) &&
         Objects.equals(this.id, helpDTO.id) &&
         Objects.equals(this.noOfComments, helpDTO.noOfComments) &&
         Objects.equals(this.noOfDisLikes, helpDTO.noOfDisLikes) &&
@@ -367,7 +391,7 @@ public class HelpDTO   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(approvalStatusId, description, files, fulfilledNeedId, id, noOfComments, noOfDisLikes, noOfLikes, providedUserId, resourceFiles, time, timeElapsed, timeInString);
+    return Objects.hash(approvalStatusId, description, files, fulfilledNeedId, helpUserName, id, noOfComments, noOfDisLikes, noOfLikes, providedUserId, resourceFiles, time, timeElapsed, timeInString);
   }
 
   @Override
@@ -379,6 +403,7 @@ public class HelpDTO   {
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    files: ").append(toIndentedString(files)).append("\n");
     sb.append("    fulfilledNeedId: ").append(toIndentedString(fulfilledNeedId)).append("\n");
+    sb.append("    helpUserName: ").append(toIndentedString(helpUserName)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    noOfComments: ").append(toIndentedString(noOfComments)).append("\n");
     sb.append("    noOfDisLikes: ").append(toIndentedString(noOfDisLikes)).append("\n");

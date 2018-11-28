@@ -22,7 +22,6 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.lxisoft.domain.RegisteredUser;
 import com.lxisoft.service.dto.ApprovalStatusDTO;
 import com.lxisoft.service.dto.CategoryDTO;
 import com.lxisoft.service.dto.CommentDTO;
@@ -30,6 +29,7 @@ import com.lxisoft.service.dto.FeedDTO;
 import com.lxisoft.service.dto.HelpDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.service.dto.PostDTO;
+import com.lxisoft.service.dto.RegisteredUserDTO;
 import com.lxisoft.service.dto.ReplyDTO;
 import com.lxisoft.service.dto.SeverityDTO;
 import com.lxisoft.service.dto.UserCheckDTO;
@@ -44,105 +44,96 @@ import com.lxisoft.service.dto.UserCheckDTO;
  * Service Interface for managing all domains.
  */
 public interface AggregateService {
-
+		
 	/**
-	 * Save a need.
-	 *
-	 * @param needDTO
-	 *            the entity to save
-	 * 
-	 * @return the persisted entity
-	 * 
-	 * @throws IOException
-	 */
-	NeedDTO saveNeed(NeedDTO needDTO) throws IOException;
-
+     * Save a need.
+     *
+     * @param needDTO the entity to save
+     * 
+     * @return the persisted entity
+     * 
+     * @throws IOException 
+     */
+    NeedDTO saveNeed(NeedDTO needDTO) throws IOException;
+    
 	/**
-	 * Save a need.
-	 *
-	 * @param needDTO
-	 *            the entity to save
-	 * 
-	 * @return the persisted entity
-	 * 
-	 * @throws IOException
-	 */
-	NeedDTO saveNeedAsPending(NeedDTO needDTO) throws IOException;
+     * Save a need.
+     *
+     * @param needDTO the entity to save
+     * 
+     * @return the persisted entity
+     * 
+     * @throws IOException 
+     */
+    NeedDTO saveNeedAsPending(NeedDTO needDTO) throws IOException;
+    
+    /**
+     * Get all the needs.
+     *
+     * @param pageable the pagination information
+     * 
+     * @return the list of entities
+     */
+    Page<NeedDTO> findAllNeeds(Pageable pageable);
 
-	/**
-	 * Get all the needs.
-	 *
-	 * @param pageable
-	 *            the pagination information
-	 * 
-	 * @return the list of entities
-	 */
-	Page<NeedDTO> findAllNeeds(Pageable pageable);
+    /**
+     * Get all the Need with eager load of many-to-many relationships.
+     *
+     * @return the list of entities
+     */
+    Page<NeedDTO> findAllWithEagerRelationships(Pageable pageable);
+    
+    /**
+     * Get the "id" need.
+     *
+     * @param id the id of the entity
+     * 
+     * @return the entity
+     */
+    Optional<NeedDTO> findOneNeed(Long id);
 
+    /**
+     * Delete the "id" need.
+     *
+     * @param id the id of the entity
+     */
+    void deleteNeed(Long id);
+    
+    /**
+     * Get all the approvedstatus needs.
+     *
+     * @param pageable the pagination information
+     * 
+     * @return the list of approvedstatus entities
+     */
+    Page<NeedDTO> findAllNeedsByApprovedStatus(Pageable pageable, String approvalStatus);
+    
+    /**
+     * Get all the SeverityId needs.
+     *
+     * @param pageable the pagination information
+     * 
+     * @return the list of entities
+     */
+    Page<NeedDTO> findAllNeedsBySeverityId(Pageable pageable,Long severityId);
+    
+    /**
+     * Get all the approvedstatus needs.
+     *
+     * @param pageable the pagination information
+     * 
+     * @return the list of approvedstatus entities
+     */
+	Page<NeedDTO> findAllNeedsByApprovalStatusId(Pageable pageable,Long approvalStatusId);
+	
 	/**
-	 * Get all the Need with eager load of many-to-many relationships.
-	 *
-	 * @return the list of entities
-	 */
-	Page<NeedDTO> findAllWithEagerRelationships(Pageable pageable);
-
-	/**
-	 * Get the "id" need.
-	 *
-	 * @param id
-	 *            the id of the entity
-	 * 
-	 * @return the entity
-	 */
-	Optional<NeedDTO> findOneNeed(Long id);
-
-	/**
-	 * Delete the "id" need.
-	 *
-	 * @param id
-	 *            the id of the entity
-	 */
-	void deleteNeed(Long id);
-
-	/**
-	 * Get all the approvedstatus needs.
-	 *
-	 * @param pageable
-	 *            the pagination information
-	 * 
-	 * @return the list of approvedstatus entities
-	 */
-	Page<NeedDTO> findAllNeedsByApprovedStatus(Pageable pageable, String approvalStatus);
-
-	/**
-	 * Get all the SeverityId needs.
-	 *
-	 * @param pageable
-	 *            the pagination information
-	 * 
-	 * @return the list of entities
-	 */
-	Page<NeedDTO> findAllNeedsBySeverityId(Pageable pageable, Long severityId);
-
-	/**
-	 * Get all the approvedstatus needs.
-	 *
-	 * @param pageable
-	 *            the pagination information
-	 * 
-	 * @return the list of approvedstatus entities
-	 */
-	Page<NeedDTO> findAllNeedsByApprovalStatusId(Pageable pageable, Long approvalStatusId);
-
-	/**
-	 * find pending status id.
-	 *
-	 * @param status
-	 *            the status of the entity
-	 */
-	Optional<ApprovalStatusDTO> findNeedByApprovalStatus(String approvalStatus);
-
-	/**
+     * find pending status id.
+     *
+     * @param status the status of the entity
+     */
+    Optional<ApprovalStatusDTO> findNeedByApprovalStatus(String approvalStatus);
+    
+    /**
 	 * @param pageable
 	 * @param checkedNeedId
 	 * @return
@@ -150,94 +141,86 @@ public interface AggregateService {
 	Page<UserCheckDTO> findAllUserChecksByCheckedNeedId(Pageable pageable, Long checkedNeedId);
 
 	/**
-	 * Get all the approvalStatuses.
-	 *
-	 * @param pageable
-	 *            the pagination information
-	 * 
-	 * @return the list of entities
-	 */
+     * Get all the approvalStatuses.
+     *
+     * @param pageable the pagination information
+     * 
+     * @return the list of entities
+     */
 	Page<ApprovalStatusDTO> findAllApprovalStatuses(Pageable pageable);
 
-	/**
-	 * Get the "id" approvalStatus.
-	 *
-	 * @param id
-	 *            the id of the entity
-	 * 
-	 * @return the entity
-	 */
+	 /**
+     * Get the "id" approvalStatus.
+     *
+     * @param id the id of the entity
+     * 
+     * @return the entity
+     */
 	Optional<ApprovalStatusDTO> findOneApprovalStatus(Long id);
 
 	/**
-	 * Get all the categories.
-	 *
-	 * @param pageable
-	 *            the pagination information
-	 * 
-	 * @return the list of entities
-	 */
+     * Get all the categories.
+     *
+     * @param pageable the pagination information
+     * 
+     * @return the list of entities
+     */
 	Page<CategoryDTO> findAllCategories(Pageable pageable);
 
-	/**
-	 * Save a help.
-	 *
-	 * @param helpDTO
-	 *            the entity to save
-	 * 
-	 * @return the persisted entity
-	 * 
-	 * @throws IOException
-	 */
+	 /**
+     * Save a help.
+     *
+     * @param helpDTO the entity to save
+     * 
+     * @return the persisted entity
+     * 
+     * @throws IOException 
+     */
 	HelpDTO saveHelpAsIncomplete(HelpDTO helpDTO);
-
-	/**
-	 * Save a help.
-	 *
-	 * @param helpDTO
-	 *            the entity to save
-	 * 
-	 * @return the persisted entity
-	 * 
-	 * @throws IOException
-	 */
+    
+	 /**
+     * Save a help.
+     *
+     * @param helpDTO the entity to save
+     * 
+     * @return the persisted entity
+     * 
+     * @throws IOException 
+     */
 	HelpDTO saveHelpAsComplete(HelpDTO helpDTO) throws IOException;
 
 	/**
-	 * Get all the helps.
-	 *
-	 * @param pageable
-	 *            the pagination information
-	 * 
-	 * @return the list of entities
-	 */
+     * Get all the helps.
+     *
+     * @param pageable the pagination information
+     * 
+     * @return the list of entities
+     */
 	Page<HelpDTO> findAllHelps(Pageable pageable);
 
 	/**
-	 * Get the "id" help.
-	 *
-	 * @param id
-	 *            the id of the entity
-	 * 
-	 * @return the entity
-	 */
+     * Get the "id" help.
+     *
+     * @param id the id of the entity
+     * 
+     * @return the entity
+     */
 	Optional<HelpDTO> findOneHelp(Long id);
 
 	/**
-	 * Delete the "id" help.
-	 *
-	 * @param id
-	 *            the id of the entity
-	 */
+     * Delete the "id" help.
+     *
+     * @param id the id of the entity
+     */
 	void deleteHelp(Long id);
 
 	/**
-	 * @param pageable
-	 * @param approvalStatus
-	 * @return
-	 */
+   	 * @param pageable
+   	 * @param approvalStatus
+   	 * @return
+   	 */
 	Page<HelpDTO> findAllHelpsByApprovedStatus(Pageable pageable, String approvalStatus);
-
+	
 	/**
 	 * send email after confirmation.
 	 *
@@ -261,16 +244,16 @@ public interface AggregateService {
 	/**
 	 * @param userCheckDTO
 	 * @return
-	 * @throws IOException
+	 * @throws IOException 
 	 */
 	UserCheckDTO markingGenuinenes(UserCheckDTO userCheckDTO) throws IOException;
-
+	
 	/**
 	 * create new userChecks with positive vote.
 	 *
 	 * @param userCheck
 	 * @return optional<userCheck>
-	 * @throws IOException
+	 * @throws IOException 
 	 */
 
 	Optional<UserCheckDTO> saveUserCheckLike(UserCheckDTO userCheckDTO) throws IOException;
@@ -280,7 +263,7 @@ public interface AggregateService {
 	 *
 	 * @param userCheck
 	 * @return optional<userCheck>
-	 * @throws IOException
+	 * @throws IOException 
 	 */
 
 	Optional<UserCheckDTO> saveUserCheckDislike(UserCheckDTO userCheckDTO) throws IOException;
@@ -288,17 +271,18 @@ public interface AggregateService {
 	/**
 	 * @param commentDTO
 	 * @return
-	 * @throws IOException
+	 * @throws IOException 
 	 */
 	CommentDTO saveComment(CommentDTO commentDTO) throws IOException;
 
+	
 	/**
 	 * @param pageable
 	 * @param needId
 	 * @return
 	 */
 	Page<CommentDTO> findAllCommentsByNeedId(Pageable pageable, Long needId);
-
+	
 	/**
 	 * Get all the comments by help id.
 	 *
@@ -320,7 +304,7 @@ public interface AggregateService {
 	 * @return
 	 */
 	Page<ReplyDTO> findAllRepliesByCommentId(Pageable pageable, Long commentId);
-
+	
 	/**
 	 * Get count of userChecks to newsFeed by newsFeedId.
 	 *
@@ -330,7 +314,7 @@ public interface AggregateService {
 	 */
 
 	Integer calculateLikesNumberOfHelps(Long checkedHelpId);
-
+	
 	/**
 	 * Get count of userChecks to newsFeed by newsFeedId.
 	 *
@@ -349,171 +333,161 @@ public interface AggregateService {
 	 */
 
 	Integer calculateDislikesNumberOfHelps(Long checkedHelpId);
-
+	
 	/**
 	 * @param userCheckDTO
 	 * @return
 	 */
 	UserCheckDTO saveUserCheck(UserCheckDTO userCheckDTO);
 
+	
 	/**
-	 * Get the "id" severity.
-	 *
-	 * @param id
-	 *            the id of the entity
-	 * @return the entity
-	 */
-	Optional<SeverityDTO> findOneseverity(Long id);
-
-	/**
-	 * Get all the severities.
-	 *
-	 * @param pageable
-	 *            the pagination information
-	 * 
-	 * @return the list of entities
-	 */
-	Page<SeverityDTO> findAllSeverities(Pageable pageable);
-
-	/**
+     * Get the "id" severity.
+     *
+     * @param id the id of the entity
+     * @return the entity
+     */
+    Optional<SeverityDTO> findOneseverity(Long id);
+    
+    /**
+     * Get all the severities.
+     *
+     * @param pageable the pagination information
+     * 
+     * @return the list of entities
+     */
+    Page<SeverityDTO> findAllSeverities(Pageable pageable);
+    
+    /**
 	 * @param pageable
 	 * @param fulfilledNeedId
 	 * @return
 	 */
-	Page<HelpDTO> findAllHelpsByfulfilledNeedId(Pageable pageable, Long fulfilledNeedId);
+	Page<HelpDTO> findAllCompletedHelpsByfulfilledNeedId(Pageable pageable, Long fulfilledNeedId);
 
 	// Code:Ruhail
-	/**
-	 * @param postDTO
-	 * @return
-	 */
-	PostDTO savePost(PostDTO postDTO);
-	// Code:End
-
-	// Code:Ruhail
-	/**
-	 * Get all the posts.
-	 *
-	 * @param pageable
-	 *            the pagination information
-	 * 
-	 * @return the list of entities
-	 */
-	Page<PostDTO> findAllPosts(Pageable pageable);
-
-	// Code:End
-	// Code:Ruhail
-	/**
-	 * Get count of postLikes.
-	 *
-	 * @param postId
-	 *            to get count
-	 * 
-	 * @return the count of likes
-	 */
-	Integer calculateCountOfPostLikesByPostId(Long postId);
-
-	// Code:End
-	// Code:Ruhail
-	/**
-	 * Get count of postDislikes.
-	 *
-	 * @param postId
-	 *            to get count
-	 * 
-	 * @return the count of dislikes
-	 */
-	Integer calculateCountOfPostDislikesByPostId(Long postId);
-
-	// Code:End
-	// Code:Ruhail
-	/**
-	 * Get count of postComments.
-	 *
-	 * @param postId
-	 *            to get count
-	 * 
-	 * @return the count of comments
-	 */
-	Integer calculateCountOfPostCommentsByPostId(Long postId);
-
-	// Code:End
-	// anjali
-	/**
-	 * Save a feed.
-	 *
-	 * @param feedDTO
-	 *            the entity to save
-	 * @return the persisted entity
-	 * @throws IOException
-	 */
-	FeedDTO saveFeed(FeedDTO feedDTO) throws IOException;
-
-	/**
-	 * Get all the feeds.
-	 *
-	 * @param pageable
-	 *            the pagination information
-	 * @return the list of entities
-	 */
-	Page<FeedDTO> findAllFeeds(Pageable pageable);
-
-	/**
-	 * Get all the feeds by Registered User Id.
-	 *
-	 * @param pageable
-	 *            the pagination information,registeredUserId the id of the user
-	 * @return the list of entities
-	 */
-	Page<FeedDTO> findAllFeedsByRegisteredUserId(Pageable pageable, Long registeredUserId);
-
-	// anjali
-
-	// Code:End
-	// Code:Ruhail
-	/**
-	 * Find time difference between current date and posted date.
-	 *
-	 * @param postedDate
-	 *            to find the time
-	 * 
-	 * @return the time
-	 */
-	String calculateTimeDifferenceBetweenCurrentAndPostedTime(Date postedDate);
-
-	// Code:End
-	// Code:Ruhail
-	/**
-	 * Find one post by id.
-	 *
-	 * @param id
-	 *            to find the post
-	 * 
-	 * @return PostDTO
-	 */
-	Optional<PostDTO> findOnePost(Long id);
-
-	// Code:End
-	// Code:Ruhail
-	/**
-	 * Get one registeredUser by id.
-	 *
-	 * @param id
-	 *            the id of the entity
-	 * @return the entity
-	 */
-	Optional<RegisteredUser> findOneRegisteredUser(Long id);
-	// Code:End
-
-
-	//neeraja
-	 /**
-		 * @param registeredUserId
+		/**
+		 * @param postDTO
 		 * @return
 		 */
-	
-	RegisteredUserDTO updateRegisteredUserEmotionalQuotientSocialQuotient(Long registeredUserId);
+		PostDTO savePost(PostDTO postDTO);
+		// Code:End
+
+		// Code:Ruhail
+		/**
+		 * Get all the posts.
+		 *
+		 * @param pageable
+		 *            the pagination information
+		 * 
+		 * @return the list of entities
+		 */
+		Page<PostDTO> findAllPosts(Pageable pageable);
+
+		// Code:End
+		// Code:Ruhail
+		/**
+		 * Get count of postLikes.
+		 *
+		 * @param postId
+		 *            to get count
+		 * 
+		 * @return the count of likes
+		 */
+		Integer calculateCountOfPostLikesByPostId(Long postId);
+
+		// Code:End
+		// Code:Ruhail
+		/**
+		 * Get count of postDislikes.
+		 *
+		 * @param postId
+		 *            to get count
+		 * 
+		 * @return the count of dislikes
+		 */
+		Integer calculateCountOfPostDislikesByPostId(Long postId);
+
+		// Code:End
+		// Code:Ruhail
+		/**
+		 * Get count of postComments.
+		 *
+		 * @param postId
+		 *            to get count
+		 * 
+		 * @return the count of comments
+		 */
+		Integer calculateCountOfPostCommentsByPostId(Long postId);
+
+		// Code:End
+		// Code:Ruhail
+		/**
+		 * Find time difference between current date and posted date.
+		 *
+		 * @param postedDate
+		 *            to find the time
+		 * 
+		 * @return the time
+		 */
+		String calculateTimeDifferenceBetweenCurrentAndPostedTime(Date postedDate);
+		// Code:End
 
 
-	//neeraja end
+		//anjali
+		/**
+	      * Save a feed.
+	      *
+		  * @param feedDTO the entity to save
+		  * @return the persisted entity
+		  * @throws IOException 
+		  */
+		   FeedDTO saveFeed(FeedDTO feedDTO) throws IOException;
+			
+		    
+		    /**
+		     * Get all the feeds.
+		     *
+		     * @param pageable the pagination information
+		     * @return the list of entities
+		     */
+		    Page<FeedDTO> findAllFeeds(Pageable pageable);
+
+		    /**
+		     * Get all the feeds by Registered User Id.
+		     *
+		     * @param pageable the pagination information,registeredUserId the id of the user
+		     * @return the list of entities
+		     */
+			Page<FeedDTO> findAllFeedsByRegisteredUserId(Pageable pageable, Long registeredUserId);
+
+			//anjali
+
+			// Code:End
+			// Code:Ruhail
+			/**
+			 * Find one post by id.
+			 *
+			 * @param id
+			 *            to find the post
+			 * 
+			 * @return PostDTO
+			 */
+			Optional<PostDTO> findOnePost(Long id);
+
+			// Code:End
+			
+			//neeraja
+			 /**
+			  * @param registeredUserId
+			  * @return
+			  */
+			
+			RegisteredUserDTO updateRegisteredUserEmotionalQuotientSocialQuotient(Long registeredUserId);
+
+
+			//neeraja end
+
+
+
 }
