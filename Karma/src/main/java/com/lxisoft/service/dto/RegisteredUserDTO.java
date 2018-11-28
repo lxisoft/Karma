@@ -39,8 +39,31 @@ public class RegisteredUserDTO implements Serializable {
 
     private Long profilePicId;
 
+    private Long noOfFollowers;
+
+    private Long noOfFollowings;
+
+
     private Set<RegisteredUserDTO> followers = new HashSet<>();
 
+    public void setNoOfFollowers(Long noOfFollowers)
+    {
+        this.noOfFollowers=noOfFollowers;
+    }
+    public Long getNoOfFollowers()
+    {
+        return noOfFollowers;
+    }
+
+    public void setNoOfFollowings()
+    {
+        this.noOfFollowings=noOfFollowings;
+    }
+
+    public Long getNoOfFollowings()
+    {
+        return noOfFollowings;
+    }
     public Long getId() {
         return id;
     }

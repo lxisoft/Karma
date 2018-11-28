@@ -27,4 +27,6 @@ public interface RegisteredUserRepository extends JpaRepository<RegisteredUser, 
     @Query("select registered_user from RegisteredUser registered_user left join fetch registered_user.followers where registered_user.id =:id")
     Optional<RegisteredUser> findOneWithEagerRelationships(@Param("id") Long id);
 
+    Optional<RegisteredUser> findRegisteredUserById(Long registeredUserId);
+
 }

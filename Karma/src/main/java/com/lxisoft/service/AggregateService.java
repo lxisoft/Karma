@@ -504,4 +504,31 @@ public interface AggregateService {
 	 */
 	Optional<RegisteredUser> findOneRegisteredUser(Long id);
 	// Code:End
+/////////////////////////////////////////sooraj pn///////////start/////////////////////////////////
+    
+    /**
+    *method to follow or unfollow an user
+     * @param folloerUserId
+     * @param followingUserId
+     * @param pageable
+     * @return
+     */
+
+  Boolean followOrUnfollowRegisteredUser(Long followerUserId,Long registeredUserId);
+
+
+ /**
+    *method to count  number of followers of an user
+     * @param registeredUserId
+     * @return noOfFollowers
+     */
+
+  Long countNoOfFollowers(Long registeredUserId);
+
+
+
+/////////////////////////////////////////sooraj pn ///////////end/////////////////////////////////// 
+	
+
+
 }
