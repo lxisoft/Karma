@@ -37,6 +37,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.client.karma.api.AggregateResourceApi;
 import com.lxisoft.client.karma.model.ApprovalStatusDTO;
 import com.lxisoft.client.karma.model.CategoryDTO;
+import com.lxisoft.client.karma.model.FeedDTO;
 import com.lxisoft.client.karma.model.HelpDTO;
 import com.lxisoft.client.karma.model.NeedDTO;
 import com.lxisoft.client.karma.model.SeverityDTO;
@@ -359,6 +360,55 @@ public class AggregateController {
 	       }
 
 
+		/**
+		 * GET /feeds : get all the feeds.
+		 *
+		 * @param pageable
+		 *            the pagination information
+		 * @param eagerload
+		 *            flag to eager load entities from relationships (This is
+		 *            applicable for many-to-many)
+		 * @return the string value
+		 */
+		@GetMapping("/feeds")
+		@Timed
+		public String getAllFeeds(Pageable pageable,
+				@RequestParam(required = false, defaultValue = "false") boolean eagerload, Model model) {
+			log.debug("request to get a page of Feeds");
+		
+			List<FeedDTO> feeds = aggregateResourceApi.getAllFeedsUsingGET(null, null, null, null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
+			
+			model.addAttribute("feeds", feeds);
+			return "home";
+
+		}
+
+		/**
+		 * GET /needs : get all the feeds by registeredUserId
+		 *
+		 * @param pageable
+		 *            the pagination information
+		 * @param eagerload
+		 *            flag to eager load entities from relationships (This is
+		 *            applicable for many-to-many)
+		 * @return the string value
+		 */
+		@GetMapping("/feeds/getAllFeedsByRegisteredUserId/{registeredUserId}")
+		@Timed
+		public String getAllFeedsByRegisteredUserId(Pageable pageable,
+				@RequestParam(required = false, defaultValue = "false") boolean eagerload,
+				@PathVariable(value = "getAllFeedsByRegisteredUserId") Long registeredUserId, Model model) {
+			log.debug("request to get a page of Feeds");
+			
+	        List<FeedDTO> feeds=aggregateResourceApi.getAllFeedsByRegisteredUserIdUsingGET(registeredUserId, registeredUserId, null, null, null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
+			
+	        model.addAttribute("feeds", feeds);
+			
+			return "home";
+		
+		}
+
+		
 
 
 }
