@@ -22,6 +22,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.lxisoft.domain.RegisteredUser;
 import com.lxisoft.service.dto.ApprovalStatusDTO;
 import com.lxisoft.service.dto.CategoryDTO;
 import com.lxisoft.service.dto.CommentDTO;
@@ -442,5 +443,28 @@ public interface AggregateService {
 	 * @return the time
 	 */
 	String calculateTimeDifferenceBetweenCurrentAndPostedTime(Date postedDate);
+
+	// Code:End
+	// Code:Ruhail
+	/**
+	 * Find one post by id.
+	 *
+	 * @param id
+	 *            to find the post
+	 * 
+	 * @return PostDTO
+	 */
+	Optional<PostDTO> findOnePost(Long id);
+
+	// Code:End
+	// Code:Ruhail
+	/**
+	 * Get one registeredUser by id.
+	 *
+	 * @param id
+	 *            the id of the entity
+	 * @return the entity
+	 */
+	Optional<RegisteredUser> findOneRegisteredUser(Long id);
 	// Code:End
 }

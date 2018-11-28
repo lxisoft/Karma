@@ -743,6 +743,18 @@ public class AggregateResource {
 		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/posts");
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 	}
+
+	// Code:End
+	// Code:Ruhail
+	@GetMapping("/post/{id}")
+	@Timed
+	public ResponseEntity<PostDTO> getPost(@PathVariable Long id) {
+		log.debug("REST request to get Post : {}", id);
+
+		Optional<PostDTO> postDTO = aggregateService.findOnePost(id);
+
+		return ResponseUtil.wrapOrNotFound(postDTO);
+	}
 	// Code:End
 
 }

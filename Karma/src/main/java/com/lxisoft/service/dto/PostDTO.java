@@ -30,6 +30,8 @@ public class PostDTO implements Serializable {
 
 	private Long totalDislikes;
 
+	private String postedUserName;
+
 	private MultipartFile[] attachedFiles;
 
 	private Set<String> attachedFilesUrls;
@@ -112,6 +114,14 @@ public class PostDTO implements Serializable {
 
 	public void setAttachedFiles(MultipartFile[] attachedFiles) {
 		this.attachedFiles = attachedFiles;
+	}
+
+	public String getPostedUserName() {
+		return postedUserName;
+	}
+
+	public void setPostedUserName(String postedUserName) {
+		this.postedUserName = postedUserName;
 	}
 
 	public Set<String> getAttachedFilesUrls() {

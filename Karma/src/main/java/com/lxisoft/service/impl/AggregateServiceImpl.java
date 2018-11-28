@@ -44,6 +44,7 @@ import com.lxisoft.domain.Comment;
 import com.lxisoft.domain.Help;
 import com.lxisoft.domain.Need;
 import com.lxisoft.domain.Post;
+import com.lxisoft.domain.RegisteredUser;
 import com.lxisoft.domain.Reply;
 import com.lxisoft.domain.UserCheck;
 import com.lxisoft.repository.ApprovalStatusRepository;
@@ -52,6 +53,7 @@ import com.lxisoft.repository.CommentRepository;
 import com.lxisoft.repository.HelpRepository;
 import com.lxisoft.repository.NeedRepository;
 import com.lxisoft.repository.PostRepository;
+import com.lxisoft.repository.RegisteredUserRepository;
 import com.lxisoft.repository.ReplyRepository;
 import com.lxisoft.repository.SeverityRepository;
 import com.lxisoft.repository.UserCheckRepository;
@@ -71,6 +73,7 @@ import com.lxisoft.service.mapper.CommentMapper;
 import com.lxisoft.service.mapper.HelpMapper;
 import com.lxisoft.service.mapper.NeedMapper;
 import com.lxisoft.service.mapper.PostMapper;
+import com.lxisoft.service.mapper.RegisteredUserMapper;
 import com.lxisoft.service.mapper.ReplyMapper;
 import com.lxisoft.service.mapper.SeverityMapper;
 import com.lxisoft.service.mapper.UserCheckMapper;
@@ -118,6 +121,9 @@ public class AggregateServiceImpl implements AggregateService {
 	ReplyRepository replyRepository;
 
 	@Autowired
+	RegisteredUserRepository registeredUserRepository;
+
+	@Autowired
 	NeedMapper needMapper;
 
 	@Autowired
@@ -143,6 +149,9 @@ public class AggregateServiceImpl implements AggregateService {
 
 	@Autowired
 	SeverityMapper severityMapper;
+
+	@Autowired
+	RegisteredUserMapper registeredUserMapper;
 
 	@Autowired
 	private JavaMailSender sender;
@@ -1217,5 +1226,57 @@ public class AggregateServiceImpl implements AggregateService {
 
 		return diffInString;
 	}
-	// ode:End
+
+	// Code:End
+	// Code:Ruhail
+	// Code:End
+	// Code:Ruhail
+	/**
+	 * Get post by id.
+	 *
+	 * @param id
+	 *            the id of the entity
+	 * @return the Optional PostDTO
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public Optional<PostDTO> findOnePost(Long id) {
+		log.debug("Request to get Post : {}", id);
+		Post post = postRepository.findById(id).orElse(null);
+		PostDTO postDto = null;
+		if (post != null) {
+			postDto = postMapper.toDto(post);
+			postDto.setTotalComments((long) calculateCountOfPostCommentsByPostId(postDto.getId()));
+			postDto.setTotalLikes((long) calculateCountOfPostLikesByPostId(postDto.getId()));
+			postDto.setTotalDislikes((long) calculateCountOfPostDislikesByPostId(postDto.getId()));
+			if (postDto != null) {
+				RegisteredUser registeredUser = findOneRegisteredUser(postDto.getId()).get();
+				postDto.setPostedUserName(registeredUser.getFirstName() + registeredUser.getLastName());
+			}
+
+			Date postedDate = null;
+			if (postDto.getDate() != null) {
+				postedDate = Date.from(postDto.getDate());
+				postDto.setPostedBefore(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
+			}
+		}
+		return Optional.of(postDto);
+	}
+
+	// Code:End
+	// Code:Ruhail
+	/**
+	 * Get one registeredUser by id.
+	 *
+	 * @param id
+	 *            the id of the entity
+	 * @return the entity
+	 */
+	@Override
+	@Transactional
+	public Optional<RegisteredUser> findOneRegisteredUser(Long id) {
+		log.debug("Request to get RegisteredUser : {}", id);
+		return registeredUserRepository.findById(id);
+	}
+	// Code:End
 }
