@@ -44,6 +44,7 @@ import com.lxisoft.domain.Comment;
 import com.lxisoft.domain.Feed;
 import com.lxisoft.domain.Help;
 import com.lxisoft.domain.Need;
+import com.lxisoft.domain.Post;
 import com.lxisoft.domain.Reply;
 import com.lxisoft.domain.UserCheck;
 import com.lxisoft.repository.ApprovalStatusRepository;
@@ -52,6 +53,7 @@ import com.lxisoft.repository.CommentRepository;
 import com.lxisoft.repository.FeedRepository;
 import com.lxisoft.repository.HelpRepository;
 import com.lxisoft.repository.NeedRepository;
+import com.lxisoft.repository.PostRepository;
 import com.lxisoft.repository.ReplyRepository;
 import com.lxisoft.repository.SeverityRepository;
 import com.lxisoft.repository.UserCheckRepository;
@@ -62,6 +64,7 @@ import com.lxisoft.service.dto.CommentDTO;
 import com.lxisoft.service.dto.FeedDTO;
 import com.lxisoft.service.dto.HelpDTO;
 import com.lxisoft.service.dto.NeedDTO;
+import com.lxisoft.service.dto.PostDTO;
 import com.lxisoft.service.dto.ReplyDTO;
 import com.lxisoft.service.dto.SeverityDTO;
 import com.lxisoft.service.dto.UserCheckDTO;
@@ -71,6 +74,7 @@ import com.lxisoft.service.mapper.CommentMapper;
 import com.lxisoft.service.mapper.FeedMapper;
 import com.lxisoft.service.mapper.HelpMapper;
 import com.lxisoft.service.mapper.NeedMapper;
+import com.lxisoft.service.mapper.PostMapper;
 import com.lxisoft.service.mapper.ReplyMapper;
 import com.lxisoft.service.mapper.SeverityMapper;
 import com.lxisoft.service.mapper.UserCheckMapper;
@@ -115,6 +119,9 @@ public class AggregateServiceImpl implements AggregateService {
 	
 	@Autowired
 	ReplyRepository replyRepository;
+	
+	@Autowired
+	PostRepository postRepository;
 
 	@Autowired
 	FeedRepository feedRepository;
@@ -148,6 +155,9 @@ public class AggregateServiceImpl implements AggregateService {
 	FeedMapper feedMapper;
 	
 	@Autowired
+	PostMapper postMapper;
+	
+	@Autowired
 	private JavaMailSender sender;
 	
 	 /**
@@ -160,22 +170,28 @@ public class AggregateServiceImpl implements AggregateService {
 	@Override
 	public NeedDTO saveNeed(NeedDTO needDTO) throws IOException {
 		log.debug("Request to save Need : {}", needDTO);
-		    
-		 Need need = needMapper.toEntity(needDTO);
-		 
-	     need = needRepository.save(need);
+		
+		Need oldNeed=needRepository.getOne(needDTO.getId());
+		
+		NeedDTO newNeed = needMapper.toDto(oldNeed);
 	    
-	   //anjali
-	        FeedDTO feedDto=new FeedDTO();
-			 
-			 feedDto.setType("NeedPostAfterApproval");
-			 feedDto.setReferenceId(need.getId());
-			 feedDto.setRegisteredUserId(need.getPostedUser().getId());
-			 
-			 saveFeed(feedDto);
-		        
-		   //anjali
-		     
+		newNeed.setId(needDTO.getId());
+		newNeed.setApprovalStatusId(needDTO.getApprovalStatusId());
+		
+		Need need = needMapper.toEntity(newNeed);
+		 
+		 need = needRepository.save(need);
+
+		 //anjali
+		 FeedDTO feedDto=new FeedDTO();
+ 
+		 feedDto.setType("NeedPostAfterApproval");
+		 feedDto.setReferenceId(need.getId());
+		 feedDto.setRegisteredUserId(need.getPostedUser().getId());
+ 
+		 saveFeed(feedDto);
+		 //anjali
+		 
 	     return needMapper.toDto(need);
 	}
 	
@@ -1208,6 +1224,177 @@ public class AggregateServiceImpl implements AggregateService {
 	            .map(severityMapper::toDto);
 		}
 
+
+	 // Code:Ruhail
+		@Override
+		public PostDTO savePost(PostDTO postDTO) {
+			log.debug("Request to save news feed");
+			// TODO Auto-generated method stub
+			if (postDTO.getDateInString() != null) {
+				String parseDate = postDTO.getDateInString().replace(" ", "T").concat("Z");
+				Instant dateInstant = Instant.parse(parseDate);
+				postDTO.setDate(dateInstant);
+			} else {
+				postDTO.setDate(Instant.now());
+			}
+
+			Post post = postMapper.toEntity(postDTO);
+			Post savedPost = postRepository.save(post);
+			PostDTO savedPostDto = postMapper.toDto(savedPost);
+			log.debug("Request to see news feed saved");
+			/*
+			 * MultipartFile[] attachedFiles = postDTO.getAttachedFiles(); for
+			 * (MultipartFile file : attachedFiles) { MediaDTO mediaDTO = new
+			 * MediaDTO(); mediaDTO.setFile(file);
+			 * mediaDTO.setPostId(savedPostDto.getId());
+			 * mediaService.save(mediaDTO);
+			 * log.debug("Request news feed media saved"); }
+			 */
+			return savedPostDto;
+		}
+		// Code:End
+		// Code:Ruhail
+
+		@Override
+		public Page<PostDTO> findAllPosts(Pageable pageable) {
+			log.debug("Request to get all NewsFeeds");
+
+			Page<Post> postsPage = postRepository.findAll(pageable);
+			List<Post> postsList = postsPage.getContent();
+			Page<PostDTO> postsDtoPage = postsPage.map(postMapper::toDto);
+			List<PostDTO> postsDtoList = postsDtoPage.getContent();
+
+			// populating urls of post from returned domain objects to
+			// corresponding dtos
+
+			for (Post post : postsList) {
+				/*
+				 * Set<Media> medias = newsFeed.getAttachments(); String url;
+				 * Set<String> urls = new TreeSet<String>(); for (Media m : medias)
+				 * { url = m.getUrl(); urls.add(url); }
+				 */
+				for (PostDTO postDto : postsDtoList) {
+					if (post.getId() == postDto.getId()) {
+						// postDto.setAttachedFilesUrls(urls);
+					}
+					postDto.setTotalComments((long) calculateCountOfPostCommentsByPostId(postDto.getId()));
+					postDto.setTotalLikes((long) calculateCountOfPostLikesByPostId(postDto.getId()));
+					postDto.setTotalDislikes((long) calculateCountOfPostDislikesByPostId(postDto.getId()));
+
+				}
+			}
+
+			// Calculating and populating the postedBefore time for each newsFeed
+			// dtos
+
+			for (PostDTO postDto : postsDtoList) {
+
+				Date postedDate = null;
+				if (postDto.getDate() != null) {
+					postedDate = Date.from(postDto.getDate());
+					postDto.setPostedBefore(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
+				}
+
+			}
+			Page<PostDTO> postDtos = new PageImpl<PostDTO>(postsDtoList, pageable, postsDtoList.size());
+			return postDtos;
+		}
+
+		// Code:End
+		// Code:Ruhail
+		/**
+		 * Get count of userChecks to post by postId.
+		 *
+		 * @param Long
+		 *            postId to find
+		 * @return the count of userChecks
+		 */
+
+		@Override
+		public Integer calculateCountOfPostLikesByPostId(Long postId) {
+			// TODO Auto-generated method stub
+			return userCheckRepository.countOfVoteTypeLike("positive", postId);
+		}
+
+		// Code:End
+		// Code:Ruhail
+		/**
+		 * Get count of userChecks to post by postId.
+		 *
+		 * @param String
+		 *            postId to find
+		 * @return the count of userChecks
+		 */
+
+		@Override
+		public Integer calculateCountOfPostDislikesByPostId(Long postId) {
+			// TODO Auto-generated method stub
+			return userCheckRepository.countOfVoteTypeLike("negative", postId);
+		}
+
+		// Code:End
+		// Code:Ruhail
+		/**
+		 * Get count of userChecks to post by postId.
+		 *
+		 * @param String
+		 *            postId to find
+		 * @return the count of userChecks
+		 */
+
+		@Override
+		public Integer calculateCountOfPostCommentsByPostId(Long postId) {
+			// TODO Auto-generated method stub
+			return commentRepository.countOfCommentsByPostId(postId);
+		}
+
+		// Code:End
+		// Code:Ruhail
+		/**
+		 * Find time difference between current date and posted date.
+		 *
+		 * @param postedDate
+		 *            to find the time
+		 * 
+		 * @return the time
+		 */
+
+		@Override
+		public String calculateTimeDifferenceBetweenCurrentAndPostedTime(Date postedDate) {
+			Instant instant = Instant.now();
+
+			Date current = Date.from(instant);
+			long diffInSecond = 0l;
+			String diffInString = null;
+			if (postedDate != null) {
+				diffInSecond = (current.getTime() - postedDate.getTime()) / 1000l;
+			}
+			long postedBefore = 0l;
+			if (diffInSecond < 60l) {
+				diffInString = diffInSecond + " seconds ago";
+			} else if (diffInSecond < 3600l) {
+				postedBefore = diffInSecond / 60l;
+				diffInString = postedBefore + " minutes ago";
+			} else if (diffInSecond < 86400l) {
+				postedBefore = diffInSecond / 3600l;
+				diffInString = postedBefore + " hours ago";
+			} else if (diffInSecond < 2592000l) {
+				postedBefore = diffInSecond / 86400l;
+				diffInString = postedBefore + " days ago";
+			} else if (diffInSecond < 31104000l) {
+				postedBefore = diffInSecond / 2592000l;
+				diffInString = postedBefore + " months ago";
+			} else {
+				postedBefore = diffInSecond / 31104000l;
+				diffInString = postedBefore + " years ago";
+			}
+
+			return diffInString;
+		}
+		// code:End
+
+		//anjali
+		
 	    /**
 	     * Save a feed.
 	     *
@@ -1273,6 +1460,8 @@ public class AggregateServiceImpl implements AggregateService {
 		     return feedMapper.toDto(feed);
 		
 		}
+		
+		//anjali
 		
 		/**
 	     * Get all the feeds.

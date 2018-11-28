@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
  * CommentDTO
  */
 @Validated
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-22T13:19:16.116+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-28T09:15:14.804+05:30[Asia/Calcutta]")
 
 public class CommentDTO   {
   @JsonProperty("commentedUserId")
@@ -22,6 +22,9 @@ public class CommentDTO   {
 
   @JsonProperty("date")
   private OffsetDateTime date = null;
+
+  @JsonProperty("dateInString")
+  private String dateInString = null;
 
   @JsonProperty("helpId")
   private Long helpId = null;
@@ -35,8 +38,20 @@ public class CommentDTO   {
   @JsonProperty("needId")
   private Long needId = null;
 
+  @JsonProperty("noOfDislikes")
+  private Long noOfDislikes = null;
+
+  @JsonProperty("noOfLikes")
+  private Long noOfLikes = null;
+
+  @JsonProperty("noOfReplies")
+  private Long noOfReplies = null;
+
   @JsonProperty("postId")
   private Long postId = null;
+
+  @JsonProperty("timeElapsed")
+  private String timeElapsed = null;
 
   public CommentDTO commentedUserId(Long commentedUserId) {
     this.commentedUserId = commentedUserId;
@@ -77,6 +92,26 @@ public class CommentDTO   {
 
   public void setDate(OffsetDateTime date) {
     this.date = date;
+  }
+
+  public CommentDTO dateInString(String dateInString) {
+    this.dateInString = dateInString;
+    return this;
+  }
+
+  /**
+   * Get dateInString
+   * @return dateInString
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public String getDateInString() {
+    return dateInString;
+  }
+
+  public void setDateInString(String dateInString) {
+    this.dateInString = dateInString;
   }
 
   public CommentDTO helpId(Long helpId) {
@@ -159,6 +194,66 @@ public class CommentDTO   {
     this.needId = needId;
   }
 
+  public CommentDTO noOfDislikes(Long noOfDislikes) {
+    this.noOfDislikes = noOfDislikes;
+    return this;
+  }
+
+  /**
+   * Get noOfDislikes
+   * @return noOfDislikes
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public Long getNoOfDislikes() {
+    return noOfDislikes;
+  }
+
+  public void setNoOfDislikes(Long noOfDislikes) {
+    this.noOfDislikes = noOfDislikes;
+  }
+
+  public CommentDTO noOfLikes(Long noOfLikes) {
+    this.noOfLikes = noOfLikes;
+    return this;
+  }
+
+  /**
+   * Get noOfLikes
+   * @return noOfLikes
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public Long getNoOfLikes() {
+    return noOfLikes;
+  }
+
+  public void setNoOfLikes(Long noOfLikes) {
+    this.noOfLikes = noOfLikes;
+  }
+
+  public CommentDTO noOfReplies(Long noOfReplies) {
+    this.noOfReplies = noOfReplies;
+    return this;
+  }
+
+  /**
+   * Get noOfReplies
+   * @return noOfReplies
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public Long getNoOfReplies() {
+    return noOfReplies;
+  }
+
+  public void setNoOfReplies(Long noOfReplies) {
+    this.noOfReplies = noOfReplies;
+  }
+
   public CommentDTO postId(Long postId) {
     this.postId = postId;
     return this;
@@ -179,6 +274,26 @@ public class CommentDTO   {
     this.postId = postId;
   }
 
+  public CommentDTO timeElapsed(String timeElapsed) {
+    this.timeElapsed = timeElapsed;
+    return this;
+  }
+
+  /**
+   * Get timeElapsed
+   * @return timeElapsed
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public String getTimeElapsed() {
+    return timeElapsed;
+  }
+
+  public void setTimeElapsed(String timeElapsed) {
+    this.timeElapsed = timeElapsed;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -191,16 +306,21 @@ public class CommentDTO   {
     CommentDTO commentDTO = (CommentDTO) o;
     return Objects.equals(this.commentedUserId, commentDTO.commentedUserId) &&
         Objects.equals(this.date, commentDTO.date) &&
+        Objects.equals(this.dateInString, commentDTO.dateInString) &&
         Objects.equals(this.helpId, commentDTO.helpId) &&
         Objects.equals(this.id, commentDTO.id) &&
         Objects.equals(this.message, commentDTO.message) &&
         Objects.equals(this.needId, commentDTO.needId) &&
-        Objects.equals(this.postId, commentDTO.postId);
+        Objects.equals(this.noOfDislikes, commentDTO.noOfDislikes) &&
+        Objects.equals(this.noOfLikes, commentDTO.noOfLikes) &&
+        Objects.equals(this.noOfReplies, commentDTO.noOfReplies) &&
+        Objects.equals(this.postId, commentDTO.postId) &&
+        Objects.equals(this.timeElapsed, commentDTO.timeElapsed);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(commentedUserId, date, helpId, id, message, needId, postId);
+    return Objects.hash(commentedUserId, date, dateInString, helpId, id, message, needId, noOfDislikes, noOfLikes, noOfReplies, postId, timeElapsed);
   }
 
   @Override
@@ -210,11 +330,16 @@ public class CommentDTO   {
     
     sb.append("    commentedUserId: ").append(toIndentedString(commentedUserId)).append("\n");
     sb.append("    date: ").append(toIndentedString(date)).append("\n");
+    sb.append("    dateInString: ").append(toIndentedString(dateInString)).append("\n");
     sb.append("    helpId: ").append(toIndentedString(helpId)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("    needId: ").append(toIndentedString(needId)).append("\n");
+    sb.append("    noOfDislikes: ").append(toIndentedString(noOfDislikes)).append("\n");
+    sb.append("    noOfLikes: ").append(toIndentedString(noOfLikes)).append("\n");
+    sb.append("    noOfReplies: ").append(toIndentedString(noOfReplies)).append("\n");
     sb.append("    postId: ").append(toIndentedString(postId)).append("\n");
+    sb.append("    timeElapsed: ").append(toIndentedString(timeElapsed)).append("\n");
     sb.append("}");
     return sb.toString();
   }

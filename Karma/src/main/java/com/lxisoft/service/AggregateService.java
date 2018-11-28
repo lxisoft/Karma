@@ -16,6 +16,7 @@
 package com.lxisoft.service;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -27,6 +28,7 @@ import com.lxisoft.service.dto.CommentDTO;
 import com.lxisoft.service.dto.FeedDTO;
 import com.lxisoft.service.dto.HelpDTO;
 import com.lxisoft.service.dto.NeedDTO;
+import com.lxisoft.service.dto.PostDTO;
 import com.lxisoft.service.dto.ReplyDTO;
 import com.lxisoft.service.dto.SeverityDTO;
 import com.lxisoft.service.dto.UserCheckDTO;
@@ -362,14 +364,83 @@ public interface AggregateService {
 	 */
 	Page<HelpDTO> findAllHelpsByfulfilledNeedId(Pageable pageable, Long fulfilledNeedId);
 
-	/**
-     * Save a feed.
-     *
-     * @param feedDTO the entity to save
-     * @return the persisted entity
-     * @throws IOException 
-     */
-    FeedDTO saveFeed(FeedDTO feedDTO) throws IOException;
+	// Code:Ruhail
+		/**
+		 * @param postDTO
+		 * @return
+		 */
+		PostDTO savePost(PostDTO postDTO);
+		// Code:End
+
+		// Code:Ruhail
+		/**
+		 * Get all the posts.
+		 *
+		 * @param pageable
+		 *            the pagination information
+		 * 
+		 * @return the list of entities
+		 */
+		Page<PostDTO> findAllPosts(Pageable pageable);
+
+		// Code:End
+		// Code:Ruhail
+		/**
+		 * Get count of postLikes.
+		 *
+		 * @param postId
+		 *            to get count
+		 * 
+		 * @return the count of likes
+		 */
+		Integer calculateCountOfPostLikesByPostId(Long postId);
+
+		// Code:End
+		// Code:Ruhail
+		/**
+		 * Get count of postDislikes.
+		 *
+		 * @param postId
+		 *            to get count
+		 * 
+		 * @return the count of dislikes
+		 */
+		Integer calculateCountOfPostDislikesByPostId(Long postId);
+
+		// Code:End
+		// Code:Ruhail
+		/**
+		 * Get count of postComments.
+		 *
+		 * @param postId
+		 *            to get count
+		 * 
+		 * @return the count of comments
+		 */
+		Integer calculateCountOfPostCommentsByPostId(Long postId);
+
+		// Code:End
+		// Code:Ruhail
+		/**
+		 * Find time difference between current date and posted date.
+		 *
+		 * @param postedDate
+		 *            to find the time
+		 * 
+		 * @return the time
+		 */
+		String calculateTimeDifferenceBetweenCurrentAndPostedTime(Date postedDate);
+		// Code:End
+//anjali
+		/**
+	     * Save a feed.
+	     *
+	     * @param feedDTO the entity to save
+	     * @return the persisted entity
+	     * @throws IOException 
+	     */
+	    FeedDTO saveFeed(FeedDTO feedDTO) throws IOException;
+	
     
     /**
      * Get all the feeds.
@@ -387,6 +458,7 @@ public interface AggregateService {
      */
 	Page<FeedDTO> findAllFeedsByRegisteredUserId(Pageable pageable, Long registeredUserId);
 
+	//anjali
 	
 
 

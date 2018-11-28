@@ -50,6 +50,7 @@ import com.lxisoft.service.dto.CommentDTO;
 import com.lxisoft.service.dto.FeedDTO;
 import com.lxisoft.service.dto.HelpDTO;
 import com.lxisoft.service.dto.NeedDTO;
+import com.lxisoft.service.dto.PostDTO;
 import com.lxisoft.service.dto.ReplyDTO;
 import com.lxisoft.service.dto.SeverityDTO;
 import com.lxisoft.service.dto.UserCheckDTO;
@@ -634,6 +635,8 @@ public class AggregateResource {
          return ResponseEntity.ok().headers(headers).body(page.getContent());
      } */
      
+   //anjali
+     
      /**
       * POST  /feeds : Create a new feed.
       *
@@ -658,7 +661,6 @@ public class AggregateResource {
                  .headers(HeaderUtil.createEntityCreationAlert("Feed",feedDto.getId().toString()))
                  .body(feedDto);
          }
-     
      
      /**
       * GET  /feeds : get all the feeds.
@@ -689,7 +691,60 @@ public class AggregateResource {
          HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getAllFeedsByRegisteredUserId");
          return ResponseEntity.ok().headers(headers).body(page.getContent());
      }
+     
+     //anjali
+     
+  // Code:Ruhail
 
+ 	/**
+ 	 * POST /postuserpost : Create a new post.
+ 	 *
+ 	 * @param postDTO
+ 	 *            the postDTO to create
+ 	 * 
+ 	 * @param attachedFiles
+ 	 *            the files attached with postDTO
+ 	 * @return the ResponseEntity with status 201 (Created) and with body the
+ 	 *         new postDTO, or with status 400 (Bad Request) if the newsFeed has
+ 	 *         already an ID
+ 	 * @throws URISyntaxException
+ 	 *             if the Location URI syntax is incorrect
+ 	 */
+
+ 	@PostMapping("/post-userpost")
+ 	@Timed
+ 	public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO postDTO)
+ 			throws URISyntaxException, IllegalStateException, IOException {
+ 		// @RequestParam MultipartFile[] attachedFiles
+ 		log.debug("REST request to save NewsFeed : {}", postDTO);
+ 		if (postDTO.getId() != null) {
+ 			throw new BadRequestAlertException("Invalid id", "Post", "id not null");
+ 		}
+ 		// postDTO.setAttachedFiles(attachedFiles);
+ 		PostDTO result = aggregateService.savePost(postDTO);
+ 		return ResponseEntity.created(new URI("/api/post-userpost/" + result.getId()))
+ 				.headers(HeaderUtil.createEntityCreationAlert("karmapost", result.getId().toString())).body(result);
+ 	}
+
+ 	// Code:End
+ 	// Code:Ruhail
+ 	/**
+ 	 * GET /postss : get all the posts.
+ 	 *
+ 	 * @param pageable
+ 	 *            the pagination information
+ 	 * @return the ResponseEntity with status 200 (OK) and the list of posts in
+ 	 *         body
+ 	 */
+ 	@GetMapping("/posts")
+ 	@Timed
+ 	public ResponseEntity<List<PostDTO>> getAllPosts(Pageable pageable) {
+ 		log.debug("REST request to get a page of Posts");
+ 		Page<PostDTO> page = aggregateService.findAllPosts(pageable);
+ 		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/posts");
+ 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+ 	}
+ 	// Code:End
 
 
 }
