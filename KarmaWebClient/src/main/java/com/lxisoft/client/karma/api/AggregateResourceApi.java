@@ -34,7 +34,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-28T20:48:34.016+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-28T21:39:23.440+05:30[Asia/Calcutta]")
 
 @Api(value = "AggregateResource", description = "the AggregateResource API")
 public interface AggregateResourceApi {
@@ -143,6 +143,19 @@ public interface AggregateResourceApi {
         consumes = "application/json",
         method = RequestMethod.POST)
     ResponseEntity<UserCheckDTO> doLikeUsingPOST(@ApiParam(value = "userCheckDTO" ,required=true )  @Valid @RequestBody UserCheckDTO userCheckDTO);
+
+
+    @ApiOperation(value = "followOrUnfollowRegisteredUser", nickname = "followOrUnfollowRegisteredUserUsingPOST", notes = "", response = Boolean.class, tags={ "aggregate-resource", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "OK", response = Boolean.class),
+        @ApiResponse(code = 201, message = "Created"),
+        @ApiResponse(code = 401, message = "Unauthorized"),
+        @ApiResponse(code = 403, message = "Forbidden"),
+        @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/api/followOrUnfollowRegisteredUser/{followingUserId}/{registeredUserId}",
+        produces = "*/*", 
+        method = RequestMethod.POST)
+    ResponseEntity<Boolean> followOrUnfollowRegisteredUserUsingPOST(@ApiParam(value = "followingUserId",required=true) @PathVariable("followingUserId") Long followingUserId,@ApiParam(value = "registeredUserId",required=true) @PathVariable("registeredUserId") Long registeredUserId);
 
 
     @ApiOperation(value = "getAllApprovalStatuses", nickname = "getAllApprovalStatusesUsingGET", notes = "", response = ApprovalStatusDTO.class, responseContainer = "List", tags={ "aggregate-resource", })

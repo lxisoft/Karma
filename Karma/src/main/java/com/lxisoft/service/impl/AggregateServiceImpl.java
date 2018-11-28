@@ -1776,10 +1776,84 @@ public class AggregateServiceImpl implements AggregateService {
 			// end neeraja
 
 		
+		//sooraj
+					
+					/**
+					    *get to follow or unfollow an user
+					     * @param folloerUserId
+					     * @param registeredUserId
+					     * @param pageable
+					     * @return
+					     */						 
+					   @Override
+					   public Boolean followOrUnfollowRegisteredUser(Long followerUserId,Long registeredUserId){
+					   	log.debug("followerUserId:"+followerUserId);
+
+					   	log.debug("registeredUserId:"+registeredUserId);
+						Optional<RegisteredUser> registeredUser=registeredUserRepository.findById(registeredUserId);
+						List<RegisteredUser>followers=new ArrayList<RegisteredUser>(registeredUser.get().getFollowers());
+						Integer index=-1;
+						for(RegisteredUser follower:followers)
+						{
+							if(follower.getId().equals(followerUserId))
+							{
+								index=followers.indexOf(follower);
+							}
+						}
+						Set<RegisteredUser>registeredUsersSet;
+
+						if(index>=0)
+						{
+							followers.remove((int)index);
+							registeredUsersSet=new HashSet<RegisteredUser>(followers);
+
+						}
+						else 
+						{
+
+							followers.add((registeredUserRepository.findById(followerUserId).get()));
+							registeredUsersSet=new HashSet<RegisteredUser>(followers);
+						}
+						registeredUser.get().setFollowers(registeredUsersSet);
+						registeredUserRepository.save(registeredUser.get());
+						
+					   return null;
+
+					   }
+				
+					   /**
+					    *method to count  number of followers of an user
+					     * @param registeredUserId
+					     * @return noOfFollowers
+					     */
+
+					 public  Long countNoOfFollowers(Long registeredUserId)
+					  {
+
+					  Set<RegisteredUser> registeredUsers=registeredUserRepository.findById(registeredUserId).get().getFollowers();	
+					  System.out.println("???????????????????????????="+registeredUsers.size());
+					  return registeredUsers.size()+0l;
+
+					  }
+
+
+					    /**
+					    *method to count  number of followings 
+					     * @param registeredUserId
+					     * @return noOfFollowings
+					     */
+
+					  public Long countNoOfFollowings(Long registeredUserId)
+					  {
+
+					  Set<RegisteredUser> registeredUsers=registeredUserRepository.findById(registeredUserId).get().getFollowingUsers();	
+					  System.out.println("???????????????????????????="+registeredUsers.size());
+					  return registeredUsers.size()+0l;
+
+					  }
+
 		
-		
-		
-		
+		//sooraj end
 		
 		
 		

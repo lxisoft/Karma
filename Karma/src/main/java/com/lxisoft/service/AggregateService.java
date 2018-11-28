@@ -487,7 +487,44 @@ public interface AggregateService {
 
 
 			//neeraja end
+			
+			//sooraj
+			
+			/**
+			 *get follow or unfollow an user
+			 *
+			 * @param folloerUserId
+			 * 
+			 * @param followingUserId
+			 * 
+			 * @param pageable
+			 * 
+			 * @return
+			 */
 
+			Boolean followOrUnfollowRegisteredUser(Long followerUserId,Long registeredUserId);
+
+
+		     /**
+			  * count  number of followers of an user
+			  * 
+			  * @param registeredUserId
+			  * 
+			  * @return noOfFollowers
+			  */
+
+			  Long countNoOfFollowers(Long registeredUserId);
+			 
+			  /**
+			   * count  number of followers of an user
+			   * 
+			   * @param registeredUserId
+			   * 
+			   * @return noOfFollowers
+			   */
+			  Long countNoOfFollowings(Long registeredUserId);
+
+         //sooraj end
 
 
 }
