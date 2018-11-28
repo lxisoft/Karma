@@ -47,6 +47,7 @@ import com.lxisoft.service.AggregateService;
 import com.lxisoft.service.dto.ApprovalStatusDTO;
 import com.lxisoft.service.dto.CategoryDTO;
 import com.lxisoft.service.dto.CommentDTO;
+import com.lxisoft.service.dto.FeedDTO;
 import com.lxisoft.service.dto.HelpDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.service.dto.ReplyDTO;
@@ -466,10 +467,11 @@ public class AggregateResource {
      * 
      * @return the ResponseEntity with status 201 (Created) and with body the new userCheckDTO, or with status 400 (Bad Request) if the userCheck has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @throws IOException 
      */
     @PostMapping("/user-checks/markingGenuinenes")
     @Timed
-    public ResponseEntity<UserCheckDTO> markingGenuinenes(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException {
+    public ResponseEntity<UserCheckDTO> markingGenuinenes(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException, IOException {
         log.debug("REST request to save UserCheck : {}", userCheckDTO);
             
          UserCheckDTO result=aggregateService.markingGenuinenes(userCheckDTO);
@@ -485,10 +487,11 @@ public class AggregateResource {
      * @param userCheckDTO the userCheckDTO to create
      * @return the ResponseEntity with status 201 (Created) and with body the new userCheckDTO, or with status 400 (Bad Request) if the userCheck has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @throws IOException 
      */
     @PostMapping("/user-checks/like")
     @Timed
-    public ResponseEntity<UserCheckDTO> doLike(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException {
+    public ResponseEntity<UserCheckDTO> doLike(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException, IOException {
         log.debug("REST request to save UserCheck as like  : {}", userCheckDTO);
         if (userCheckDTO.getId() != null) {
             throw new BadRequestAlertException("A new userCheck cannot already have an ID", "UserCheck", "idexists");
@@ -507,10 +510,11 @@ public class AggregateResource {
      * @param userCheckDTO the userCheckDTO to create
      * @return the ResponseEntity with status 201 (Created) and with body the new userCheckDTO, or with status 400 (Bad Request) if the userCheck has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @throws IOException 
      */
     @PostMapping("/user-checks/dislike")
     @Timed
-    public ResponseEntity<UserCheckDTO> doDislike(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException {
+    public ResponseEntity<UserCheckDTO> doDislike(@RequestBody UserCheckDTO userCheckDTO) throws URISyntaxException, IOException {
         log.debug("REST request to save UserCheck as dislike  : {}", userCheckDTO);
         if (userCheckDTO.getId() != null) {
             throw new BadRequestAlertException("A new userCheck cannot already have an ID", "UserCheck", "idexists");
@@ -531,10 +535,11 @@ public class AggregateResource {
  	 *         has already an ID
  	 * @throws URISyntaxException
  	 *             if the Location URI syntax is incorrect
+     * @throws IOException 
  	 */
  	@PostMapping("/comments")
  	@Timed
- 	public ResponseEntity<CommentDTO> addComment(@RequestBody CommentDTO commentDTO) throws URISyntaxException {
+ 	public ResponseEntity<CommentDTO> addComment(@RequestBody CommentDTO commentDTO) throws URISyntaxException, IOException {
  		log.debug("REST request to save Comment : {}", commentDTO);
  		if (commentDTO.getId() != null) {
  			throw new BadRequestAlertException("A new comment cannot already have an ID", "Comment", "idexists");
@@ -629,9 +634,61 @@ public class AggregateResource {
          return ResponseEntity.ok().headers(headers).body(page.getContent());
      } */
      
+     /**
+      * POST  /feeds : Create a new feed.
+      *
+      * @param feedDTO the feedDTO to create
+      * @return the ResponseEntity with status 201 (Created) and with body the new feedDTO, or with status 400 (Bad Request) if the feed has already an ID
+      * @throws URISyntaxException if the Location URI syntax is incorrect
+      * @throws IOException 
+      */
+     @PostMapping("/feeds")
+     @Timed
+     public ResponseEntity<FeedDTO> PostFeed(@RequestBody FeedDTO feedDTO) throws URISyntaxException, IOException {
+         
+     	log.debug("REST request to save Feed : {}", feedDTO);
+                 
+         if (feedDTO.getId() != null) {
+             throw new BadRequestAlertException("A new feed cannot already have an ID","Feed","idexists");
+         }        
+                 
+        FeedDTO feedDto = aggregateService.saveFeed(feedDTO);
+                        
+        return ResponseEntity.created(new URI("/api/feeds/" + feedDto.getId()))
+                 .headers(HeaderUtil.createEntityCreationAlert("Feed",feedDto.getId().toString()))
+                 .body(feedDto);
+         }
      
-    
-
+     
+     /**
+      * GET  /feeds : get all the feeds.
+      *
+      * @param pageable the pagination information
+      * @return the ResponseEntity with status 200 (OK) and the list of feeds in body
+      */
+     @GetMapping("/feeds")
+     @Timed
+     public ResponseEntity<List<FeedDTO>> getAllFeeds(Pageable pageable) {
+         log.debug("REST request to get a page of Feeds");
+         Page<FeedDTO> page = aggregateService.findAllFeeds(pageable);
+         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/feeds");
+         return ResponseEntity.ok().headers(headers).body(page.getContent());
+     }
+      
+     /**
+      * GET  /feeds : get all the feeds by registered user id.
+      *
+      * @param pageable the pagination information,registeredUserId to get feeds of a particular user
+      * @return the ResponseEntity with status 200 (OK) and the list of feeds in body
+      */
+     @GetMapping("/feeds/getAllFeedsByRegisteredUserId/{registeredUserId}")
+     @Timed
+     public ResponseEntity<List<FeedDTO>> getAllFeedsByRegisteredUserId(Pageable pageable,@PathVariable Long registeredUserId) {
+         log.debug("REST request to get a page of Feeds");
+         Page<FeedDTO> page = aggregateService.findAllFeedsByRegisteredUserId(pageable,registeredUserId);
+         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getAllFeedsByRegisteredUserId");
+         return ResponseEntity.ok().headers(headers).body(page.getContent());
+     }
 
 
 
