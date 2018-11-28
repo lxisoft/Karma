@@ -8,6 +8,7 @@ package com.lxisoft.client.karma.api;
 import com.lxisoft.client.karma.model.ApprovalStatusDTO;
 import com.lxisoft.client.karma.model.CategoryDTO;
 import com.lxisoft.client.karma.model.CommentDTO;
+import com.lxisoft.client.karma.model.FeedDTO;
 import com.lxisoft.client.karma.model.HelpDTO;
 import com.lxisoft.client.karma.model.NeedDTO;
 import com.lxisoft.client.karma.model.PostDTO;
@@ -32,7 +33,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-28T09:15:14.804+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-28T11:53:04.824+05:30[Asia/Calcutta]")
 
 @Api(value = "AggregateResource", description = "the AggregateResource API")
 public interface AggregateResourceApi {
@@ -189,6 +190,30 @@ public interface AggregateResourceApi {
         produces = "*/*", 
         method = RequestMethod.GET)
     ResponseEntity<List<CommentDTO>> getAllCommentsByNeedIdUsingGET(@ApiParam(value = "needId",required=true) @PathVariable("needId") Long needId,@ApiParam(value = "") @Valid @RequestParam(value = "offset", required = false) Long offset,@ApiParam(value = "Page number of the requested page") @Valid @RequestParam(value = "page", required = false) Integer page,@ApiParam(value = "") @Valid @RequestParam(value = "pageNumber", required = false) Integer pageNumber,@ApiParam(value = "") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "") @Valid @RequestParam(value = "paged", required = false) Boolean paged,@ApiParam(value = "Size of a page") @Valid @RequestParam(value = "size", required = false) Integer size,@ApiParam(value = "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.") @Valid @RequestParam(value = "sort", required = false) List<String> sort,@ApiParam(value = "") @Valid @RequestParam(value = "sort.sorted", required = false) Boolean sortSorted,@ApiParam(value = "") @Valid @RequestParam(value = "sort.unsorted", required = false) Boolean sortUnsorted,@ApiParam(value = "") @Valid @RequestParam(value = "unpaged", required = false) Boolean unpaged);
+
+
+    @ApiOperation(value = "getAllFeedsByRegisteredUserId", nickname = "getAllFeedsByRegisteredUserIdUsingGET", notes = "", response = FeedDTO.class, responseContainer = "List", tags={ "aggregate-resource", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "OK", response = FeedDTO.class, responseContainer = "List"),
+        @ApiResponse(code = 401, message = "Unauthorized"),
+        @ApiResponse(code = 403, message = "Forbidden"),
+        @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/api/feeds/getAllFeedsByRegisteredUserId/{registeredUserId}",
+        produces = "*/*", 
+        method = RequestMethod.GET)
+    ResponseEntity<List<FeedDTO>> getAllFeedsByRegisteredUserIdUsingGET(@ApiParam(value = "registeredUserId",required=true) @PathVariable("registeredUserId") Long registeredUserId,@ApiParam(value = "") @Valid @RequestParam(value = "offset", required = false) Long offset,@ApiParam(value = "Page number of the requested page") @Valid @RequestParam(value = "page", required = false) Integer page,@ApiParam(value = "") @Valid @RequestParam(value = "pageNumber", required = false) Integer pageNumber,@ApiParam(value = "") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "") @Valid @RequestParam(value = "paged", required = false) Boolean paged,@ApiParam(value = "Size of a page") @Valid @RequestParam(value = "size", required = false) Integer size,@ApiParam(value = "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.") @Valid @RequestParam(value = "sort", required = false) List<String> sort,@ApiParam(value = "") @Valid @RequestParam(value = "sort.sorted", required = false) Boolean sortSorted,@ApiParam(value = "") @Valid @RequestParam(value = "sort.unsorted", required = false) Boolean sortUnsorted,@ApiParam(value = "") @Valid @RequestParam(value = "unpaged", required = false) Boolean unpaged);
+
+
+    @ApiOperation(value = "getAllFeeds", nickname = "getAllFeedsUsingGET", notes = "", response = FeedDTO.class, responseContainer = "List", tags={ "aggregate-resource", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "OK", response = FeedDTO.class, responseContainer = "List"),
+        @ApiResponse(code = 401, message = "Unauthorized"),
+        @ApiResponse(code = 403, message = "Forbidden"),
+        @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/api/feeds",
+        produces = "*/*", 
+        method = RequestMethod.GET)
+    ResponseEntity<List<FeedDTO>> getAllFeedsUsingGET(@ApiParam(value = "") @Valid @RequestParam(value = "offset", required = false) Long offset,@ApiParam(value = "Page number of the requested page") @Valid @RequestParam(value = "page", required = false) Integer page,@ApiParam(value = "") @Valid @RequestParam(value = "pageNumber", required = false) Integer pageNumber,@ApiParam(value = "") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "") @Valid @RequestParam(value = "paged", required = false) Boolean paged,@ApiParam(value = "Size of a page") @Valid @RequestParam(value = "size", required = false) Integer size,@ApiParam(value = "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.") @Valid @RequestParam(value = "sort", required = false) List<String> sort,@ApiParam(value = "") @Valid @RequestParam(value = "sort.sorted", required = false) Boolean sortSorted,@ApiParam(value = "") @Valid @RequestParam(value = "sort.unsorted", required = false) Boolean sortUnsorted,@ApiParam(value = "") @Valid @RequestParam(value = "unpaged", required = false) Boolean unpaged);
 
 
     @ApiOperation(value = "getAllHelpsByApprovedStatus", nickname = "getAllHelpsByApprovedStatusUsingGET", notes = "", response = HelpDTO.class, responseContainer = "List", tags={ "aggregate-resource", })
@@ -361,6 +386,20 @@ public interface AggregateResourceApi {
         consumes = "application/json",
         method = RequestMethod.POST)
     ResponseEntity<UserCheckDTO> markingGenuinenesUsingPOST(@ApiParam(value = "userCheckDTO" ,required=true )  @Valid @RequestBody UserCheckDTO userCheckDTO);
+
+
+    @ApiOperation(value = "PostFeed", nickname = "postFeedUsingPOST", notes = "", response = FeedDTO.class, tags={ "aggregate-resource", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "OK", response = FeedDTO.class),
+        @ApiResponse(code = 201, message = "Created"),
+        @ApiResponse(code = 401, message = "Unauthorized"),
+        @ApiResponse(code = 403, message = "Forbidden"),
+        @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/api/feeds",
+        produces = "*/*", 
+        consumes = "application/json",
+        method = RequestMethod.POST)
+    ResponseEntity<FeedDTO> postFeedUsingPOST(@ApiParam(value = "feedDTO" ,required=true )  @Valid @RequestBody FeedDTO feedDTO);
 
 
     @ApiOperation(value = "PostNeed", nickname = "postNeedUsingPOST", notes = "", response = NeedDTO.class, tags={ "aggregate-resource", })
