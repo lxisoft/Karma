@@ -165,6 +165,7 @@ public class AggregateServiceImpl implements AggregateService {
 		
 		NeedDTO newNeed = needMapper.toDto(oldNeed);
 	    
+		newNeed.setId(needDTO.getId());
 		newNeed.setApprovalStatusId(needDTO.getApprovalStatusId());
 		
 		Need need = needMapper.toEntity(newNeed);
