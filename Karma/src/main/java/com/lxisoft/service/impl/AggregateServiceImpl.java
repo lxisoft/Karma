@@ -65,6 +65,7 @@ import com.lxisoft.service.dto.CategoryDTO;
 import com.lxisoft.service.dto.CommentDTO;
 import com.lxisoft.service.dto.FeedDTO;
 import com.lxisoft.service.dto.HelpDTO;
+import com.lxisoft.service.dto.MediaDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.service.dto.PostDTO;
 import com.lxisoft.service.dto.RegisteredUserDTO;
@@ -194,7 +195,7 @@ public class AggregateServiceImpl implements AggregateService {
 		 
 		need = needRepository.save(need);
 		
-		//anjali
+		/*//anjali
 		 FeedDTO feedDto=new FeedDTO();
 
 		 feedDto.setType("NeedPostAfterApproval");
@@ -203,7 +204,7 @@ public class AggregateServiceImpl implements AggregateService {
 
 		 saveFeed(feedDto);
 		 //anjali
-		
+		*/
 		
 	     return needMapper.toDto(need);
 	}
@@ -253,9 +254,22 @@ public class AggregateServiceImpl implements AggregateService {
 
         Need need = needMapper.toEntity(needDTO);
         need = needRepository.save(need);
+        
+       
+        
+       /* MediaDTO mediaDTO=new MediaDTO();
+        
+        mediaDTO.setBytes(needDTO.getBytes());
+    	mediaDTO.setNeedId(need.getId());
+        
+    	saveMedia(mediaDTO);*/
+        
+        
         return needMapper.toDto(need);
     }
-
+    
+    
+    
 
     /**
      * Get all the needs.
@@ -336,10 +350,10 @@ public class AggregateServiceImpl implements AggregateService {
 		if (needDTO.getPostedUserId() != null) 
     	{
 			RegisteredUser registeredUser = registeredUserRepository.findById(needDTO.getPostedUserId()).get();
-			needDTO.setNeedyName(registeredUser.getFirstName() +" "+registeredUser.getLastName());
+			needDTO.setUserName(registeredUser.getFirstName() +" "+registeredUser.getLastName());
 		}
     	else
-    		needDTO.setNeedyName("Ajith");				
+    		needDTO.setUserName("Ajith");				
 		
 		
         Instant instant = Instant.now();
@@ -452,10 +466,10 @@ public class AggregateServiceImpl implements AggregateService {
 				if (need.getPostedUserId() != null) 
 		    	{
 					RegisteredUser registeredUser = registeredUserRepository.findById(need.getPostedUserId()).get();
-					need.setNeedyName(registeredUser.getFirstName() +" "+registeredUser.getLastName());
+					need.setUserName(registeredUser.getFirstName() +" "+registeredUser.getLastName());
 				}
 		    	else
-		    		need.setNeedyName("Ajith");				
+		    		need.setUserName("Ajith");				
 				
 				
                 Instant instant = Instant.now();
@@ -734,14 +748,14 @@ public class AggregateServiceImpl implements AggregateService {
         
         //anjali
         
-         FeedDTO feedDto=new FeedDTO();
+         /*FeedDTO feedDto=new FeedDTO();
 		 
 		 feedDto.setType("HelpPostAfterCompletion");
 		 feedDto.setReferenceId(help.getId());
 		// feedDto.setRegisteredUserId(help.getProvidedUser().getId());
 		 
 		 saveFeed(feedDto);
-        
+        */
         //anjali
         
         return helpMapper.toDto(help);
@@ -788,10 +802,10 @@ public class AggregateServiceImpl implements AggregateService {
     	if (help.getProvidedUserId() != null) 
     	{
 			RegisteredUser registeredUser = registeredUserRepository.findById(help.getProvidedUserId()).get();
-			help.setHelpUserName(registeredUser.getFirstName() +" "+registeredUser.getLastName());
+			help.setUserName(registeredUser.getFirstName() +" "+registeredUser.getLastName());
 		}
     	else
-    		help.setHelpUserName("sanil Pachath");
+    		help.setUserName("sanil Pachath");
     	
     	
     	
@@ -887,10 +901,10 @@ public class AggregateServiceImpl implements AggregateService {
 	    	if (help.getProvidedUserId() != null) 
 	    	{
 				RegisteredUser registeredUser = registeredUserRepository.findById(help.getProvidedUserId()).get();
-				help.setHelpUserName(registeredUser.getFirstName() +" "+registeredUser.getLastName());
+				help.setUserName(registeredUser.getFirstName() +" "+registeredUser.getLastName());
 			}
 	    	else
-	    		help.setHelpUserName("sanil Pachath");
+	    		help.setUserName("sanil Pachath");
 	    	
 	    	
 	    	
@@ -1059,27 +1073,55 @@ public class AggregateServiceImpl implements AggregateService {
 		      
 		      
 		    //anjali
-		        FeedDTO feedDto=new FeedDTO();
+		       /* FeedDTO feedDto=new FeedDTO();
 				
 		        if((result.getCheckedNeed().getId()!=null)&&(userCheckDTO.getVoteType()=="postive")){
 		        	
-		        	 feedDto.setType("NeedIsGenuine");
+		        	log.info("***before {} needid",result.getCheckedNeed().getId());
+		        	
+		        	log.info("***before {} voteType",userCheckDTO.getVoteType());
+		        	
+		        	 feedDto.setType("NeedIsGenuine");		        	 
 					 feedDto.setReferenceId(result.getCheckedNeed().getId());
-					 //feedDto.setRegisteredUserId(result.getCheckedUser().getId());
+					 if((result.getCheckedUser().getId())!=null)
+					    feedDto.setRegisteredUserId(result.getCheckedUser().getId());
+					 else
+						 feedDto.setRegisteredUserId(null); 
+					 
+					 log.info("***{}after",feedDto.getType());
+					 
+					 log.info("***after {} object",feedDto);
+					 
+					 saveFeed(feedDto);
+					        
 					 
 		        }
 		        
-		        if((result.getCheckedNeed().getId()!=null)&&(userCheckDTO.getVoteType()=="negative")){
+		        else if((result.getCheckedNeed().getId()!=null)&&(userCheckDTO.getVoteType()=="negative")){
+		        	
+                    log.info("***before {} needid",result.getCheckedNeed().getId());
+		        	
+		        	log.info("***before {} voteType",userCheckDTO.getVoteType());
 		        	
 		        	 feedDto.setType("NeedIsFake");
 					 feedDto.setReferenceId(result.getCheckedNeed().getId());
-					 //feedDto.setRegisteredUserId(result.getCheckedUser().getId());
-					 
+					 if((result.getCheckedUser().getId())!=null)
+						    feedDto.setRegisteredUserId(result.getCheckedUser().getId());
+						 else
+							 feedDto.setRegisteredUserId(null);
 
 					 log.info("***{}inside",feedDto.getType());
+					 
+					 log.info("***after {} object",feedDto);
+					 
+					 saveFeed(feedDto);
 		        }
-			 log.info("***{}after",feedDto.getType());
-			 saveFeed(feedDto);
+		        else
+		        {
+		        	
+		        }
+*/			/* log.info("***{}after",feedDto.getType());
+			 saveFeed(feedDto);*/
 			        
 			   //anjali
 		      		      
@@ -1105,7 +1147,7 @@ public class AggregateServiceImpl implements AggregateService {
 			userCheckDTO = userCheckMapper.toDto(userCheck);
 			
 			 //anjali
-	        FeedDTO feedDto=new FeedDTO();
+	       /* FeedDTO feedDto=new FeedDTO();
 			
 	        if(userCheckDTO.getCheckedHelpId()!=null){
 	        
@@ -1115,7 +1157,7 @@ public class AggregateServiceImpl implements AggregateService {
 				 
 				 saveFeed(feedDto);
 	        }
-		        
+		        */
 		   //anjali
 			
 			
@@ -1142,7 +1184,7 @@ public class AggregateServiceImpl implements AggregateService {
 			userCheckDTO = userCheckMapper.toDto(userCheck);
 			
 			//anjali
-	        FeedDTO feedDto=new FeedDTO();
+	        /*FeedDTO feedDto=new FeedDTO();
 			
 	        if(userCheckDTO.getCheckedHelpId()!=null){
 	        
@@ -1151,7 +1193,7 @@ public class AggregateServiceImpl implements AggregateService {
 				//feedDto.setRegisteredUserId(userCheckDTO.getCheckedUserId());
 				 
 				 saveFeed(feedDto);
-	        }
+	        }*/
 		        
 		   //anjali
 			
@@ -1184,7 +1226,7 @@ public class AggregateServiceImpl implements AggregateService {
 			
             //anjali to post feed after comments on help, need and Post
 	        
-	        FeedDTO feedDto=new FeedDTO();
+	      /*  FeedDTO feedDto=new FeedDTO();
 	        
 	        if(commentDTO.getHelpId()!=null)
 	        {
@@ -1216,7 +1258,7 @@ public class AggregateServiceImpl implements AggregateService {
 	        {
 	        	
 	        }
-	        //anjali
+*/	        //anjali
 			
 			return commentMapper.toDto(comment);	
 		}
@@ -1425,9 +1467,8 @@ public class AggregateServiceImpl implements AggregateService {
 		@Override
 		public PostDTO savePost(PostDTO postDTO) {
 			log.debug("Request to save news feed");
-			// TODO Auto-generated method stub
-			if (postDTO.getDateInString() != null) {
-				String parseDate = postDTO.getDateInString().replace(" ", "T").concat("Z");
+			if (postDTO.getTimeInString() != null) {
+				String parseDate = postDTO.getTimeInString().replace(" ", "T").concat("Z");
 				Instant dateInstant = Instant.parse(parseDate);
 				postDTO.setDate(dateInstant);
 			} else {
@@ -1473,9 +1514,9 @@ public class AggregateServiceImpl implements AggregateService {
 					if (post.getId() == postDto.getId()) {
 						// postDto.setAttachedFilesUrls(urls);
 					}
-					postDto.setTotalComments((long) calculateCountOfPostCommentsByPostId(postDto.getId()));
-					postDto.setTotalLikes((long) calculateCountOfPostLikesByPostId(postDto.getId()));
-					postDto.setTotalDislikes((long) calculateCountOfPostDislikesByPostId(postDto.getId()));
+					postDto.setNoOfComments((long) calculateCountOfPostCommentsByPostId(postDto.getId()));
+					postDto.setNoOfLikes((long) calculateCountOfPostLikesByPostId(postDto.getId()));
+					postDto.setNoOfDislikes((long) calculateCountOfPostDislikesByPostId(postDto.getId()));
 
 				}
 			}
@@ -1488,7 +1529,7 @@ public class AggregateServiceImpl implements AggregateService {
 				Date postedDate = null;
 				if (postDto.getDate() != null) {
 					postedDate = Date.from(postDto.getDate());
-					postDto.setPostedBefore(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
+					postDto.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
 				}
 
 			}
@@ -1508,7 +1549,6 @@ public class AggregateServiceImpl implements AggregateService {
 
 		@Override
 		public Integer calculateCountOfPostLikesByPostId(Long postId) {
-			// TODO Auto-generated method stub
 			return userCheckRepository.countOfVoteTypeLike("positive", postId);
 		}
 
@@ -1524,7 +1564,6 @@ public class AggregateServiceImpl implements AggregateService {
 
 		@Override
 		public Integer calculateCountOfPostDislikesByPostId(Long postId) {
-			// TODO Auto-generated method stub
 			return userCheckRepository.countOfVoteTypeLike("negative", postId);
 		}
 
@@ -1540,7 +1579,6 @@ public class AggregateServiceImpl implements AggregateService {
 
 		@Override
 		public Integer calculateCountOfPostCommentsByPostId(Long postId) {
-			// TODO Auto-generated method stub
 			return commentRepository.countOfCommentsByPostId(postId);
 		}
 
@@ -1703,18 +1741,18 @@ public class AggregateServiceImpl implements AggregateService {
 			PostDTO postDto = null;
 			if (post != null) {
 				postDto = postMapper.toDto(post);
-				postDto.setTotalComments((long) calculateCountOfPostCommentsByPostId(postDto.getId()));
-				postDto.setTotalLikes((long) calculateCountOfPostLikesByPostId(postDto.getId()));
-				postDto.setTotalDislikes((long) calculateCountOfPostDislikesByPostId(postDto.getId()));
+				postDto.setNoOfComments((long) calculateCountOfPostCommentsByPostId(postDto.getId()));
+				postDto.setNoOfLikes((long) calculateCountOfPostLikesByPostId(postDto.getId()));
+				postDto.setNoOfDislikes((long) calculateCountOfPostDislikesByPostId(postDto.getId()));
 				if (postDto != null) {
 					RegisteredUser registeredUser = registeredUserRepository.findById(postDto.getId()).get();
-					postDto.setPostedUserName(registeredUser.getFirstName() +" "+registeredUser.getLastName());
+					postDto.setUserName(registeredUser.getFirstName() +" "+registeredUser.getLastName());
 				}
 
 				Date postedDate = null;
 				if (postDto.getDate() != null) {
 					postedDate = Date.from(postDto.getDate());
-					postDto.setPostedBefore(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
+					postDto.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
 				}
 			}
 			return Optional.of(postDto);

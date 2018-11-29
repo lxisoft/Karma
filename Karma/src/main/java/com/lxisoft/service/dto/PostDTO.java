@@ -20,106 +20,105 @@ public class PostDTO implements Serializable {
 
     private Long registeredUserId;
     
-    private String dateInString;
+    private String timeInString;
 
-	private String postedBefore;
+	private String timeElapsed;
 
-	private Long totalComments;
+	private Long noOfComments;
 
-	private Long totalLikes;
+	private Long noOfLikes;
 
-	private Long totalDislikes;
+	private Long noOfDislikes;
 
 	private MultipartFile[] attachedFiles;
 
 	private Set<String> attachedFilesUrls;
 	
-	private String postedUserName;
+	private String userName;
 	
-	
 
-    /**
-	 * @return the postedUserName
+	/**
+	 * @return the timeInString
 	 */
-	public String getPostedUserName() {
-		return postedUserName;
+	public String getTimeInString() {
+		return timeInString;
 	}
 
 	/**
-	 * @param postedUserName the postedUserName to set
+	 * @param timeInString the timeInString to set
 	 */
-	public void setPostedUserName(String postedUserName) {
-		this.postedUserName = postedUserName;
+	public void setTimeInString(String timeInString) {
+		this.timeInString = timeInString;
 	}
 
 	/**
-	 * @return the dateInString
+	 * @return the timeElapsed
 	 */
-	public String getDateInString() {
-		return dateInString;
+	public String getTimeElapsed() {
+		return timeElapsed;
 	}
 
 	/**
-	 * @param dateInString the dateInString to set
+	 * @param timeElapsed the timeElapsed to set
 	 */
-	public void setDateInString(String dateInString) {
-		this.dateInString = dateInString;
+	public void setTimeElapsed(String timeElapsed) {
+		this.timeElapsed = timeElapsed;
 	}
 
 	/**
-	 * @return the postedBefore
+	 * @return the noOfComments
 	 */
-	public String getPostedBefore() {
-		return postedBefore;
+	public Long getNoOfComments() {
+		return noOfComments;
 	}
 
 	/**
-	 * @param postedBefore the postedBefore to set
+	 * @param noOfComments the noOfComments to set
 	 */
-	public void setPostedBefore(String postedBefore) {
-		this.postedBefore = postedBefore;
+	public void setNoOfComments(Long noOfComments) {
+		this.noOfComments = noOfComments;
 	}
 
 	/**
-	 * @return the totalComments
+	 * @return the noOfLikes
 	 */
-	public Long getTotalComments() {
-		return totalComments;
+	public Long getNoOfLikes() {
+		return noOfLikes;
 	}
 
 	/**
-	 * @param totalComments the totalComments to set
+	 * @param noOfLikes the noOfLikes to set
 	 */
-	public void setTotalComments(Long totalComments) {
-		this.totalComments = totalComments;
+	public void setNoOfLikes(Long noOfLikes) {
+		this.noOfLikes = noOfLikes;
 	}
 
 	/**
-	 * @return the totalLikes
+	 * @return the noOfDislikes
 	 */
-	public Long getTotalLikes() {
-		return totalLikes;
+	public Long getNoOfDislikes() {
+		return noOfDislikes;
 	}
 
 	/**
-	 * @param totalLikes the totalLikes to set
+	 * @param noOfDislikes the noOfDislikes to set
 	 */
-	public void setTotalLikes(Long totalLikes) {
-		this.totalLikes = totalLikes;
+	public void setNoOfDislikes(Long noOfDislikes) {
+		this.noOfDislikes = noOfDislikes;
 	}
 
 	/**
-	 * @return the totalDislikes
+	 * @return the userName
 	 */
-	public Long getTotalDislikes() {
-		return totalDislikes;
+	public String getUserName() {
+		return userName;
 	}
 
 	/**
-	 * @param totalDislikes the totalDislikes to set
+	 * @param userName the userName to set
 	 */
-	public void setTotalDislikes(Long totalDislikes) {
-		this.totalDislikes = totalDislikes;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	/**

@@ -24,23 +24,23 @@ public class UserCheckDTO implements Serializable {
 
     private Long postId;
 
-    /**
-	 * @return the isGenuine
-	 */
-	public Boolean getIsGenuine() {
-		return isGenuine;
-	}
-
-	/**
-	 * @param isGenuine the isGenuine to set
-	 */
-	public void setIsGenuine(Boolean isGenuine) {
-		this.isGenuine = isGenuine;
-	}
-
 	private Long checkedHelpId;
     
     private Boolean isGenuine;
+    
+    /**
+   	 * @return the isGenuine
+   	 */
+   	public Boolean getIsGenuine() {
+   		return isGenuine;
+   	}
+
+   	/**
+   	 * @param isGenuine the isGenuine to set
+   	 */
+   	public void setIsGenuine(Boolean isGenuine) {
+   		this.isGenuine = isGenuine;
+   	}
 
     public Long getId() {
         return id;

@@ -37,7 +37,7 @@ public class NeedDTO implements Serializable {
     
     private List<CategoryDTO> categoryList = new ArrayList<>();
 
-    private String dateInString;
+	private String dateInString;
 
     private Long percentageOfGenuineness;
     
@@ -57,23 +57,38 @@ public class NeedDTO implements Serializable {
     
     private List<Resource> resourceFiles;
     
+    private Byte[] bytes;
+    
+    private String userName;
+    
     //private Resource File;
     
-    private String needyName;
-    
-    
     /**
-	 * @return the needyName
+   	 * @return the bytes
+   	 */
+   	public Byte[] getBytes() {
+   		return bytes;
+   	}
+
+   	/**
+   	 * @param bytes the bytes to set
+   	 */
+   	public void setBytes(Byte[] bytes) {
+   		this.bytes = bytes;
+   	}
+
+	/**
+	 * @return the userName
 	 */
-	public String getNeedyName() {
-		return needyName;
+	public String getUserName() {
+		return userName;
 	}
 
 	/**
-	 * @param needyName the needyName to set
+	 * @param userName the userName to set
 	 */
-	public void setNeedyName(String needyName) {
-		this.needyName = needyName;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	/**

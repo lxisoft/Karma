@@ -27,6 +27,7 @@ import com.lxisoft.service.dto.CategoryDTO;
 import com.lxisoft.service.dto.CommentDTO;
 import com.lxisoft.service.dto.FeedDTO;
 import com.lxisoft.service.dto.HelpDTO;
+import com.lxisoft.service.dto.MediaDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.service.dto.PostDTO;
 import com.lxisoft.service.dto.RegisteredUserDTO;
@@ -525,6 +526,16 @@ public interface AggregateService {
 			  Long countNoOfFollowings(Long registeredUserId);
 
          //sooraj end
-
+			  
+			  
+			  /**
+			     * Save a media.
+			     *
+			     * @param mediaDTO the entity to save
+			     * @return the persisted entity
+			     * @throws IOException 
+			     *//*
+			    MediaDTO saveMedia(MediaDTO mediaDTO) throws IOException;
+*/
 
 }
