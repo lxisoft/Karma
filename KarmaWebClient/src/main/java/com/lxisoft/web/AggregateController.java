@@ -406,6 +406,60 @@ public class AggregateController {
 			return "home";
 		
 		}
+		/**
+	 * POST /posts : Create a new post.
+	 *
+	 * @param postDTO
+	 *            the postDTO to create
+	 * @return the string value
+	 * @throws URISyntaxException
+	 *             if the Location URI syntax is incorrect
+	 * @throws IOException
+	 * @throws IllegalStateException
+	 */
+	@PostMapping("/posts")
+	@Timed
+	public String postPost(@ModelAttribute PostDTO postDTO, Model model)
+			throws URISyntaxException, IllegalStateException, IOException {
+		log.debug(" request to save Post : {},{}", postDTO);
+		model.addAttribute("post", aggregateResourceApi.createPostUsingPOST(postDTO).getBody());
+		return "home";
+	}
+
+	/**
+	 * GET /posts : get all the posts.
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @return the string value
+	 */
+	@GetMapping("/post/getAllPosts")
+	@Timed
+	public String getAllPosts(Pageable pageable, Model model)
+			throws URISyntaxException, IllegalStateException, IOException {
+		log.debug("request to get a page of Posts");
+		List<PostDTO> posts = aggregateResourceApi
+				.getAllPostsUsingGET(null, null, null, null, null, null, null, null, null, null).getBody();
+		model.addAttribute("posts", posts);
+		return "home";
+	}
+
+	/**
+	 * GET /posts/:id : get the "id" post.
+	 *
+	 * @param id
+	 *            the id of the postDTO to retrieve
+	 * @return the string value
+	 */
+	@GetMapping("/posts/{id}")
+	@Timed
+	public String getPost(@PathVariable(value = "id") Long id, Model model)
+			throws URISyntaxException, IllegalStateException, IOException {
+		log.debug("request to get a post {}", id);
+		PostDTO post = aggregateResourceApi.getPostUsingGET(id).getBody();
+		model.addAttribute("post", post);
+		return "home";
+	}
 
 	   
 
