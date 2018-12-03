@@ -28,6 +28,7 @@
             <th jhiSortBy="socialQuotient"><span jhiTranslate="karmaApp.karmaRegisteredUser.socialQuotient">Social Quotient</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="happinessIndex"><span jhiTranslate="karmaApp.karmaRegisteredUser.happinessIndex">Happiness Index</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="profilePicId"><span jhiTranslate="karmaApp.karmaRegisteredUser.profilePic">Profile Pic</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="idProofId"><span jhiTranslate="karmaApp.karmaRegisteredUser.idProof">Id Proof</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -49,6 +50,11 @@
                 <td>
                     <div *ngIf="registeredUser.profilePicId">
                         <a [routerLink]="['../media', registeredUser.profilePicId , 'view' ]" >{{registeredUser.profilePicId}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="registeredUser.idProofId">
+                        <a [routerLink]="['../identity-proof', registeredUser.idProofId , 'view' ]" >{{registeredUser.idProofId}}</a>
                     </div>
                 </td>
                 <td class="text-right">

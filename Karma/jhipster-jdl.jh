@@ -16,7 +16,20 @@ entity RegisteredUser{
   socialQuotient Long,
   happinessIndex Long
 }
-
+/**
+ * IdentityProof entity.
+ * @author Sarangi Balu
+ */
+entity IdentityProof{
+  idNo String
+}
+/**
+ * IdentityProofType entity.
+ * @author Sarangi Balu
+ */
+entity IdentityProofType{
+  type String
+}
 /**
  * ApprovalStatus entity.
  * @author Sanil kumar
@@ -136,11 +149,9 @@ entity  Feed{
   date Instant,
   referenceId Long 
 }
-
-
-
 relationship OneToOne{
-  RegisteredUser{profilePic} to Media
+  RegisteredUser{profilePic} to Media,
+  RegisteredUser{idProof} to IdentityProof{owner}  
 }
 
 relationship OneToMany{
@@ -171,13 +182,14 @@ relationship ManyToOne{
   UserCheck{post}  to  Post{userChecks},
   UserCheck{checkedHelp} to Help{userChecks},
   Comment{commentedUser} to RegisteredUser,
-  Reply{repliedUser} to RegisteredUser
+  Reply{repliedUser} to RegisteredUser,  
+  IdentityProof{IdentityProofType} to IdentityProofType,
+  Need{personInCharge} to RegisteredUser
 }
 
 relationship ManyToMany{
   Need{categories} to Category{needs},
-  VerificationTeam{approvingUsers} to RegisteredUser{verificationTeams},
-  RegisteredUser{followers} to RegisteredUser{followingUsers}
+  VerificationTeam{approvingUsers} to RegisteredUser{verificationTeams}
 }
 
 paginate * with pagination

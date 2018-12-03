@@ -26,6 +26,12 @@
                                  referencedColumnNames="id"
                                  referencedTableName="approval_status"/>
 
+        <addForeignKeyConstraint baseColumnNames="person_in_charge_id"
+                                 baseTableName="need"
+                                 constraintName="fk_need_person_in_charge_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="registered_user"/>
+
         <addForeignKeyConstraint baseColumnNames="needs_id"
                                  baseTableName="need_categories"
                                  constraintName="fk_need_categories_needs_id"

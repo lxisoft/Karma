@@ -46,6 +46,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="person_in_charge_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <column name="posted_user_id" type="bigint">
                 <constraints nullable="true" />
             </column>

@@ -8,13 +8,15 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity RegisteredUser and its DTO RegisteredUserDTO.
  */
-@Mapper(componentModel = "spring", uses = {MediaMapper.class})
+@Mapper(componentModel = "spring", uses = {MediaMapper.class, IdentityProofMapper.class})
 public interface RegisteredUserMapper extends EntityMapper<RegisteredUserDTO, RegisteredUser> {
 
     @Mapping(source = "profilePic.id", target = "profilePicId")
+    @Mapping(source = "idProof.id", target = "idProofId")
     RegisteredUserDTO toDto(RegisteredUser registeredUser);
 
     @Mapping(source = "profilePicId", target = "profilePic")
+    @Mapping(source = "idProofId", target = "idProof")
     @Mapping(target = "addresses", ignore = true)
     @Mapping(target = "needs", ignore = true)
     @Mapping(target = "helps", ignore = true)
@@ -22,7 +24,6 @@ public interface RegisteredUserMapper extends EntityMapper<RegisteredUserDTO, Re
     @Mapping(target = "feeds", ignore = true)
     @Mapping(target = "checkedNeeds", ignore = true)
     @Mapping(target = "verificationTeams", ignore = true)
-    @Mapping(target = "followingUsers", ignore = true)
     RegisteredUser toEntity(RegisteredUserDTO registeredUserDTO);
 
     default RegisteredUser fromId(Long id) {

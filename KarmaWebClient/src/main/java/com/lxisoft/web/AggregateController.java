@@ -17,6 +17,7 @@ package com.lxisoft.web;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -37,27 +38,27 @@ import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.client.karma.api.AggregateResourceApi;
 import com.lxisoft.client.karma.model.ApprovalStatusDTO;
 import com.lxisoft.client.karma.model.CategoryDTO;
+import com.lxisoft.client.karma.model.CommentDTO;
 import com.lxisoft.client.karma.model.FeedDTO;
 import com.lxisoft.client.karma.model.HelpDTO;
 import com.lxisoft.client.karma.model.NeedDTO;
-import com.lxisoft.client.karma.model.PostDTO;
-import com.lxisoft.client.karma.model.SeverityDTO;
+import com.lxisoft.client.karma.model.ReplyDTO;
 import com.lxisoft.client.karma.model.UserCheckDTO;
 
 /**
- * TODO Provide a detailed description here 
- * @author Sarangi Balu
- * sarangibalu, sarangibalu.a@lxisoft.com
+ * TODO Provide a detailed description here
+ * 
+ * @author Sarangi Balu sarangibalu, sarangibalu.a@lxisoft.com
  */
 
 @Controller
 public class AggregateController {
-	
+
 	private final Logger log = LoggerFactory.getLogger(AggregateController.class);
-	
+
 	@Autowired
 	AggregateResourceApi aggregateResourceApi;
-	
+
 	/**
 	 * POST /needs : Create a new need.
 	 *
@@ -66,21 +67,22 @@ public class AggregateController {
 	 * @return the string value
 	 * @throws URISyntaxException
 	 *             if the Location URI syntax is incorrect
-	 * @throws IOException 
-	 * @throws IllegalStateException 
+	 * @throws IOException
+	 * @throws IllegalStateException
 	 */
 	@PostMapping("/needs")
 	@Timed
-	public String postNeed(@ModelAttribute NeedDTO needDTO,Model model) throws URISyntaxException, IllegalStateException, IOException {
+	public String postNeed(@ModelAttribute NeedDTO needDTO, Model model)
+			throws URISyntaxException, IllegalStateException, IOException {
 		log.debug(" request to save Need : {},{}", needDTO);
-		
+
 		log.debug("save Need : {}", needDTO);
-	     
-	    model.addAttribute("need", aggregateResourceApi.postNeedUsingPOST(needDTO).getBody());
+
+		model.addAttribute("need", aggregateResourceApi.postNeedUsingPOST(needDTO).getBody());
 		return "help-post-result";
 
 	}
-	
+
 	/**
 	 * GET /needs : get all the needs.
 	 *
@@ -96,14 +98,37 @@ public class AggregateController {
 	public String getAllNeeds(Pageable pageable,
 			@RequestParam(required = false, defaultValue = "false") boolean eagerload, Model model) {
 		log.debug("request to get a page of Needs");
-	
-		List<NeedDTO> needs = aggregateResourceApi.getAllNeedsUsingGET(eagerload, null, null, null, null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
-						
+
+		List<NeedDTO> needs = aggregateResourceApi.getAllNeedsUsingGET(eagerload, null, null, null, null, eagerload,
+				null, null, eagerload, eagerload, eagerload).getBody();
+
 		model.addAttribute("needs", needs);
 		return "home";
 
 	}
 	
+	/**
+	 * GET /needs : get all the needs.
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @param eagerload
+	 *            flag to eager load entities from relationships (This is
+	 *            applicable for many-to-many)
+	 * @return the string value
+	 */
+	@GetMapping("/completed-helps/{id}")
+	@Timed
+	public String getAllHelpsByNeedId(@PathVariable(value = "id") Long id, Model model) {
+		log.debug("request to get a page of Needs");
+
+		List<HelpDTO> helps = aggregateResourceApi.getAllCompletedHelpsByfulfilledNeedIdUsingGET(id, id, null, null, null, null, null, null, null, null, null).getBody();
+
+		model.addAttribute("helps", helps);
+		return "completed-helps";
+
+	}
+
 	/**
 	 * GET /needs/:id : get the "id" need.
 	 *
@@ -116,13 +141,13 @@ public class AggregateController {
 	public String getNeed(@PathVariable(value = "id") Long id, Model model) {
 		log.debug("request to get Need : {}", id);
 
-		NeedDTO needDTO =  aggregateResourceApi.getNeedUsingGET(id).getBody();
+		NeedDTO needDTO = aggregateResourceApi.getNeedUsingGET(id).getBody();
 
 		model.addAttribute("need", needDTO);
 
 		return "need";
 	}
-	
+
 	/**
 	 * GET /needs/:id : get the "id" need.
 	 *
@@ -134,13 +159,14 @@ public class AggregateController {
 	@Timed
 	public String getNeedWithStatusesById(@PathVariable(value = "id") Long id, Model model) {
 		log.debug("request to get Need : {}", id);
-				
-		NeedDTO needDTO =  aggregateResourceApi.getNeedUsingGET(id).getBody();
-		List<ApprovalStatusDTO> approvalStatusDTOs =  aggregateResourceApi.getAllApprovalStatusesUsingGET(id, null, null, null, null, null, null, null, null, null).getBody();  
-		
+
+		NeedDTO needDTO = aggregateResourceApi.getNeedUsingGET(id).getBody();
+		List<ApprovalStatusDTO> approvalStatusDTOs = aggregateResourceApi
+				.getAllApprovalStatusesUsingGET(id, null, null, null, null, null, null, null, null, null).getBody();
+
 		model.addAttribute("need", needDTO);
-		model.addAttribute("approvalStatuses",approvalStatusDTOs);
-				
+		model.addAttribute("approvalStatuses", approvalStatusDTOs);
+
 		return "pending-need";
 	}
 
@@ -161,23 +187,29 @@ public class AggregateController {
 			@RequestParam(required = false, defaultValue = "false") boolean eagerload,
 			@PathVariable(value = "approvalStatus") String approvalStatus, Model model) {
 		log.debug("request to get a page of Needs");
-		
-        List<NeedDTO> needs=aggregateResourceApi.getAllNeedsByApprovedStatusUsingGET(approvalStatus, eagerload, null, null, null, null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
-		
-		List<CategoryDTO> categories=aggregateResourceApi.getAllCategoriesUsingGET(null, null, null, null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
-		
-		//List<SeverityDTO> Severities=aggregateResourceApi.getAllSeveritiesUsingGET(null, null, null, null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
-		
-		List<ApprovalStatusDTO> approvalStatuses=aggregateResourceApi.getAllApprovalStatusesUsingGET(null, null, null, null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
-		
+
+		List<NeedDTO> needs = aggregateResourceApi.getAllNeedsByApprovedStatusUsingGET(approvalStatus, eagerload, null,
+				null, null, null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
+
+		List<CategoryDTO> categories = aggregateResourceApi.getAllCategoriesUsingGET(null, null, null, null, eagerload,
+				null, null, eagerload, eagerload, eagerload).getBody();
+
+		// List<SeverityDTO>
+		// Severities=aggregateResourceApi.getAllSeveritiesUsingGET(null, null,
+		// null, null, eagerload, null, null, eagerload, eagerload,
+		// eagerload).getBody();
+
+		List<ApprovalStatusDTO> approvalStatuses = aggregateResourceApi.getAllApprovalStatusesUsingGET(null, null, null,
+				null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
+
 		model.addAttribute("needs", needs);
-		
+
 		model.addAttribute("categories", categories);
-		
-		//model.addAttribute("severities", Severities);
-		
+
+		// model.addAttribute("severities", Severities);
+
 		model.addAttribute("approvalStatuses", approvalStatuses);
-		
+
 		if (approvalStatus.equals("approved"))
 			return "home";
 		else if (approvalStatus.equals("pending"))
@@ -185,7 +217,7 @@ public class AggregateController {
 		else
 			return "home";
 	}
-	
+
 	/**
 	 * PUT /needs : Updates an existing need.
 	 *
@@ -196,24 +228,26 @@ public class AggregateController {
 	 *         needDTO couldn't be updated
 	 * @throws URISyntaxException
 	 *             if the Location URI syntax is incorrect
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	@PutMapping("/needs")
 	@Timed
-	public String updateNeed(@ModelAttribute NeedDTO needDTO,BindingResult bindingResult,Model model) throws URISyntaxException, IOException {
-		
+	public String updateNeed(@ModelAttribute NeedDTO needDTO, BindingResult bindingResult, Model model)
+			throws URISyntaxException, IOException {
+
 		log.debug("request to update Need : {}", needDTO);
-		
+
 		needDTO = aggregateResourceApi.updateNeedUsingPUT(needDTO).getBody();
-		
-		ApprovalStatusDTO approvalStatusDTO=aggregateResourceApi.getApprovalStatusUsingGET(needDTO.getApprovalStatusId()).getBody();
-		
+
+		ApprovalStatusDTO approvalStatusDTO = aggregateResourceApi
+				.getApprovalStatusUsingGET(needDTO.getApprovalStatusId()).getBody();
+
 		model.addAttribute("need", needDTO);
-		model.addAttribute("message",approvalStatusDTO );
+		model.addAttribute("message", approvalStatusDTO);
 		return "approve-decline";
 	}
-	
-    /**
+
+	/**
 	 * POST /helps : Create a new help.
 	 *
 	 * @param helpDTO
@@ -221,21 +255,21 @@ public class AggregateController {
 	 * @return the String value
 	 * @throws URISyntaxException
 	 *             if the Location URI syntax is incorrect
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	@PostMapping("/helps")
 	@Timed
-	public String helpNeedy(@ModelAttribute HelpDTO helpDTO,Model model) throws URISyntaxException, IOException {
+	public String helpNeedy(@ModelAttribute HelpDTO helpDTO, Model model) throws URISyntaxException, IOException {
 
 		log.debug("REST request to save Help : {}", helpDTO);
-		
-		HelpDTO helpdto=aggregateResourceApi.helpNeedyUsingPOST(helpDTO).getBody();
-		
+
+		HelpDTO helpdto = aggregateResourceApi.helpNeedyUsingPOST(helpDTO).getBody();
+
 		model.addAttribute("help", helpdto);
 		model.addAttribute("message", "submitted");
 		return "approve-decline";
 	}
-	
+
 	/**
 	 * PUT /helps : Updates an existing need.
 	 *
@@ -246,21 +280,22 @@ public class AggregateController {
 	 *         needDTO couldn't be updated
 	 * @throws URISyntaxException
 	 *             if the Location URI syntax is incorrect
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	@PutMapping("/helps")
 	@Timed
 	public String updateHelp(@ModelAttribute HelpDTO helpDTO, Model model) throws URISyntaxException, IOException {
-		log.debug("request to update Need : {}", helpDTO);	
-		
+		log.debug("request to update Need : {}", helpDTO);
+
 		HelpDTO help = aggregateResourceApi.updateHelpUsingPUT(helpDTO).getBody();
-		ApprovalStatusDTO approvalStatusDTO = aggregateResourceApi.getApprovalStatusUsingGET(help.getApprovalStatusId()).getBody();
-		
+		ApprovalStatusDTO approvalStatusDTO = aggregateResourceApi.getApprovalStatusUsingGET(help.getApprovalStatusId())
+				.getBody();
+
 		model.addAttribute("help", help);
 		model.addAttribute("message", approvalStatusDTO);
 		return "approve-decline";
 	}
-	
+
 	/**
 	 * GET /needs : get all the needs by approvalStatus.
 	 *
@@ -279,7 +314,13 @@ public class AggregateController {
 			@PathVariable(value = "approvalStatus") String approvalStatus, Model model) {
 		log.debug("request to get a page of helps");
 
-		List<HelpDTO> helps =aggregateResourceApi.getAllHelpsByApprovedStatusUsingGET(approvalStatus, null, null, null, null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
+		List<HelpDTO> helps = aggregateResourceApi.getAllHelpsByApprovedStatusUsingGET(approvalStatus, null, null, null,
+				null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
+		
+		List<ApprovalStatusDTO> approvalStatuses = aggregateResourceApi.getAllApprovalStatusesUsingGET(null, null, null,
+				null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
+
+		model.addAttribute("approvalStatuses", approvalStatuses); 
 		
 		model.addAttribute("helps", helps);
 
@@ -320,150 +361,220 @@ public class AggregateController {
 	 */
 	@GetMapping("helps/incomplete/{id}")
 	@Timed
-	public String getHelpForApproval(@PathVariable(value = "id") Long id, Model model,Pageable pageable) {
+	public String getHelpForApproval(@PathVariable(value = "id") Long id, Model model, Pageable pageable) {
 
 		log.debug("request to get Need : {}", id);
 
 		HelpDTO helpDto = aggregateResourceApi.getHelpUsingGET(id).getBody();
 
-		List<ApprovalStatusDTO> approvalStatuses = aggregateResourceApi.getAllApprovalStatusesUsingGET(id, null, null, null, null, null, null, null, null, null).getBody();
-				
+		List<ApprovalStatusDTO> approvalStatuses = aggregateResourceApi
+				.getAllApprovalStatusesUsingGET(id, null, null, null, null, null, null, null, null, null).getBody();
+
 		model.addAttribute("help", helpDto);
 		model.addAttribute("approvalStatuses", approvalStatuses);
 
 		return "incompleted-help";
 	}
 
-	    /**
-	    * POST  /user-checks : checking the genuineness.
-	    *
-	    * @param userCheckDTO the userCheckDTO to create
-	    * 
-	    * @param voteType the voteType of the userCheckDto
-	    * 
-	    * @return the ResponseEntity with status 201 (Created) and with body the new userCheckDTO, or with status 400 (Bad Request) if the userCheck has already an ID
-	    * @throws URISyntaxException if the Location URI syntax is incorrect
-	    */
-	   @PostMapping("/user-checks/markingGenuinenes")
-	   @Timed
-	   public String markingGenuinenes(@ModelAttribute UserCheckDTO userCheckDTO,Model model) throws URISyntaxException {
-	       log.debug("REST request to save UserCheck : {}", userCheckDTO);
-	           
-	       UserCheckDTO result=aggregateResourceApi.markingGenuinenesUsingPOST(userCheckDTO).getBody();
-	       
-	       List<NeedDTO> needs=aggregateResourceApi.getAllNeedsByApprovedStatusUsingGET(null, null, null, null, null, null, null, null, null, null, null, null).getBody();
-	       
-	       model.addAttribute("result", result);
-	       
-	       model.addAttribute("needs", needs);
-	                        
-	       return "home::needs";
-	       }
+	/**
+	 * POST /user-checks : checking the genuineness.
+	 *
+	 * @param userCheckDTO
+	 *            the userCheckDTO to create
+	 * 
+	 * @param voteType
+	 *            the voteType of the userCheckDto
+	 * 
+	 * @return the ResponseEntity with status 201 (Created) and with body the
+	 *         new userCheckDTO, or with status 400 (Bad Request) if the
+	 *         userCheck has already an ID
+	 * @throws URISyntaxException
+	 *             if the Location URI syntax is incorrect
+	 */
+	@PostMapping("/user-checks/markingGenuineness")
+	@Timed
+	public String markingGenuineness(@ModelAttribute UserCheckDTO userCheckDTO, Model model) throws URISyntaxException {
+		log.debug("REST request to save UserCheck : {}", userCheckDTO);
 
-	   /**
-		 * GET /feeds : get all the feeds.
-		 *
-		 * @param pageable
-		 *            the pagination information
-		 * @param eagerload
-		 *            flag to eager load entities from relationships (This is
-		 *            applicable for many-to-many)
-		 * @return the string value
-		 */
-		@GetMapping("/feeds")
-		@Timed
-		public String getAllFeeds(Pageable pageable,
-				@RequestParam(required = false, defaultValue = "false") boolean eagerload, Model model) {
-			log.debug("request to get a page of Feeds");
-		
-			List<FeedDTO> feeds = aggregateResourceApi.getAllFeedsUsingGET(null, null, null, null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
-			
-			model.addAttribute("feeds", feeds);
-			return "home";
+		UserCheckDTO result = aggregateResourceApi.markingGenuinenesUsingPOST(userCheckDTO).getBody();
 
+		List<NeedDTO> needs = aggregateResourceApi.getAllNeedsByApprovedStatusUsingGET("approved", null, null, null,
+				null, null, null, null, null, null, null, null).getBody();
+
+		model.addAttribute("result", result);
+
+		model.addAttribute("needs", needs);
+
+		return "home::needs";
+	}
+
+	/**
+	 * GET /feeds : get all the feeds.
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @param eagerload
+	 *            flag to eager load entities from relationships (This is
+	 *            applicable for many-to-many)
+	 * @return the string value
+	 */
+	@GetMapping("/feeds")
+	@Timed
+	public String getAllFeeds(Pageable pageable,
+			@RequestParam(required = false, defaultValue = "false") boolean eagerload, Model model) {
+		log.debug("request to get a page of Feeds");
+
+		List<FeedDTO> feeds = aggregateResourceApi
+				.getAllFeedsUsingGET(null, null, null, null, eagerload, null, null, eagerload, eagerload, eagerload)
+				.getBody();
+
+		model.addAttribute("feeds", feeds);
+		return "home";
+
+	}
+
+	/**
+	 * GET /needs : get all the feeds by registeredUserId
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @param eagerload
+	 *            flag to eager load entities from relationships (This is
+	 *            applicable for many-to-many)
+	 * @return the string value
+	 */
+	@GetMapping("/feeds/getAllFeedsByRegisteredUserId/{registeredUserId}")
+	@Timed
+	public String getAllFeedsByRegisteredUserId(Pageable pageable,
+			@RequestParam(required = false, defaultValue = "false") boolean eagerload,
+			@PathVariable(value = "registeredUserId") Long registeredUserId, Model model) {
+		log.debug("request to get a page of Feeds");
+
+		List<FeedDTO> feeds = aggregateResourceApi.getAllFeedsByRegisteredUserIdUsingGET(registeredUserId,
+				registeredUserId, null, null, null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
+
+		model.addAttribute("feeds", feeds);
+
+		return "home";
+
+	}
+
+	/**
+	 * GET /needs : get all the comments by needId
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @param eagerload
+	 *            flag to eager load entities from relationships (This is
+	 *            applicable for many-to-many)
+	 * @return the string value
+	 */
+	@GetMapping("/comments/getAllCommentsByNeedId/{id}")
+	@Timed
+	public String getAllCommentsByNeedId(Pageable pageable,
+			@RequestParam(required = false, defaultValue = "false") boolean eagerload,
+			@PathVariable(value = "id") Long id, Model model) {
+		log.debug("request to get a page of Comments");
+
+		List<CommentDTO> comments = aggregateResourceApi.getAllCommentsByNeedIdUsingGET(id, id, null, null, null,
+				eagerload, null, null, eagerload, eagerload, eagerload).getBody();
+
+		model.addAttribute("comments", comments);
+
+		return "home :: comment-section(checkedNeedId=id,checkedHelpId=null,postId=null)";
+
+	}
+
+	/**
+	 * GET /needs : get all the replies by commentId
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @param eagerload
+	 *            flag to eager load entities from relationships (This is
+	 *            applicable for many-to-many)
+	 * @return the string value
+	 */
+	@GetMapping("/replies/getAllRepliesByCommentId/{id}")
+	@Timed
+	public String getAllRepliesByCommentId(Pageable pageable,
+			@RequestParam(required = false, defaultValue = "false") boolean eagerload,
+			@PathVariable(value = "id") Long id, Model model) {
+		log.debug("request to get a page of Replie");
+
+		List<ReplyDTO> replies = aggregateResourceApi.getAllRepliesByCommentIdUsingGET(id, id, null, null, null,
+				eagerload, null, null, eagerload, eagerload, eagerload).getBody();
+
+		model.addAttribute("comments", replies);
+
+		return "home :: replies";
+
+	}
+
+	/**
+	 * POST /comments : add comment
+	 *
+	 * @param CommentDTO
+	 *            the commentDTO to create
+	 * 
+	 * @return the ResponseEntity with status 201 (Created) and with body the
+	 *         new userCheckDTO, or with status 400 (Bad Request) if the
+	 *         userCheck has already an ID
+	 * @throws URISyntaxException
+	 *             if the Location URI syntax is incorrect
+	 */
+	@PostMapping("/comments/addComment")
+	@Timed
+	public String addComment(@ModelAttribute CommentDTO commentDTO, Model model) throws URISyntaxException {
+		log.debug("REST request to save Comment : {}", commentDTO);
+
+		CommentDTO result = aggregateResourceApi.addCommentUsingPOST(commentDTO).getBody();
+		// Long
+		// id=(result.getNeedId()==null)?(result.getHelpId()==null)?result.getPostId():result.getHelpId():result.getNeedId();
+		List<CommentDTO> comments = new ArrayList<CommentDTO>();
+		if (result.getNeedId() != null) {
+			comments = aggregateResourceApi.getAllCommentsByNeedIdUsingGET(result.getNeedId(), null, null, null, null,
+					null, null, null, null, null, null).getBody();
+		} else if (result.getHelpId() != null) {
+			comments = aggregateResourceApi.getAllCommentsByNeedIdUsingGET(result.getHelpId(), null, null, null, null,
+					null, null, null, null, null, null).getBody();
+		} else {
+			comments = aggregateResourceApi.getAllCommentsByNeedIdUsingGET(result.getPostId(), null, null, null, null,
+					null, null, null, null, null, null).getBody();
 		}
+		model.addAttribute("result", result);
 
-		/**
-		 * GET /needs : get all the feeds by registeredUserId
-		 *
-		 * @param pageable
-		 *            the pagination information
-		 * @param eagerload
-		 *            flag to eager load entities from relationships (This is
-		 *            applicable for many-to-many)
-		 * @return the string value
-		 */
-		@GetMapping("/feeds/getAllFeedsByRegisteredUserId/{registeredUserId}")
-		@Timed
-		public String getAllFeedsByRegisteredUserId(Pageable pageable,
-				@RequestParam(required = false, defaultValue = "false") boolean eagerload,
-				@PathVariable(value = "getAllFeedsByRegisteredUserId") Long registeredUserId, Model model) {
-			log.debug("request to get a page of Feeds");
-			
-	        List<FeedDTO> feeds=aggregateResourceApi.getAllFeedsByRegisteredUserIdUsingGET(registeredUserId, registeredUserId, null, null, null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
-			
-	        model.addAttribute("feeds", feeds);
-			
-			return "home";
-		
-		}
+		model.addAttribute("comments", comments);
 
-		/**
-		 * POST /posts : Create a new post.
-		 *
-		 * @param postDTO
-		 *            the postDTO to create
-		 * @return the string value
-		 * @throws URISyntaxException
-		 *             if the Location URI syntax is incorrect
-		 * @throws IOException
-		 * @throws IllegalStateException
-		 */
-		@PostMapping("/posts")
-		@Timed
-		public String postPost(@ModelAttribute PostDTO postDTO, Model model)
-				throws URISyntaxException, IllegalStateException, IOException {
-			log.debug(" request to save Post : {},{}", postDTO);
-			model.addAttribute("post", aggregateResourceApi.createPostUsingPOST(postDTO).getBody());
-			return "home";
-		}
+		return "home::comments";
+	}
 
-		/**
-		 * GET /posts : get all the posts.
-		 *
-		 * @param pageable
-		 *            the pagination information
-		 * @return the string value
-		 */
-		@GetMapping("/post/getAllPosts")
-		@Timed
-		public String getAllPosts(Pageable pageable, Model model)
-				throws URISyntaxException, IllegalStateException, IOException {
-			log.debug("request to get a page of Posts");
-			List<PostDTO> posts = aggregateResourceApi
-					.getAllPostsUsingGET(null, null, null, null, null, null, null, null, null, null).getBody();
-			model.addAttribute("posts", posts);
-			return "home";
-		}
+	/**
+	 * POST /comments : add reply
+	 *
+	 * @param CommentDTO
+	 *            the replyDTO to create
+	 * 
+	 * @return the ResponseEntity with status 201 (Created) and with body the
+	 *         new userCheckDTO, or with status 400 (Bad Request) if the
+	 *         userCheck has already an ID
+	 * @throws URISyntaxException
+	 *             if the Location URI syntax is incorrect
+	 */
+	@PostMapping("/replies/addReply")
+	@Timed
+	public String addReply(@ModelAttribute ReplyDTO replyDTO, Model model) throws URISyntaxException {
+		log.debug("REST request to save Reply : {}", replyDTO);
 
-		/**
-		 * GET /posts/:id : get the "id" post.
-		 *
-		 * @param id
-		 *            the id of the postDTO to retrieve
-		 * @return the string value
-		 */
-		@GetMapping("/posts/{id}")
-		@Timed
-		public String getPost(@PathVariable(value = "id") Long id, Model model)
-				throws URISyntaxException, IllegalStateException, IOException {
-			log.debug("request to get a post {}", id);
-			PostDTO post = aggregateResourceApi.getPostUsingGET(id).getBody();
-			model.addAttribute("post", post);
-			return "home";
-		}
+		List<ReplyDTO> replies = new ArrayList<ReplyDTO>();
 
-	   
+		ReplyDTO result = aggregateResourceApi.addReplyUsingPOST(replyDTO).getBody();
 
+		replies = aggregateResourceApi.getAllRepliesByCommentIdUsingGET(result.getCommentId(), null, null, null, null,
+				null, null, null, null, null, null).getBody();
+		model.addAttribute("result", result);
+		model.addAttribute("replies", replies);
+		return "home::replies";
+	}
 
 }

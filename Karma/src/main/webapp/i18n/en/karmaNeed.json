@@ -24,6 +24,7 @@
       "severity": "Severity",
       "verificationTeam": "Verification Team",
       "approvalStatus": "Approval Status",
+      "personInCharge": "Person In Charge",
       "categories": "Categories",
       "postedUser": "Posted User",
       "userChecks": "User Checks"

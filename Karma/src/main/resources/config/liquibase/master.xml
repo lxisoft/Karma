@@ -19,6 +19,8 @@
     <include file="config/liquibase/changelog/20181118103755_added_entity_Comment.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20181118103756_added_entity_Reply.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20181118103757_added_entity_Feed.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20181203055324_added_entity_IdentityProof.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20181203055325_added_entity_IdentityProofType.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20181118103744_added_entity_constraints_RegisteredUser.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20181118103746_added_entity_constraints_Address.xml" relativeToChangelogFile="false"/>
@@ -31,5 +33,6 @@
     <include file="config/liquibase/changelog/20181118103755_added_entity_constraints_Comment.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20181118103756_added_entity_constraints_Reply.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20181118103757_added_entity_constraints_Feed.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20181203055324_added_entity_constraints_IdentityProof.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

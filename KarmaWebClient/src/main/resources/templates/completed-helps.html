@@ -15,7 +15,7 @@
 </head>
 
 <body>
-	<div th:insert="home :: navigation">
+	<div th:insert="home :: navigation(nav1='',nav2='',nav3='')">
 		<nav class="navbar fixed-top navbar-expand-lg navbar-dark info-color scrolling-navbar">
 			<a class="navbar-brand" th:href="@{/home/approved}"><strong>Karma</strong></a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -133,10 +133,10 @@
 								class="card-link text-success" th:if="${help.fulfilledNeedId != null}">Fulfilled need</a>-->
 
 
-							<!-- comments section -->
+<!-- 							comments section
 							<th:block th:object="${help}">
 								<div th:replace="home :: comment-section(method='commentOnHelp')"></div>
-							</th:block>
+							</th:block> -->
 						</div>
 					</div>
 				</div>

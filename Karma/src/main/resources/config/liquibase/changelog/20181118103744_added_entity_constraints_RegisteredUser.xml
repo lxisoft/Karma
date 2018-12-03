@@ -14,16 +14,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="media"/>
 
-        <addForeignKeyConstraint baseColumnNames="registered_users_id"
-                                 baseTableName="registered_user_followers"
-                                 constraintName="fk_registered_user_followers_registered_users_id"
+        <addForeignKeyConstraint baseColumnNames="id_proof_id"
+                                 baseTableName="registered_user"
+                                 constraintName="fk_registered_user_id_proof_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="registered_user"/>
-        <addForeignKeyConstraint baseColumnNames="followers_id"
-                                 baseTableName="registered_user_followers"
-                                 constraintName="fk_registered_user_followers_followers_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="registered_user"/>
-        
+                                 referencedTableName="identity_proof"/>
+
     </changeSet>
 </databaseChangeLog>

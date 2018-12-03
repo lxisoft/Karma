@@ -65,7 +65,6 @@ import com.lxisoft.service.dto.CategoryDTO;
 import com.lxisoft.service.dto.CommentDTO;
 import com.lxisoft.service.dto.FeedDTO;
 import com.lxisoft.service.dto.HelpDTO;
-import com.lxisoft.service.dto.MediaDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.service.dto.PostDTO;
 import com.lxisoft.service.dto.RegisteredUserDTO;
@@ -195,16 +194,7 @@ public class AggregateServiceImpl implements AggregateService {
 		 
 		need = needRepository.save(need);
 		
-		/*//anjali
-		 FeedDTO feedDto=new FeedDTO();
-
-		 feedDto.setType("NeedPostAfterApproval");
-		 feedDto.setReferenceId(need.getId());
-		 //feedDto.setRegisteredUserId(need.getPostedUser().getId());
-
-		 saveFeed(feedDto);
-		 //anjali
-		*/
+		
 		
 	     return needMapper.toDto(need);
 	}
@@ -254,22 +244,9 @@ public class AggregateServiceImpl implements AggregateService {
 
         Need need = needMapper.toEntity(needDTO);
         need = needRepository.save(need);
-        
-       
-        
-       /* MediaDTO mediaDTO=new MediaDTO();
-        
-        mediaDTO.setBytes(needDTO.getBytes());
-    	mediaDTO.setNeedId(need.getId());
-        
-    	saveMedia(mediaDTO);*/
-        
-        
         return needMapper.toDto(need);
     }
-    
-    
-    
+
 
     /**
      * Get all the needs.
@@ -743,21 +720,17 @@ public class AggregateServiceImpl implements AggregateService {
 	@Override
 	public HelpDTO saveHelpAsComplete(HelpDTO helpDTO) throws IOException {
 		log.debug("Request to save Help : {}", helpDTO);
-		Help help = helpMapper.toEntity(helpDTO);
-        help = helpRepository.save(help);
-        
-        //anjali
-        
-         /*FeedDTO feedDto=new FeedDTO();
-		 
-		 feedDto.setType("HelpPostAfterCompletion");
-		 feedDto.setReferenceId(help.getId());
-		// feedDto.setRegisteredUserId(help.getProvidedUser().getId());
-		 
-		 saveFeed(feedDto);
-        */
-        //anjali
-        
+			
+		Help oldHelp=helpRepository.findById(helpDTO.getId()).get();
+		
+		HelpDTO newHelp=helpMapper.toDto(oldHelp);
+		
+		newHelp.setApprovalStatusId(helpDTO.getApprovalStatusId());		
+		
+		Help help = helpMapper.toEntity(newHelp);		
+		
+		help = helpRepository.save(help);
+               
         return helpMapper.toDto(help);
 	}
 
@@ -1073,54 +1046,26 @@ public class AggregateServiceImpl implements AggregateService {
 		      
 		      
 		    //anjali
-		       /* FeedDTO feedDto=new FeedDTO();
+		        /*FeedDTO feedDto=new FeedDTO();
 				
 		        if((result.getCheckedNeed().getId()!=null)&&(userCheckDTO.getVoteType()=="postive")){
 		        	
-		        	log.info("***before {} needid",result.getCheckedNeed().getId());
-		        	
-		        	log.info("***before {} voteType",userCheckDTO.getVoteType());
-		        	
-		        	 feedDto.setType("NeedIsGenuine");		        	 
+		        	 feedDto.setType("NeedIsGenuine");
 					 feedDto.setReferenceId(result.getCheckedNeed().getId());
-					 if((result.getCheckedUser().getId())!=null)
-					    feedDto.setRegisteredUserId(result.getCheckedUser().getId());
-					 else
-						 feedDto.setRegisteredUserId(null); 
-					 
-					 log.info("***{}after",feedDto.getType());
-					 
-					 log.info("***after {} object",feedDto);
-					 
-					 saveFeed(feedDto);
-					        
+					 //feedDto.setRegisteredUserId(result.getCheckedUser().getId());
 					 
 		        }
 		        
-		        else if((result.getCheckedNeed().getId()!=null)&&(userCheckDTO.getVoteType()=="negative")){
-		        	
-                    log.info("***before {} needid",result.getCheckedNeed().getId());
-		        	
-		        	log.info("***before {} voteType",userCheckDTO.getVoteType());
+		        if((result.getCheckedNeed().getId()!=null)&&(userCheckDTO.getVoteType()=="negative")){
 		        	
 		        	 feedDto.setType("NeedIsFake");
 					 feedDto.setReferenceId(result.getCheckedNeed().getId());
-					 if((result.getCheckedUser().getId())!=null)
-						    feedDto.setRegisteredUserId(result.getCheckedUser().getId());
-						 else
-							 feedDto.setRegisteredUserId(null);
+					 //feedDto.setRegisteredUserId(result.getCheckedUser().getId());
+					 
 
 					 log.info("***{}inside",feedDto.getType());
-					 
-					 log.info("***after {} object",feedDto);
-					 
-					 saveFeed(feedDto);
 		        }
-		        else
-		        {
-		        	
-		        }
-*/			/* log.info("***{}after",feedDto.getType());
+			 log.info("***{}after",feedDto.getType());
 			 saveFeed(feedDto);*/
 			        
 			   //anjali
@@ -1146,19 +1091,7 @@ public class AggregateServiceImpl implements AggregateService {
 			userCheck = userCheckRepository.save(userCheck);
 			userCheckDTO = userCheckMapper.toDto(userCheck);
 			
-			 //anjali
-	       /* FeedDTO feedDto=new FeedDTO();
 			
-	        if(userCheckDTO.getCheckedHelpId()!=null){
-	        
-	        	feedDto.setType("HelpIsLiked");
-	        	feedDto.setReferenceId(userCheckDTO.getCheckedHelpId());
-				//feedDto.setRegisteredUserId(userCheckDTO.getCheckedUserId());
-				 
-				 saveFeed(feedDto);
-	        }
-		        */
-		   //anjali
 			
 			
 			Optional<UserCheckDTO> result = Optional.of(userCheckDTO);
@@ -1183,19 +1116,7 @@ public class AggregateServiceImpl implements AggregateService {
 			userCheck = userCheckRepository.save(userCheck);
 			userCheckDTO = userCheckMapper.toDto(userCheck);
 			
-			//anjali
-	        /*FeedDTO feedDto=new FeedDTO();
 			
-	        if(userCheckDTO.getCheckedHelpId()!=null){
-	        
-	        	feedDto.setType("HelpIsDisLiked");
-	        	feedDto.setReferenceId(userCheckDTO.getCheckedHelpId());
-				//feedDto.setRegisteredUserId(userCheckDTO.getCheckedUserId());
-				 
-				 saveFeed(feedDto);
-	        }*/
-		        
-		   //anjali
 			
 			Optional<UserCheckDTO> result = Optional.of(userCheckDTO);
 			return result;
@@ -1224,42 +1145,7 @@ public class AggregateServiceImpl implements AggregateService {
 			Comment comment = commentMapper.toEntity(commentDTO);
 			comment = commentRepository.save(comment);
 			
-            //anjali to post feed after comments on help, need and Post
-	        
-	      /*  FeedDTO feedDto=new FeedDTO();
-	        
-	        if(commentDTO.getHelpId()!=null)
-	        {
-			 feedDto.setType("HelpPostComment");
-			 feedDto.setReferenceId(commentDTO.getHelpId());
-			 //feedDto.setRegisteredUserId(commentDTO.getCommentedUserId());
-			 
-			 saveFeed(feedDto);
-	        }
-	        
-	        else if(commentDTO.getNeedId()!=null)
-	        {
-			 feedDto.setType("NeedPostComment");
-			 feedDto.setReferenceId(commentDTO.getNeedId());
-			// feedDto.setRegisteredUserId(commentDTO.getCommentedUserId());
-			 
-			 saveFeed(feedDto);
-	        }
-	        
-	        else if(commentDTO.getPostId()!=null)
-	        {
-			 feedDto.setType("PostComment");
-			 feedDto.setReferenceId(commentDTO.getPostId());
-			// feedDto.setRegisteredUserId(commentDTO.getCommentedUserId());
-			 
-			 saveFeed(feedDto);
-	        }
-	        else
-	        {
-	        	
-	        }
-*/	        //anjali
-			
+            			
 			return commentMapper.toDto(comment);	
 		}
 
@@ -1467,8 +1353,9 @@ public class AggregateServiceImpl implements AggregateService {
 		@Override
 		public PostDTO savePost(PostDTO postDTO) {
 			log.debug("Request to save news feed");
-			if (postDTO.getTimeInString() != null) {
-				String parseDate = postDTO.getTimeInString().replace(" ", "T").concat("Z");
+			// TODO Auto-generated method stub
+			if (postDTO.getDateInString() != null) {
+				String parseDate = postDTO.getDateInString().replace(" ", "T").concat("Z");
 				Instant dateInstant = Instant.parse(parseDate);
 				postDTO.setDate(dateInstant);
 			} else {
@@ -1514,9 +1401,9 @@ public class AggregateServiceImpl implements AggregateService {
 					if (post.getId() == postDto.getId()) {
 						// postDto.setAttachedFilesUrls(urls);
 					}
-					postDto.setNoOfComments((long) calculateCountOfPostCommentsByPostId(postDto.getId()));
-					postDto.setNoOfLikes((long) calculateCountOfPostLikesByPostId(postDto.getId()));
-					postDto.setNoOfDislikes((long) calculateCountOfPostDislikesByPostId(postDto.getId()));
+					postDto.setTotalComments((long) calculateCountOfPostCommentsByPostId(postDto.getId()));
+					postDto.setTotalLikes((long) calculateCountOfPostLikesByPostId(postDto.getId()));
+					postDto.setTotalDislikes((long) calculateCountOfPostDislikesByPostId(postDto.getId()));
 
 				}
 			}
@@ -1529,7 +1416,7 @@ public class AggregateServiceImpl implements AggregateService {
 				Date postedDate = null;
 				if (postDto.getDate() != null) {
 					postedDate = Date.from(postDto.getDate());
-					postDto.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
+					postDto.setPostedBefore(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
 				}
 
 			}
@@ -1549,6 +1436,7 @@ public class AggregateServiceImpl implements AggregateService {
 
 		@Override
 		public Integer calculateCountOfPostLikesByPostId(Long postId) {
+			// TODO Auto-generated method stub
 			return userCheckRepository.countOfVoteTypeLike("positive", postId);
 		}
 
@@ -1564,6 +1452,7 @@ public class AggregateServiceImpl implements AggregateService {
 
 		@Override
 		public Integer calculateCountOfPostDislikesByPostId(Long postId) {
+			// TODO Auto-generated method stub
 			return userCheckRepository.countOfVoteTypeLike("negative", postId);
 		}
 
@@ -1579,6 +1468,7 @@ public class AggregateServiceImpl implements AggregateService {
 
 		@Override
 		public Integer calculateCountOfPostCommentsByPostId(Long postId) {
+			// TODO Auto-generated method stub
 			return commentRepository.countOfCommentsByPostId(postId);
 		}
 
@@ -1741,18 +1631,18 @@ public class AggregateServiceImpl implements AggregateService {
 			PostDTO postDto = null;
 			if (post != null) {
 				postDto = postMapper.toDto(post);
-				postDto.setNoOfComments((long) calculateCountOfPostCommentsByPostId(postDto.getId()));
-				postDto.setNoOfLikes((long) calculateCountOfPostLikesByPostId(postDto.getId()));
-				postDto.setNoOfDislikes((long) calculateCountOfPostDislikesByPostId(postDto.getId()));
+				postDto.setTotalComments((long) calculateCountOfPostCommentsByPostId(postDto.getId()));
+				postDto.setTotalLikes((long) calculateCountOfPostLikesByPostId(postDto.getId()));
+				postDto.setTotalDislikes((long) calculateCountOfPostDislikesByPostId(postDto.getId()));
 				if (postDto != null) {
 					RegisteredUser registeredUser = registeredUserRepository.findById(postDto.getId()).get();
-					postDto.setUserName(registeredUser.getFirstName() +" "+registeredUser.getLastName());
+					postDto.setPostedUserName(registeredUser.getFirstName() +" "+registeredUser.getLastName());
 				}
 
 				Date postedDate = null;
 				if (postDto.getDate() != null) {
 					postedDate = Date.from(postDto.getDate());
-					postDto.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
+					postDto.setPostedBefore(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
 				}
 			}
 			return Optional.of(postDto);
@@ -1823,7 +1713,7 @@ public class AggregateServiceImpl implements AggregateService {
 					     * @param pageable
 					     * @return
 					     */						 
-					   @Override
+					  /* @Override
 					   public Boolean followOrUnfollowRegisteredUser(Long followerUserId,Long registeredUserId){
 					   	log.debug("followerUserId:"+followerUserId);
 
@@ -1859,11 +1749,11 @@ public class AggregateServiceImpl implements AggregateService {
 
 					   }
 				
-					   /**
+					   *//**
 					    *method to count  number of followers of an user
 					     * @param registeredUserId
 					     * @return noOfFollowers
-					     */
+					     *//*
 
 					 public  Long countNoOfFollowers(Long registeredUserId)
 					  {
@@ -1875,11 +1765,11 @@ public class AggregateServiceImpl implements AggregateService {
 					  }
 
 
-					    /**
+					    *//**
 					    *method to count  number of followings 
 					     * @param registeredUserId
 					     * @return noOfFollowings
-					     */
+					     *//*
 
 					  public Long countNoOfFollowings(Long registeredUserId)
 					  {
@@ -1890,7 +1780,7 @@ public class AggregateServiceImpl implements AggregateService {
 
 					  }
 
-		
+*/		
 		//sooraj end
 		
 		

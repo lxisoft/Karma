@@ -28,15 +28,14 @@
       "socialQuotient": "Social Quotient",
       "happinessIndex": "Happiness Index",
       "profilePic": "Profile Pic",
+      "idProof": "Id Proof",
       "addresses": "Addresses",
       "needs": "Needs",
       "helps": "Helps",
       "posts": "Posts",
       "feeds": "Feeds",
-      "followers": "Followers",
       "checkedNeeds": "Checked Needs",
-      "verificationTeams": "Verification Teams",
-      "followingUsers": "Following Users"
+      "verificationTeams": "Verification Teams"
     }
   }
 }

@@ -31,22 +31,22 @@ public class NeedDTO implements Serializable {
 
     private Long approvalStatusId;
 
+    private Long personInChargeId;
+
     private Set<CategoryDTO> categories = new HashSet<>();
 
     private Long postedUserId;
     
     private List<CategoryDTO> categoryList = new ArrayList<>();
 
-	private String dateInString;
+    private String dateInString;
 
     private Long percentageOfGenuineness;
     
     private List<String> fileNameList=new ArrayList<>();
     
     private String timeElapsed;
-    
-    private List<CommentDTO> commentList=new ArrayList<>();
-    
+           
     private Long noOfComments;
     
     private Long noOfHelps;
@@ -57,38 +57,167 @@ public class NeedDTO implements Serializable {
     
     private List<Resource> resourceFiles;
     
-    private Byte[] bytes;
+    private Long noOfRecommendations;
     
     private String userName;
     
+    private Byte[] bytes;
+    
     //private Resource File;
     
+    
+    
+    public Long getId() {
+        return id;
+    }
+
+   
+	public void setId(Long id) {
+        this.id = id;
+    }
+
+	 /**
+		 * @return the bytes
+		 */
+		public Byte[] getBytes() {
+			return bytes;
+		}
+
+		/**
+		 * @param bytes the bytes to set
+		 */
+		public void setBytes(Byte[] bytes) {
+			this.bytes = bytes;
+		}
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getBeneficiaryType() {
+        return beneficiaryType;
+    }
+
+    public void setBeneficiaryType(String beneficiaryType) {
+        this.beneficiaryType = beneficiaryType;
+    }
+
+    public Instant getDate() {
+        return date;
+    }
+
+    public void setDate(Instant date) {
+        this.date = date;
+    }
+
+    public Long getSeverityId() {
+        return severityId;
+    }
+
+    public void setSeverityId(Long severityId) {
+        this.severityId = severityId;
+    }
+
+    public Long getVerificationTeamId() {
+        return verificationTeamId;
+    }
+
+    public void setVerificationTeamId(Long verificationTeamId) {
+        this.verificationTeamId = verificationTeamId;
+    }
+
+    public Long getApprovalStatusId() {
+        return approvalStatusId;
+    }
+
+    public void setApprovalStatusId(Long approvalStatusId) {
+        this.approvalStatusId = approvalStatusId;
+    }
+
+    public Long getPersonInChargeId() {
+        return personInChargeId;
+    }
+
+    public void setPersonInChargeId(Long registeredUserId) {
+        this.personInChargeId = registeredUserId;
+    }
+
+    public Set<CategoryDTO> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<CategoryDTO> categories) {
+        this.categories = categories;
+    }
+
+    public Long getPostedUserId() {
+        return postedUserId;
+    }
+
+    public void setPostedUserId(Long registeredUserId) {
+        this.postedUserId = registeredUserId;
+    }
+    
+    
+
     /**
-   	 * @return the bytes
-   	 */
-   	public Byte[] getBytes() {
-   		return bytes;
-   	}
-
-   	/**
-   	 * @param bytes the bytes to set
-   	 */
-   	public void setBytes(Byte[] bytes) {
-   		this.bytes = bytes;
-   	}
-
-	/**
-	 * @return the userName
+	 * @return the categoryList
 	 */
-	public String getUserName() {
-		return userName;
+	public List<CategoryDTO> getCategoryList() {
+		return categoryList;
 	}
 
 	/**
-	 * @param userName the userName to set
+	 * @param categoryList the categoryList to set
 	 */
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setCategoryList(List<CategoryDTO> categoryList) {
+		this.categoryList = categoryList;
+	}
+
+	/**
+	 * @return the dateInString
+	 */
+	public String getDateInString() {
+		return dateInString;
+	}
+
+	/**
+	 * @param dateInString the dateInString to set
+	 */
+	public void setDateInString(String dateInString) {
+		this.dateInString = dateInString;
+	}
+
+	/**
+	 * @return the percentageOfGenuineness
+	 */
+	public Long getPercentageOfGenuineness() {
+		return percentageOfGenuineness;
+	}
+
+	/**
+	 * @param percentageOfGenuineness the percentageOfGenuineness to set
+	 */
+	public void setPercentageOfGenuineness(Long percentageOfGenuineness) {
+		this.percentageOfGenuineness = percentageOfGenuineness;
+	}
+
+	/**
+	 * @return the fileNameList
+	 */
+	public List<String> getFileNameList() {
+		return fileNameList;
+	}
+
+	/**
+	 * @param fileNameList the fileNameList to set
+	 */
+	public void setFileNameList(List<String> fileNameList) {
+		this.fileNameList = fileNameList;
 	}
 
 	/**
@@ -103,20 +232,6 @@ public class NeedDTO implements Serializable {
 	 */
 	public void setTimeElapsed(String timeElapsed) {
 		this.timeElapsed = timeElapsed;
-	}
-
-	/**
-	 * @return the commentList
-	 */
-	public List<CommentDTO> getCommentList() {
-		return commentList;
-	}
-
-	/**
-	 * @param commentList the commentList to set
-	 */
-	public void setCommentList(List<CommentDTO> commentList) {
-		this.commentList = commentList;
 	}
 
 	/**
@@ -189,137 +304,35 @@ public class NeedDTO implements Serializable {
 		this.resourceFiles = resourceFiles;
 	}
 
-	
-
-    /**
-	 * @return the categoryList
+	/**
+	 * @return the noOfRecommendations
 	 */
-	public List<CategoryDTO> getCategoryList() {
-		return categoryList;
+	public Long getNoOfRecommendations() {
+		return noOfRecommendations;
 	}
 
 	/**
-	 * @param categoryList the categoryList to set
+	 * @param noOfRecommendations the noOfRecommendations to set
 	 */
-	public void setCategoryList(List<CategoryDTO> categoryList) {
-		this.categoryList = categoryList;
+	public void setNoOfRecommendations(Long noOfRecommendations) {
+		this.noOfRecommendations = noOfRecommendations;
 	}
 
 	/**
-	 * @return the dateInString
+	 * @return the userName
 	 */
-	public String getDateInString() {
-		return dateInString;
+	public String getUserName() {
+		return userName;
 	}
 
 	/**
-	 * @param dateInString the dateInString to set
+	 * @param userName the userName to set
 	 */
-	public void setDateInString(String dateInString) {
-		this.dateInString = dateInString;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
-	/**
-	 * @return the percentageOfGenuineness
-	 */
-	public Long getPercentageOfGenuineness() {
-		return percentageOfGenuineness;
-	}
-
-	/**
-	 * @param percentageOfGenuineness the percentageOfGenuineness to set
-	 */
-	public void setPercentageOfGenuineness(Long percentageOfGenuineness) {
-		this.percentageOfGenuineness = percentageOfGenuineness;
-	}
-
-	/**
-	 * @return the fileNameList
-	 */
-	public List<String> getFileNameList() {
-		return fileNameList;
-	}
-
-	/**
-	 * @param fileNameList the fileNameList to set
-	 */
-	public void setFileNameList(List<String> fileNameList) {
-		this.fileNameList = fileNameList;
-	}
-
-	public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getBeneficiaryType() {
-        return beneficiaryType;
-    }
-
-    public void setBeneficiaryType(String beneficiaryType) {
-        this.beneficiaryType = beneficiaryType;
-    }
-
-    public Instant getDate() {
-        return date;
-    }
-
-    public void setDate(Instant date) {
-        this.date = date;
-    }
-
-    public Long getSeverityId() {
-        return severityId;
-    }
-
-    public void setSeverityId(Long severityId) {
-        this.severityId = severityId;
-    }
-
-    public Long getVerificationTeamId() {
-        return verificationTeamId;
-    }
-
-    public void setVerificationTeamId(Long verificationTeamId) {
-        this.verificationTeamId = verificationTeamId;
-    }
-
-    public Long getApprovalStatusId() {
-        return approvalStatusId;
-    }
-
-    public void setApprovalStatusId(Long approvalStatusId) {
-        this.approvalStatusId = approvalStatusId;
-    }
-
-    public Set<CategoryDTO> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(Set<CategoryDTO> categories) {
-        this.categories = categories;
-    }
-
-    public Long getPostedUserId() {
-        return postedUserId;
-    }
-
-    public void setPostedUserId(Long registeredUserId) {
-        this.postedUserId = registeredUserId;
-    }
-
-    @Override
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -350,6 +363,7 @@ public class NeedDTO implements Serializable {
             ", severity=" + getSeverityId() +
             ", verificationTeam=" + getVerificationTeamId() +
             ", approvalStatus=" + getApprovalStatusId() +
+            ", personInCharge=" + getPersonInChargeId() +
             ", postedUser=" + getPostedUserId() +
             "}";
     }

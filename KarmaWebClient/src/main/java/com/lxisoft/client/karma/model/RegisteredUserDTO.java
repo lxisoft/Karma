@@ -3,14 +3,11 @@ package com.lxisoft.client.karma.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.lxisoft.client.karma.model.RegisteredUserDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -19,7 +16,7 @@ import javax.validation.constraints.*;
  * RegisteredUserDTO
  */
 @Validated
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-11-28T21:39:23.440+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-03T19:48:21.052+05:30[Asia/Calcutta]")
 
 public class RegisteredUserDTO   {
   @JsonProperty("bloodGroup")
@@ -40,10 +37,6 @@ public class RegisteredUserDTO   {
   @JsonProperty("firstName")
   private String firstName = null;
 
-  @JsonProperty("followers")
-  @Valid
-  private List<RegisteredUserDTO> followers = null;
-
   @JsonProperty("gender")
   private String gender = null;
 
@@ -52,6 +45,9 @@ public class RegisteredUserDTO   {
 
   @JsonProperty("id")
   private Long id = null;
+
+  @JsonProperty("idProofId")
+  private Long idProofId = null;
 
   @JsonProperty("lastName")
   private String lastName = null;
@@ -189,35 +185,6 @@ public class RegisteredUserDTO   {
     this.firstName = firstName;
   }
 
-  public RegisteredUserDTO followers(List<RegisteredUserDTO> followers) {
-    this.followers = followers;
-    return this;
-  }
-
-  public RegisteredUserDTO addFollowersItem(RegisteredUserDTO followersItem) {
-    if (this.followers == null) {
-      this.followers = new ArrayList<RegisteredUserDTO>();
-    }
-    this.followers.add(followersItem);
-    return this;
-  }
-
-  /**
-   * Get followers
-   * @return followers
-  **/
-  @ApiModelProperty(value = "")
-
-  @Valid
-
-  public List<RegisteredUserDTO> getFollowers() {
-    return followers;
-  }
-
-  public void setFollowers(List<RegisteredUserDTO> followers) {
-    this.followers = followers;
-  }
-
   public RegisteredUserDTO gender(String gender) {
     this.gender = gender;
     return this;
@@ -276,6 +243,26 @@ public class RegisteredUserDTO   {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public RegisteredUserDTO idProofId(Long idProofId) {
+    this.idProofId = idProofId;
+    return this;
+  }
+
+  /**
+   * Get idProofId
+   * @return idProofId
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public Long getIdProofId() {
+    return idProofId;
+  }
+
+  public void setIdProofId(Long idProofId) {
+    this.idProofId = idProofId;
   }
 
   public RegisteredUserDTO lastName(String lastName) {
@@ -394,10 +381,10 @@ public class RegisteredUserDTO   {
         Objects.equals(this.email, registeredUserDTO.email) &&
         Objects.equals(this.emotionalQuotient, registeredUserDTO.emotionalQuotient) &&
         Objects.equals(this.firstName, registeredUserDTO.firstName) &&
-        Objects.equals(this.followers, registeredUserDTO.followers) &&
         Objects.equals(this.gender, registeredUserDTO.gender) &&
         Objects.equals(this.happinessIndex, registeredUserDTO.happinessIndex) &&
         Objects.equals(this.id, registeredUserDTO.id) &&
+        Objects.equals(this.idProofId, registeredUserDTO.idProofId) &&
         Objects.equals(this.lastName, registeredUserDTO.lastName) &&
         Objects.equals(this.profession, registeredUserDTO.profession) &&
         Objects.equals(this.profilePicId, registeredUserDTO.profilePicId) &&
@@ -407,7 +394,7 @@ public class RegisteredUserDTO   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(bloodGroup, description, dob, email, emotionalQuotient, firstName, followers, gender, happinessIndex, id, lastName, profession, profilePicId, rating, socialQuotient);
+    return Objects.hash(bloodGroup, description, dob, email, emotionalQuotient, firstName, gender, happinessIndex, id, idProofId, lastName, profession, profilePicId, rating, socialQuotient);
   }
 
   @Override
@@ -421,10 +408,10 @@ public class RegisteredUserDTO   {
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    emotionalQuotient: ").append(toIndentedString(emotionalQuotient)).append("\n");
     sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
-    sb.append("    followers: ").append(toIndentedString(followers)).append("\n");
     sb.append("    gender: ").append(toIndentedString(gender)).append("\n");
     sb.append("    happinessIndex: ").append(toIndentedString(happinessIndex)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    idProofId: ").append(toIndentedString(idProofId)).append("\n");
     sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
     sb.append("    profession: ").append(toIndentedString(profession)).append("\n");
     sb.append("    profilePicId: ").append(toIndentedString(profilePicId)).append("\n");

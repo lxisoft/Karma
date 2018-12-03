@@ -217,55 +217,67 @@
 							</div>
 
 							<!-- comments section -->
-							<div th:object="${need}" id="comments" th:id="${'comments-'+need.id}" th:with="checkedNeedId=${need.id},checkedHelpId=null,postId=null">
-								<div th:if="*{commentList != null}" style="display: none;" th:style="display:block;" th:fragment="comment-section(checkedNeedId,checkedHelpId,postId)">
+							<div th:object="${need}" id="comments-section" th:id="${'comments-section-'+need.id}" th:with="checkedNeedId=${need.id},checkedHelpId=null,postId=null">
+								<!-- comment form -->
+								<div class="md-form mt-0 mx-3 form-info" id="comment-box" th:id="'comment-box-'+*{id}" th:attr="data-checkedNeedId=${checkedNeedId},data-checkedHelpId=${checkedHelpId},data-postId=${postId}"
+								 th:style="|display: block;|">
+									<textarea type="text" id="comment-box-text" th:id="|'comment-box-text-*{id}'|" class="md-textarea form-control d-inline w-75"
+									 rows="1" th:name="message"></textarea>
+									<label for="comment-box">Comment here</label>
+									<span class="input-group-btn"><button type="button" class="btn btn-outline-info btn-sm" th:onclick="|addComment(*{id});|">Add
+											comment</button></span>
 
-									<!-- comment form -->
-									<div class="md-form mt-0 mx-3 form-info" id="comment-box" th:id="'comment-box-'+*{id}">
-										<textarea type="text" id="comment-box" class="md-textarea form-control d-inline w-75" rows="1" th:name="description"></textarea>
-										<label for="comment-box">Comment here</label>
-										<span class="input-group-btn"><button type="button" class="btn btn-outline-info btn-sm" th:onclick="|method(*{id})|">Add
-												comment</button></span>
-
-									</div>
+								</div>
+								<div th:if="${comments != null}" style="display: none;" th:style="|display:block;|" th:fragment="comment-section(checkedNeedId,checkedHelpId,postId)">
 
 									<!-- view all comments -->
-									<p class="text-primary text-center mt-5 d-inline ml-5 mb-4">All comments<span class="ml-2"><i class="fa fa-angle-up mr-5 mt-1 text-dark"
-											 aria-hidden="true" onclick="$('#comments').hide();" th:onclick="|$('#comments-*{id}').hide();|"></i></span></p>
-									<div class="border-light border-bottom" th:each="comment : *{commentList}">
-										<p class="ml-4 mt-2 mb-0">lkkjskdalj</p>
-										<p class="text-muted ml-4 small d-inline" th:text="'Siraj commented'+${comment.timeElapsed}">Siraj<span class="large">.</span>3
-											minutes ago</p><i class="ml-3 fa fa-heart-o" aria-hidden="true" th:onclick="|likeComment('${comment.id}')|"><span
-											 class="ml-1 text-muted">32</span></i>
-										<p class="text-primary d-inline ml-4" onclick="$('#replies').show();">10 replies</p>
-										<i class="fa fa-reply float-right small text-info mr-5" aria-hidden="true" onclick="$('#reply-box').show();$(this).hide();"></i>
+									<div th:id="${'comments-'+needId}">
+										<p class="text-primary text-center mt-5 d-inline ml-5 mb-4">All comments<span class="ml-2"><i class="fa fa-angle-up mr-5 mt-1 text-dark"
+												 aria-hidden="true" onclick="$('#comments-section').hide();" th:onclick="|$('#comments-section-*{id}').hide();|"></i></span></p>
+										<div class="border-light border-bottom" th:each="comment : ${comments}" th:fragment="comments">
 
-										<!-- reply form -->
-										<div class="md-form mt-0 form-info offset-2 mr-2" id="reply-box" style="display: none;">
-											<textarea type="text" id="comment-box" class="md-textarea form-control d-inline w-75" rows="1"></textarea>
-											<label for="comment-box">Add reply here.....</label>
+											<p class="ml-4 mt-2 mb-0" th:text="${comment.message}">lkkjskdalj</p>
+											<p class="text-muted ml-4 small d-inline" th:text="'Siraj commented'+${comment.timeElapsed}">Siraj<span
+												 class="large">.</span>3
+												minutes ago</p><i class="ml-3 fa fa-heart-o" aria-hidden="true" th:onclick="|likeComment('${comment.id}')|"><span
+												 class="ml-1 text-muted" th:text="${comment.noOfLikes}">32</span></i>
+											<p class="text-primary d-inline ml-4" th:text="${(comment.noOfReplies!=null)?comment.noOfReplies+' replies':''}"
+											 onclick="$('#replies').show();">10
+												replies</p>
+											<i class="fa fa-reply float-right small text-info mr-5" th:id="${'reply-button-'+comment.id}" aria-hidden="true"
+											 onclick="$('#reply-box').show();$(this).hide();" th:onclick="|$('#reply-box-${comment.id}').show();$(this).hide();|"></i>
 
-											<span class="input-group-btn mb-5"><button type="button" class="btn btn-outline-info btn-sm" th:onclick="|replyOnComment('${comment.id}')|">Add
-													reply</button></span><i class="fa fa-close" aria-hidden="true" onclick="$('#reply-box').hide();"></i>
+											<!-- reply form -->
+											<div class="md-form mt-0 form-info offset-2 mr-2" id="reply-box" th:id="${'reply-box-'+comment.id}" style="display: none;"
+											 th:style="|display: none;|">
+												<textarea type="text" id="reply-box-text" th:id="${'reply-box-text-'+comment.id}" class="md-textarea form-control d-inline w-75"
+												 rows="1"></textarea>
+												<label for="comment-box">Add reply here.....</label>
 
-										</div>
+												<span class="input-group-btn mb-5"><button type="button" class="btn btn-outline-info btn-sm" th:onclick="|addReply(${comment.id);|">Add
+														reply</button></span><i class="fa fa-close" aria-hidden="true" th:onclick="|$('#reply-box-${comment.id}').hide();$('#reply-button-${comment.id}').show();|"
+												 onclick="$('#reply-box').hide();"></i>
 
-										<!-- view all replies -->
-										<div class="offset-1" id="replies" th:id="${'replies-'+comment.id}" style="display: none;">
-
-
-											<p class="text-primary text-center mt-1 mb-2">hide replies<span><i class="fa ml-2 clear-fix d-inline text-dark fa-angle-up mr-5 mt-1"
-													 aria-hidden="true" onclick="$('#replies').hide();" th:onlick="|$('#replies-${comment.id}').hide();|"></i></span></p>
-											<div class="border-light border-bottom" th:each="reply : ${replies}">
-												<p class="ml-4 mt-2 mb-0">lkkjskdalj</p>
-												<p class="text-muted ml-5 small d-inline" th:text="'Siraj replied'+${reply.timeElapsed}">Siraj<span class="large">.</span>3
-													minutes ago</p><i class="ml-3 fa fa-heart-o" aria-hidden="true" th:onlick="|likeReply('${reply.id}')|"><span
-													 class="ml-1 text-muted">32</span></i>
 											</div>
+
+											<!-- view all replies -->
+											<div class="offset-1" id="replies" th:id="${'replies-'+comment.id}" style="display: none;" th:style="|display: block;|"
+											 th:if="${replies != null}">
+
+												<div th:fragment="replies">
+													<p class="text-primary text-center mt-1 mb-2">hide replies<span><i class="fa ml-2 clear-fix d-inline text-dark fa-angle-up mr-5 mt-1"
+															 aria-hidden="true" onclick="$('#replies').hide();" th:onlick="|$('#replies-${comment.id}').hide();|"></i></span></p>
+													<div class="border-light border-bottom" th:each="reply : ${replies}">
+														<p class="ml-4 mt-2 mb-0" th:text="${reply.message}">lkkjskdalj</p>
+														<p class="text-muted ml-5 small d-inline" th:text="'Siraj replied'+${reply.timeElapsed}">Siraj<span class="large">.</span>3
+															minutes ago</p><i class="ml-3 fa fa-heart-o" aria-hidden="true" th:text="${reply.noOfLikes}" th:onlick="|likeReply('${reply.id}')|"><span
+															 class="ml-1 text-muted">32</span></i>
+													</div>
+												</div>
+											</div>
+
 										</div>
-
 									</div>
-
 								</div>
 							</div>
 							<!--<p>
@@ -273,7 +285,7 @@
 							<div class="row mt-2">
 								<div class="text-center col-xs-5 mx-auto">
 									<!--<a th:href="@{'/help-need/'+${need.id}}" class="ml-2 card-link text-success float-left">Help now</a>-->
-									<a th:href="@{'/helps/completed'}" class="mt-1 card-link text-success float-left">Helps received</a>
+									<a th:href="@{'/completed-helps/'+${need.id}}" class="mt-1 card-link text-success float-left">Helps received</a>
 								</div>
 
 								<div class="col-xs-7 d-inline mx-auto">
@@ -423,13 +435,83 @@
 		function viewComments(needId) {
 			console.log("view comments worked with needId: " + needId);
 			//$('#comments-' + needId).show();
-			$('#comments-' + needId).load('/commentsByNeedId/' + needId);
+			$('#comments-section-' + needId).show();
+			$('#comments-section-' + needId).load('/comments/getAllCommentsByNeedId/' + needId);
+			$('#comment-box-' + needId).show();
 		}
 		function viewReplies(commentId) {
-			$('#replies-' + commentId).load(url);
+			$('#comments-section-' + needId).show();
+			$('#replies-section-' + commentId).load('/comments/getAllCommentsByNeedId/' + commentId);
 		}
-		function commentOnNeed(needId) {
+		function addComment(id) {
+			var element = "comment-box-" + id;
+			console.log("addComment: " + element + ' ' + $("#comment-box-3").data("checkedNeedId"));
+			console.log("addComment: " + element + ' ' + $("#comment-box").data("checkedNeedId"));
+			console.log("message: " + $("#comment-box-text-" + id).val());
+			/* 			if ($(element).data("checkedNeedId") != null)
+							id = needId;
+						else if (helpId != null)
+							id = helpId;
+						else
+							id = postId; */
 
+			$.ajax({
+				type: 'POST',
+				url: '/comments/addComment',
+				headers: {
+					'X-CSRF-TOKEN': $("input[name='_csrf']").val()
+				},
+				data: {
+					'needId': $(element).data("checkedNeedId"),
+					'helpId': $(element).data("checkedHelpId"),
+					'postId': $(element).data("postId"),
+					'message': $("#comment-box-text-" + id).val(),
+					'commentedUserId': 1,
+					'_csrf': $("input[name='_csrf']").val()
+				},
+				success: function (response) {
+					console.log("comment added successfully " + id);
+
+					$("#comments-" + id).html(response);
+					if (response.success) {
+
+						//document.getElementById("success-message").innerHTML="success";
+						console.log("comment added successfully in if condition");
+					}
+				},
+				error: function () {
+					console.log("comment added failed...!");
+				}
+			});
+		}
+		function addReply(commentId) {
+			$.ajax({
+				type: 'POST',
+				url: '/replies/addReply',
+				headers: {
+					'X-CSRF-TOKEN': $("input[name='_csrf']").val()
+				},
+				data: {
+					'commentId': commentId,
+					'message': $("reply-box-text" + commentId).val(),
+					'repliedUserId': 1,
+					'_csrf': $("input[name='_csrf']").val()
+				},
+				success: function (response) {
+					console.log("reply added successfully " + commentId);
+
+					$("#replies-" + commentId).html(response);
+
+					if (response.success) {
+
+						//document.getElementById("success-message").innerHTML="success";
+						console.log("reply added successfully in if condition");
+					}
+				},
+				error: function () {
+					console.log("reply added failed...!");
+				}
+			});
 		}
 		function likeComment(commentId) {
 			/* 			$.ajax({

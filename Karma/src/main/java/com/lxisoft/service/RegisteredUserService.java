@@ -28,13 +28,7 @@ public interface RegisteredUserService {
      */
     Page<RegisteredUserDTO> findAll(Pageable pageable);
 
-    /**
-     * Get all the RegisteredUser with eager load of many-to-many relationships.
-     *
-     * @return the list of entities
-     */
-    Page<RegisteredUserDTO> findAllWithEagerRelationships(Pageable pageable);
-    
+
     /**
      * Get the "id" registeredUser.
      *

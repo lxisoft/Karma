@@ -1,12 +1,10 @@
 package com.lxisoft.domain;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.DynamicUpdate;
-
 
 import javax.persistence.*;
 
@@ -24,7 +22,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "need")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@DynamicUpdate(value=true)
 public class Need implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -62,6 +59,10 @@ public class Need implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties("needs")
     private ApprovalStatus approvalStatus;
+
+    @ManyToOne
+    @JsonIgnoreProperties("")
+    private RegisteredUser personInCharge;
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -237,6 +238,19 @@ public class Need implements Serializable {
 
     public void setApprovalStatus(ApprovalStatus approvalStatus) {
         this.approvalStatus = approvalStatus;
+    }
+
+    public RegisteredUser getPersonInCharge() {
+        return personInCharge;
+    }
+
+    public Need personInCharge(RegisteredUser registeredUser) {
+        this.personInCharge = registeredUser;
+        return this;
+    }
+
+    public void setPersonInCharge(RegisteredUser registeredUser) {
+        this.personInCharge = registeredUser;
     }
 
     public Set<Category> getCategories() {

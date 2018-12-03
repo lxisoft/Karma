@@ -9,6 +9,8 @@ import { IRegisteredUser } from 'app/shared/model/Karma/registered-user.model';
 import { RegisteredUserService } from './registered-user.service';
 import { IMedia } from 'app/shared/model/Karma/media.model';
 import { MediaService } from 'app/entities/Karma/media';
+import { IIdentityProof } from 'app/shared/model/Karma/identity-proof.model';
+import { IdentityProofService } from 'app/entities/Karma/identity-proof';
 import { IVerificationTeam } from 'app/shared/model/Karma/verification-team.model';
 import { VerificationTeamService } from 'app/entities/Karma/verification-team';
 
@@ -22,7 +24,7 @@ export class RegisteredUserUpdateComponent implements OnInit {
 
   profilepics: IMedia[];
 
-  registeredusers: IRegisteredUser[];
+  idproofs: IIdentityProof[];
 
   verificationteams: IVerificationTeam[];
   dobDp: any;
@@ -31,6 +33,7 @@ export class RegisteredUserUpdateComponent implements OnInit {
     private jhiAlertService: JhiAlertService,
     private registeredUserService: RegisteredUserService,
     private mediaService: MediaService,
+    private identityProofService: IdentityProofService,
     private verificationTeamService: VerificationTeamService,
     private activatedRoute: ActivatedRoute
   ) {}
@@ -55,9 +58,18 @@ export class RegisteredUserUpdateComponent implements OnInit {
       },
       (res: HttpErrorResponse) => this.onError(res.message)
     );
-    this.registeredUserService.query().subscribe(
-      (res: HttpResponse<IRegisteredUser[]>) => {
-        this.registeredusers = res.body;
+    this.identityProofService.query({ filter: 'owner-is-null' }).subscribe(
+      (res: HttpResponse<IIdentityProof[]>) => {
+        if (!this.registeredUser.idProofId) {
+          this.idproofs = res.body;
+        } else {
+          this.identityProofService.find(this.registeredUser.idProofId).subscribe(
+            (subRes: HttpResponse<IIdentityProof>) => {
+              this.idproofs = [subRes.body].concat(res.body);
+            },
+            (subRes: HttpErrorResponse) => this.onError(subRes.message)
+          );
+        }
       },
       (res: HttpErrorResponse) => this.onError(res.message)
     );
@@ -103,7 +115,7 @@ export class RegisteredUserUpdateComponent implements OnInit {
     return item.id;
   }
 
-  trackRegisteredUserById(index: number, item: IRegisteredUser) {
+  trackIdentityProofById(index: number, item: IIdentityProof) {
     return item.id;
   }
 

@@ -202,7 +202,7 @@ public class AggregateResource {
      * @param id the id of the needDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
-    @DeleteMapping("/needs/{id}")
+    @DeleteMapping("/needs/deleteNeed/{id}")
     @Timed
     public ResponseEntity<Void> deleteNeed(@PathVariable Long id) {
         log.debug("REST request to delete Need : {}", id);
@@ -788,7 +788,7 @@ public class AggregateResource {
      * @return the Boolean value
      */
     
-    @PostMapping("/followOrUnfollowRegisteredUser/{followingUserId}/{registeredUserId}")
+   /* @PostMapping("/followOrUnfollowRegisteredUser/{followingUserId}/{registeredUserId}")
     public Boolean followOrUnfollowRegisteredUser(@PathVariable Long followingUserId,@PathVariable Long registeredUserId)
     {
 
@@ -799,7 +799,7 @@ public class AggregateResource {
     
      return result;
 
-    }
+    }*/
     
   //sooraj end
 

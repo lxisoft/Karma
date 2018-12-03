@@ -83,9 +83,10 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label jhiTranslate="karmaApp.karmaRegisteredUser.followers" for="field_followers">Followers</label>
-                    <select class="form-control" id="field_followers" multiple name="followers" [(ngModel)]="registeredUser.followers">
-                        <option [ngValue]="getSelected(registeredUser.followers, registeredUserOption)" *ngFor="let registeredUserOption of registeredusers; trackBy: trackRegisteredUserById">{{registeredUserOption.id}}</option>
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaRegisteredUser.idProof" for="field_idProof">Id Proof</label>
+                    <select class="form-control" id="field_idProof" name="idProof" [(ngModel)]="registeredUser.idProofId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="identityProofOption.id" *ngFor="let identityProofOption of idproofs; trackBy: trackIdentityProofById">{{identityProofOption.id}}</option>
                     </select>
                 </div>
             </div>

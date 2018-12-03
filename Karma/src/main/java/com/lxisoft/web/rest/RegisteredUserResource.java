@@ -25,8 +25,7 @@ import java.util.Optional;
 /**
  * REST controller for managing RegisteredUser.
  */
-@RestController
-@RequestMapping("/api")
+
 public class RegisteredUserResource {
 
     private final Logger log = LoggerFactory.getLogger(RegisteredUserResource.class);
@@ -85,20 +84,14 @@ public class RegisteredUserResource {
      * GET  /registered-users : get all the registeredUsers.
      *
      * @param pageable the pagination information
-     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many)
      * @return the ResponseEntity with status 200 (OK) and the list of registeredUsers in body
      */
     @GetMapping("/registered-users")
     @Timed
-    public ResponseEntity<List<RegisteredUserDTO>> getAllRegisteredUsers(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
+    public ResponseEntity<List<RegisteredUserDTO>> getAllRegisteredUsers(Pageable pageable) {
         log.debug("REST request to get a page of RegisteredUsers");
-        Page<RegisteredUserDTO> page;
-        if (eagerload) {
-            page = registeredUserService.findAllWithEagerRelationships(pageable);
-        } else {
-            page = registeredUserService.findAll(pageable);
-        }
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, String.format("/api/registered-users?eagerload=%b", eagerload));
+        Page<RegisteredUserDTO> page = registeredUserService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/registered-users");
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 

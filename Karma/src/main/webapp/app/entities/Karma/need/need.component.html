@@ -21,6 +21,7 @@
             <th jhiSortBy="severityId"><span jhiTranslate="karmaApp.karmaNeed.severity">Severity</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="verificationTeamId"><span jhiTranslate="karmaApp.karmaNeed.verificationTeam">Verification Team</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="approvalStatusId"><span jhiTranslate="karmaApp.karmaNeed.approvalStatus">Approval Status</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="personInChargeId"><span jhiTranslate="karmaApp.karmaNeed.personInCharge">Person In Charge</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="postedUserId"><span jhiTranslate="karmaApp.karmaNeed.postedUser">Posted User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
@@ -44,6 +45,11 @@
                 <td>
                     <div *ngIf="need.approvalStatusId">
                         <a [routerLink]="['../approval-status', need.approvalStatusId , 'view' ]" >{{need.approvalStatusId}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="need.personInChargeId">
+                        <a [routerLink]="['../registered-user', need.personInChargeId , 'view' ]" >{{need.personInChargeId}}</a>
                     </div>
                 </td>
                 <td>

@@ -16,6 +16,7 @@ export interface INeed {
   severityId?: number;
   verificationTeamId?: number;
   approvalStatusId?: number;
+  personInChargeId?: number;
   categories?: ICategory[];
   postedUserId?: number;
   userChecks?: IUserCheck[];
@@ -33,6 +34,7 @@ export class Need implements INeed {
     public severityId?: number,
     public verificationTeamId?: number,
     public approvalStatusId?: number,
+    public personInChargeId?: number,
     public categories?: ICategory[],
     public postedUserId?: number,
     public userChecks?: IUserCheck[]

@@ -27,7 +27,6 @@ import com.lxisoft.service.dto.CategoryDTO;
 import com.lxisoft.service.dto.CommentDTO;
 import com.lxisoft.service.dto.FeedDTO;
 import com.lxisoft.service.dto.HelpDTO;
-import com.lxisoft.service.dto.MediaDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.service.dto.PostDTO;
 import com.lxisoft.service.dto.RegisteredUserDTO;
@@ -503,7 +502,7 @@ public interface AggregateService {
 			 * @return
 			 */
 
-			Boolean followOrUnfollowRegisteredUser(Long followerUserId,Long registeredUserId);
+			//Boolean followOrUnfollowRegisteredUser(Long followerUserId,Long registeredUserId);
 
 
 		     /**
@@ -514,7 +513,7 @@ public interface AggregateService {
 			  * @return noOfFollowers
 			  */
 
-			  Long countNoOfFollowers(Long registeredUserId);
+			  //Long countNoOfFollowers(Long registeredUserId);
 			 
 			  /**
 			   * count  number of followers of an user
@@ -523,19 +522,9 @@ public interface AggregateService {
 			   * 
 			   * @return noOfFollowers
 			   */
-			  Long countNoOfFollowings(Long registeredUserId);
+			 // Long countNoOfFollowings(Long registeredUserId);
 
          //sooraj end
-			  
-			  
-			  /**
-			     * Save a media.
-			     *
-			     * @param mediaDTO the entity to save
-			     * @return the persisted entity
-			     * @throws IOException 
-			     *//*
-			    MediaDTO saveMedia(MediaDTO mediaDTO) throws IOException;
-*/
+
 
 }

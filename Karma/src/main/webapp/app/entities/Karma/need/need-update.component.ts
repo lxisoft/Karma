@@ -14,10 +14,10 @@ import { IVerificationTeam } from 'app/shared/model/Karma/verification-team.mode
 import { VerificationTeamService } from 'app/entities/Karma/verification-team';
 import { IApprovalStatus } from 'app/shared/model/Karma/approval-status.model';
 import { ApprovalStatusService } from 'app/entities/Karma/approval-status';
-import { ICategory } from 'app/shared/model/Karma/category.model';
-import { CategoryService } from 'app/entities/Karma/category';
 import { IRegisteredUser } from 'app/shared/model/Karma/registered-user.model';
 import { RegisteredUserService } from 'app/entities/Karma/registered-user';
+import { ICategory } from 'app/shared/model/Karma/category.model';
+import { CategoryService } from 'app/entities/Karma/category';
 
 @Component({
   selector: 'jhi-need-update',
@@ -33,9 +33,9 @@ export class NeedUpdateComponent implements OnInit {
 
   approvalstatuses: IApprovalStatus[];
 
-  categories: ICategory[];
-
   registeredusers: IRegisteredUser[];
+
+  categories: ICategory[];
   date: string;
 
   constructor(
@@ -44,8 +44,8 @@ export class NeedUpdateComponent implements OnInit {
     private severityService: SeverityService,
     private verificationTeamService: VerificationTeamService,
     private approvalStatusService: ApprovalStatusService,
-    private categoryService: CategoryService,
     private registeredUserService: RegisteredUserService,
+    private categoryService: CategoryService,
     private activatedRoute: ActivatedRoute
   ) {}
 
@@ -73,15 +73,15 @@ export class NeedUpdateComponent implements OnInit {
       },
       (res: HttpErrorResponse) => this.onError(res.message)
     );
-    this.categoryService.query().subscribe(
-      (res: HttpResponse<ICategory[]>) => {
-        this.categories = res.body;
-      },
-      (res: HttpErrorResponse) => this.onError(res.message)
-    );
     this.registeredUserService.query().subscribe(
       (res: HttpResponse<IRegisteredUser[]>) => {
         this.registeredusers = res.body;
+      },
+      (res: HttpErrorResponse) => this.onError(res.message)
+    );
+    this.categoryService.query().subscribe(
+      (res: HttpResponse<ICategory[]>) => {
+        this.categories = res.body;
       },
       (res: HttpErrorResponse) => this.onError(res.message)
     );
@@ -130,11 +130,11 @@ export class NeedUpdateComponent implements OnInit {
     return item.id;
   }
 
-  trackCategoryById(index: number, item: ICategory) {
+  trackRegisteredUserById(index: number, item: IRegisteredUser) {
     return item.id;
   }
 
-  trackRegisteredUserById(index: number, item: IRegisteredUser) {
+  trackCategoryById(index: number, item: ICategory) {
     return item.id;
   }
 

@@ -68,6 +68,9 @@ public class RegisteredUser implements Serializable {
     @OneToOne    @JoinColumn(unique = true)
     private Media profilePic;
 
+    @OneToOne    @JoinColumn(unique = true)
+    private IdentityProof idProof;
+
     @OneToMany(mappedBy = "registeredUser")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Address> addresses = new HashSet<>();
@@ -83,13 +86,6 @@ public class RegisteredUser implements Serializable {
     @OneToMany(mappedBy = "registeredUser")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Feed> feeds = new HashSet<>();
-    @ManyToMany
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "registered_user_followers",
-               joinColumns = @JoinColumn(name = "registered_users_id", referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name = "followers_id", referencedColumnName = "id"))
-    private Set<RegisteredUser> followers = new HashSet<>();
-
     @OneToMany(mappedBy = "checkedUser")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<UserCheck> checkedNeeds = new HashSet<>();
@@ -97,11 +93,6 @@ public class RegisteredUser implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JsonIgnore
     private Set<VerificationTeam> verificationTeams = new HashSet<>();
-
-    @ManyToMany(mappedBy = "followers")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JsonIgnore
-    private Set<RegisteredUser> followingUsers = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -281,6 +272,19 @@ public class RegisteredUser implements Serializable {
         this.profilePic = media;
     }
 
+    public IdentityProof getIdProof() {
+        return idProof;
+    }
+
+    public RegisteredUser idProof(IdentityProof identityProof) {
+        this.idProof = identityProof;
+        return this;
+    }
+
+    public void setIdProof(IdentityProof identityProof) {
+        this.idProof = identityProof;
+    }
+
     public Set<Address> getAddresses() {
         return addresses;
     }
@@ -406,31 +410,6 @@ public class RegisteredUser implements Serializable {
         this.feeds = feeds;
     }
 
-    public Set<RegisteredUser> getFollowers() {
-        return followers;
-    }
-
-    public RegisteredUser followers(Set<RegisteredUser> registeredUsers) {
-        this.followers = registeredUsers;
-        return this;
-    }
-
-    public RegisteredUser addFollowers(RegisteredUser registeredUser) {
-        this.followers.add(registeredUser);
-        registeredUser.getFollowingUsers().add(this);
-        return this;
-    }
-
-    public RegisteredUser removeFollowers(RegisteredUser registeredUser) {
-        this.followers.remove(registeredUser);
-        registeredUser.getFollowingUsers().remove(this);
-        return this;
-    }
-
-    public void setFollowers(Set<RegisteredUser> registeredUsers) {
-        this.followers = registeredUsers;
-    }
-
     public Set<UserCheck> getCheckedNeeds() {
         return checkedNeeds;
     }
@@ -479,31 +458,6 @@ public class RegisteredUser implements Serializable {
 
     public void setVerificationTeams(Set<VerificationTeam> verificationTeams) {
         this.verificationTeams = verificationTeams;
-    }
-
-    public Set<RegisteredUser> getFollowingUsers() {
-        return followingUsers;
-    }
-
-    public RegisteredUser followingUsers(Set<RegisteredUser> registeredUsers) {
-        this.followingUsers = registeredUsers;
-        return this;
-    }
-
-    public RegisteredUser addFollowingUsers(RegisteredUser registeredUser) {
-        this.followingUsers.add(registeredUser);
-        registeredUser.getFollowers().add(this);
-        return this;
-    }
-
-    public RegisteredUser removeFollowingUsers(RegisteredUser registeredUser) {
-        this.followingUsers.remove(registeredUser);
-        registeredUser.getFollowers().remove(this);
-        return this;
-    }
-
-    public void setFollowingUsers(Set<RegisteredUser> registeredUsers) {
-        this.followingUsers = registeredUsers;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

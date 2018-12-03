@@ -8,12 +8,13 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Need and its DTO NeedDTO.
  */
-@Mapper(componentModel = "spring", uses = {SeverityMapper.class, VerificationTeamMapper.class, ApprovalStatusMapper.class, CategoryMapper.class, RegisteredUserMapper.class})
+@Mapper(componentModel = "spring", uses = {SeverityMapper.class, VerificationTeamMapper.class, ApprovalStatusMapper.class, RegisteredUserMapper.class, CategoryMapper.class})
 public interface NeedMapper extends EntityMapper<NeedDTO, Need> {
 
     @Mapping(source = "severity.id", target = "severityId")
     @Mapping(source = "verificationTeam.id", target = "verificationTeamId")
     @Mapping(source = "approvalStatus.id", target = "approvalStatusId")
+    @Mapping(source = "personInCharge.id", target = "personInChargeId")
     @Mapping(source = "postedUser.id", target = "postedUserId")
     NeedDTO toDto(Need need);
 
@@ -23,6 +24,7 @@ public interface NeedMapper extends EntityMapper<NeedDTO, Need> {
     @Mapping(source = "severityId", target = "severity")
     @Mapping(source = "verificationTeamId", target = "verificationTeam")
     @Mapping(source = "approvalStatusId", target = "approvalStatus")
+    @Mapping(source = "personInChargeId", target = "personInCharge")
     @Mapping(source = "postedUserId", target = "postedUser")
     @Mapping(target = "userChecks", ignore = true)
     Need toEntity(NeedDTO needDTO);

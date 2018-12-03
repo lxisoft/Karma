@@ -52,6 +52,12 @@
             "otherEntityField": "id"
         },
         {
+            "relationshipType": "many-to-one",
+            "relationshipName": "personInCharge",
+            "otherEntityName": "registeredUser",
+            "otherEntityField": "id"
+        },
+        {
             "relationshipType": "many-to-many",
             "otherEntityRelationshipName": "needs",
             "relationshipName": "categories",

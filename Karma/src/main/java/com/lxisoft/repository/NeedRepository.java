@@ -31,5 +31,4 @@ public interface NeedRepository extends JpaRepository<Need, Long> {
     
     Page<Need> findAllNeedsBySeverityId(Pageable pageable,Long severityId);
 
-
 }

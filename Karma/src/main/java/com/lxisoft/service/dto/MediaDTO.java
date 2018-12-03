@@ -21,26 +21,8 @@ public class MediaDTO implements Serializable {
     private Long helpId;
 
     private Long postId;
-    
-    private Byte[] bytes;
-    
-    
 
-    /**
-	 * @return the bytes
-	 */
-	public Byte[] getBytes() {
-		return bytes;
-	}
-
-	/**
-	 * @param bytes the bytes to set
-	 */
-	public void setBytes(Byte[] bytes) {
-		this.bytes = bytes;
-	}
-
-	public Long getId() {
+    public Long getId() {
         return id;
     }
 

@@ -59,11 +59,11 @@
                         <a [routerLink]="['/media', registeredUser.profilePicId, 'view']">{{registeredUser.profilePicId}}</a>
                     </div>
                 </dd>
-                <dt><span jhiTranslate="karmaApp.karmaRegisteredUser.followers">Followers</span></dt>
+                <dt><span jhiTranslate="karmaApp.karmaRegisteredUser.idProof">Id Proof</span></dt>
                 <dd>
-                    <span *ngFor="let followers of registeredUser.followers; let last = last">
-                        <a [routerLink]="['/registered-user', followers?.id, 'view' ]">{{followers.id}}</a>{{last ? '' : ', '}}
-                    </span>
+                    <div *ngIf="registeredUser.idProofId">
+                        <a [routerLink]="['/identity-proof', registeredUser.idProofId, 'view']">{{registeredUser.idProofId}}</a>
+                    </div>
                 </dd>
             </dl>
 

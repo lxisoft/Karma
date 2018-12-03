@@ -42,19 +42,18 @@ public class HelpDTO implements Serializable {
     private String userName;
     
     
-    
-	/**
-	 * @return the userName
+    /**
+	 * @return the helpUserName
 	 */
 	public String getUserName() {
 		return userName;
 	}
 
 	/**
-	 * @param userName the userName to set
+	 * @param helpUserName the helpUserName to set
 	 */
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUserName(String helpUserName) {
+		this.userName = helpUserName;
 	}
 
 	/**

@@ -35,6 +35,12 @@
                         <a [routerLink]="['/approval-status', need.approvalStatusId, 'view']">{{need.approvalStatusId}}</a>
                     </div>
                 </dd>
+                <dt><span jhiTranslate="karmaApp.karmaNeed.personInCharge">Person In Charge</span></dt>
+                <dd>
+                    <div *ngIf="need.personInChargeId">
+                        <a [routerLink]="['/registered-user', need.personInChargeId, 'view']">{{need.personInChargeId}}</a>
+                    </div>
+                </dd>
                 <dt><span jhiTranslate="karmaApp.karmaNeed.categories">Categories</span></dt>
                 <dd>
                     <span *ngFor="let categories of need.categories; let last = last">

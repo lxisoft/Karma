@@ -4,7 +4,6 @@ import { INeed } from 'app/shared/model/Karma/need.model';
 import { IHelp } from 'app/shared/model/Karma/help.model';
 import { IPost } from 'app/shared/model/Karma/post.model';
 import { IFeed } from 'app/shared/model/Karma/feed.model';
-import { IRegisteredUser } from 'app/shared/model/Karma/registered-user.model';
 import { IUserCheck } from 'app/shared/model/Karma/user-check.model';
 import { IVerificationTeam } from 'app/shared/model/Karma/verification-team.model';
 
@@ -23,15 +22,14 @@ export interface IRegisteredUser {
   socialQuotient?: number;
   happinessIndex?: number;
   profilePicId?: number;
+  idProofId?: number;
   addresses?: IAddress[];
   needs?: INeed[];
   helps?: IHelp[];
   posts?: IPost[];
   feeds?: IFeed[];
-  followers?: IRegisteredUser[];
   checkedNeeds?: IUserCheck[];
   verificationTeams?: IVerificationTeam[];
-  followingUsers?: IRegisteredUser[];
 }
 
 export class RegisteredUser implements IRegisteredUser {
@@ -50,14 +48,13 @@ export class RegisteredUser implements IRegisteredUser {
     public socialQuotient?: number,
     public happinessIndex?: number,
     public profilePicId?: number,
+    public idProofId?: number,
     public addresses?: IAddress[],
     public needs?: INeed[],
     public helps?: IHelp[],
     public posts?: IPost[],
     public feeds?: IFeed[],
-    public followers?: IRegisteredUser[],
     public checkedNeeds?: IUserCheck[],
-    public verificationTeams?: IVerificationTeam[],
-    public followingUsers?: IRegisteredUser[]
+    public verificationTeams?: IVerificationTeam[]
   ) {}
 }
