@@ -34,7 +34,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-05T16:12:06.864739200+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-05T23:14:06.746998700+05:30[Asia/Calcutta]")
 
 @Api(value = "AggregateResource", description = "the AggregateResource API")
 public interface AggregateResourceApi {
@@ -361,6 +361,18 @@ public interface AggregateResourceApi {
     ResponseEntity<NeedDTO> getNeedUsingGET(@ApiParam(value = "id",required=true) @PathVariable("id") Long id);
 
 
+    @ApiOperation(value = "getOneRegisteredUser", nickname = "getOneRegisteredUserUsingGET", notes = "", response = RegisteredUserDTO.class, tags={ "aggregate-resource", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "OK", response = RegisteredUserDTO.class),
+        @ApiResponse(code = 401, message = "Unauthorized"),
+        @ApiResponse(code = 403, message = "Forbidden"),
+        @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/api/registeredUser/{id}",
+        produces = "*/*", 
+        method = RequestMethod.GET)
+    ResponseEntity<RegisteredUserDTO> getOneRegisteredUserUsingGET(@ApiParam(value = "id",required=true) @PathVariable("id") Long id);
+
+
     @ApiOperation(value = "getPost", nickname = "getPostUsingGET", notes = "", response = PostDTO.class, tags={ "aggregate-resource", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = PostDTO.class),
@@ -371,19 +383,6 @@ public interface AggregateResourceApi {
         produces = "*/*", 
         method = RequestMethod.GET)
     ResponseEntity<PostDTO> getPostUsingGET(@ApiParam(value = "id",required=true) @PathVariable("id") Long id);
-
-
-    @ApiOperation(value = "getRegisteredUserEmotionalQuotientAndSocialQuotient", nickname = "getRegisteredUserEmotionalQuotientAndSocialQuotientUsingPUT", notes = "", response = RegisteredUserDTO.class, tags={ "aggregate-resource", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "OK", response = RegisteredUserDTO.class),
-        @ApiResponse(code = 201, message = "Created"),
-        @ApiResponse(code = 401, message = "Unauthorized"),
-        @ApiResponse(code = 403, message = "Forbidden"),
-        @ApiResponse(code = 404, message = "Not Found") })
-    @RequestMapping(value = "/api/registered-users/getEmotionalQuotientAndSocialQuotient/{id}",
-        produces = "*/*", 
-        method = RequestMethod.PUT)
-    ResponseEntity<RegisteredUserDTO> getRegisteredUserEmotionalQuotientAndSocialQuotientUsingPUT(@ApiParam(value = "id",required=true) @PathVariable("id") Long id);
 
 
     @ApiOperation(value = "helpNeedy", nickname = "helpNeedyUsingPOST", notes = "", response = HelpDTO.class, tags={ "aggregate-resource", })

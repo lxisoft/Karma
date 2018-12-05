@@ -42,6 +42,7 @@ import com.lxisoft.client.karma.model.CommentDTO;
 import com.lxisoft.client.karma.model.FeedDTO;
 import com.lxisoft.client.karma.model.HelpDTO;
 import com.lxisoft.client.karma.model.NeedDTO;
+import com.lxisoft.client.karma.model.RegisteredUserDTO;
 import com.lxisoft.client.karma.model.ReplyDTO;
 import com.lxisoft.client.karma.model.UserCheckDTO;
 
@@ -584,16 +585,17 @@ public class AggregateController {
 	 *            the id of the registeredUserDTO to retrieve
 	 * @return the string value
 	 */
-	/*@GetMapping("/needs/{id}")
+	@GetMapping("/registered-users/{id}")
 	@Timed
 	public String getOneRegisteredUser(@PathVariable(value = "id") Long id, Model model) {
+		
 		log.debug("request to get registeredUserDTO : {}", id);
 
-		RegisteredUserDTO RegisteredUserDTO = aggregateResourceApi.getOneRegisteredUser(id).getBody();
+		RegisteredUserDTO registeredUser= aggregateResourceApi.getOneRegisteredUserUsingGET(id).getBody();
 
-		model.addAttribute("need", needDTO);
+		model.addAttribute("registeredUser", registeredUser);
 
-		return "need";
-	}*/
+		return "registeredUser";
+	}
 
 }
