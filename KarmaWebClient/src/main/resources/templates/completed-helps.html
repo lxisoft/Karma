@@ -42,101 +42,106 @@
 		</nav>
 	</div>
 
-	<div th:replace="home :: help-form"></div>
-
 
 	<div class="container-fluid">
 
 		<div class="row mt-5"></div>
 		<div class="row mt-5">
-
 			<div class="col-sm-6 mx-auto">
-				<div th:each="help : ${helps}" class="row my-3">
-					<div class="card" style="width:100%">
-						<div class="card-body">
-							<h5 class="card-title mb-2 text-info">David george helped</h5>
 
-							<p class="card-subtitle mb-2 text-muted small mb-3 mt-1" th:text="'posted '+${help.time}">posted just now</p>
+				<!-- including fragment to post help request-->
+				<div th:replace="home :: help-form"></div>
 
-							<div class="row">
+				<th:block th:with="message='No helps received so far'" th:if="${#lists.size(helps)==0}">
+					<div class="mt-4" th:fragment="alert-message(message)">
+						<p class="alert alert-info" th:text="${message}">Message if empty</p>
+					</div>
+				</th:block>
+				<div th:fragment="helps">
+					<div th:each="help : ${helps}" class="row my-3">
+						<div class="card" style="width:100%" th:fragment="help" th:id="|help-${help.id}|">
+							<div class="card-body">
+								<h5 class="card-title mb-2 text-info">David george helped</h5>
+
+								<p class="card-subtitle mb-2 text-muted small mb-3 mt-1" th:text="'posted '+${help.time}">posted just now</p>
+
+								<div class="row">
 
 
-								<div class="col-md-12 mb-3">
+									<div class="col-md-12 mb-3">
 
-									<img src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" class="img-fluid z-depth-1" alt="Responsive image">
+										<img src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" class="img-fluid z-depth-1" alt="Responsive image">
+
+									</div>
+
 
 								</div>
 
+
+
+								<div class="row">
+
+
+									<div class="col-lg-4 col-md-12 mb-3">
+
+										<img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(115).jpg" class="img-fluid z-depth-1"
+										 alt="Responsive image">
+
+									</div>
+
+									<div class="col-lg-4 col-md-6 mb-3">
+
+										<img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(116).jpg" class="img-fluid z-depth-1"
+										 alt="Responsive image">
+
+									</div>
+
+									<div class="col-lg-4 col-md-6 mb-3">
+
+										<img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(117).jpg" class="img-fluid z-depth-1"
+										 alt="Responsive image">
+
+									</div>
+
+
+								</div>
+
+								<div class="row">
+
+									<div class="col-md-6 mb-3">
+
+										<img src="https://mdbootstrap.com/img/Photos/Horizontal/People/6-col/img(117).jpg" class="img-fluid z-depth-1"
+										 alt="Responsive image">
+
+									</div>
+
+
+
+									<div class="col-md-6 mb-3">
+
+										<img src="https://mdbootstrap.com/img/Photos/Horizontal/People/6-col/img(129).jpg" class="img-fluid z-depth-1"
+										 alt="Responsive image">
+
+									</div>
+
+
+								</div>
+								<p class="card-text mt-3" th:text="${help.description}">Some quick example text to build on the
+									panel title and make up the bulk of the panel's content.</p>
+
+								<div class="text-center col-xs-5 border-bottom border-light">
+									<a class="small muted-text" onclick="$('#comments').show();" th:onclick="|viewComments(${help.id})|" th:text="${(help.noOfComments==null)?'0 comments':noOfComments+' comments'}">0
+										Comments</a>
+									<i class="ml-3 fa fa-heart-o" aria-hidden="true" th:onlick="|likeHelp('${help.id}')|"><span class="ml-1 text-muted"
+										 th:text="${(help.noOfLikes==null)?0:help.noOfLikes}">32</span></i>
+								</div>
+
+								<div th:insert="home :: comment-section(checkedNeedId=null,checkedHelpId=${help.id},postId=null)" th:object="${help}"
+								 th:id="${'comments-section-'+help.id}">
+
+								</div>
 
 							</div>
-
-
-
-							<div class="row">
-
-
-								<div class="col-lg-4 col-md-12 mb-3">
-
-									<img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(115).jpg" class="img-fluid z-depth-1"
-									 alt="Responsive image">
-
-								</div>
-
-								<div class="col-lg-4 col-md-6 mb-3">
-
-									<img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(116).jpg" class="img-fluid z-depth-1"
-									 alt="Responsive image">
-
-								</div>
-
-								<div class="col-lg-4 col-md-6 mb-3">
-
-									<img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(117).jpg" class="img-fluid z-depth-1"
-									 alt="Responsive image">
-
-								</div>
-
-
-							</div>
-
-							<div class="row">
-
-								<div class="col-md-6 mb-3">
-
-									<img src="https://mdbootstrap.com/img/Photos/Horizontal/People/6-col/img(117).jpg" class="img-fluid z-depth-1"
-									 alt="Responsive image">
-
-								</div>
-
-
-
-								<div class="col-md-6 mb-3">
-
-									<img src="https://mdbootstrap.com/img/Photos/Horizontal/People/6-col/img(129).jpg" class="img-fluid z-depth-1"
-									 alt="Responsive image">
-
-								</div>
-
-
-							</div>
-							<p class="card-text mt-3" th:text="${help.description}">Some quick example text to build on the
-								panel title and make up the bulk of the panel's content.</p>
-
-							<div class="text-center col-xs-5 border-bottom border-light">
-								<a th:href="@{'/help-need/'+${need.id}}" class="small muted-text" onclick="$('#comments').show();" th:onclick="|viewComments(${need.id})|">0
-									Comments</a>
-								<i class="ml-3 fa fa-heart-o" aria-hidden="true" th:onlick="|likeHelp('${help.id}')|"><span class="ml-1 text-muted"
-									 th:text="${noOfLikes}">32</span></i>
-							</div>
-
-							<!--<a th:href="@{'/helps/'+${help.id}}" class="card-link">Click for more</a> <a th:href="@{'/needs/'+${help.fulfilledNeedId}}"
-								class="card-link text-success" th:if="${help.fulfilledNeedId != null}">Fulfilled need</a>-->
-
-
-<!-- 							comments section
-							<th:block th:object="${help}">
-								<div th:replace="home :: comment-section(method='commentOnHelp')"></div>
-							</th:block> -->
 						</div>
 					</div>
 				</div>
@@ -152,7 +157,7 @@
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
 	<!-- MDB core JavaScript -->
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.11/js/mdb.min.js"></script>
-	<script type="text/javascript" src="karma.js"></script>
+	<script type="text/javascript" th:src="|/karma.js|" src="static/karma.js"></script>
 </body>
 
 </html>

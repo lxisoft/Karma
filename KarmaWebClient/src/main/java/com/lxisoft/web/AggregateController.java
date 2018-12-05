@@ -123,8 +123,9 @@ public class AggregateController {
 		log.debug("request to get a page of Needs");
 
 		List<HelpDTO> helps = aggregateResourceApi.getAllCompletedHelpsByfulfilledNeedIdUsingGET(id, id, null, null, null, null, null, null, null, null, null).getBody();
-
+		NeedDTO need=aggregateResourceApi.getNeedUsingGET(id).getBody();
 		model.addAttribute("helps", helps);
+		model.addAttribute("need",need);
 		return "completed-helps";
 
 	}
@@ -482,6 +483,32 @@ public class AggregateController {
 		model.addAttribute("comments", comments);
 
 		return "home :: comment-section(checkedNeedId=${id},checkedHelpId=null,postId=null)";
+
+	}
+
+	/**
+	 * GET /needs : get all the comments by helpId
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @param eagerload
+	 *            flag to eager load entities from relationships (This is
+	 *            applicable for many-to-many)
+	 * @return the string value
+	 */
+	@GetMapping("/comments/getAllCommentsByHelpId/{id}")
+	@Timed
+	public String getAllCommentsByHelpId(Pageable pageable,
+			@RequestParam(required = false, defaultValue = "false") boolean eagerload,
+			@PathVariable(value = "id") Long id, Model model) {
+		log.debug("request to get a page of Comments by help id");
+
+		List<CommentDTO> comments = aggregateResourceApi.getAllCommentsByHelpIdUsingGET(id, id, null, null, null,
+				eagerload, null, null, eagerload, eagerload, eagerload).getBody();
+
+		model.addAttribute("comments", comments);
+
+		return "home :: comment-section(checkedNeedId=null,checkedHelpId=${id},postId=null)";
 
 	}
 
