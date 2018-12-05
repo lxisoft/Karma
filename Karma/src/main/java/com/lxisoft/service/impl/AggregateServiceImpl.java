@@ -744,9 +744,36 @@ public class AggregateServiceImpl implements AggregateService {
     @Transactional(readOnly = true)
 	public Page<HelpDTO> findAllHelps(Pageable pageable) {
     	 log.debug("Request to get all Helps");
-         return helpRepository.findAll(pageable)
-             .map(helpMapper::toDto);
-	}
+
+    	 //anjali
+    	 Pageable page=null;
+ 		
+ 		Page<HelpDTO> helpDTO=helpRepository.findAll(pageable)
+ 				.map(helpMapper::toDto);
+ 		
+ 		List<HelpDTO> helpList=helpDTO.getContent();
+ 		
+ 		for(HelpDTO oneHelp:helpList){
+ 		
+ 			Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByHelpId(oneHelp.getId(),pageable)
+ 								.map(mediaMapper::toDto);
+ 			
+ 			List<MediaDTO> mediaList=mediaDTO.getContent();
+ 			
+ 			List<String> mediaUrls=new ArrayList<String>();
+ 			
+ 			for(MediaDTO mediaFromList:mediaList){
+ 				mediaUrls.add(mediaFromList.getUrl());
+ 			}
+ 			oneHelp.setAttachmentUrls(mediaUrls);
+ 		}
+ 		
+ 		Page<HelpDTO> helpDto = new PageImpl<HelpDTO>(helpList, pageable, helpList.size());
+         
+ 		return helpDto;
+ 		//anjali
+ 		
+    }
 
 
     /**
@@ -761,6 +788,8 @@ public class AggregateServiceImpl implements AggregateService {
 		
 		log.debug("Request to get Help : {}", id);
         
+		Pageable pageable=null;
+		
 		Help helpOne=helpRepository.findById(id).get();
         
         HelpDTO help=helpMapper.toDto(helpOne);
@@ -785,6 +814,19 @@ public class AggregateServiceImpl implements AggregateService {
 			help.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
 		}	  
     	       
+		//anjali
+		
+				Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByHelpId(help.getId(),pageable)
+						.map(mediaMapper::toDto);
+
+				List<String> mediaUrls=new ArrayList<String>();
+
+				for(MediaDTO mediaFromList:mediaDTO.getContent()){
+					mediaUrls.add(mediaFromList.getUrl());
+				}
+				help.setAttachmentUrls(mediaUrls);
+
+		//anjali
 		return Optional.of(help);
         
            
@@ -845,6 +887,20 @@ public class AggregateServiceImpl implements AggregateService {
 				postedDate = Date.from(help.getTime());
 				help.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
 			}	    	
+	    	
+			//anjali
+			
+			Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByHelpId(help.getId(),pageable)
+					.map(mediaMapper::toDto);
+
+			List<String> mediaUrls=new ArrayList<String>();
+
+			for(MediaDTO mediaFromList:mediaDTO.getContent()){
+				mediaUrls.add(mediaFromList.getUrl());
+			}
+			help.setAttachmentUrls(mediaUrls);
+
+			//anjali
 	    	
 	    }
          	
@@ -1643,6 +1699,19 @@ public class AggregateServiceImpl implements AggregateService {
 										return mediaRepository.findAllUrlByNeedId(needId,pageable)
 												.map(mediaMapper::toDto);
 									}
+									
+									/**
+								     * Get all the media by helpId.
+								     *
+								     * @param helpId of the media
+								     * @return the list of entities
+								     */
+									@Override
+									public Page<MediaDTO> findAllUrlByHelpId(Long helpId, Pageable pageable) {
+										// TODO Auto-generated method stub
+										return mediaRepository.findAllUrlByHelpId(helpId,pageable)
+												.map(mediaMapper::toDto);
+									}	
 						  
 					//anjali
 

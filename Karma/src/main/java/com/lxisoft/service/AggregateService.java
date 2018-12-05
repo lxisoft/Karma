@@ -519,6 +519,14 @@ public interface AggregateService {
 			     */
 			    Page<MediaDTO> findAllUrlByNeedId(Long needId,Pageable pageable);
 
+			    /**
+			     * Get all the media.
+			     *
+			     * @param helpId of the media
+			     * @return the list of entities
+			     */
+				Page<MediaDTO> findAllUrlByHelpId(Long helpId, Pageable pageable);
+
 			  
 			  //anjali
 			  

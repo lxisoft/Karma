@@ -277,9 +277,28 @@ public class AggregateController {
 	 */
 	@PostMapping("/helps")
 	@Timed
-	public String helpNeedy(@ModelAttribute HelpDTO helpDTO, Model model) throws URISyntaxException, IOException {
+	public String helpNeedy(@ModelAttribute HelpDTO helpDTO,@RequestParam MultipartFile[] multipartFiles, Model model) throws URISyntaxException, IOException {
 
 		log.debug("REST request to save Help : {}", helpDTO);
+
+		//anjali
+		
+				HelpDTO helpDto=aggregateResourceApi.helpNeedyUsingPOST(helpDTO).getBody();
+				
+				for(MultipartFile file : multipartFiles) {
+			    	
+					MediaDTO mediaDTO=new MediaDTO();
+					
+					mediaDTO.setFileName(file.getOriginalFilename());
+					mediaDTO.setNeedId(helpDto.getId());
+					mediaDTO.setExtension(file.getContentType());
+					mediaDTO.setBytes(file.getBytes());
+					
+					MediaDTO mediaDto=aggregateResourceApi.postMediaUsingPOST(mediaDTO).getBody(); 
+			    	 
+				}
+				
+				//anjali
 
 		HelpDTO helpdto = aggregateResourceApi.helpNeedyUsingPOST(helpDTO).getBody();
 
