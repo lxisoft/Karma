@@ -218,22 +218,28 @@
 
 							<!-- comments section -->
 							<div th:object="${need}" id="comments-section" th:id="${'comments-section-'+need.id}" th:with="checkedNeedId=${need.id},checkedHelpId=null,postId=null">
-								<!-- comment form -->
-								<div class="md-form mt-0 mx-3 form-info" id="comment-box" th:id="'comment-box-'+*{id}" th:attr="data-checkedNeedId=${checkedNeedId},data-checkedHelpId=${checkedHelpId},data-postId=${postId}"
-								 th:style="|display: block;|">
-									<textarea type="text" id="comment-box-text" th:id="|'comment-box-text-*{id}'|" class="md-textarea form-control d-inline w-75"
-									 rows="1" th:name="message"></textarea>
-									<label for="comment-box">Comment here</label>
-									<span class="input-group-btn"><button type="button" class="btn btn-outline-info btn-sm" th:onclick="|addComment(*{id});|">Add
-											comment</button></span>
-
-								</div>
 								<div th:if="${comments != null}" style="display: none;" th:style="|display:block;|" th:fragment="comment-section(checkedNeedId,checkedHelpId,postId)">
 
+									<!-- comment form -->
+									<div class="md-form mt-0 mx-3 form-info" th:if="${comments != null}" id="comment-box" th:id="'comment-box-'+*{id}"
+									 data-th-attr="data-checkedNeedId=${checkedNeedId},data-checkedHelpId=${checkedHelpId},data-postId=${postId}"
+									 th:style="|display: block;|">
+										<form>
+											<textarea type="text" id="comment-box-text" th:id="|comment-box-text-*{id}|" class="md-textarea form-control d-inline w-75"
+											 rows="1" th:name="message"></textarea>
+											<label for="comment-box">Comment here</label>
+											<input type=hidden th:name="dateInString" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm:ss')}">
+											<span class="input-group-btn"><button type="button" class="btn btn-outline-info btn-sm" th:onclick="|addComment(*{id});|">Add
+													comment</button></span>
+										</form>
+									</div>
+
 									<!-- view all comments -->
+
 									<div th:id="${'comments-'+needId}">
-										<p class="text-primary text-center mt-5 d-inline ml-5 mb-4">All comments<span class="ml-2"><i class="fa fa-angle-up mr-5 mt-1 text-dark"
-												 aria-hidden="true" onclick="$('#comments-section').hide();" th:onclick="|$('#comments-section-*{id}').hide();|"></i></span></p>
+										<p class="text-primary text-center mt-5 d-inline ml-5 mb-4"><span th:text="${(#lists.size(comments)>0)?'All comments':'No comments'}">All
+												comments</span><span class="ml-2"><i class="fa fa-angle-up mr-5 mt-1 text-dark" aria-hidden="true" onclick="$('#comments-section').hide();"
+												 th:onclick="|$('#comments-section-*{id}').hide();|"></i></span></p>
 										<div class="border-light border-bottom" th:each="comment : ${comments}" th:fragment="comments">
 
 											<p class="ml-4 mt-2 mb-0" th:text="${comment.message}">lkkjskdalj</p>
@@ -241,8 +247,8 @@
 												 class="large">.</span>3
 												minutes ago</p><i class="ml-3 fa fa-heart-o" aria-hidden="true" th:onclick="|likeComment('${comment.id}')|"><span
 												 class="ml-1 text-muted" th:text="${comment.noOfLikes}">32</span></i>
-											<p class="text-primary d-inline ml-4" th:text="${(comment.noOfReplies!=null)?comment.noOfReplies+' replies':''}"
-											 onclick="$('#replies').show();">10
+											<p class="text-primary d-inline ml-4" th:text="${(comment.noOfReplies!=null)?comment.noOfReplies+' replies':null}"
+											 onclick="$('#replies').show();" th:onclick="|$('#replies-${comment.id}').show();|">10
 												replies</p>
 											<i class="fa fa-reply float-right small text-info mr-5" th:id="${'reply-button-'+comment.id}" aria-hidden="true"
 											 onclick="$('#reply-box').show();$(this).hide();" th:onclick="|$('#reply-box-${comment.id}').show();$(this).hide();|"></i>
@@ -254,7 +260,9 @@
 												 rows="1"></textarea>
 												<label for="comment-box">Add reply here.....</label>
 
-												<span class="input-group-btn mb-5"><button type="button" class="btn btn-outline-info btn-sm" th:onclick="|addReply(${comment.id);|">Add
+												<input type=hidden th:name="dateInString" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm:ss')}">
+
+												<span class="input-group-btn mb-5"><button type="button" class="btn btn-outline-info btn-sm" th:onclick="|addReply(${comment.id});|">Add
 														reply</button></span><i class="fa fa-close" aria-hidden="true" th:onclick="|$('#reply-box-${comment.id}').hide();$('#reply-button-${comment.id}').show();|"
 												 onclick="$('#reply-box').hide();"></i>
 
@@ -262,11 +270,11 @@
 
 											<!-- view all replies -->
 											<div class="offset-1" id="replies" th:id="${'replies-'+comment.id}" style="display: none;" th:style="|display: block;|"
-											 th:if="${replies != null}">
+											 th:if="${replies != null}" th:with="commentId=${comment.id}">
 
-												<div th:fragment="replies">
+												<div th:fragment="replies(commentId)">
 													<p class="text-primary text-center mt-1 mb-2">hide replies<span><i class="fa ml-2 clear-fix d-inline text-dark fa-angle-up mr-5 mt-1"
-															 aria-hidden="true" onclick="$('#replies').hide();" th:onlick="|$('#replies-${comment.id}').hide();|"></i></span></p>
+															 aria-hidden="true" onclick="$('#replies').hide();" th:onlick="|$('#replies-${commentId}').hide();|"></i></span></p>
 													<div class="border-light border-bottom" th:each="reply : ${replies}">
 														<p class="ml-4 mt-2 mb-0" th:text="${reply.message}">lkkjskdalj</p>
 														<p class="text-muted ml-5 small d-inline" th:text="'Siraj replied'+${reply.timeElapsed}">Siraj<span class="large">.</span>3
@@ -285,7 +293,7 @@
 							<div class="row mt-2">
 								<div class="text-center col-xs-5 mx-auto">
 									<!--<a th:href="@{'/help-need/'+${need.id}}" class="ml-2 card-link text-success float-left">Help now</a>-->
-									<a th:href="@{'/completed-helps/'+${need.id}}" class="mt-1 card-link text-success float-left">Helps received</a>
+									<a th:href="@{'/helps/completed'}" class="mt-1 card-link text-success float-left">Helps received</a>
 								</div>
 
 								<div class="col-xs-7 d-inline mx-auto">
@@ -336,6 +344,7 @@
 						</div>
 					</div>
 				</div>
+
 			</div>
 		</div>
 	</div>
@@ -435,18 +444,19 @@
 		function viewComments(needId) {
 			console.log("view comments worked with needId: " + needId);
 			//$('#comments-' + needId).show();
-			$('#comments-section-' + needId).show();
 			$('#comments-section-' + needId).load('/comments/getAllCommentsByNeedId/' + needId);
-			$('#comment-box-' + needId).show();
+			$('#comments-section-' + needId).show();
+			console.log(getCurrentTime());
 		}
 		function viewReplies(commentId) {
 			$('#comments-section-' + needId).show();
 			$('#replies-section-' + commentId).load('/comments/getAllCommentsByNeedId/' + commentId);
 		}
 		function addComment(id) {
-			var element = "comment-box-" + id;
-			console.log("addComment: " + element + ' ' + $("#comment-box-3").data("checkedNeedId"));
-			console.log("addComment: " + element + ' ' + $("#comment-box").data("checkedNeedId"));
+			var element = "#comment-box-" + id;
+			console.log("addComment: " + element + ' ' + $(element).attr("data-checkedNeedId"));
+			//console.log("addComment: " + element + ' ' + $(element).data("checkedNeedId"));
+			console.log("addComment: " + element + ' ' + $(element).data("checkedneedid"));
 			console.log("message: " + $("#comment-box-text-" + id).val());
 			/* 			if ($(element).data("checkedNeedId") != null)
 							id = needId;
@@ -462,10 +472,11 @@
 					'X-CSRF-TOKEN': $("input[name='_csrf']").val()
 				},
 				data: {
-					'needId': $(element).data("checkedNeedId"),
-					'helpId': $(element).data("checkedHelpId"),
-					'postId': $(element).data("postId"),
+					'needId': $(element).data("checkedneedid"),
+					'helpId': $(element).data("checkedhelpid"),
+					'postId': $(element).data("postid"),
 					'message': $("#comment-box-text-" + id).val(),
+					'dateInString': getCurrentTime(),
 					'commentedUserId': 1,
 					'_csrf': $("input[name='_csrf']").val()
 				},
@@ -493,8 +504,9 @@
 				},
 				data: {
 					'commentId': commentId,
-					'message': $("reply-box-text" + commentId).val(),
+					'message': $("#reply-box-text-" + commentId).val(),
 					'repliedUserId': 1,
+					'dateInString': getCurrentTime(),
 					'_csrf': $("input[name='_csrf']").val()
 				},
 				success: function (response) {
@@ -555,8 +567,21 @@
 			});
 		}
 
-		function abc(id) {
-			console.log("worked with id: " + id);
+		function getCurrentTime() {
+			var date = new Date();
+			var year = date.getFullYear();
+			var month = (date.getMonth() < 9) ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
+			var day = (date.getDate() < 10) ? "0" + date.getDate() : date.getDate();
+			var hours = (date.getHours() < 10) ? "0" + date.getHours() : date.getHours();
+
+			seconds = (date.getSeconds() < 10) ? "0" + date.getSeconds() : date.getSeconds();
+			var minutes = (date.getMinutes() < 10) ? "0" + date.getMinutes() : date.getMinutes();
+
+			//var hours = date.getHours();
+			//var minutes = date.getMinutes();
+			//var seconds = date.getSeconds();
+			console.log("getCurrentTime()" + year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds);
+			return year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
 		}
 	</script>
 </body>

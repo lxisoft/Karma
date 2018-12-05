@@ -481,7 +481,7 @@ public class AggregateController {
 
 		model.addAttribute("comments", comments);
 
-		return "home :: comment-section(checkedNeedId=id,checkedHelpId=null,postId=null)";
+		return "home :: comment-section(checkedNeedId=${id},checkedHelpId=null,postId=null)";
 
 	}
 
@@ -574,7 +574,7 @@ public class AggregateController {
 				null, null, null, null, null, null).getBody();
 		model.addAttribute("result", result);
 		model.addAttribute("replies", replies);
-		return "home::replies";
+		return "home::replies(commentId=${replyDTO.commentId})";
 	}
 
 }
