@@ -576,5 +576,24 @@ public class AggregateController {
 		model.addAttribute("replies", replies);
 		return "home::replies";
 	}
+	
+	/**
+	 * GET /registeredUserDTO/:id : get the "id" registeredUserDTO.
+	 *
+	 * @param id
+	 *            the id of the registeredUserDTO to retrieve
+	 * @return the string value
+	 */
+	/*@GetMapping("/needs/{id}")
+	@Timed
+	public String getOneRegisteredUser(@PathVariable(value = "id") Long id, Model model) {
+		log.debug("request to get registeredUserDTO : {}", id);
+
+		RegisteredUserDTO RegisteredUserDTO = aggregateResourceApi.getOneRegisteredUser(id).getBody();
+
+		model.addAttribute("need", needDTO);
+
+		return "need";
+	}*/
 
 }

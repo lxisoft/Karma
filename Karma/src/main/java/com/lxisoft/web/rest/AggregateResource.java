@@ -765,13 +765,33 @@ public class AggregateResource {
      * @return the ResponseEntity with status 200 (OK) and the list of helps in body
      */
     
-    @PutMapping("/registered-users/getEmotionalQuotientAndSocialQuotient/{id}")
+   /* @PutMapping("/registered-users/getEmotionalQuotientAndSocialQuotient/{id}")
     @Timed
     public ResponseEntity<RegisteredUserDTO> getRegisteredUserEmotionalQuotientAndSocialQuotient(@PathVariable Long id) {
         log.debug("REST request to update EQ & SQ LoggedUser : {}", id);
         RegisteredUserDTO registeredUserDTO = aggregateService.updateRegisteredUserEmotionalQuotientSocialQuotient(id);   
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(registeredUserDTO));
-    }
+    }*/
+ 	
+ 	
+ 	
+ 	 	/**
+ 	     * GET  /registeredUser/:id : get the registeredUserDto  with id.
+ 	     *
+ 	     * @param id the id of the registeredUserDto to retrieve
+ 	     * @return the ResponseEntity with status 200 (OK) and with body the helpDTO, or with status 404 (Not Found)
+ 	     */
+ 	    @GetMapping("/registeredUser/{id}")
+ 	    @Timed
+ 	    public ResponseEntity<RegisteredUserDTO> getOneRegisteredUser(@PathVariable Long id) {
+ 	        log.debug("REST request to get registeredUserDto : {}", id);
+ 	              
+ 	        Optional<RegisteredUserDTO> registeredUserDTO = aggregateService.findOneRegisteredUser(id);     
+ 	        return ResponseUtil.wrapOrNotFound(registeredUserDTO);
+ 	    }
+ 	    
+ 	
+ 	
     // neeraja end
     
     

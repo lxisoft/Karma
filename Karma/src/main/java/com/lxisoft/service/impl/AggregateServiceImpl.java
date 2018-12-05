@@ -78,6 +78,7 @@ import com.lxisoft.service.mapper.FeedMapper;
 import com.lxisoft.service.mapper.HelpMapper;
 import com.lxisoft.service.mapper.NeedMapper;
 import com.lxisoft.service.mapper.PostMapper;
+import com.lxisoft.service.mapper.RegisteredUserMapper;
 import com.lxisoft.service.mapper.ReplyMapper;
 import com.lxisoft.service.mapper.SeverityMapper;
 import com.lxisoft.service.mapper.UserCheckMapper;
@@ -165,6 +166,8 @@ public class AggregateServiceImpl implements AggregateService {
 	@Autowired
 	private JavaMailSender sender;
 		
+	@Autowired
+	private RegisteredUserMapper registeredUserMapper;
 	
 	 /**
      * Save a need.
@@ -1653,15 +1656,96 @@ public class AggregateServiceImpl implements AggregateService {
 		
 		// neeraja
 
+		
+		
 		/**
-		 * to add and update the social and emotional quotient
+	     * Get one registeredUser by id.
+	     *
+	     * @param id the id of the entity
+	     * @return the entity
+	     */
+	    @Override
+	    @Transactional(readOnly = true)
+	    public Optional<RegisteredUserDTO> findOneRegisteredUser(Long id) {
+	        log.debug("Request to get RegisteredUser : {}", id);
+	        
+	        
+	        RegisteredUser registeredUser=registeredUserRepository.findById(id).get();
+	        RegisteredUserDTO registeredUserDto=registeredUserMapper.toDto(registeredUser);
+	        registeredUserDto.setEmotionalQuotient(updateRegisteredUserEmotionalQuotient(id));
+	        registeredUserDto.setSocialQuotient(updateRegisteredUserSocialQuotient(id));
+	       
+	      //RegisteredUser registeredUser = registeredUserRepository.save(registeredUserMapper.toEntity(registeredUserDTO));
+	        return Optional.of(registeredUserDto);
+	    }
+
+		
+	    /**
+		 * to add and update the emotional quotient
 		 *
 		 * @param registeredUserid
 		 *            the id of the entity
-		 * @return the dto
+		 * @return the emotional quotient
 		 */
 
 					@Override
+					public Long updateRegisteredUserEmotionalQuotient(Long registeredUserId) {
+					
+						 log.debug("REST request to Eq Sq LoggedUser : {}", registeredUserId);
+					       
+					      RegisteredUserDTO registeredUserDTO = registeredUserRepository.findById(registeredUserId).map(registeredUserMapper::toDto).orElse(null);
+					      if(registeredUserDTO.getEmotionalQuotient() == null)
+					      {
+					    	 
+					    	  registeredUserDTO.setEmotionalQuotient(0l);
+					      }  
+					      Long pointOfHelpEq = helpRepository.findCountOfHelpsByRegisteredUserId(registeredUserId)/3;
+					      Long pointOfPostEq = postRepository.findCountOfPostsByRegisteredUserId(registeredUserId)/6;
+					      Long emotionalQuotient=pointOfHelpEq+pointOfPostEq;
+	    
+					      return emotionalQuotient;
+	    
+	    
+					}
+					
+
+				    /**
+					 * to add and update the social quotient
+					 *
+					 * @param registeredUserid
+					 *            the id of the entity
+					 * @return the social quotient
+					 */
+
+								@Override
+								public Long updateRegisteredUserSocialQuotient(Long registeredUserId) {
+								
+									 log.debug("REST request to Eq Sq LoggedUser : {}", registeredUserId);
+								       
+								      RegisteredUserDTO registeredUserDTO = registeredUserRepository.findById(registeredUserId).map(registeredUserMapper::toDto).orElse(null);
+								      if(registeredUserDTO.getSocialQuotient() == null)
+								      {
+								    	 
+								    	  registeredUserDTO.setSocialQuotient(0l);
+								      }  
+								      Long pointOfHelpSq = helpRepository.findCountOfHelpsByRegisteredUserId(registeredUserId);
+								      Long pointOfPostSq = postRepository.findCountOfPostsByRegisteredUserId(registeredUserId)/12;
+								      Long socialQuotient=pointOfHelpSq+pointOfPostSq;
+				    
+								      return socialQuotient;
+				    
+				    
+								}
+
+
+					
+		
+		
+		
+		
+		
+
+				/*	@Override
 					public RegisteredUserDTO updateRegisteredUserEmotionalQuotientSocialQuotient(Long registeredUserId) {
 						
 						 log.debug("REST request to Eq Sq LoggedUser : {}", registeredUserId);
@@ -1699,7 +1783,7 @@ public class AggregateServiceImpl implements AggregateService {
 					      registeredUser1= registeredUserRepository.save(registeredUser);
 					     // return registeredUserMapper.toDto(registeredUser);
 					      return registeredUserDto;
-					    }
+					    }*/
 					
 			// end neeraja
 

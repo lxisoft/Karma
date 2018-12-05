@@ -478,14 +478,27 @@ public interface AggregateService {
 			// Code:End
 			
 			//neeraja
-			 /**
-			  * @param registeredUserId
-			  * @return
-			  */
 			
-			RegisteredUserDTO updateRegisteredUserEmotionalQuotientSocialQuotient(Long registeredUserId);
 
+			
+			/**
+			  * @param registeredUserId
+			  * @return emotionalQuotient
+			  */
+			Long updateRegisteredUserEmotionalQuotient(Long registeredUserId);
 
+			/**
+			  * @param registeredUserId
+			  * @return socialQuotient
+			  */
+			Long updateRegisteredUserSocialQuotient(Long registeredUserId);
+
+			/**
+			  * @param registeredUserId
+			  * @return registeredUserDto
+			  */
+			Optional<RegisteredUserDTO> findOneRegisteredUser(Long id);
+			
 			//neeraja end
 			
 			//sooraj
