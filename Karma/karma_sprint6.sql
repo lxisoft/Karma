@@ -57,7 +57,7 @@ CREATE TABLE `approval_status` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `status` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='ApprovalStatus entity. @author Sanil kumar';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='ApprovalStatus entity. @author Sanil kumar';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -82,7 +82,7 @@ CREATE TABLE `category` (
   `name` varchar(255) DEFAULT NULL,
   `sub_category` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Category entity. @author Dheeraj das.';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='Category entity. @author Dheeraj das.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -91,6 +91,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
+INSERT INTO `category` VALUES (1,'finance','financial'),(2,'education','education'),(3,'health','health'),(4,'nec euismod','habitasse platea'),(5,'mauris laoreet','eu interdum'),(6,'magna vulputate','fusce posuere'),(7,'tortor sollicitudin','nisi nam'),(8,'vestibulum quam','curabitur gravida'),(9,'pede malesuada','accumsan felis'),(10,'posuere cubilia','nibh fusce');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -118,7 +119,7 @@ CREATE TABLE `comment` (
   CONSTRAINT `fk_comment_help_id` FOREIGN KEY (`help_id`) REFERENCES `help` (`id`),
   CONSTRAINT `fk_comment_need_id` FOREIGN KEY (`need_id`) REFERENCES `need` (`id`),
   CONSTRAINT `fk_comment_post_id` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Comment entity @author Deepthi E';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='Comment entity @author Deepthi E';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -127,6 +128,7 @@ CREATE TABLE `comment` (
 
 LOCK TABLES `comment` WRITE;
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
+INSERT INTO `comment` VALUES (1,'super need polich',NULL,3,NULL,NULL,1),(2,'which place',NULL,3,NULL,NULL,2),(3,'sanilee',NULL,3,NULL,NULL,2),(4,'nice one',NULL,6,NULL,NULL,NULL),(5,'niceeee',NULL,11,NULL,NULL,NULL),(6,'niceeee',NULL,NULL,1,NULL,NULL),(7,'kooy',NULL,NULL,1,NULL,NULL),(8,'heyyy',NULL,NULL,NULL,3,NULL),(9,'hiiiiii',NULL,NULL,NULL,4,NULL);
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -208,7 +210,7 @@ CREATE TABLE `feed` (
   PRIMARY KEY (`id`),
   KEY `fk_feed_registered_user_id` (`registered_user_id`),
   CONSTRAINT `fk_feed_registered_user_id` FOREIGN KEY (`registered_user_id`) REFERENCES `registered_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Feed entity @author Deepthi E';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='Feed entity @author Deepthi E';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -217,6 +219,7 @@ CREATE TABLE `feed` (
 
 LOCK TABLES `feed` WRITE;
 /*!40000 ALTER TABLE `feed` DISABLE KEYS */;
+INSERT INTO `feed` VALUES (1,'User Posted a new Need','NeedPost',NULL,35,NULL),(2,'User Helped a need','HelpPostAfterCompletion',NULL,8,1),(3,'User commented on the Help','HelpPostComment',NULL,6,NULL),(4,'User commented on the Help','HelpPostComment',NULL,5,1),(5,'User commented on the Help','HelpPostComment',NULL,4,2),(6,'User commented on the Help','HelpPostComment',NULL,3,3),(7,NULL,'NeedPostComment',NULL,26,3),(8,NULL,'NeedIsFake',NULL,37,2),(9,'User marked the need as Genuine','NeedIsGenuine',NULL,37,3);
 /*!40000 ALTER TABLE `feed` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -241,7 +244,7 @@ CREATE TABLE `help` (
   CONSTRAINT `fk_help_fulfilled_need_id` FOREIGN KEY (`fulfilled_need_id`) REFERENCES `need` (`id`),
   CONSTRAINT `fk_help_approval_status_id` FOREIGN KEY (`approval_status_id`) REFERENCES `approval_status` (`id`),
   CONSTRAINT `fk_help_provided_user_id` FOREIGN KEY (`provided_user_id`) REFERENCES `registered_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Service entity @Author Sooraj Pn';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='Service entity @Author Sooraj Pn';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -250,6 +253,7 @@ CREATE TABLE `help` (
 
 LOCK TABLES `help` WRITE;
 /*!40000 ALTER TABLE `help` DISABLE KEYS */;
+INSERT INTO `help` VALUES (1,'2018-11-05 14:48:12','iam ready to help',4,NULL,2),(2,'2018-11-05 14:48:12','iam interested to help',4,2,3),(3,'2018-11-22 09:04:10','jlkjlkjlkj',4,NULL,2),(4,'2018-11-22 10:52:23','iam ready to help',4,NULL,11),(5,'2018-11-22 11:25:21','jhgjkghjghhj',4,NULL,2),(6,'2018-11-22 11:50:21','hhjgjhgj',4,NULL,10),(7,'2018-11-22 15:14:19','vjgjh',5,NULL,2),(8,'2018-11-22 15:55:50','help u',5,NULL,3);
 /*!40000 ALTER TABLE `help` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -459,7 +463,7 @@ CREATE TABLE `media` (
   CONSTRAINT `fk_media_post_id` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`),
   CONSTRAINT `fk_media_help_id` FOREIGN KEY (`help_id`) REFERENCES `help` (`id`),
   CONSTRAINT `fk_media_need_id` FOREIGN KEY (`need_id`) REFERENCES `need` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Media entity. @author Dheeraj das.';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='Media entity. @author Dheeraj das.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -468,6 +472,7 @@ CREATE TABLE `media` (
 
 LOCK TABLES `media` WRITE;
 /*!40000 ALTER TABLE `media` DISABLE KEYS */;
+INSERT INTO `media` VALUES (1,'rose','/src/main/resources/static/uploadedfiles/rose.jpeg','.jpeg',NULL,NULL,NULL),(3,'sunflower','/src/main/resources/static/uploadedfiles/sunflower.jpeg','.jpeg',NULL,NULL,NULL),(4,'baby','/src/main/resources/static/uploadedfiles/baby.jpeg','.jpeg',NULL,NULL,NULL),(5,'apple','/src/main/resources/static/uploadedfiles/apple.jpeg','.jpeg',NULL,NULL,NULL),(6,'lilly','/src/main/resources/static/uploadedfiles/lilly.jpeg','.jpeg',NULL,NULL,NULL),(7,'cherry','/src/main/resources/static/uploadedfiles/cherry.jpeg','.jpeg',NULL,NULL,NULL),(8,'lotus','/src/main/resources/static/uploadedfiles/lotus.jpeg','.jpeg',NULL,NULL,NULL),(9,'orange','/src/main/resources/static/uploadedfiles/orange.jpeg','.jpeg',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `media` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -499,7 +504,7 @@ CREATE TABLE `need` (
   CONSTRAINT `fk_need_person_in_charge_id` FOREIGN KEY (`person_in_charge_id`) REFERENCES `registered_user` (`id`),
   CONSTRAINT `fk_need_severity_id` FOREIGN KEY (`severity_id`) REFERENCES `severity` (`id`),
   CONSTRAINT `fk_need_verification_team_id` FOREIGN KEY (`verification_team_id`) REFERENCES `verification_team` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Need entity @author Balagopal v';
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='Need entity @author Balagopal v';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -508,6 +513,7 @@ CREATE TABLE `need` (
 
 LOCK TABLES `need` WRITE;
 /*!40000 ALTER TABLE `need` DISABLE KEYS */;
+INSERT INTO `need` VALUES (1,'i need help','you','2018-11-05 14:48:12',NULL,NULL,2,NULL,1),(2,'i want help','someone else','2018-11-05 14:48:12',2,NULL,2,NULL,2),(3,'help me','you','2018-11-05 14:48:12',1,NULL,1,NULL,3),(4,'help!','you','2018-11-05 14:48:12',NULL,NULL,1,NULL,4),(5,'ruhail da.... mail vanituduo','you','2018-11-22 10:02:12',NULL,NULL,1,NULL,6),(6,'sanileeeee','you','2018-11-22 10:09:23',NULL,NULL,2,NULL,5),(7,'anjus...............','you','2018-11-22 10:20:37',NULL,NULL,1,NULL,1),(8,'i need help urgent','you','2018-11-22 10:43:09',NULL,NULL,2,NULL,8),(9,'oh god','you','2018-11-22 14:25:51',NULL,NULL,1,NULL,7),(10,NULL,NULL,NULL,NULL,NULL,2,NULL,6),(11,'i wantt help','you','2018-11-05 14:48:12',NULL,NULL,2,NULL,1),(12,'i needddd help','you','2018-11-05 14:48:12',NULL,NULL,2,NULL,2),(13,'plzzzzzzzzzzzzzzzz help','you','2018-12-05 15:48:40',NULL,NULL,2,NULL,NULL);
 /*!40000 ALTER TABLE `need` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -534,6 +540,7 @@ CREATE TABLE `need_categories` (
 
 LOCK TABLES `need_categories` WRITE;
 /*!40000 ALTER TABLE `need_categories` DISABLE KEYS */;
+INSERT INTO `need_categories` VALUES (1,13);
 /*!40000 ALTER TABLE `need_categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -552,7 +559,7 @@ CREATE TABLE `post` (
   PRIMARY KEY (`id`),
   KEY `fk_post_registered_user_id` (`registered_user_id`),
   CONSTRAINT `fk_post_registered_user_id` FOREIGN KEY (`registered_user_id`) REFERENCES `registered_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Post entity @author Deepthi E';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='Post entity @author Deepthi E';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -561,6 +568,7 @@ CREATE TABLE `post` (
 
 LOCK TABLES `post` WRITE;
 /*!40000 ALTER TABLE `post` DISABLE KEYS */;
+INSERT INTO `post` VALUES (1,'iam feeling happy','2018-11-29 00:00:00',1),(2,'iam coool','2018-11-29 00:00:00',2),(3,'fineeeee','2018-11-29 00:00:00',3),(4,'iam feeling happy','2018-11-29 00:00:00',4);
 /*!40000 ALTER TABLE `post` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -592,7 +600,7 @@ CREATE TABLE `registered_user` (
   UNIQUE KEY `ux_registered_user_profile_pic_id` (`profile_pic_id`),
   CONSTRAINT `fk_registered_user_id_proof_id` FOREIGN KEY (`id_proof_id`) REFERENCES `identity_proof` (`id`),
   CONSTRAINT `fk_registered_user_profile_pic_id` FOREIGN KEY (`profile_pic_id`) REFERENCES `media` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='RegisteredUser entity. @author Muhammed Ruhail';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='RegisteredUser entity. @author Muhammed Ruhail';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -601,6 +609,7 @@ CREATE TABLE `registered_user` (
 
 LOCK TABLES `registered_user` WRITE;
 /*!40000 ALTER TABLE `registered_user` DISABLE KEYS */;
+INSERT INTO `registered_user` VALUES (1,'anjali.chandran@lxisoft.com','Anjali','c',9,'am happy','nulla nisl','Female','2018-03-30','AB+ve',2,10,6,1,NULL),(2,'sarangibalu.a@lxisoft.com','Sarangi','Kuma',8,'am cool','nulla nisl','Male','1992-03-30','B+ve',2,10,6,3,NULL),(3,'sanilkumar.p@lxisoft.com','Sanil','Kuma',8,'am cool','nulla nisl','Male','1992-03-30','B+ve',2,10,6,4,NULL),(4,'muhammed.ruhail@lxisoft.com','Ruhail','m',10,'am cool','nulla nisl','male','2018-03-30','AB+ve',2,10,6,5,NULL),(5,'neeraja.m@lxisoft.com','Neeraja','m',15,'am fine','abc','Female','2018-03-30','AB+ve',2,10,6,6,NULL),(6,'sooraj.p.n@lxisoft.com','Sooraj','m',18,'am fine','abc','male','2018-03-30','AB+ve',2,10,6,7,NULL),(7,'dheeraj.das@lxisoft.com','Dheeraj','m',18,'am coool','abc','male','2018-03-30','AB+ve',2,10,6,8,NULL),(8,'deepthi.e@lxisoft.com','Deepthi','m',18,'am coool','abc','female','2018-03-30','A-ve',2,10,6,9,NULL);
 /*!40000 ALTER TABLE `registered_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -622,7 +631,7 @@ CREATE TABLE `reply` (
   KEY `fk_reply_replied_user_id` (`replied_user_id`),
   CONSTRAINT `fk_reply_replied_user_id` FOREIGN KEY (`replied_user_id`) REFERENCES `registered_user` (`id`),
   CONSTRAINT `fk_reply_comment_id` FOREIGN KEY (`comment_id`) REFERENCES `comment` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Reply  entity @author  Deepthi E';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='Reply  entity @author  Deepthi E';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -631,6 +640,7 @@ CREATE TABLE `reply` (
 
 LOCK TABLES `reply` WRITE;
 /*!40000 ALTER TABLE `reply` DISABLE KEYS */;
+INSERT INTO `reply` VALUES (1,'super','2018-11-29 00:00:00',1,1),(2,'nice','2018-11-29 00:00:00',2,2),(3,'super one','2018-11-29 00:00:00',7,3),(4,'super','2018-11-29 00:00:00',8,5),(5,'super','2018-11-29 00:00:00',9,1);
 /*!40000 ALTER TABLE `reply` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -645,7 +655,7 @@ CREATE TABLE `severity` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `severity_level` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='@Author Anjali';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='@Author Anjali';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -654,6 +664,7 @@ CREATE TABLE `severity` (
 
 LOCK TABLES `severity` WRITE;
 /*!40000 ALTER TABLE `severity` DISABLE KEYS */;
+INSERT INTO `severity` VALUES (1,'very urgent'),(2,'urgent');
 /*!40000 ALTER TABLE `severity` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -687,7 +698,7 @@ CREATE TABLE `user_check` (
   CONSTRAINT `fk_user_check_comment_id` FOREIGN KEY (`comment_id`) REFERENCES `comment` (`id`),
   CONSTRAINT `fk_user_check_post_id` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`),
   CONSTRAINT `fk_user_check_reply_id` FOREIGN KEY (`reply_id`) REFERENCES `reply` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='UserCheck entity @author Deepthi E';
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COMMENT='UserCheck entity @author Deepthi E';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -696,6 +707,7 @@ CREATE TABLE `user_check` (
 
 LOCK TABLES `user_check` WRITE;
 /*!40000 ALTER TABLE `user_check` DISABLE KEYS */;
+INSERT INTO `user_check` VALUES (2,'postive','genuineness',2,2,NULL,NULL,NULL,NULL),(3,'negative','genuineness',2,1,NULL,NULL,NULL,NULL),(4,'negative','genuineness',5,1,NULL,NULL,NULL,NULL),(5,'negative','genuineness',5,2,NULL,NULL,NULL,NULL),(6,'postive','genuineness',2,3,NULL,NULL,NULL,NULL),(7,'positive','like',NULL,1,NULL,NULL,NULL,1),(8,'positive','like',NULL,2,NULL,NULL,NULL,1),(9,'negative','like',NULL,3,NULL,NULL,NULL,1),(10,'postive','genuiness',2,2,NULL,NULL,NULL,NULL),(11,'postive','genuiness',2,3,NULL,NULL,NULL,NULL),(12,'postive','genuiness',2,1,NULL,NULL,NULL,NULL),(13,'postive','genuiness',3,1,NULL,NULL,NULL,NULL),(14,'postive','genuiness',3,2,NULL,NULL,NULL,NULL),(15,'postive','genuiness',3,3,NULL,NULL,NULL,NULL),(16,'positive','like',NULL,1,NULL,NULL,NULL,2),(17,'positive','like',NULL,2,NULL,NULL,NULL,2),(18,'positive','like',NULL,3,NULL,NULL,NULL,2),(19,'negative','like',NULL,3,NULL,NULL,NULL,2),(20,'postive','like',NULL,3,1,NULL,NULL,NULL),(21,'negative','dislike',NULL,3,2,NULL,NULL,NULL),(22,'postive','like',NULL,3,NULL,1,NULL,NULL),(23,'negative','dislike',NULL,3,NULL,2,NULL,NULL),(24,'negative','dislike',NULL,3,NULL,NULL,1,NULL),(25,'positive','like',NULL,3,NULL,NULL,2,NULL),(26,'negative',NULL,2,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `user_check` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -757,4 +769,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-05 12:14:56
+-- Dump completed on 2018-12-05 16:32:34
