@@ -47,6 +47,7 @@ import com.lxisoft.service.dto.CategoryDTO;
 import com.lxisoft.service.dto.CommentDTO;
 import com.lxisoft.service.dto.FeedDTO;
 import com.lxisoft.service.dto.HelpDTO;
+import com.lxisoft.service.dto.MediaDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.service.dto.PostDTO;
 import com.lxisoft.service.dto.RegisteredUserDTO;
@@ -802,6 +803,45 @@ public class AggregateResource {
     }*/
     
   //sooraj end
+
+	  //anjali
+	    
+	    /**
+	     * POST  /media : Create a new media.
+	     *
+	     * @param mediaDTO the mediaDTO to create
+	     * @return the ResponseEntity with status 201 (Created) and with body the new mediaDTO, or with status 400 (Bad Request) if the media has already an ID
+	     * @throws URISyntaxException if the Location URI syntax is incorrect
+	     * @throws IOException 
+	     */
+	    @PostMapping("/media")
+	    @Timed
+	    public ResponseEntity<MediaDTO> PostMedia(@RequestBody MediaDTO mediaDTO) throws URISyntaxException, IOException {
+	        log.debug("REST request to save Media : {}", mediaDTO);
+	        if (mediaDTO.getId() != null) {
+	            throw new BadRequestAlertException("A new media cannot already have an ID", "media", "idexists");
+	        }
+	        MediaDTO result = aggregateService.saveMedia(mediaDTO);
+	        return ResponseEntity.created(new URI("/api/media/" + result.getId()))
+	            .headers(HeaderUtil.createEntityCreationAlert("media", result.getId().toString()))
+	            .body(result);
+	    }
+	    
+	    /**
+	    *
+	    * @param needId the id of the mediaDTO to retrieve
+	    * @return the ResponseEntity with status 200 (OK) and with body the mediaDTO, or with status 404 (Not Found)
+	    */
+	   @GetMapping("/media/getAllMediaUrlsByNeedId/{needId}")
+	   @Timed
+	   public ResponseEntity<List<MediaDTO>> getAllMediaUrlsByNeedId(@PathVariable Long needId,Pageable pageable) {
+	       log.debug("REST request to get a page of Media{}",needId);
+	       Page<MediaDTO> page = aggregateService.findAllUrlByNeedId(needId,pageable);
+	       HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/media/getAllMediaUrlsByNeedId/");
+	       return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+	   }
+	    
+	    //anjali
 
 
 

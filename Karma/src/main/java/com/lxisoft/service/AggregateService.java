@@ -27,6 +27,7 @@ import com.lxisoft.service.dto.CategoryDTO;
 import com.lxisoft.service.dto.CommentDTO;
 import com.lxisoft.service.dto.FeedDTO;
 import com.lxisoft.service.dto.HelpDTO;
+import com.lxisoft.service.dto.MediaDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.service.dto.PostDTO;
 import com.lxisoft.service.dto.RegisteredUserDTO;
@@ -538,5 +539,26 @@ public interface AggregateService {
 
          //sooraj end
 
+			//anjali
+			  /**
+			     * Save a media.
+			     *
+			     * @param mediaDTO the entity to save
+			     * @return the persisted entity
+			     * @throws IOException 
+			     */
+			    MediaDTO saveMedia(MediaDTO mediaDTO) throws IOException;
+
+			    /**
+			     * Get all the media.
+			     *
+			     * @param needId of the media
+			     * @return the list of entities
+			     */
+			    Page<MediaDTO> findAllUrlByNeedId(Long needId,Pageable pageable);
+
+			  
+			  //anjali
+			  
 
 }

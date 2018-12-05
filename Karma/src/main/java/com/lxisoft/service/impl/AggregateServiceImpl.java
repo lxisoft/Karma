@@ -16,6 +16,8 @@
 package com.lxisoft.service.impl;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,6 +32,7 @@ import javax.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -43,6 +46,7 @@ import com.lxisoft.domain.Category;
 import com.lxisoft.domain.Comment;
 import com.lxisoft.domain.Feed;
 import com.lxisoft.domain.Help;
+import com.lxisoft.domain.Media;
 import com.lxisoft.domain.Need;
 import com.lxisoft.domain.Post;
 import com.lxisoft.domain.RegisteredUser;
@@ -53,6 +57,7 @@ import com.lxisoft.repository.CategoryRepository;
 import com.lxisoft.repository.CommentRepository;
 import com.lxisoft.repository.FeedRepository;
 import com.lxisoft.repository.HelpRepository;
+import com.lxisoft.repository.MediaRepository;
 import com.lxisoft.repository.NeedRepository;
 import com.lxisoft.repository.PostRepository;
 import com.lxisoft.repository.RegisteredUserRepository;
@@ -65,6 +70,7 @@ import com.lxisoft.service.dto.CategoryDTO;
 import com.lxisoft.service.dto.CommentDTO;
 import com.lxisoft.service.dto.FeedDTO;
 import com.lxisoft.service.dto.HelpDTO;
+import com.lxisoft.service.dto.MediaDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.service.dto.PostDTO;
 import com.lxisoft.service.dto.RegisteredUserDTO;
@@ -76,6 +82,7 @@ import com.lxisoft.service.mapper.CategoryMapper;
 import com.lxisoft.service.mapper.CommentMapper;
 import com.lxisoft.service.mapper.FeedMapper;
 import com.lxisoft.service.mapper.HelpMapper;
+import com.lxisoft.service.mapper.MediaMapper;
 import com.lxisoft.service.mapper.NeedMapper;
 import com.lxisoft.service.mapper.PostMapper;
 import com.lxisoft.service.mapper.RegisteredUserMapper;
@@ -134,6 +141,9 @@ public class AggregateServiceImpl implements AggregateService {
 	FeedRepository feedRepository;
 
 	@Autowired
+	MediaRepository mediaRepository;
+
+	@Autowired
     NeedMapper needMapper;
 	
 	@Autowired
@@ -167,8 +177,14 @@ public class AggregateServiceImpl implements AggregateService {
 	RegisteredUserMapper registeredUserMapper;
 	
 	@Autowired
+	MediaMapper mediaMapper;
+	
+	@Autowired
 	private JavaMailSender sender;
 		
+	@Value("${upload.path}")
+    private String path;
+	
 	
 	 /**
      * Save a need.
@@ -260,9 +276,34 @@ public class AggregateServiceImpl implements AggregateService {
     @Transactional(readOnly = true)
 	public Page<NeedDTO> findAllNeeds(Pageable pageable) {
 		log.debug("Request to get all Needs");
-        return needRepository.findAll(pageable)
-            .map(needMapper::toDto);
-	}
+
+		Pageable page=null;
+		
+		Page<NeedDTO> needDTO=needRepository.findAll(pageable)
+				.map(needMapper::toDto);
+		
+		List<NeedDTO> needList=needDTO.getContent();
+		
+		for(NeedDTO oneNeed:needList){
+		
+			Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByNeedId(oneNeed.getId(),pageable)
+								.map(mediaMapper::toDto);
+			
+			List<MediaDTO> mediaList=mediaDTO.getContent();
+			
+			List<String> mediaUrls=new ArrayList<String>();
+			
+			for(MediaDTO mediaFromList:mediaList){
+				mediaUrls.add(mediaFromList.getUrl());
+			}
+			oneNeed.setAttachmentUrls(mediaUrls);
+		}
+		
+		Page<NeedDTO> needDto = new PageImpl<NeedDTO>(needList, pageable, needList.size());
+        
+		return needDto;
+		
+}
 
 
     /**
@@ -341,7 +382,20 @@ public class AggregateServiceImpl implements AggregateService {
 			needDTO.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
 		}	  
         
-       
+		//anjali
+		
+				Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByNeedId(needDTO.getId(),pageable)
+						.map(mediaMapper::toDto);
+
+				List<String> mediaUrls=new ArrayList<String>();
+
+				for(MediaDTO mediaFromList:mediaDTO.getContent()){
+					mediaUrls.add(mediaFromList.getUrl());
+				}
+				needDTO.setAttachmentUrls(mediaUrls);
+
+				//anjali
+		       
 		return Optional.of(needDTO);
 	}
 
@@ -431,7 +485,22 @@ public class AggregateServiceImpl implements AggregateService {
 					postedDate = Date.from(need.getDate());
 					need.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
 				}	 
-											
+							
+				//anjali
+				
+				Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByNeedId(need.getId(),pageable)
+						.map(mediaMapper::toDto);
+
+				List<String> mediaUrls=new ArrayList<String>();
+
+				for(MediaDTO mediaFromList:mediaDTO.getContent()){
+					mediaUrls.add(mediaFromList.getUrl());
+					log.info("****url{}",mediaFromList.getFileName());
+				}
+				need.setAttachmentUrls(mediaUrls);
+				
+				//anjali
+				
 			 }
 			
 			Page<NeedDTO> pagee = new PageImpl<NeedDTO>(needs, pageable, needs.size());
@@ -1554,14 +1623,47 @@ public class AggregateServiceImpl implements AggregateService {
 				    
 								}
 
+								//anjali
+								  
+								  /**
+								     * Save a media.
+								     *
+								     * @param mediaDTO the entity to save
+								     * @return the persisted entity
+								     * @throws IOException 
+								     */
+								    @Override
+								    public MediaDTO saveMedia(MediaDTO mediaDTO) throws IOException {
+								        log.debug("Request to save Media : {}", mediaDTO);
+								        	
+								            String fileName = mediaDTO.getFileName();
+								            
+								            mediaDTO.setUrl(path+fileName);
+								           
+								            log.info("*******media url{}",mediaDTO.getUrl());
+									        
+								            Files.write(Paths.get(path+fileName), mediaDTO.getBytes());
+								            
+								        Media media = mediaMapper.toEntity(mediaDTO);
+								        media = mediaRepository.save(media);
+								        return mediaMapper.toDto(media);
+								    }
 
-			
-		
-		
-		
-		
-		
-		
+								    /**
+								     * Get all the media by needId.
+								     *
+								     * @param needId of the media
+								     * @return the list of entities
+								     */
+									@Override
+									public Page<MediaDTO> findAllUrlByNeedId(Long needId,Pageable pageable) {
+										// TODO Auto-generated method stub
+										return mediaRepository.findAllUrlByNeedId(needId,pageable)
+												.map(mediaMapper::toDto);
+									}
+						  
+					//anjali
+					
 		
 		
 	}
