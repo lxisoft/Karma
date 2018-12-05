@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lxisoft.client.karma.api.AggregateResourceApi;
@@ -41,7 +42,9 @@ import com.lxisoft.client.karma.model.CategoryDTO;
 import com.lxisoft.client.karma.model.CommentDTO;
 import com.lxisoft.client.karma.model.FeedDTO;
 import com.lxisoft.client.karma.model.HelpDTO;
+import com.lxisoft.client.karma.model.MediaDTO;
 import com.lxisoft.client.karma.model.NeedDTO;
+import com.lxisoft.client.karma.model.RegisteredUserDTO;
 import com.lxisoft.client.karma.model.ReplyDTO;
 import com.lxisoft.client.karma.model.UserCheckDTO;
 
@@ -72,13 +75,28 @@ public class AggregateController {
 	 */
 	@PostMapping("/needs")
 	@Timed
-	public String postNeed(@ModelAttribute NeedDTO needDTO, Model model)
+	public String postNeed(@ModelAttribute NeedDTO needDTO,@RequestParam MultipartFile[] multipartFiles,Model model)
 			throws URISyntaxException, IllegalStateException, IOException {
 		log.debug(" request to save Need : {},{}", needDTO);
+		
+        NeedDTO needDto=aggregateResourceApi.postNeedUsingPOST(needDTO).getBody();
+		
+		for(MultipartFile file : multipartFiles) {
+	    	
+			MediaDTO mediaDTO=new MediaDTO();
+			
+			mediaDTO.setFileName(file.getOriginalFilename());
+			mediaDTO.setNeedId(needDto.getId());
+			mediaDTO.setExtension(file.getContentType());
+			mediaDTO.setBytes(file.getBytes());
+			
+			MediaDTO mediaDto=aggregateResourceApi.postMediaUsingPOST(mediaDTO).getBody(); 
+	    	 
+		}
 
 		log.debug("save Need : {}", needDTO);
 
-		model.addAttribute("need", aggregateResourceApi.postNeedUsingPOST(needDTO).getBody());
+		model.addAttribute("need",needDto);
 		return "help-post-result";
 
 	}
@@ -602,6 +620,26 @@ public class AggregateController {
 		model.addAttribute("result", result);
 		model.addAttribute("replies", replies);
 		return "home::replies(commentId=${replyDTO.commentId})";
+	}
+	
+	/**
+	 * GET /registeredUserDTO/:id : get the "id" registeredUserDTO.
+	 *
+	 * @param id
+	 *            the id of the registeredUserDTO to retrieve
+	 * @return the string value
+	 */
+	@GetMapping("/registered-users/{id}")
+	@Timed
+	public String getOneRegisteredUser(@PathVariable(value = "id") Long id, Model model) {
+		
+		log.debug("request to get registeredUserDTO : {}", id);
+
+		RegisteredUserDTO registeredUser= aggregateResourceApi.getOneRegisteredUserUsingGET(id).getBody();
+
+		model.addAttribute("registeredUser", registeredUser);
+
+		return "registeredUser";
 	}
 
 }

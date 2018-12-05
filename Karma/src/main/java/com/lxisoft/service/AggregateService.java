@@ -27,6 +27,7 @@ import com.lxisoft.service.dto.CategoryDTO;
 import com.lxisoft.service.dto.CommentDTO;
 import com.lxisoft.service.dto.FeedDTO;
 import com.lxisoft.service.dto.HelpDTO;
+import com.lxisoft.service.dto.MediaDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.service.dto.PostDTO;
 import com.lxisoft.service.dto.RegisteredUserDTO;
@@ -478,53 +479,49 @@ public interface AggregateService {
 			// Code:End
 			
 			//neeraja
-			 /**
-			  * @param registeredUserId
-			  * @return
-			  */
 			
-			RegisteredUserDTO updateRegisteredUserEmotionalQuotientSocialQuotient(Long registeredUserId);
+			/**
+			  * @param registeredUserId
+			  * @return emotionalQuotient
+			  */
+			Long calculateRegisteredUserEmotionalQuotient(Long registeredUserId);
+
+			/**
+			  * @param registeredUserId
+			  * @return socialQuotient
+			  */
+			Long calculateRegisteredUserSocialQuotient(Long registeredUserId);
+
+			/**
+			  * @param registeredUserId
+			  * @return registeredUserDto
+			  */
+			Optional<RegisteredUserDTO> findOneRegisteredUser(Long id);
 
 
 			//neeraja end
 			
-			//sooraj
-			
-			/**
-			 *get follow or unfollow an user
-			 *
-			 * @param folloerUserId
-			 * 
-			 * @param followingUserId
-			 * 
-			 * @param pageable
-			 * 
-			 * @return
-			 */
-
-			//Boolean followOrUnfollowRegisteredUser(Long followerUserId,Long registeredUserId);
-
-
-		     /**
-			  * count  number of followers of an user
-			  * 
-			  * @param registeredUserId
-			  * 
-			  * @return noOfFollowers
-			  */
-
-			  //Long countNoOfFollowers(Long registeredUserId);
-			 
+			//anjali
 			  /**
-			   * count  number of followers of an user
-			   * 
-			   * @param registeredUserId
-			   * 
-			   * @return noOfFollowers
-			   */
-			 // Long countNoOfFollowings(Long registeredUserId);
+			     * Save a media.
+			     *
+			     * @param mediaDTO the entity to save
+			     * @return the persisted entity
+			     * @throws IOException 
+			     */
+			    MediaDTO saveMedia(MediaDTO mediaDTO) throws IOException;
 
-         //sooraj end
+			    /**
+			     * Get all the media.
+			     *
+			     * @param needId of the media
+			     * @return the list of entities
+			     */
+			    Page<MediaDTO> findAllUrlByNeedId(Long needId,Pageable pageable);
+
+			  
+			  //anjali
+			  
 
 
 }

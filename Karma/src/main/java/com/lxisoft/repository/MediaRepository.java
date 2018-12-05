@@ -1,6 +1,9 @@
 package com.lxisoft.repository;
 
 import com.lxisoft.domain.Media;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -11,5 +14,7 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface MediaRepository extends JpaRepository<Media, Long> {
+	
+	Page<Media> findAllUrlByNeedId(Long needId,Pageable pageable);
 
 }

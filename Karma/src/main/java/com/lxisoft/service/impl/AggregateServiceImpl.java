@@ -16,6 +16,8 @@
 package com.lxisoft.service.impl;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,6 +32,7 @@ import javax.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -43,6 +46,7 @@ import com.lxisoft.domain.Category;
 import com.lxisoft.domain.Comment;
 import com.lxisoft.domain.Feed;
 import com.lxisoft.domain.Help;
+import com.lxisoft.domain.Media;
 import com.lxisoft.domain.Need;
 import com.lxisoft.domain.Post;
 import com.lxisoft.domain.RegisteredUser;
@@ -53,6 +57,7 @@ import com.lxisoft.repository.CategoryRepository;
 import com.lxisoft.repository.CommentRepository;
 import com.lxisoft.repository.FeedRepository;
 import com.lxisoft.repository.HelpRepository;
+import com.lxisoft.repository.MediaRepository;
 import com.lxisoft.repository.NeedRepository;
 import com.lxisoft.repository.PostRepository;
 import com.lxisoft.repository.RegisteredUserRepository;
@@ -65,6 +70,7 @@ import com.lxisoft.service.dto.CategoryDTO;
 import com.lxisoft.service.dto.CommentDTO;
 import com.lxisoft.service.dto.FeedDTO;
 import com.lxisoft.service.dto.HelpDTO;
+import com.lxisoft.service.dto.MediaDTO;
 import com.lxisoft.service.dto.NeedDTO;
 import com.lxisoft.service.dto.PostDTO;
 import com.lxisoft.service.dto.RegisteredUserDTO;
@@ -76,8 +82,10 @@ import com.lxisoft.service.mapper.CategoryMapper;
 import com.lxisoft.service.mapper.CommentMapper;
 import com.lxisoft.service.mapper.FeedMapper;
 import com.lxisoft.service.mapper.HelpMapper;
+import com.lxisoft.service.mapper.MediaMapper;
 import com.lxisoft.service.mapper.NeedMapper;
 import com.lxisoft.service.mapper.PostMapper;
+import com.lxisoft.service.mapper.RegisteredUserMapper;
 import com.lxisoft.service.mapper.ReplyMapper;
 import com.lxisoft.service.mapper.SeverityMapper;
 import com.lxisoft.service.mapper.UserCheckMapper;
@@ -131,6 +139,9 @@ public class AggregateServiceImpl implements AggregateService {
 	
 	@Autowired
 	FeedRepository feedRepository;
+	
+	@Autowired
+	MediaRepository mediaRepository;
 
 	@Autowired
     NeedMapper needMapper;
@@ -163,7 +174,16 @@ public class AggregateServiceImpl implements AggregateService {
 	PostMapper postMapper;
 	
 	@Autowired
+	RegisteredUserMapper registeredUserMapper;
+	
+	@Autowired
+	MediaMapper mediaMapper;
+	
+	@Autowired
 	private JavaMailSender sender;
+	
+	@Value("${upload.path}")
+    private String path;
 		
 	
 	 /**
@@ -193,9 +213,7 @@ public class AggregateServiceImpl implements AggregateService {
 		Need need = needMapper.toEntity(newNeed);
 		 
 		need = needRepository.save(need);
-		
-		
-		
+				
 	     return needMapper.toDto(need);
 	}
 	
@@ -306,7 +324,7 @@ public class AggregateServiceImpl implements AggregateService {
 		
 			needDTO.setPercentageOfGenuineness((long)((genuinescount/userCheckDTOList.size())*100));
 		 
-			//need.setPercentageOfGenuineness(genuinescount);
+			needDTO.setNoOfRecommendations((long)genuinescount);
 						
 		}
 								    	
@@ -315,6 +333,9 @@ public class AggregateServiceImpl implements AggregateService {
 		needDTO.setNoOfHelps((long)(helpRepository.countOfHelpsByfulfilledNeedId(need.getId(),"completed")));
     	
 		needDTO.setCategoryList(new ArrayList<CategoryDTO>(needDTO.getCategories()));
+		
+		//severity
+		
 		SeverityDTO severityDTO=null;
 		
 		if(needDTO.getSeverityId()!=null)
@@ -323,6 +344,7 @@ public class AggregateServiceImpl implements AggregateService {
 		if(severityDTO!=null)
 			needDTO.setSeverityLevel(severityDTO.getSeverityLevel());
 		
+		//username
 		
 		if (needDTO.getPostedUserId() != null) 
     	{
@@ -330,40 +352,30 @@ public class AggregateServiceImpl implements AggregateService {
 			needDTO.setUserName(registeredUser.getFirstName() +" "+registeredUser.getLastName());
 		}
     	else
-    		needDTO.setUserName("Ajith");				
+    		needDTO.setUserName("Ajith");	
 		
+		//elapsedtime
 		
-        Instant instant = Instant.now();
-		
-		Date repliedTime = null;
+		Date postedDate = null;
 		if (needDTO.getDate() != null) {
-			repliedTime = Date.from(need.getDate());
+			postedDate = Date.from(needDTO.getDate());
+			needDTO.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
+		}	
+		
+		
+		//media
+		
+		Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByNeedId(needDTO.getId(),pageable)
+				.map(mediaMapper::toDto);
+
+		List<String> mediaUrls=new ArrayList<String>();
+
+		for(MediaDTO mediaFromList:mediaDTO.getContent()){
+			mediaUrls.add(mediaFromList.getUrl());
 		}
-		Date current = Date.from(instant);
-		long diffInSecond = 0l;
-		if (repliedTime != null) {
-			diffInSecond = (current.getTime() - repliedTime.getTime()) / 1000l;
-		}
-		long postedBefore = 0l;
-		if (diffInSecond < 60l) {
-			needDTO.setTimeElapsed(diffInSecond + " seconds ago");
-		} else if (diffInSecond < 3600l) {
-			postedBefore = diffInSecond / 60l;
-			needDTO.setTimeElapsed(postedBefore + " minutes ago");
-		} else if (diffInSecond < 86400l) {
-			postedBefore = diffInSecond / 3600l;
-			needDTO.setTimeElapsed(postedBefore + " hours ago");
-		} else if (diffInSecond < 2592000l) {
-			postedBefore = diffInSecond / 86400l;
-			needDTO.setTimeElapsed(postedBefore + " days ago");
-		} else if (diffInSecond < 31104000l) {
-			postedBefore = diffInSecond / 2592000l;
-			needDTO.setTimeElapsed(postedBefore + " months ago");
-		} else {
-			postedBefore = diffInSecond / 31104000l;
-			needDTO.setTimeElapsed(postedBefore + " years ago");
-		}
-		System.out.println("how many ago " + needDTO.getTimeElapsed());
+		needDTO.setAttachmentUrls(mediaUrls);
+
+        
        
 		return Optional.of(needDTO);
 	}
@@ -422,7 +434,7 @@ public class AggregateServiceImpl implements AggregateService {
 				
 					need.setPercentageOfGenuineness((long)((genuinescount/userCheckDTOList.size())*100));
 				 
-					//need.setPercentageOfGenuineness(genuinescount);
+					need.setNoOfRecommendations((long)genuinescount);
 								
 				}
 										    	
@@ -449,41 +461,28 @@ public class AggregateServiceImpl implements AggregateService {
 		    		need.setUserName("Ajith");				
 				
 				
-                Instant instant = Instant.now();
-				
-				Date repliedTime = null;
+				Date postedDate = null;
 				if (need.getDate() != null) {
-					repliedTime = Date.from(need.getDate());
+					postedDate = Date.from(need.getDate());
+					need.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
 				}
-				Date current = Date.from(instant);
-				long diffInSecond = 0l;
-				if (repliedTime != null) {
-					diffInSecond = (current.getTime() - repliedTime.getTime()) / 1000l;
-				}
-				long postedBefore = 0l;
-				if (diffInSecond < 60l) {
-					need.setTimeElapsed(diffInSecond + " seconds ago");
-				} else if (diffInSecond < 3600l) {
-					postedBefore = diffInSecond / 60l;
-					need.setTimeElapsed(postedBefore + " minutes ago");
-				} else if (diffInSecond < 86400l) {
-					postedBefore = diffInSecond / 3600l;
-					need.setTimeElapsed(postedBefore + " hours ago");
-				} else if (diffInSecond < 2592000l) {
-					postedBefore = diffInSecond / 86400l;
-					need.setTimeElapsed(postedBefore + " days ago");
-				} else if (diffInSecond < 31104000l) {
-					postedBefore = diffInSecond / 2592000l;
-					need.setTimeElapsed(postedBefore + " months ago");
-				} else {
-					postedBefore = diffInSecond / 31104000l;
-					need.setTimeElapsed(postedBefore + " years ago");
-				}
-				System.out.println("how many ago " + need.getTimeElapsed());
 				
-		
-												
-									
+				
+
+				
+				Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByNeedId(need.getId(),pageable)
+						.map(mediaMapper::toDto);
+
+				List<String> mediaUrls=new ArrayList<String>();
+
+				for(MediaDTO mediaFromList:mediaDTO.getContent()){
+					mediaUrls.add(mediaFromList.getUrl());
+					log.info("****url{}",mediaFromList.getFileName());
+				}
+				need.setAttachmentUrls(mediaUrls);
+				
+				
+											
 			 }
 			
 			Page<NeedDTO> pagee = new PageImpl<NeedDTO>(needs, pageable, needs.size());
@@ -780,41 +779,12 @@ public class AggregateServiceImpl implements AggregateService {
     	else
     		help.setUserName("sanil Pachath");
     	
-    	
-    	
-    	Instant instant = Instant.now();
-		
-		Date repliedTime = null;
+    	Date postedDate = null;
 		if (help.getTime() != null) {
-			repliedTime = Date.from(help.getTime());
-		}
-		Date current = Date.from(instant);
-		long diffInSecond = 0l;
-		if (repliedTime != null) {
-			diffInSecond = (current.getTime() - repliedTime.getTime()) / 1000l;
-		}
-		long postedBefore = 0l;
-		if (diffInSecond < 60l) {
-			help.setTimeElapsed(diffInSecond + " seconds ago");
-		} else if (diffInSecond < 3600l) {
-			postedBefore = diffInSecond / 60l;
-			help.setTimeElapsed(postedBefore + " minutes ago");
-		} else if (diffInSecond < 86400l) {
-			postedBefore = diffInSecond / 3600l;
-			help.setTimeElapsed(postedBefore + " hours ago");
-		} else if (diffInSecond < 2592000l) {
-			postedBefore = diffInSecond / 86400l;
-			help.setTimeElapsed(postedBefore + " days ago");
-		} else if (diffInSecond < 31104000l) {
-			postedBefore = diffInSecond / 2592000l;
-			help.setTimeElapsed(postedBefore + " months ago");
-		} else {
-			postedBefore = diffInSecond / 31104000l;
-			help.setTimeElapsed(postedBefore + " years ago");
-		}
-		System.out.println("how many ago " + help.getTimeElapsed());
-
-        
+			postedDate = Date.from(help.getTime());
+			help.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
+		}	  
+    	       
 		return Optional.of(help);
         
            
@@ -851,20 +821,9 @@ public class AggregateServiceImpl implements AggregateService {
                                 .map(helpMapper::toDto);
 	    
 	    List<HelpDTO> helps=helpDtos.getContent();
+	    
 	    for(HelpDTO help:helps)
-	    {	
-	    	/*Page<CommentDTO> commentsPage=findAllCommentsByHelpId(pageable,help.getId());
-	    	if(commentsPage.getContent()==null)
-	    		help.setNoOfComments((long)0);
-	    	else
-	    	{
-	    		List<CommentDTO> noOfComments = commentsPage.getContent();
-	    	    help.setNoOfComments((long)noOfComments.size());
-	    	}  */
-	    	
-	    	/*help.setNoOfLikes((long) calculateLikesNumberOfHelps(help.getId()));
-	    	help.setNoOfDisLikes((long)calculateDislikesNumberOfHelps(help.getId()));*/
-	    	
+	    {		    	
 	    	help.setNoOfComments((long)(commentRepository.countByHelpId(help.getId())));
 	    		    		    	
 	    	help.setNoOfLikes((long)userCheckRepository.countOfVoteTypeLike("positive",help.getId()));
@@ -881,38 +840,11 @@ public class AggregateServiceImpl implements AggregateService {
 	    	
 	    	
 	    	
-	    	Instant instant = Instant.now();
-			
-			Date repliedTime = null;
+	    	Date postedDate = null;
 			if (help.getTime() != null) {
-				repliedTime = Date.from(help.getTime());
-			}
-			Date current = Date.from(instant);
-			long diffInSecond = 0l;
-			if (repliedTime != null) {
-				diffInSecond = (current.getTime() - repliedTime.getTime()) / 1000l;
-			}
-			long postedBefore = 0l;
-			if (diffInSecond < 60l) {
-				help.setTimeElapsed(diffInSecond + " seconds ago");
-			} else if (diffInSecond < 3600l) {
-				postedBefore = diffInSecond / 60l;
-				help.setTimeElapsed(postedBefore + " minutes ago");
-			} else if (diffInSecond < 86400l) {
-				postedBefore = diffInSecond / 3600l;
-				help.setTimeElapsed(postedBefore + " hours ago");
-			} else if (diffInSecond < 2592000l) {
-				postedBefore = diffInSecond / 86400l;
-				help.setTimeElapsed(postedBefore + " days ago");
-			} else if (diffInSecond < 31104000l) {
-				postedBefore = diffInSecond / 2592000l;
-				help.setTimeElapsed(postedBefore + " months ago");
-			} else {
-				postedBefore = diffInSecond / 31104000l;
-				help.setTimeElapsed(postedBefore + " years ago");
-			}
-			System.out.println("how many ago " + help.getTimeElapsed());
-
+				postedDate = Date.from(help.getTime());
+				help.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
+			}	    	
 	    	
 	    }
          	
@@ -1089,10 +1021,7 @@ public class AggregateServiceImpl implements AggregateService {
 			userCheckDTO.setVoteType("positive");
 			UserCheck userCheck = userCheckMapper.toEntity(userCheckDTO);
 			userCheck = userCheckRepository.save(userCheck);
-			userCheckDTO = userCheckMapper.toDto(userCheck);
-			
-			
-			
+			userCheckDTO = userCheckMapper.toDto(userCheck);			
 			
 			Optional<UserCheckDTO> result = Optional.of(userCheckDTO);
 			return result;	
@@ -1115,9 +1044,7 @@ public class AggregateServiceImpl implements AggregateService {
 			UserCheck userCheck = userCheckMapper.toEntity(userCheckDTO);
 			userCheck = userCheckRepository.save(userCheck);
 			userCheckDTO = userCheckMapper.toDto(userCheck);
-			
-			
-			
+						
 			Optional<UserCheckDTO> result = Optional.of(userCheckDTO);
 			return result;
 		}
@@ -1162,7 +1089,20 @@ public class AggregateServiceImpl implements AggregateService {
 			log.debug("request to get all comments by needId :" + needId);
 			Page<CommentDTO> commentDtos=commentRepository.findAllCommentsByNeedId(pageable,needId)
 		                             .map(commentMapper::toDto);
-			List<CommentDTO> commentDtoList=calculateCommentTimePostedBefore(commentDtos);
+			List<CommentDTO> commentDtoList=commentDtos.getContent();
+			
+			for (CommentDTO commentDTO : commentDtoList) {
+
+				Date postedDate = null;
+				if (commentDTO.getDate() != null) {
+					postedDate = Date.from(commentDTO.getDate());
+					commentDTO.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
+				}
+				
+				commentDTO.setNoOfReplies((long)replyRepository.countReplysByCommentId(commentDTO.getId()) );
+
+			}
+									
 			Page<CommentDTO> page=new PageImpl<CommentDTO>(commentDtoList, pageable, commentDtoList.size());
 			return page;
 		}
@@ -1180,59 +1120,24 @@ public class AggregateServiceImpl implements AggregateService {
 			log.debug("request to get all comments by helpId :" + helpId);
 			Page<CommentDTO> commentDtos=commentRepository.findAllCommentsByHelpId(pageable, helpId)
 					                    .map(commentMapper::toDto);
-			List<CommentDTO> commentDtoList=calculateCommentTimePostedBefore(commentDtos);
+			List<CommentDTO> commentDtoList=commentDtos.getContent();
+			
+			for (CommentDTO commentDTO : commentDtoList) {
+
+				Date postedDate = null;
+				if (commentDTO.getDate() != null) {
+					postedDate = Date.from(commentDTO.getDate());
+					commentDTO.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
+				}
+
+				commentDTO.setNoOfReplies((long)replyRepository.countReplysByCommentId(commentDTO.getId()));
+			}
+			
+			
 			Page<CommentDTO> page=new PageImpl<CommentDTO>(commentDtoList, pageable, commentDtoList.size());
 			return page;
 
 		}
-		
-		/**
-		 * Get all the comments with time.
-		 *
-		 * @param pageable
-		 *            the pagination information
-		 * @return the list of entities
-		 */
-		public List<CommentDTO> calculateCommentTimePostedBefore(Page<CommentDTO> comments) {
-			log.debug("Request to get all comments");
-			List<CommentDTO> commentList = comments.getContent();
-			for (CommentDTO commentDto : commentList) {
-				Instant instant = Instant.now();
-				Date repliedTime = null;
-				if (commentDto.getDate() != null) {
-					repliedTime = Date.from(commentDto.getDate());
-				}
-				Date current = Date.from(instant);
-				long diffInSecond = 0l;
-				if (repliedTime != null) {
-					diffInSecond = (current.getTime() - repliedTime.getTime()) / 1000l;
-				}
-				long postedBefore = 0l;
-				if (diffInSecond < 60l) {
-					commentDto.setTimeElapsed(diffInSecond + " seconds ago");
-				} else if (diffInSecond < 3600l) {
-					postedBefore = diffInSecond / 60l;
-					commentDto.setTimeElapsed(postedBefore + " minutes ago");
-				} else if (diffInSecond < 86400l) {
-					postedBefore = diffInSecond / 3600l;
-					commentDto.setTimeElapsed(postedBefore + " hours ago");
-				} else if (diffInSecond < 2592000l) {
-					postedBefore = diffInSecond / 86400l;
-					commentDto.setTimeElapsed(postedBefore + " days ago");
-				} else if (diffInSecond < 31104000l) {
-					postedBefore = diffInSecond / 2592000l;
-					commentDto.setTimeElapsed(postedBefore + " months ago");
-				} else {
-					postedBefore = diffInSecond / 31104000l;
-					commentDto.setTimeElapsed(postedBefore + " years ago");
-				}
-				System.out.println("how many ago " + commentDto.getTimeElapsed());
-
-			}
-			return commentList;
-		}
-
-
 		
 
 
@@ -1263,62 +1168,29 @@ public class AggregateServiceImpl implements AggregateService {
 		 */
 		public Page<ReplyDTO> findAllRepliesByCommentId(Pageable pageable, Long commentId) {
 			log.debug("Request to get Reply from commentId : {}", commentId);
+			
 			Page<ReplyDTO> replyDTOs =replyRepository.findAllRepliesByCommentId(pageable,commentId)
 	               .map(replyMapper::toDto);
-			return findAllReplies(pageable,replyDTOs);
-		}
+			
+			List<ReplyDTO> replyDtoList=replyDTOs.getContent();
+			
+			for (ReplyDTO replyDTO : replyDtoList) {
 
-		
-		/**
-	     * find all replies along with time
-	     *
-	     * @param pageable
-	     *              the pagination information
-	     * @return the entities
-	     */
-		public Page<ReplyDTO> findAllReplies(Pageable pageable,Page<ReplyDTO> replyDTOs) {				
-			log.debug("Request to get all replies along with time");		
-			List<ReplyDTO> replyList = replyDTOs.getContent();
-			for (ReplyDTO replyDto : replyList) {
-				Instant instant = Instant.now();
-				Date repliedTime = null;
-				if (replyDto.getDate() != null) {
-					repliedTime = Date.from(replyDto.getDate());
+				Date postedDate = null;
+				if (replyDTO.getDate() != null) {
+					postedDate = Date.from(replyDTO.getDate());
+					replyDTO.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
 				}
-				Date current = Date.from(instant);
-				long diffInSecond = 0l;
-				if (repliedTime != null) {
-					diffInSecond = (current.getTime() - repliedTime.getTime()) / 1000l;
-				}
-				long postedBefore = 0l;
-				if (diffInSecond < 60l) {
-					replyDto.setTimeElapsed(diffInSecond + " seconds ago");
-				} else if (diffInSecond < 3600l) {
-					postedBefore = diffInSecond / 60l;
-					replyDto.setTimeElapsed(postedBefore + " minutes ago");
-				} else if (diffInSecond < 86400l) {
-					postedBefore = diffInSecond / 3600l;
-					replyDto.setTimeElapsed(postedBefore + " hours ago");
-				} else if (diffInSecond < 2592000l) {
-					postedBefore = diffInSecond / 86400l;
-					replyDto.setTimeElapsed(postedBefore + " days ago");
-				} else if (diffInSecond < 31104000l) {
-					postedBefore = diffInSecond / 2592000l;
-					replyDto.setTimeElapsed(postedBefore + " months ago");
-				} else {
-					postedBefore = diffInSecond / 31104000l;
-					replyDto.setTimeElapsed(postedBefore + " years ago");
-				}
-				System.out.println("how many ago " + replyDto.getTimeElapsed());
 
 			}
 			
-			Page<ReplyDTO> page=new PageImpl<ReplyDTO>(replyList, pageable, replyList.size());
+			
+			Page<ReplyDTO> page=new PageImpl<ReplyDTO>(replyDtoList, pageable, replyDtoList.size());
 			
 			return page;
 			
 		}
-
+		
 
 		/**
 	     * Get one severity by id.
@@ -1653,137 +1525,128 @@ public class AggregateServiceImpl implements AggregateService {
 		
 		// neeraja
 
+
 		/**
-		 * to add and update the social and emotional quotient
+	     * Get one registeredUser by id.
+	     *
+	     * @param id the id of the entity
+	     * @return the entity
+	     */
+	    @Override
+	    @Transactional(readOnly = true)
+	    public Optional<RegisteredUserDTO> findOneRegisteredUser(Long id) {
+	        log.debug("Request to get RegisteredUser : {}", id);
+	        
+	        
+	        RegisteredUser registeredUser=registeredUserRepository.findById(id).get();
+	        RegisteredUserDTO registeredUserDto=registeredUserMapper.toDto(registeredUser);
+	        registeredUserDto.setEmotionalQuotient(calculateRegisteredUserEmotionalQuotient(id));
+	        registeredUserDto.setSocialQuotient(calculateRegisteredUserSocialQuotient(id));
+	       
+	      //RegisteredUser registeredUser = registeredUserRepository.save(registeredUserMapper.toEntity(registeredUserDTO));
+	        return Optional.of(registeredUserDto);
+	    }
+
+		
+	    /**
+		 * to add and update the emotional quotient
 		 *
 		 * @param registeredUserid
 		 *            the id of the entity
-		 * @return the dto
+		 * @return the emotional quotient
 		 */
 
 					@Override
-					public RegisteredUserDTO updateRegisteredUserEmotionalQuotientSocialQuotient(Long registeredUserId) {
-						
+					public Long calculateRegisteredUserEmotionalQuotient(Long registeredUserId) {
+					
 						 log.debug("REST request to Eq Sq LoggedUser : {}", registeredUserId);
-					       RegisteredUserDTO registeredUserDto=new RegisteredUserDTO();
-					       RegisteredUser registeredUser1=new RegisteredUser();
-					    		   
-					      RegisteredUser registeredUser = registeredUserRepository.findById(registeredUserId).orElse(null);
-					      if(registeredUser.getSocialQuotient() == null)
+					       
+					      RegisteredUserDTO registeredUserDTO = registeredUserRepository.findById(registeredUserId).map(registeredUserMapper::toDto).orElse(null);
+					      if(registeredUserDTO.getEmotionalQuotient() == null)
 					      {
-					    	  registeredUser.setSocialQuotient(0l);
-					    	  registeredUser.setEmotionalQuotient(0l);
+					    	 
+					    	  registeredUserDTO.setEmotionalQuotient(0l);
 					      }  
 					      Long pointOfHelpEq = helpRepository.findCountOfHelpsByRegisteredUserId(registeredUserId)/3;
-					      Long pointOfHelpSq = helpRepository.findCountOfHelpsByRegisteredUserId(registeredUserId);
 					      Long pointOfPostEq = postRepository.findCountOfPostsByRegisteredUserId(registeredUserId)/6;
-					      Long pointOfPostSq = postRepository.findCountOfPostsByRegisteredUserId(registeredUserId)/12;
-					      registeredUser.setEmotionalQuotient(pointOfHelpEq+pointOfPostEq);
-					      registeredUser.setSocialQuotient(pointOfHelpSq+pointOfPostSq);
-					      registeredUserDto.setFirstName(registeredUser.getFirstName());
-					      registeredUserDto.setLastName(registeredUser.getLastName());
-					      registeredUserDto.setBloodGroup(registeredUser.getBloodGroup());
-					      registeredUserDto.setEmail(registeredUser.getEmail());
-					      registeredUserDto.setDescription(registeredUser.getDescription());
-					      registeredUserDto.setDob(registeredUser.getDob());
-					      registeredUserDto.setGender(registeredUser.getGender());
-					      registeredUserDto.setHappinessIndex(registeredUser.getHappinessIndex());
-					      registeredUserDto.setProfession(registeredUser.getProfession());
-					      registeredUserDto.setEmotionalQuotient(registeredUser.getEmotionalQuotient());
-					      registeredUserDto.setSocialQuotient(registeredUser.getSocialQuotient());
-					      registeredUserDto.setProfilePicId(registeredUser.getProfilePic().getId());
-					      registeredUserDto.setRating(registeredUser.getRating());
-					      
-					     
-					      
-					      registeredUser1= registeredUserRepository.save(registeredUser);
-					     // return registeredUserMapper.toDto(registeredUser);
-					      return registeredUserDto;
-					    }
+					      Long emotionalQuotient=pointOfHelpEq+pointOfPostEq;
+	    
+					      return emotionalQuotient;
+	    
+	    
+					}
 					
-			// end neeraja
 
-		
-		//sooraj
-					
-					/**
-					    *get to follow or unfollow an user
-					     * @param folloerUserId
-					     * @param registeredUserId
-					     * @param pageable
-					     * @return
-					     */						 
-					  /* @Override
-					   public Boolean followOrUnfollowRegisteredUser(Long followerUserId,Long registeredUserId){
-					   	log.debug("followerUserId:"+followerUserId);
+				    /**
+					 * to add and update the social quotient
+					 *
+					 * @param registeredUserid
+					 *            the id of the entity
+					 * @return the social quotient
+					 */
 
-					   	log.debug("registeredUserId:"+registeredUserId);
-						Optional<RegisteredUser> registeredUser=registeredUserRepository.findById(registeredUserId);
-						List<RegisteredUser>followers=new ArrayList<RegisteredUser>(registeredUser.get().getFollowers());
-						Integer index=-1;
-						for(RegisteredUser follower:followers)
-						{
-							if(follower.getId().equals(followerUserId))
-							{
-								index=followers.indexOf(follower);
-							}
-						}
-						Set<RegisteredUser>registeredUsersSet;
+								@Override
+								public Long calculateRegisteredUserSocialQuotient(Long registeredUserId) {
+								
+									 log.debug("REST request to Eq Sq LoggedUser : {}", registeredUserId);
+								       
+								      RegisteredUserDTO registeredUserDTO = registeredUserRepository.findById(registeredUserId).map(registeredUserMapper::toDto).orElse(null);
+								      if(registeredUserDTO.getSocialQuotient() == null)
+								      {
+								    	 
+								    	  registeredUserDTO.setSocialQuotient(0l);
+								      }  
+								      Long pointOfHelpSq = helpRepository.findCountOfHelpsByRegisteredUserId(registeredUserId);
+								      Long pointOfPostSq = postRepository.findCountOfPostsByRegisteredUserId(registeredUserId)/12;
+								      Long socialQuotient=pointOfHelpSq+pointOfPostSq;
+				    
+								      return socialQuotient;
+				    
+				    
+								}
 
-						if(index>=0)
-						{
-							followers.remove((int)index);
-							registeredUsersSet=new HashSet<RegisteredUser>(followers);
+								//anjali
+								  
+								  /**
+								     * Save a media.
+								     *
+								     * @param mediaDTO the entity to save
+								     * @return the persisted entity
+								     * @throws IOException 
+								     */
+								    @Override
+								    public MediaDTO saveMedia(MediaDTO mediaDTO) throws IOException {
+								        log.debug("Request to save Media : {}", mediaDTO);
+								        	
+								            String fileName = mediaDTO.getFileName();
+								            
+								            mediaDTO.setUrl(path+fileName);
+								           
+								            log.info("*******media url{}",mediaDTO.getUrl());
+									        
+								            Files.write(Paths.get(path+fileName), mediaDTO.getBytes());
+								            
+								        Media media = mediaMapper.toEntity(mediaDTO);
+								        media = mediaRepository.save(media);
+								        return mediaMapper.toDto(media);
+								    }
 
-						}
-						else 
-						{
+								    /**
+								     * Get all the media by needId.
+								     *
+								     * @param needId of the media
+								     * @return the list of entities
+								     */
+									@Override
+									public Page<MediaDTO> findAllUrlByNeedId(Long needId,Pageable pageable) {
+										// TODO Auto-generated method stub
+										return mediaRepository.findAllUrlByNeedId(needId,pageable)
+												.map(mediaMapper::toDto);
+									}
+						  
+					//anjali
 
-							followers.add((registeredUserRepository.findById(followerUserId).get()));
-							registeredUsersSet=new HashSet<RegisteredUser>(followers);
-						}
-						registeredUser.get().setFollowers(registeredUsersSet);
-						registeredUserRepository.save(registeredUser.get());
-						
-					   return null;
-
-					   }
-				
-					   *//**
-					    *method to count  number of followers of an user
-					     * @param registeredUserId
-					     * @return noOfFollowers
-					     *//*
-
-					 public  Long countNoOfFollowers(Long registeredUserId)
-					  {
-
-					  Set<RegisteredUser> registeredUsers=registeredUserRepository.findById(registeredUserId).get().getFollowers();	
-					  System.out.println("???????????????????????????="+registeredUsers.size());
-					  return registeredUsers.size()+0l;
-
-					  }
-
-
-					    *//**
-					    *method to count  number of followings 
-					     * @param registeredUserId
-					     * @return noOfFollowings
-					     *//*
-
-					  public Long countNoOfFollowings(Long registeredUserId)
-					  {
-
-					  Set<RegisteredUser> registeredUsers=registeredUserRepository.findById(registeredUserId).get().getFollowingUsers();	
-					  System.out.println("???????????????????????????="+registeredUsers.size());
-					  return registeredUsers.size()+0l;
-
-					  }
-
-*/		
-		//sooraj end
-		
-		
+			
 		
 		
 		

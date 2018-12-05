@@ -10,6 +10,7 @@ import com.lxisoft.client.karma.model.CategoryDTO;
 import com.lxisoft.client.karma.model.CommentDTO;
 import com.lxisoft.client.karma.model.FeedDTO;
 import com.lxisoft.client.karma.model.HelpDTO;
+import com.lxisoft.client.karma.model.MediaDTO;
 import com.lxisoft.client.karma.model.NeedDTO;
 import com.lxisoft.client.karma.model.PostDTO;
 import com.lxisoft.client.karma.model.RegisteredUserDTO;
@@ -34,7 +35,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-05T16:12:06.864739200+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-06T01:17:31.492812+05:30[Asia/Calcutta]")
 
 @Api(value = "AggregateResource", description = "the AggregateResource API")
 public interface AggregateResourceApi {
@@ -253,6 +254,18 @@ public interface AggregateResourceApi {
     ResponseEntity<List<HelpDTO>> getAllHelpsUsingGET(@ApiParam(value = "") @Valid @RequestParam(value = "offset", required = false) Long offset,@ApiParam(value = "Page number of the requested page") @Valid @RequestParam(value = "page", required = false) Integer page,@ApiParam(value = "") @Valid @RequestParam(value = "pageNumber", required = false) Integer pageNumber,@ApiParam(value = "") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "") @Valid @RequestParam(value = "paged", required = false) Boolean paged,@ApiParam(value = "Size of a page") @Valid @RequestParam(value = "size", required = false) Integer size,@ApiParam(value = "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.") @Valid @RequestParam(value = "sort", required = false) List<String> sort,@ApiParam(value = "") @Valid @RequestParam(value = "sort.sorted", required = false) Boolean sortSorted,@ApiParam(value = "") @Valid @RequestParam(value = "sort.unsorted", required = false) Boolean sortUnsorted,@ApiParam(value = "") @Valid @RequestParam(value = "unpaged", required = false) Boolean unpaged);
 
 
+    @ApiOperation(value = "getAllMediaUrlsByNeedId", nickname = "getAllMediaUrlsByNeedIdUsingGET", notes = "", response = MediaDTO.class, responseContainer = "List", tags={ "aggregate-resource", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "OK", response = MediaDTO.class, responseContainer = "List"),
+        @ApiResponse(code = 401, message = "Unauthorized"),
+        @ApiResponse(code = 403, message = "Forbidden"),
+        @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/api/media/getAllMediaUrlsByNeedId/{needId}",
+        produces = "*/*", 
+        method = RequestMethod.GET)
+    ResponseEntity<List<MediaDTO>> getAllMediaUrlsByNeedIdUsingGET(@ApiParam(value = "needId",required=true) @PathVariable("needId") Long needId,@ApiParam(value = "") @Valid @RequestParam(value = "offset", required = false) Long offset,@ApiParam(value = "Page number of the requested page") @Valid @RequestParam(value = "page", required = false) Integer page,@ApiParam(value = "") @Valid @RequestParam(value = "pageNumber", required = false) Integer pageNumber,@ApiParam(value = "") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "") @Valid @RequestParam(value = "paged", required = false) Boolean paged,@ApiParam(value = "Size of a page") @Valid @RequestParam(value = "size", required = false) Integer size,@ApiParam(value = "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.") @Valid @RequestParam(value = "sort", required = false) List<String> sort,@ApiParam(value = "") @Valid @RequestParam(value = "sort.sorted", required = false) Boolean sortSorted,@ApiParam(value = "") @Valid @RequestParam(value = "sort.unsorted", required = false) Boolean sortUnsorted,@ApiParam(value = "") @Valid @RequestParam(value = "unpaged", required = false) Boolean unpaged);
+
+
     @ApiOperation(value = "getAllNeedsByApprovedStatus", nickname = "getAllNeedsByApprovedStatusUsingGET", notes = "", response = NeedDTO.class, responseContainer = "List", tags={ "aggregate-resource", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = NeedDTO.class, responseContainer = "List"),
@@ -361,6 +374,18 @@ public interface AggregateResourceApi {
     ResponseEntity<NeedDTO> getNeedUsingGET(@ApiParam(value = "id",required=true) @PathVariable("id") Long id);
 
 
+    @ApiOperation(value = "getOneRegisteredUser", nickname = "getOneRegisteredUserUsingGET", notes = "", response = RegisteredUserDTO.class, tags={ "aggregate-resource", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "OK", response = RegisteredUserDTO.class),
+        @ApiResponse(code = 401, message = "Unauthorized"),
+        @ApiResponse(code = 403, message = "Forbidden"),
+        @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/api/registeredUser/{id}",
+        produces = "*/*", 
+        method = RequestMethod.GET)
+    ResponseEntity<RegisteredUserDTO> getOneRegisteredUserUsingGET(@ApiParam(value = "id",required=true) @PathVariable("id") Long id);
+
+
     @ApiOperation(value = "getPost", nickname = "getPostUsingGET", notes = "", response = PostDTO.class, tags={ "aggregate-resource", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = PostDTO.class),
@@ -371,19 +396,6 @@ public interface AggregateResourceApi {
         produces = "*/*", 
         method = RequestMethod.GET)
     ResponseEntity<PostDTO> getPostUsingGET(@ApiParam(value = "id",required=true) @PathVariable("id") Long id);
-
-
-    @ApiOperation(value = "getRegisteredUserEmotionalQuotientAndSocialQuotient", nickname = "getRegisteredUserEmotionalQuotientAndSocialQuotientUsingPUT", notes = "", response = RegisteredUserDTO.class, tags={ "aggregate-resource", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "OK", response = RegisteredUserDTO.class),
-        @ApiResponse(code = 201, message = "Created"),
-        @ApiResponse(code = 401, message = "Unauthorized"),
-        @ApiResponse(code = 403, message = "Forbidden"),
-        @ApiResponse(code = 404, message = "Not Found") })
-    @RequestMapping(value = "/api/registered-users/getEmotionalQuotientAndSocialQuotient/{id}",
-        produces = "*/*", 
-        method = RequestMethod.PUT)
-    ResponseEntity<RegisteredUserDTO> getRegisteredUserEmotionalQuotientAndSocialQuotientUsingPUT(@ApiParam(value = "id",required=true) @PathVariable("id") Long id);
 
 
     @ApiOperation(value = "helpNeedy", nickname = "helpNeedyUsingPOST", notes = "", response = HelpDTO.class, tags={ "aggregate-resource", })
@@ -426,6 +438,20 @@ public interface AggregateResourceApi {
         consumes = "application/json",
         method = RequestMethod.POST)
     ResponseEntity<FeedDTO> postFeedUsingPOST(@ApiParam(value = "feedDTO" ,required=true )  @Valid @RequestBody FeedDTO feedDTO);
+
+
+    @ApiOperation(value = "PostMedia", nickname = "postMediaUsingPOST", notes = "", response = MediaDTO.class, tags={ "aggregate-resource", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "OK", response = MediaDTO.class),
+        @ApiResponse(code = 201, message = "Created"),
+        @ApiResponse(code = 401, message = "Unauthorized"),
+        @ApiResponse(code = 403, message = "Forbidden"),
+        @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/api/media",
+        produces = "*/*", 
+        consumes = "application/json",
+        method = RequestMethod.POST)
+    ResponseEntity<MediaDTO> postMediaUsingPOST(@ApiParam(value = "mediaDTO" ,required=true )  @Valid @RequestBody MediaDTO mediaDTO);
 
 
     @ApiOperation(value = "PostNeed", nickname = "postNeedUsingPOST", notes = "", response = NeedDTO.class, tags={ "aggregate-resource", })
