@@ -463,7 +463,7 @@ CREATE TABLE `need` (
 
 LOCK TABLES `need` WRITE;
 /*!40000 ALTER TABLE `need` DISABLE KEYS */;
-INSERT INTO `need` VALUES (1,'i need help','you','2018-11-05 14:48:12',NULL,NULL,2,1),(2,'i want help','someone else','2018-11-05 14:48:12',2,NULL,2,2),(3,'help me','you','2018-11-05 14:48:12',1,NULL,1,3),(4,'help!','you','2018-11-05 14:48:12',NULL,NULL,1,4),(5,'ruhail da.... mail vanituduo','you','2018-11-22 10:02:12',NULL,NULL,1,6),(6,'sanileeeee','you','2018-11-22 10:09:23',NULL,NULL,2,5),(7,'anjus...............','you','2018-11-22 10:20:37',NULL,NULL,1,1),(8,'i need help urgent','you','2018-11-22 10:43:09',NULL,NULL,2,8),(9,'oh god','you','2018-11-22 14:25:51',NULL,NULL,1,7),(10,NULL,NULL,NULL,NULL,NULL,2,6),(11,'i wantt help','you','2018-11-05 14:48:12',NULL,NULL,2,1),(12,'i needddd help','you','2018-11-05 14:48:12',NULL,NULL,2,2);
+INSERT INTO `need` VALUES (1,'i need help','you','2018-11-05 14:48:12',NULL,NULL,2,NULL,1),(2,'i want help','someone else','2018-11-05 14:48:12',2,NULL,2,NULL,2),(3,'help me','you','2018-11-05 14:48:12',1,NULL,1,NULL,3),(4,'help!','you','2018-11-05 14:48:12',NULL,NULL,1,NULL,4),(5,'ruhail da.... mail vanituduo','you','2018-11-22 10:02:12',NULL,NULL,1,NULL,6),(6,'sanileeeee','you','2018-11-22 10:09:23',NULL,NULL,2,NULL,5),(7,'anjus...............','you','2018-11-22 10:20:37',NULL,NULL,1,NULL,1),(8,'i need help urgent','you','2018-11-22 10:43:09',NULL,NULL,2,NULL,8),(9,'oh god','you','2018-11-22 14:25:51',NULL,NULL,1,NULL,7),(10,NULL,NULL,NULL,NULL,NULL,2,NULL,6),(11,'i wantt help','you','2018-11-05 14:48:12',NULL,NULL,2,NULL,1),(12,'i needddd help','you','2018-11-05 14:48:12',NULL,NULL,2,NULL,2);
 /*!40000 ALTER TABLE `need` ENABLE KEYS */;
 UNLOCK TABLES;
 

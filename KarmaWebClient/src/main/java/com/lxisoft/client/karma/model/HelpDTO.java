@@ -8,7 +8,6 @@ import io.swagger.annotations.ApiModelProperty;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.core.io.Resource;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -17,18 +16,18 @@ import javax.validation.constraints.*;
  * HelpDTO
  */
 @Validated
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-03T19:48:21.052+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-05T16:12:06.864739200+05:30[Asia/Calcutta]")
 
 public class HelpDTO   {
   @JsonProperty("approvalStatusId")
   private Long approvalStatusId = null;
 
+  @JsonProperty("attachmentUrls")
+  @Valid
+  private List<String> attachmentUrls = null;
+
   @JsonProperty("description")
   private String description = null;
-
-  @JsonProperty("files")
-  @Valid
-  private List<Resource> files = null;
 
   @JsonProperty("fulfilledNeedId")
   private Long fulfilledNeedId = null;
@@ -47,10 +46,6 @@ public class HelpDTO   {
 
   @JsonProperty("providedUserId")
   private Long providedUserId = null;
-
-  @JsonProperty("resourceFiles")
-  @Valid
-  private List<org.springframework.core.io.Resource> resourceFiles = null;
 
   @JsonProperty("time")
   private OffsetDateTime time = null;
@@ -84,6 +79,34 @@ public class HelpDTO   {
     this.approvalStatusId = approvalStatusId;
   }
 
+  public HelpDTO attachmentUrls(List<String> attachmentUrls) {
+    this.attachmentUrls = attachmentUrls;
+    return this;
+  }
+
+  public HelpDTO addAttachmentUrlsItem(String attachmentUrlsItem) {
+    if (this.attachmentUrls == null) {
+      this.attachmentUrls = new ArrayList<String>();
+    }
+    this.attachmentUrls.add(attachmentUrlsItem);
+    return this;
+  }
+
+  /**
+   * Get attachmentUrls
+   * @return attachmentUrls
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public List<String> getAttachmentUrls() {
+    return attachmentUrls;
+  }
+
+  public void setAttachmentUrls(List<String> attachmentUrls) {
+    this.attachmentUrls = attachmentUrls;
+  }
+
   public HelpDTO description(String description) {
     this.description = description;
     return this;
@@ -102,35 +125,6 @@ public class HelpDTO   {
 
   public void setDescription(String description) {
     this.description = description;
-  }
-
-  public HelpDTO files(List<Resource> files) {
-    this.files = files;
-    return this;
-  }
-
-  public HelpDTO addFilesItem(Resource filesItem) {
-    if (this.files == null) {
-      this.files = new ArrayList<Resource>();
-    }
-    this.files.add(filesItem);
-    return this;
-  }
-
-  /**
-   * Get files
-   * @return files
-  **/
-  @ApiModelProperty(value = "")
-
-  @Valid
-
-  public List<Resource> getFiles() {
-    return files;
-  }
-
-  public void setFiles(List<Resource> files) {
-    this.files = files;
   }
 
   public HelpDTO fulfilledNeedId(Long fulfilledNeedId) {
@@ -253,35 +247,6 @@ public class HelpDTO   {
     this.providedUserId = providedUserId;
   }
 
-  public HelpDTO resourceFiles(List<org.springframework.core.io.Resource> resourceFiles) {
-    this.resourceFiles = resourceFiles;
-    return this;
-  }
-
-  public HelpDTO addResourceFilesItem(org.springframework.core.io.Resource resourceFilesItem) {
-    if (this.resourceFiles == null) {
-      this.resourceFiles = new ArrayList<org.springframework.core.io.Resource>();
-    }
-    this.resourceFiles.add(resourceFilesItem);
-    return this;
-  }
-
-  /**
-   * Get resourceFiles
-   * @return resourceFiles
-  **/
-  @ApiModelProperty(value = "")
-
-  @Valid
-
-  public List<org.springframework.core.io.Resource> getResourceFiles() {
-    return resourceFiles;
-  }
-
-  public void setResourceFiles(List<org.springframework.core.io.Resource> resourceFiles) {
-    this.resourceFiles = resourceFiles;
-  }
-
   public HelpDTO time(OffsetDateTime time) {
     this.time = time;
     return this;
@@ -374,15 +339,14 @@ public class HelpDTO   {
     }
     HelpDTO helpDTO = (HelpDTO) o;
     return Objects.equals(this.approvalStatusId, helpDTO.approvalStatusId) &&
+        Objects.equals(this.attachmentUrls, helpDTO.attachmentUrls) &&
         Objects.equals(this.description, helpDTO.description) &&
-        Objects.equals(this.files, helpDTO.files) &&
         Objects.equals(this.fulfilledNeedId, helpDTO.fulfilledNeedId) &&
         Objects.equals(this.id, helpDTO.id) &&
         Objects.equals(this.noOfComments, helpDTO.noOfComments) &&
         Objects.equals(this.noOfDisLikes, helpDTO.noOfDisLikes) &&
         Objects.equals(this.noOfLikes, helpDTO.noOfLikes) &&
         Objects.equals(this.providedUserId, helpDTO.providedUserId) &&
-        Objects.equals(this.resourceFiles, helpDTO.resourceFiles) &&
         Objects.equals(this.time, helpDTO.time) &&
         Objects.equals(this.timeElapsed, helpDTO.timeElapsed) &&
         Objects.equals(this.timeInString, helpDTO.timeInString) &&
@@ -391,7 +355,7 @@ public class HelpDTO   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(approvalStatusId, description, files, fulfilledNeedId, id, noOfComments, noOfDisLikes, noOfLikes, providedUserId, resourceFiles, time, timeElapsed, timeInString, userName);
+    return Objects.hash(approvalStatusId, attachmentUrls, description, fulfilledNeedId, id, noOfComments, noOfDisLikes, noOfLikes, providedUserId, time, timeElapsed, timeInString, userName);
   }
 
   @Override
@@ -400,15 +364,14 @@ public class HelpDTO   {
     sb.append("class HelpDTO {\n");
     
     sb.append("    approvalStatusId: ").append(toIndentedString(approvalStatusId)).append("\n");
+    sb.append("    attachmentUrls: ").append(toIndentedString(attachmentUrls)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
-    sb.append("    files: ").append(toIndentedString(files)).append("\n");
     sb.append("    fulfilledNeedId: ").append(toIndentedString(fulfilledNeedId)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    noOfComments: ").append(toIndentedString(noOfComments)).append("\n");
     sb.append("    noOfDisLikes: ").append(toIndentedString(noOfDisLikes)).append("\n");
     sb.append("    noOfLikes: ").append(toIndentedString(noOfLikes)).append("\n");
     sb.append("    providedUserId: ").append(toIndentedString(providedUserId)).append("\n");
-    sb.append("    resourceFiles: ").append(toIndentedString(resourceFiles)).append("\n");
     sb.append("    time: ").append(toIndentedString(time)).append("\n");
     sb.append("    timeElapsed: ").append(toIndentedString(timeElapsed)).append("\n");
     sb.append("    timeInString: ").append(toIndentedString(timeInString)).append("\n");

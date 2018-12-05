@@ -9,7 +9,6 @@ import io.swagger.annotations.ApiModelProperty;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.core.io.Resource;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -18,17 +17,18 @@ import javax.validation.constraints.*;
  * NeedDTO
  */
 @Validated
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-03T19:48:21.052+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-05T16:12:06.864739200+05:30[Asia/Calcutta]")
 
 public class NeedDTO   {
   @JsonProperty("approvalStatusId")
   private Long approvalStatusId = null;
 
+  @JsonProperty("attachmentUrls")
+  @Valid
+  private List<String> attachmentUrls = null;
+
   @JsonProperty("beneficiaryType")
   private String beneficiaryType = null;
-
-  @JsonProperty("bytes")
-  private byte[] bytes = null;
 
   @JsonProperty("categories")
   @Valid
@@ -46,14 +46,6 @@ public class NeedDTO   {
 
   @JsonProperty("description")
   private String description = null;
-
-  @JsonProperty("fileNameList")
-  @Valid
-  private List<String> fileNameList = null;
-
-  @JsonProperty("files")
-  @Valid
-  private List<Resource> files = null;
 
   @JsonProperty("id")
   private Long id = null;
@@ -75,10 +67,6 @@ public class NeedDTO   {
 
   @JsonProperty("postedUserId")
   private Long postedUserId = null;
-
-  @JsonProperty("resourceFiles")
-  @Valid
-  private List<org.springframework.core.io.Resource> resourceFiles = null;
 
   @JsonProperty("severityId")
   private Long severityId = null;
@@ -115,6 +103,34 @@ public class NeedDTO   {
     this.approvalStatusId = approvalStatusId;
   }
 
+  public NeedDTO attachmentUrls(List<String> attachmentUrls) {
+    this.attachmentUrls = attachmentUrls;
+    return this;
+  }
+
+  public NeedDTO addAttachmentUrlsItem(String attachmentUrlsItem) {
+    if (this.attachmentUrls == null) {
+      this.attachmentUrls = new ArrayList<String>();
+    }
+    this.attachmentUrls.add(attachmentUrlsItem);
+    return this;
+  }
+
+  /**
+   * Get attachmentUrls
+   * @return attachmentUrls
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public List<String> getAttachmentUrls() {
+    return attachmentUrls;
+  }
+
+  public void setAttachmentUrls(List<String> attachmentUrls) {
+    this.attachmentUrls = attachmentUrls;
+  }
+
   public NeedDTO beneficiaryType(String beneficiaryType) {
     this.beneficiaryType = beneficiaryType;
     return this;
@@ -133,26 +149,6 @@ public class NeedDTO   {
 
   public void setBeneficiaryType(String beneficiaryType) {
     this.beneficiaryType = beneficiaryType;
-  }
-
-  public NeedDTO bytes(byte[] bytes) {
-    this.bytes = bytes;
-    return this;
-  }
-
-  /**
-   * Get bytes
-   * @return bytes
-  **/
-  @ApiModelProperty(value = "")
-
-@Pattern(regexp="^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$") 
-  public byte[] getBytes() {
-    return bytes;
-  }
-
-  public void setBytes(byte[] bytes) {
-    this.bytes = bytes;
   }
 
   public NeedDTO categories(List<CategoryDTO> categories) {
@@ -272,63 +268,6 @@ public class NeedDTO   {
 
   public void setDescription(String description) {
     this.description = description;
-  }
-
-  public NeedDTO fileNameList(List<String> fileNameList) {
-    this.fileNameList = fileNameList;
-    return this;
-  }
-
-  public NeedDTO addFileNameListItem(String fileNameListItem) {
-    if (this.fileNameList == null) {
-      this.fileNameList = new ArrayList<String>();
-    }
-    this.fileNameList.add(fileNameListItem);
-    return this;
-  }
-
-  /**
-   * Get fileNameList
-   * @return fileNameList
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public List<String> getFileNameList() {
-    return fileNameList;
-  }
-
-  public void setFileNameList(List<String> fileNameList) {
-    this.fileNameList = fileNameList;
-  }
-
-  public NeedDTO files(List<Resource> files) {
-    this.files = files;
-    return this;
-  }
-
-  public NeedDTO addFilesItem(Resource filesItem) {
-    if (this.files == null) {
-      this.files = new ArrayList<Resource>();
-    }
-    this.files.add(filesItem);
-    return this;
-  }
-
-  /**
-   * Get files
-   * @return files
-  **/
-  @ApiModelProperty(value = "")
-
-  @Valid
-
-  public List<Resource> getFiles() {
-    return files;
-  }
-
-  public void setFiles(List<Resource> files) {
-    this.files = files;
   }
 
   public NeedDTO id(Long id) {
@@ -471,35 +410,6 @@ public class NeedDTO   {
     this.postedUserId = postedUserId;
   }
 
-  public NeedDTO resourceFiles(List<org.springframework.core.io.Resource> resourceFiles) {
-    this.resourceFiles = resourceFiles;
-    return this;
-  }
-
-  public NeedDTO addResourceFilesItem(org.springframework.core.io.Resource resourceFilesItem) {
-    if (this.resourceFiles == null) {
-      this.resourceFiles = new ArrayList<org.springframework.core.io.Resource>();
-    }
-    this.resourceFiles.add(resourceFilesItem);
-    return this;
-  }
-
-  /**
-   * Get resourceFiles
-   * @return resourceFiles
-  **/
-  @ApiModelProperty(value = "")
-
-  @Valid
-
-  public List<org.springframework.core.io.Resource> getResourceFiles() {
-    return resourceFiles;
-  }
-
-  public void setResourceFiles(List<org.springframework.core.io.Resource> resourceFiles) {
-    this.resourceFiles = resourceFiles;
-  }
-
   public NeedDTO severityId(Long severityId) {
     this.severityId = severityId;
     return this;
@@ -611,15 +521,13 @@ public class NeedDTO   {
     }
     NeedDTO needDTO = (NeedDTO) o;
     return Objects.equals(this.approvalStatusId, needDTO.approvalStatusId) &&
+        Objects.equals(this.attachmentUrls, needDTO.attachmentUrls) &&
         Objects.equals(this.beneficiaryType, needDTO.beneficiaryType) &&
-        Objects.equals(this.bytes, needDTO.bytes) &&
         Objects.equals(this.categories, needDTO.categories) &&
         Objects.equals(this.categoryList, needDTO.categoryList) &&
         Objects.equals(this.date, needDTO.date) &&
         Objects.equals(this.dateInString, needDTO.dateInString) &&
         Objects.equals(this.description, needDTO.description) &&
-        Objects.equals(this.fileNameList, needDTO.fileNameList) &&
-        Objects.equals(this.files, needDTO.files) &&
         Objects.equals(this.id, needDTO.id) &&
         Objects.equals(this.noOfComments, needDTO.noOfComments) &&
         Objects.equals(this.noOfHelps, needDTO.noOfHelps) &&
@@ -627,7 +535,6 @@ public class NeedDTO   {
         Objects.equals(this.percentageOfGenuineness, needDTO.percentageOfGenuineness) &&
         Objects.equals(this.personInChargeId, needDTO.personInChargeId) &&
         Objects.equals(this.postedUserId, needDTO.postedUserId) &&
-        Objects.equals(this.resourceFiles, needDTO.resourceFiles) &&
         Objects.equals(this.severityId, needDTO.severityId) &&
         Objects.equals(this.severityLevel, needDTO.severityLevel) &&
         Objects.equals(this.timeElapsed, needDTO.timeElapsed) &&
@@ -637,7 +544,7 @@ public class NeedDTO   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(approvalStatusId, beneficiaryType, bytes, categories, categoryList, date, dateInString, description, fileNameList, files, id, noOfComments, noOfHelps, noOfRecommendations, percentageOfGenuineness, personInChargeId, postedUserId, resourceFiles, severityId, severityLevel, timeElapsed, userName, verificationTeamId);
+    return Objects.hash(approvalStatusId, attachmentUrls, beneficiaryType, categories, categoryList, date, dateInString, description, id, noOfComments, noOfHelps, noOfRecommendations, percentageOfGenuineness, personInChargeId, postedUserId, severityId, severityLevel, timeElapsed, userName, verificationTeamId);
   }
 
   @Override
@@ -646,15 +553,13 @@ public class NeedDTO   {
     sb.append("class NeedDTO {\n");
     
     sb.append("    approvalStatusId: ").append(toIndentedString(approvalStatusId)).append("\n");
+    sb.append("    attachmentUrls: ").append(toIndentedString(attachmentUrls)).append("\n");
     sb.append("    beneficiaryType: ").append(toIndentedString(beneficiaryType)).append("\n");
-    sb.append("    bytes: ").append(toIndentedString(bytes)).append("\n");
     sb.append("    categories: ").append(toIndentedString(categories)).append("\n");
     sb.append("    categoryList: ").append(toIndentedString(categoryList)).append("\n");
     sb.append("    date: ").append(toIndentedString(date)).append("\n");
     sb.append("    dateInString: ").append(toIndentedString(dateInString)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
-    sb.append("    fileNameList: ").append(toIndentedString(fileNameList)).append("\n");
-    sb.append("    files: ").append(toIndentedString(files)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    noOfComments: ").append(toIndentedString(noOfComments)).append("\n");
     sb.append("    noOfHelps: ").append(toIndentedString(noOfHelps)).append("\n");
@@ -662,7 +567,6 @@ public class NeedDTO   {
     sb.append("    percentageOfGenuineness: ").append(toIndentedString(percentageOfGenuineness)).append("\n");
     sb.append("    personInChargeId: ").append(toIndentedString(personInChargeId)).append("\n");
     sb.append("    postedUserId: ").append(toIndentedString(postedUserId)).append("\n");
-    sb.append("    resourceFiles: ").append(toIndentedString(resourceFiles)).append("\n");
     sb.append("    severityId: ").append(toIndentedString(severityId)).append("\n");
     sb.append("    severityLevel: ").append(toIndentedString(severityLevel)).append("\n");
     sb.append("    timeElapsed: ").append(toIndentedString(timeElapsed)).append("\n");

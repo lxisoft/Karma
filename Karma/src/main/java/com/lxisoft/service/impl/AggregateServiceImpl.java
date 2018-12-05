@@ -1354,8 +1354,8 @@ public class AggregateServiceImpl implements AggregateService {
 		public PostDTO savePost(PostDTO postDTO) {
 			log.debug("Request to save news feed");
 			// TODO Auto-generated method stub
-			if (postDTO.getDateInString() != null) {
-				String parseDate = postDTO.getDateInString().replace(" ", "T").concat("Z");
+			if (postDTO.getTimeInString()!= null) {
+				String parseDate = postDTO.getTimeInString().replace(" ", "T").concat("Z");
 				Instant dateInstant = Instant.parse(parseDate);
 				postDTO.setDate(dateInstant);
 			} else {
@@ -1401,9 +1401,9 @@ public class AggregateServiceImpl implements AggregateService {
 					if (post.getId() == postDto.getId()) {
 						// postDto.setAttachedFilesUrls(urls);
 					}
-					postDto.setTotalComments((long) calculateCountOfPostCommentsByPostId(postDto.getId()));
-					postDto.setTotalLikes((long) calculateCountOfPostLikesByPostId(postDto.getId()));
-					postDto.setTotalDislikes((long) calculateCountOfPostDislikesByPostId(postDto.getId()));
+					postDto.setNoOfComments((long) calculateCountOfPostCommentsByPostId(postDto.getId()));
+					postDto.setNoOfLikes((long) calculateCountOfPostLikesByPostId(postDto.getId()));
+					postDto.setNoOfDislikes((long) calculateCountOfPostDislikesByPostId(postDto.getId()));
 
 				}
 			}
@@ -1416,7 +1416,7 @@ public class AggregateServiceImpl implements AggregateService {
 				Date postedDate = null;
 				if (postDto.getDate() != null) {
 					postedDate = Date.from(postDto.getDate());
-					postDto.setPostedBefore(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
+					postDto.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
 				}
 
 			}
@@ -1631,18 +1631,18 @@ public class AggregateServiceImpl implements AggregateService {
 			PostDTO postDto = null;
 			if (post != null) {
 				postDto = postMapper.toDto(post);
-				postDto.setTotalComments((long) calculateCountOfPostCommentsByPostId(postDto.getId()));
-				postDto.setTotalLikes((long) calculateCountOfPostLikesByPostId(postDto.getId()));
-				postDto.setTotalDislikes((long) calculateCountOfPostDislikesByPostId(postDto.getId()));
+				postDto.setNoOfComments((long) calculateCountOfPostCommentsByPostId(postDto.getId()));
+				postDto.setNoOfLikes((long) calculateCountOfPostLikesByPostId(postDto.getId()));
+				postDto.setNoOfDislikes((long) calculateCountOfPostDislikesByPostId(postDto.getId()));
 				if (postDto != null) {
 					RegisteredUser registeredUser = registeredUserRepository.findById(postDto.getId()).get();
-					postDto.setPostedUserName(registeredUser.getFirstName() +" "+registeredUser.getLastName());
+					postDto.setTimeElapsed(registeredUser.getFirstName() +" "+registeredUser.getLastName());
 				}
 
 				Date postedDate = null;
 				if (postDto.getDate() != null) {
 					postedDate = Date.from(postDto.getDate());
-					postDto.setPostedBefore(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
+					postDto.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
 				}
 			}
 			return Optional.of(postDto);

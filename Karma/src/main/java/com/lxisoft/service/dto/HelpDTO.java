@@ -2,6 +2,7 @@ package com.lxisoft.service.dto;
 
 import java.time.Instant;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,11 +29,7 @@ public class HelpDTO implements Serializable {
     private String timeInString;
     
     private Long noOfComments;
-    
-    private MultipartFile[] files;
-    
-    private List<Resource> resourceFiles;
-    
+       
     private String timeElapsed;
     
     private Long noOfLikes;
@@ -41,8 +38,24 @@ public class HelpDTO implements Serializable {
     
     private String userName;
     
+    private List<String> attachmentUrls=new ArrayList<>();
+    
     
     /**
+	 * @return the attachmentUrls
+	 */
+	public List<String> getAttachmentUrls() {
+		return attachmentUrls;
+	}
+
+	/**
+	 * @param attachmentUrls the attachmentUrls to set
+	 */
+	public void setAttachmentUrls(List<String> attachmentUrls) {
+		this.attachmentUrls = attachmentUrls;
+	}
+
+	/**
 	 * @return the helpUserName
 	 */
 	public String getUserName() {
@@ -111,37 +124,7 @@ public class HelpDTO implements Serializable {
 	public void setNoOfComments(Long noOfComments) {
 		this.noOfComments = noOfComments;
 	}
-
-	/**
-	 * @return the files
-	 */
-	public MultipartFile[] getFiles() {
-		return files;
-	}
-
-	/**
-	 * @param files the files to set
-	 */
-	public void setFiles(MultipartFile[] files) {
-		this.files = files;
-	}
-
-	/**
-	 * @return the resourceFiles
-	 */
-	public List<Resource> getResourceFiles() {
-		return resourceFiles;
-	}
-
-	/**
-	 * @param resourceFiles the resourceFiles to set
-	 */
-	public void setResourceFiles(List<Resource> resourceFiles) {
-		this.resourceFiles = resourceFiles;
-	}
-
 	
-
     /**
 	 * @return the timeInString
 	 */

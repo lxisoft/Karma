@@ -6,9 +6,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import org.springframework.core.io.Resource;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -17,22 +14,11 @@ import javax.validation.constraints.*;
  * PostDTO
  */
 @Validated
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-03T19:48:21.052+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-05T16:12:06.864739200+05:30[Asia/Calcutta]")
 
 public class PostDTO   {
-  @JsonProperty("attachedFiles")
-  @Valid
-  private List<Resource> attachedFiles = null;
-
-  @JsonProperty("attachedFilesUrls")
-  @Valid
-  private List<String> attachedFilesUrls = null;
-
   @JsonProperty("date")
   private OffsetDateTime date = null;
-
-  @JsonProperty("dateInString")
-  private String dateInString = null;
 
   @JsonProperty("description")
   private String description = null;
@@ -40,80 +26,26 @@ public class PostDTO   {
   @JsonProperty("id")
   private Long id = null;
 
-  @JsonProperty("postedBefore")
-  private String postedBefore = null;
+  @JsonProperty("noOfComments")
+  private Long noOfComments = null;
 
-  @JsonProperty("postedUserName")
-  private String postedUserName = null;
+  @JsonProperty("noOfDislikes")
+  private Long noOfDislikes = null;
+
+  @JsonProperty("noOfLikes")
+  private Long noOfLikes = null;
 
   @JsonProperty("registeredUserId")
   private Long registeredUserId = null;
 
-  @JsonProperty("totalComments")
-  private Long totalComments = null;
+  @JsonProperty("timeElapsed")
+  private String timeElapsed = null;
 
-  @JsonProperty("totalDislikes")
-  private Long totalDislikes = null;
+  @JsonProperty("timeInString")
+  private String timeInString = null;
 
-  @JsonProperty("totalLikes")
-  private Long totalLikes = null;
-
-  public PostDTO attachedFiles(List<Resource> attachedFiles) {
-    this.attachedFiles = attachedFiles;
-    return this;
-  }
-
-  public PostDTO addAttachedFilesItem(Resource attachedFilesItem) {
-    if (this.attachedFiles == null) {
-      this.attachedFiles = new ArrayList<Resource>();
-    }
-    this.attachedFiles.add(attachedFilesItem);
-    return this;
-  }
-
-  /**
-   * Get attachedFiles
-   * @return attachedFiles
-  **/
-  @ApiModelProperty(value = "")
-
-  @Valid
-
-  public List<Resource> getAttachedFiles() {
-    return attachedFiles;
-  }
-
-  public void setAttachedFiles(List<Resource> attachedFiles) {
-    this.attachedFiles = attachedFiles;
-  }
-
-  public PostDTO attachedFilesUrls(List<String> attachedFilesUrls) {
-    this.attachedFilesUrls = attachedFilesUrls;
-    return this;
-  }
-
-  public PostDTO addAttachedFilesUrlsItem(String attachedFilesUrlsItem) {
-    if (this.attachedFilesUrls == null) {
-      this.attachedFilesUrls = new ArrayList<String>();
-    }
-    this.attachedFilesUrls.add(attachedFilesUrlsItem);
-    return this;
-  }
-
-  /**
-   * Get attachedFilesUrls
-   * @return attachedFilesUrls
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public List<String> getAttachedFilesUrls() {
-    return attachedFilesUrls;
-  }
-
-  public void setAttachedFilesUrls(List<String> attachedFilesUrls) {
-    this.attachedFilesUrls = attachedFilesUrls;
-  }
+  @JsonProperty("userName")
+  private String userName = null;
 
   public PostDTO date(OffsetDateTime date) {
     this.date = date;
@@ -134,26 +66,6 @@ public class PostDTO   {
 
   public void setDate(OffsetDateTime date) {
     this.date = date;
-  }
-
-  public PostDTO dateInString(String dateInString) {
-    this.dateInString = dateInString;
-    return this;
-  }
-
-  /**
-   * Get dateInString
-   * @return dateInString
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getDateInString() {
-    return dateInString;
-  }
-
-  public void setDateInString(String dateInString) {
-    this.dateInString = dateInString;
   }
 
   public PostDTO description(String description) {
@@ -196,44 +108,64 @@ public class PostDTO   {
     this.id = id;
   }
 
-  public PostDTO postedBefore(String postedBefore) {
-    this.postedBefore = postedBefore;
+  public PostDTO noOfComments(Long noOfComments) {
+    this.noOfComments = noOfComments;
     return this;
   }
 
   /**
-   * Get postedBefore
-   * @return postedBefore
+   * Get noOfComments
+   * @return noOfComments
   **/
   @ApiModelProperty(value = "")
 
 
-  public String getPostedBefore() {
-    return postedBefore;
+  public Long getNoOfComments() {
+    return noOfComments;
   }
 
-  public void setPostedBefore(String postedBefore) {
-    this.postedBefore = postedBefore;
+  public void setNoOfComments(Long noOfComments) {
+    this.noOfComments = noOfComments;
   }
 
-  public PostDTO postedUserName(String postedUserName) {
-    this.postedUserName = postedUserName;
+  public PostDTO noOfDislikes(Long noOfDislikes) {
+    this.noOfDislikes = noOfDislikes;
     return this;
   }
 
   /**
-   * Get postedUserName
-   * @return postedUserName
+   * Get noOfDislikes
+   * @return noOfDislikes
   **/
   @ApiModelProperty(value = "")
 
 
-  public String getPostedUserName() {
-    return postedUserName;
+  public Long getNoOfDislikes() {
+    return noOfDislikes;
   }
 
-  public void setPostedUserName(String postedUserName) {
-    this.postedUserName = postedUserName;
+  public void setNoOfDislikes(Long noOfDislikes) {
+    this.noOfDislikes = noOfDislikes;
+  }
+
+  public PostDTO noOfLikes(Long noOfLikes) {
+    this.noOfLikes = noOfLikes;
+    return this;
+  }
+
+  /**
+   * Get noOfLikes
+   * @return noOfLikes
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public Long getNoOfLikes() {
+    return noOfLikes;
+  }
+
+  public void setNoOfLikes(Long noOfLikes) {
+    this.noOfLikes = noOfLikes;
   }
 
   public PostDTO registeredUserId(Long registeredUserId) {
@@ -256,64 +188,64 @@ public class PostDTO   {
     this.registeredUserId = registeredUserId;
   }
 
-  public PostDTO totalComments(Long totalComments) {
-    this.totalComments = totalComments;
+  public PostDTO timeElapsed(String timeElapsed) {
+    this.timeElapsed = timeElapsed;
     return this;
   }
 
   /**
-   * Get totalComments
-   * @return totalComments
+   * Get timeElapsed
+   * @return timeElapsed
   **/
   @ApiModelProperty(value = "")
 
 
-  public Long getTotalComments() {
-    return totalComments;
+  public String getTimeElapsed() {
+    return timeElapsed;
   }
 
-  public void setTotalComments(Long totalComments) {
-    this.totalComments = totalComments;
+  public void setTimeElapsed(String timeElapsed) {
+    this.timeElapsed = timeElapsed;
   }
 
-  public PostDTO totalDislikes(Long totalDislikes) {
-    this.totalDislikes = totalDislikes;
+  public PostDTO timeInString(String timeInString) {
+    this.timeInString = timeInString;
     return this;
   }
 
   /**
-   * Get totalDislikes
-   * @return totalDislikes
+   * Get timeInString
+   * @return timeInString
   **/
   @ApiModelProperty(value = "")
 
 
-  public Long getTotalDislikes() {
-    return totalDislikes;
+  public String getTimeInString() {
+    return timeInString;
   }
 
-  public void setTotalDislikes(Long totalDislikes) {
-    this.totalDislikes = totalDislikes;
+  public void setTimeInString(String timeInString) {
+    this.timeInString = timeInString;
   }
 
-  public PostDTO totalLikes(Long totalLikes) {
-    this.totalLikes = totalLikes;
+  public PostDTO userName(String userName) {
+    this.userName = userName;
     return this;
   }
 
   /**
-   * Get totalLikes
-   * @return totalLikes
+   * Get userName
+   * @return userName
   **/
   @ApiModelProperty(value = "")
 
 
-  public Long getTotalLikes() {
-    return totalLikes;
+  public String getUserName() {
+    return userName;
   }
 
-  public void setTotalLikes(Long totalLikes) {
-    this.totalLikes = totalLikes;
+  public void setUserName(String userName) {
+    this.userName = userName;
   }
 
 
@@ -326,23 +258,21 @@ public class PostDTO   {
       return false;
     }
     PostDTO postDTO = (PostDTO) o;
-    return Objects.equals(this.attachedFiles, postDTO.attachedFiles) &&
-        Objects.equals(this.attachedFilesUrls, postDTO.attachedFilesUrls) &&
-        Objects.equals(this.date, postDTO.date) &&
-        Objects.equals(this.dateInString, postDTO.dateInString) &&
+    return Objects.equals(this.date, postDTO.date) &&
         Objects.equals(this.description, postDTO.description) &&
         Objects.equals(this.id, postDTO.id) &&
-        Objects.equals(this.postedBefore, postDTO.postedBefore) &&
-        Objects.equals(this.postedUserName, postDTO.postedUserName) &&
+        Objects.equals(this.noOfComments, postDTO.noOfComments) &&
+        Objects.equals(this.noOfDislikes, postDTO.noOfDislikes) &&
+        Objects.equals(this.noOfLikes, postDTO.noOfLikes) &&
         Objects.equals(this.registeredUserId, postDTO.registeredUserId) &&
-        Objects.equals(this.totalComments, postDTO.totalComments) &&
-        Objects.equals(this.totalDislikes, postDTO.totalDislikes) &&
-        Objects.equals(this.totalLikes, postDTO.totalLikes);
+        Objects.equals(this.timeElapsed, postDTO.timeElapsed) &&
+        Objects.equals(this.timeInString, postDTO.timeInString) &&
+        Objects.equals(this.userName, postDTO.userName);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(attachedFiles, attachedFilesUrls, date, dateInString, description, id, postedBefore, postedUserName, registeredUserId, totalComments, totalDislikes, totalLikes);
+    return Objects.hash(date, description, id, noOfComments, noOfDislikes, noOfLikes, registeredUserId, timeElapsed, timeInString, userName);
   }
 
   @Override
@@ -350,18 +280,16 @@ public class PostDTO   {
     StringBuilder sb = new StringBuilder();
     sb.append("class PostDTO {\n");
     
-    sb.append("    attachedFiles: ").append(toIndentedString(attachedFiles)).append("\n");
-    sb.append("    attachedFilesUrls: ").append(toIndentedString(attachedFilesUrls)).append("\n");
     sb.append("    date: ").append(toIndentedString(date)).append("\n");
-    sb.append("    dateInString: ").append(toIndentedString(dateInString)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    postedBefore: ").append(toIndentedString(postedBefore)).append("\n");
-    sb.append("    postedUserName: ").append(toIndentedString(postedUserName)).append("\n");
+    sb.append("    noOfComments: ").append(toIndentedString(noOfComments)).append("\n");
+    sb.append("    noOfDislikes: ").append(toIndentedString(noOfDislikes)).append("\n");
+    sb.append("    noOfLikes: ").append(toIndentedString(noOfLikes)).append("\n");
     sb.append("    registeredUserId: ").append(toIndentedString(registeredUserId)).append("\n");
-    sb.append("    totalComments: ").append(toIndentedString(totalComments)).append("\n");
-    sb.append("    totalDislikes: ").append(toIndentedString(totalDislikes)).append("\n");
-    sb.append("    totalLikes: ").append(toIndentedString(totalLikes)).append("\n");
+    sb.append("    timeElapsed: ").append(toIndentedString(timeElapsed)).append("\n");
+    sb.append("    timeInString: ").append(toIndentedString(timeInString)).append("\n");
+    sb.append("    userName: ").append(toIndentedString(userName)).append("\n");
     sb.append("}");
     return sb.toString();
   }

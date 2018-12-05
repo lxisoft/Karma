@@ -43,7 +43,7 @@ public class NeedDTO implements Serializable {
 
     private Long percentageOfGenuineness;
     
-    private List<String> fileNameList=new ArrayList<>();
+    private List<String> attachmentUrls=new ArrayList<>();
     
     private String timeElapsed;
            
@@ -52,20 +52,11 @@ public class NeedDTO implements Serializable {
     private Long noOfHelps;
     
     private String severityLevel;
-    
-    private MultipartFile[] files;
-    
-    private List<Resource> resourceFiles;
-    
+        
     private Long noOfRecommendations;
     
     private String userName;
-    
-    private Byte[] bytes;
-    
-    //private Resource File;
-    
-    
+      
     
     public Long getId() {
         return id;
@@ -76,21 +67,24 @@ public class NeedDTO implements Serializable {
         this.id = id;
     }
 
-	 /**
-		 * @return the bytes
-		 */
-		public Byte[] getBytes() {
-			return bytes;
-		}
+	
+    /**
+	 * @return the attachmentUrls
+	 */
+	public List<String> getAttachmentUrls() {
+		return attachmentUrls;
+	}
 
-		/**
-		 * @param bytes the bytes to set
-		 */
-		public void setBytes(Byte[] bytes) {
-			this.bytes = bytes;
-		}
 
-    public String getDescription() {
+	/**
+	 * @param attachmentUrls the attachmentUrls to set
+	 */
+	public void setAttachmentUrls(List<String> attachmentUrls) {
+		this.attachmentUrls = attachmentUrls;
+	}
+
+
+	public String getDescription() {
         return description;
     }
 
@@ -206,20 +200,7 @@ public class NeedDTO implements Serializable {
 		this.percentageOfGenuineness = percentageOfGenuineness;
 	}
 
-	/**
-	 * @return the fileNameList
-	 */
-	public List<String> getFileNameList() {
-		return fileNameList;
-	}
-
-	/**
-	 * @param fileNameList the fileNameList to set
-	 */
-	public void setFileNameList(List<String> fileNameList) {
-		this.fileNameList = fileNameList;
-	}
-
+	
 	/**
 	 * @return the timeElapsed
 	 */
@@ -276,33 +257,6 @@ public class NeedDTO implements Serializable {
 		this.severityLevel = severityLevel;
 	}
 
-	/**
-	 * @return the files
-	 */
-	public MultipartFile[] getFiles() {
-		return files;
-	}
-
-	/**
-	 * @param files the files to set
-	 */
-	public void setFiles(MultipartFile[] files) {
-		this.files = files;
-	}
-
-	/**
-	 * @return the resourceFiles
-	 */
-	public List<Resource> getResourceFiles() {
-		return resourceFiles;
-	}
-
-	/**
-	 * @param resourceFiles the resourceFiles to set
-	 */
-	public void setResourceFiles(List<Resource> resourceFiles) {
-		this.resourceFiles = resourceFiles;
-	}
 
 	/**
 	 * @return the noOfRecommendations
