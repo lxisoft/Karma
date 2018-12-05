@@ -139,7 +139,7 @@ public class AggregateServiceImpl implements AggregateService {
 	
 	@Autowired
 	FeedRepository feedRepository;
-
+	
 	@Autowired
 	MediaRepository mediaRepository;
 
@@ -181,10 +181,10 @@ public class AggregateServiceImpl implements AggregateService {
 	
 	@Autowired
 	private JavaMailSender sender;
-		
+	
 	@Value("${upload.path}")
     private String path;
-	
+		
 	
 	 /**
      * Save a need.
@@ -276,34 +276,9 @@ public class AggregateServiceImpl implements AggregateService {
     @Transactional(readOnly = true)
 	public Page<NeedDTO> findAllNeeds(Pageable pageable) {
 		log.debug("Request to get all Needs");
-
-		Pageable page=null;
-		
-		Page<NeedDTO> needDTO=needRepository.findAll(pageable)
-				.map(needMapper::toDto);
-		
-		List<NeedDTO> needList=needDTO.getContent();
-		
-		for(NeedDTO oneNeed:needList){
-		
-			Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByNeedId(oneNeed.getId(),pageable)
-								.map(mediaMapper::toDto);
-			
-			List<MediaDTO> mediaList=mediaDTO.getContent();
-			
-			List<String> mediaUrls=new ArrayList<String>();
-			
-			for(MediaDTO mediaFromList:mediaList){
-				mediaUrls.add(mediaFromList.getUrl());
-			}
-			oneNeed.setAttachmentUrls(mediaUrls);
-		}
-		
-		Page<NeedDTO> needDto = new PageImpl<NeedDTO>(needList, pageable, needList.size());
-        
-		return needDto;
-		
-}
+        return needRepository.findAll(pageable)
+            .map(needMapper::toDto);
+	}
 
 
     /**
@@ -358,6 +333,9 @@ public class AggregateServiceImpl implements AggregateService {
 		needDTO.setNoOfHelps((long)(helpRepository.countOfHelpsByfulfilledNeedId(need.getId(),"completed")));
     	
 		needDTO.setCategoryList(new ArrayList<CategoryDTO>(needDTO.getCategories()));
+		
+		//severity
+		
 		SeverityDTO severityDTO=null;
 		
 		if(needDTO.getSeverityId()!=null)
@@ -366,6 +344,7 @@ public class AggregateServiceImpl implements AggregateService {
 		if(severityDTO!=null)
 			needDTO.setSeverityLevel(severityDTO.getSeverityLevel());
 		
+		//username
 		
 		if (needDTO.getPostedUserId() != null) 
     	{
@@ -375,27 +354,29 @@ public class AggregateServiceImpl implements AggregateService {
     	else
     		needDTO.setUserName("Ajith");	
 		
+		//elapsedtime
 		
 		Date postedDate = null;
 		if (needDTO.getDate() != null) {
 			postedDate = Date.from(needDTO.getDate());
 			needDTO.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
-		}	  
-        
-		//anjali
+		}	
 		
-				Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByNeedId(needDTO.getId(),pageable)
-						.map(mediaMapper::toDto);
+		
+		//media
+		
+		Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByNeedId(needDTO.getId(),pageable)
+				.map(mediaMapper::toDto);
 
-				List<String> mediaUrls=new ArrayList<String>();
+		List<String> mediaUrls=new ArrayList<String>();
 
-				for(MediaDTO mediaFromList:mediaDTO.getContent()){
-					mediaUrls.add(mediaFromList.getUrl());
-				}
-				needDTO.setAttachmentUrls(mediaUrls);
+		for(MediaDTO mediaFromList:mediaDTO.getContent()){
+			mediaUrls.add(mediaFromList.getUrl());
+		}
+		needDTO.setAttachmentUrls(mediaUrls);
 
-				//anjali
-		       
+        
+       
 		return Optional.of(needDTO);
 	}
 
@@ -484,9 +465,10 @@ public class AggregateServiceImpl implements AggregateService {
 				if (need.getDate() != null) {
 					postedDate = Date.from(need.getDate());
 					need.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
-				}	 
-							
-				//anjali
+				}
+				
+				
+
 				
 				Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByNeedId(need.getId(),pageable)
 						.map(mediaMapper::toDto);
@@ -499,8 +481,8 @@ public class AggregateServiceImpl implements AggregateService {
 				}
 				need.setAttachmentUrls(mediaUrls);
 				
-				//anjali
 				
+											
 			 }
 			
 			Page<NeedDTO> pagee = new PageImpl<NeedDTO>(needs, pageable, needs.size());
@@ -1663,7 +1645,14 @@ public class AggregateServiceImpl implements AggregateService {
 									}
 						  
 					//anjali
-					
+
+			
+		
+		
+		
+		
+		
+		
 		
 		
 	}

@@ -14,8 +14,7 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface MediaRepository extends JpaRepository<Media, Long> {
+	
+	Page<Media> findAllUrlByNeedId(Long needId,Pageable pageable);
 
-
-    Page<Media> findAllUrlByNeedId(Long needId,Pageable pageable);
-    
 }

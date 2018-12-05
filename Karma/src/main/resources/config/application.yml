@@ -175,6 +175,7 @@ jhipster:
 
 upload:
   path: src/main/resources/static/uploadedfiles/
+
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class

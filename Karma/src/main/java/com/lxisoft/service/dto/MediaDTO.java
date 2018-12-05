@@ -28,9 +28,37 @@ public class MediaDTO implements Serializable {
     
     private MultipartFile file;
     
+    
 
+    /**
+	 * @return the bytes
+	 */
+	public byte[] getBytes() {
+		return bytes;
+	}
 
-    public Long getId() {
+	/**
+	 * @param bytes the bytes to set
+	 */
+	public void setBytes(byte[] bytes) {
+		this.bytes = bytes;
+	}
+
+	/**
+	 * @return the file
+	 */
+	public MultipartFile getFile() {
+		return file;
+	}
+
+	/**
+	 * @param file the file to set
+	 */
+	public void setFile(MultipartFile file) {
+		this.file = file;
+	}
+
+	public Long getId() {
         return id;
     }
 
@@ -119,20 +147,4 @@ public class MediaDTO implements Serializable {
             ", post=" + getPostId() +
             "}";
     }
-
-	public byte[] getBytes() {
-		return bytes;
-	}
-
-	public void setBytes(byte[] bytes) {
-		this.bytes = bytes;
-	}
-
-	public MultipartFile getFile() {
-		return file;
-	}
-
-	public void setFile(MultipartFile file) {
-		this.file = file;
-	}
 }

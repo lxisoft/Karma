@@ -778,33 +778,7 @@ public class AggregateResource {
     // neeraja end
     
     
-  //sooraj
-    /**
-     * followOrUnfollowRegisteredUser
-     * 
-     * @param followingUserId
-     * 
-     * @param registeredUserId
-     * 
-     * @return the Boolean value
-     */
-    
-   /* @PostMapping("/followOrUnfollowRegisteredUser/{followingUserId}/{registeredUserId}")
-    public Boolean followOrUnfollowRegisteredUser(@PathVariable Long followingUserId,@PathVariable Long registeredUserId)
-    {
-
-     log.debug("user id of follower :"+followingUserId);
-     log.debug("user id of registeredUserId:"+registeredUserId);
-     Pageable pageable=null;
-     Boolean result=aggregateService.followOrUnfollowRegisteredUser(followingUserId,registeredUserId);
-    
-     return result;
-
-    }*/
-    
-  //sooraj end
-
-	  //anjali
+//anjali
 	    
 	    /**
 	     * POST  /media : Create a new media.
@@ -842,6 +816,7 @@ public class AggregateResource {
 	   }
 	    
 	    //anjali
+
 
 
 
