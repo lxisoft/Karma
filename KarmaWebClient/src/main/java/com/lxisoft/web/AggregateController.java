@@ -80,7 +80,9 @@ public class AggregateController {
 		log.debug(" request to save Need : {},{}", needDTO);
 		
         NeedDTO needDto=aggregateResourceApi.postNeedUsingPOST(needDTO).getBody();
+        
 		
+        if(multipartFiles!=null){
 		for(MultipartFile file : multipartFiles) {
 	    	
 			MediaDTO mediaDTO=new MediaDTO();
@@ -93,7 +95,8 @@ public class AggregateController {
 			MediaDTO mediaDto=aggregateResourceApi.postMediaUsingPOST(mediaDTO).getBody(); 
 	    	 
 		}
-
+        }
+        
 		log.debug("save Need : {}", needDTO);
 
 		model.addAttribute("need",needDto);
@@ -286,6 +289,7 @@ public class AggregateController {
 		
 				HelpDTO helpDto=aggregateResourceApi.helpNeedyUsingPOST(helpDTO).getBody();
 				
+				if(multipartFiles!=null){
 				for(MultipartFile file : multipartFiles) {
 			    	
 					MediaDTO mediaDTO=new MediaDTO();
@@ -298,7 +302,7 @@ public class AggregateController {
 					MediaDTO mediaDto=aggregateResourceApi.postMediaUsingPOST(mediaDTO).getBody(); 
 			    	 
 				}
-				
+				}
 				//anjali
 
 		HelpDTO helpdto = aggregateResourceApi.helpNeedyUsingPOST(helpDTO).getBody();
