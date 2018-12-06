@@ -434,9 +434,11 @@ public class AggregateServiceImpl implements AggregateService {
 				
 					need.setPercentageOfGenuineness((long)((genuinescount/userCheckDTOList.size())*100));
 				 
-					need.setNoOfRecommendations((long)genuinescount);
+					
 								
 				}
+
+				need.setNoOfRecommendations((long)calculateNoOfGenuiness(need.getId()));
 										    	
 		    	need.setNoOfComments((long)(commentRepository.countByNeedId(need.getId())));
 					    	
