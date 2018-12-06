@@ -371,7 +371,7 @@ public class AggregateServiceImpl implements AggregateService {
 		List<String> mediaUrls=new ArrayList<String>();
 
 		for(MediaDTO mediaFromList:mediaDTO.getContent()){
-			mediaUrls.add(mediaFromList.getUrl());
+			mediaUrls.add(mediaFromList.getFileName());
 		}
 		needDTO.setAttachmentUrls(mediaUrls);
 
