@@ -157,14 +157,15 @@
 
 								<p class="card-subtitle mb-2 text-muted small mb-3 mt-1" th:text="'posted '+${need.timeElapsed}">posted just
 									now</p>
+								<th:block th:object="${need}">
+									<th:block th:if="${need.attachmentUrls != null}" th:each="attachmentUrl,index : ${need.attachmentUrls}">
+										<div class="col-md-12 mb-3">
 
-								<th:block th:if="*{(attachmentUrls != null)}" th:each="attachmentUrl,index : *{attachmentUrls}">
-									<div class="col-md-12 mb-3">
+											<img src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" th:src="${'//localhost:8081/uploadedfiles/'+attachmentUrl}"
+											 class="img-fluid z-depth-1" alt="Responsive image">
 
-										<img src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" th:src="${'/uploadedfiles/'+attachmentUrl}"
-										 class="img-fluid z-depth-1" alt="Responsive image">
-
-									</div>
+										</div>
+									</th:block>
 								</th:block>
 								<div class="row" th:remove="all">
 
@@ -329,7 +330,7 @@
 
 							<!-- help form -->
 							<form id="help-post" th:id="'help-post-'+${need.id}" class="border border-light mt-3 p-2" th:action="@{/helps}"
-							 th:method="post" th:fragment="help-form">
+							 th:method="post" th:fragment="help-form" enctype='multipart/form-data'>
 
 								<div class="md-form mt-0 mx-3 form-info mb-0">
 									<textarea type="text" id="help-post-description" th:id="'help-post-description-'+${need.id}" class="md-textarea form-control"
@@ -351,7 +352,8 @@
 											<span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
 										</div>
 										<div class="custom-file">
-											<input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+											<input type="file" class="custom-file-input" id="inputGroupFile01" th:name="multipartFiles" aria-describedby="inputGroupFileAddon01"
+											 multiple>
 											<label class="custom-file-label" for="inputGroupFile01">Choose file</label>
 										</div>
 									</div>

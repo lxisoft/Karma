@@ -478,7 +478,7 @@ public class AggregateServiceImpl implements AggregateService {
 				List<String> mediaUrls=new ArrayList<String>();
 
 				for(MediaDTO mediaFromList:mediaDTO.getContent()){
-					mediaUrls.add(mediaFromList.getUrl());
+					mediaUrls.add(mediaFromList.getFileName());
 					log.info("****url{}",mediaFromList.getFileName());
 				}
 				need.setAttachmentUrls(mediaUrls);
@@ -1425,7 +1425,7 @@ public class AggregateServiceImpl implements AggregateService {
 			}
 			long postedBefore = 0l;
 			if (diffInSecond < 60l) {
-				diffInString = diffInSecond + " seconds ago";
+				diffInString = "just now";
 			} else if (diffInSecond < 3600l) {
 				postedBefore = diffInSecond / 60l;
 				diffInString = postedBefore + " minutes ago";
