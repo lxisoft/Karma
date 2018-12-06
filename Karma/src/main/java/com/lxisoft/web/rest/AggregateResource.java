@@ -790,7 +790,7 @@ public class AggregateResource {
 	     */
 	    @PostMapping("/media")
 	    @Timed
-	    public ResponseEntity<MediaDTO> PostMedia(@RequestBody MediaDTO mediaDTO) throws URISyntaxException, IOException {
+	    public ResponseEntity<MediaDTO> postMedia(@RequestBody MediaDTO mediaDTO) throws URISyntaxException, IOException {
 	        log.debug("REST request to save Media : {}", mediaDTO);
 	        if (mediaDTO.getId() != null) {
 	            throw new BadRequestAlertException("A new media cannot already have an ID", "media", "idexists");

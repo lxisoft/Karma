@@ -62,7 +62,7 @@
 
 				<!-- form to create new need request -->
 				<form id="need-post" th:id="'need-post'" class="border border-light mt-3 p-2" th:action="@{/needs}" th:method="post"
-				 th:fragment="need-form">
+				 th:fragment="need-form" enctype='multipart/form-data'>
 
 					<div class="md-form mt-0 mx-3 form-info mb-0">
 						<textarea type="text" id="need-post-description" class="md-textarea form-control" rows="1" onclick="$('#need-post-extended').show();"
@@ -79,10 +79,19 @@
 							</select><label class="text-info">Category</label>
 						</div>
 						<select class="mdb-select md-form colorful-select dropdown-primary mx-3 mt-0" th:name="beneficiaryType">
-							<option value="you">you</option>
+							<option value="you">self</option>
 							<option value="someone else">someone else</option>
 						</select><label class="text-info">Beneficiary type</label>
-
+						<div class="input-group mt-3 w-75 mx-auto">
+							<div class="input-group-prepend">
+								<span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+							</div>
+							<div class="custom-file">
+								<input type="file" class="custom-file-input" th:name="multipartFiles" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01"
+								 multiple>
+								<label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+							</div>
+						</div>
 						<input type=hidden th:name="dateInString" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm:ss')}">
 						<button class="btn btn-info btn-sm w-50 my-3 mx-auto btn-block" name="submit" type="submit">Post</button><i
 						 onclick="$('#need-post-extended').hide();" class="fa fa-close mx-auto" aria-hidden="true"></i>
@@ -118,16 +127,22 @@
 								</div>
 
 								<!--need-->
-								<h5 class="card-title mb-2 text-info">Denny Abraham is asking for help<span th:text="${(need.beneficiaryType =='someone else')? ' for someone else':''}"></span></h5>
+								<h5 class="card-title mb-2 text-info" th:text="${(need.userName!=null)?need.userName+' is asking for help':'Denny Abraham is asking for help'}">Denny
+									Abraham is asking for help<span th:text="${(need.beneficiaryType =='someone else')? ' for someone else':''}"></span></h5>
 
 								<!--displaying percentage of needs-->
 								<th:block th:if="${need.percentageOfGenuineness != null}">
+									<label>
+										<p class="px-1 small my-auto pb-0 rounded" th:text="${(need.noOfRecommendations==null)?'0 recommendations':need.noOfRecommendations+' recommendations'}">22
+											recommendations</p>
+									</label>
 									<th:block th:with="percentageColor= ${(need.percentageOfGenuineness >0 && need.percentageOfGenuineness <= 25)? 'danger-color-dark': (need.percentageOfGenuineness >25 && need.percentageOfGenuineness <= 50)? 'warning-color-dark':(need.percentageOfGenuineness >50 && need.percentageOfGenuineness <= 75)? 'info-color-dark':'success-color-dark'}">
 										<div class="progress md-progress mt-1 w-25 ml-auto float-right">
 											<div class="progress-bar" th:classappend="${percentageColor}" role="progressbar" th:style="'width:'+ ${need.percentageOfGenuineness}+'%;'"
-											 style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" th:text="${need.percentageOfGenuineness}+'%'">25%
+											 style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" th:text="${need.percentageOfGenuineness}+'% genuine'">25%
 												genuine</div>
 										</div>
+
 									</th:block>
 								</th:block>
 								<label>
@@ -143,7 +158,15 @@
 								<p class="card-subtitle mb-2 text-muted small mb-3 mt-1" th:text="'posted '+${need.timeElapsed}">posted just
 									now</p>
 
-								<div class="row">
+								<th:block th:if="*{(attachmentUrls != null)}" th:each="attachmentUrl,index : *{attachmentUrls}">
+									<div class="col-md-12 mb-3">
+
+										<img src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" th:src="${'/uploadedfiles/'+attachmentUrl}"
+										 class="img-fluid z-depth-1" alt="Responsive image">
+
+									</div>
+								</th:block>
+								<div class="row" th:remove="all">
 
 
 									<div class="col-md-12 mb-3">
@@ -157,7 +180,7 @@
 
 
 
-								<div class="row">
+								<div class="row" th:remove="all">
 
 
 									<div class="col-lg-4 col-md-12 mb-3">
@@ -184,7 +207,7 @@
 
 								</div>
 
-								<div class="row">
+								<div class="row" th:remove="all">
 
 									<div class="col-md-6 mb-3">
 
@@ -205,7 +228,7 @@
 
 								</div>
 
-								<p class="card-text mt-2" th:text="${need.description}">Some quick example text to build on the
+								<p class="mt-2 display-5" th:text="${need.description}">Some quick example text to build on the
 									panel title and make up the bulk of the panel's content.</p>
 
 								<div class="text-center col-xs-5 border-bottom border-light">
