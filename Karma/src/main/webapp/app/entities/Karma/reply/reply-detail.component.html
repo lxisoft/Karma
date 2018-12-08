@@ -1,0 +1,43 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="reply">
+            <h2><span jhiTranslate="karmaApp.karmaReply.detail.title">Reply</span> {{reply.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="karmaApp.karmaReply.message">Message</span></dt>
+                <dd>
+                    <span>{{reply.message}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaReply.date">Date</span></dt>
+                <dd>
+                    <span>{{reply.date}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaReply.comment">Comment</span></dt>
+                <dd>
+                    <div *ngIf="reply.commentId">
+                        <a [routerLink]="['/comment', reply.commentId, 'view']">{{reply.commentId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaReply.repliedUser">Replied User</span></dt>
+                <dd>
+                    <div *ngIf="reply.repliedUserId">
+                        <a [routerLink]="['/registered-user', reply.repliedUserId, 'view']">{{reply.repliedUserId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/reply', reply.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

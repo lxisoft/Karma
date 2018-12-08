@@ -1,0 +1,45 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="feed">
+            <h2><span jhiTranslate="karmaApp.karmaFeed.detail.title">Feed</span> {{feed.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="karmaApp.karmaFeed.title">Title</span></dt>
+                <dd>
+                    <span>{{feed.title}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaFeed.type">Type</span></dt>
+                <dd>
+                    <span>{{feed.type}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaFeed.date">Date</span></dt>
+                <dd>
+                    <span>{{feed.date}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaFeed.referenceId">Reference Id</span></dt>
+                <dd>
+                    <span>{{feed.referenceId}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaFeed.registeredUser">Registered User</span></dt>
+                <dd>
+                    <div *ngIf="feed.registeredUserId">
+                        <a [routerLink]="['/registered-user', feed.registeredUserId, 'view']">{{feed.registeredUserId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/feed', feed.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

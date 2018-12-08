@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity RegisteredUser.
+    -->
+    <changeSet id="20181118103744-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="profile_pic_id"
+                                 baseTableName="registered_user"
+                                 constraintName="fk_registered_user_profile_pic_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="media"/>
+
+        <addForeignKeyConstraint baseColumnNames="id_proof_id"
+                                 baseTableName="registered_user"
+                                 constraintName="fk_registered_user_id_proof_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="identity_proof"/>
+
+    </changeSet>
+</databaseChangeLog>

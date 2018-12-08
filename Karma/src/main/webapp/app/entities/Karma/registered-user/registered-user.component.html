@@ -1,0 +1,96 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="karmaApp.karmaRegisteredUser.home.title">Registered Users</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-registered-user" [routerLink]="['/registered-user/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="karmaApp.karmaRegisteredUser.home.createLabel">
+            Create new Registered User
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="registeredUsers">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="email"><span jhiTranslate="karmaApp.karmaRegisteredUser.email">Email</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="firstName"><span jhiTranslate="karmaApp.karmaRegisteredUser.firstName">First Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="lastName"><span jhiTranslate="karmaApp.karmaRegisteredUser.lastName">Last Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="rating"><span jhiTranslate="karmaApp.karmaRegisteredUser.rating">Rating</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="description"><span jhiTranslate="karmaApp.karmaRegisteredUser.description">Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="profession"><span jhiTranslate="karmaApp.karmaRegisteredUser.profession">Profession</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="gender"><span jhiTranslate="karmaApp.karmaRegisteredUser.gender">Gender</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="dob"><span jhiTranslate="karmaApp.karmaRegisteredUser.dob">Dob</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="bloodGroup"><span jhiTranslate="karmaApp.karmaRegisteredUser.bloodGroup">Blood Group</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="emotionalQuotient"><span jhiTranslate="karmaApp.karmaRegisteredUser.emotionalQuotient">Emotional Quotient</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="socialQuotient"><span jhiTranslate="karmaApp.karmaRegisteredUser.socialQuotient">Social Quotient</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="happinessIndex"><span jhiTranslate="karmaApp.karmaRegisteredUser.happinessIndex">Happiness Index</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="profilePicId"><span jhiTranslate="karmaApp.karmaRegisteredUser.profilePic">Profile Pic</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="idProofId"><span jhiTranslate="karmaApp.karmaRegisteredUser.idProof">Id Proof</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let registeredUser of registeredUsers ;trackBy: trackId">
+                <td><a [routerLink]="['/registered-user', registeredUser.id, 'view' ]">{{registeredUser.id}}</a></td>
+                <td>{{registeredUser.email}}</td>
+                <td>{{registeredUser.firstName}}</td>
+                <td>{{registeredUser.lastName}}</td>
+                <td>{{registeredUser.rating}}</td>
+                <td>{{registeredUser.description}}</td>
+                <td>{{registeredUser.profession}}</td>
+                <td>{{registeredUser.gender}}</td>
+                <td>{{registeredUser.dob | date:'mediumDate'}}</td>
+                <td>{{registeredUser.bloodGroup}}</td>
+                <td>{{registeredUser.emotionalQuotient}}</td>
+                <td>{{registeredUser.socialQuotient}}</td>
+                <td>{{registeredUser.happinessIndex}}</td>
+                <td>
+                    <div *ngIf="registeredUser.profilePicId">
+                        <a [routerLink]="['../media', registeredUser.profilePicId , 'view' ]" >{{registeredUser.profilePicId}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="registeredUser.idProofId">
+                        <a [routerLink]="['../identity-proof', registeredUser.idProofId , 'view' ]" >{{registeredUser.idProofId}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/registered-user', registeredUser.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/registered-user', registeredUser.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'registered-user/'+ registeredUser.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="registeredUsers && registeredUsers.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

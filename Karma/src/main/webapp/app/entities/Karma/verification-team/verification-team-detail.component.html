@@ -1,0 +1,33 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="verificationTeam">
+            <h2><span jhiTranslate="karmaApp.karmaVerificationTeam.detail.title">Verification Team</span> {{verificationTeam.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="karmaApp.karmaVerificationTeam.approvalLevel">Approval Level</span></dt>
+                <dd>
+                    <span>{{verificationTeam.approvalLevel}}</span>
+                </dd>
+                <dt><span jhiTranslate="karmaApp.karmaVerificationTeam.approvingUsers">Approving Users</span></dt>
+                <dd>
+                    <span *ngFor="let approvingUsers of verificationTeam.approvingUsers; let last = last">
+                        <a [routerLink]="['/registered-user', approvingUsers?.id, 'view' ]">{{approvingUsers.id}}</a>{{last ? '' : ', '}}
+                    </span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/verification-team', verificationTeam.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

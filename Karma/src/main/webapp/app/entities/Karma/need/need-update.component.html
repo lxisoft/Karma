@@ -1,0 +1,82 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-need-heading" jhiTranslate="karmaApp.karmaNeed.home.createOrEditLabel">Create or edit a Need</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!need.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="need.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaNeed.description" for="field_description">Description</label>
+                    <input type="text" class="form-control" name="description" id="field_description"
+                        [(ngModel)]="need.description" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaNeed.beneficiaryType" for="field_beneficiaryType">Beneficiary Type</label>
+                    <input type="text" class="form-control" name="beneficiaryType" id="field_beneficiaryType"
+                        [(ngModel)]="need.beneficiaryType" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaNeed.date" for="field_date">Date</label>
+                    <div class="d-flex">
+                        <input id="field_date" type="datetime-local" class="form-control" name="date" [(ngModel)]="date"
+                        />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaNeed.severity" for="field_severity">Severity</label>
+                    <select class="form-control" id="field_severity" name="severity" [(ngModel)]="need.severityId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="severityOption.id" *ngFor="let severityOption of severities; trackBy: trackSeverityById">{{severityOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaNeed.verificationTeam" for="field_verificationTeam">Verification Team</label>
+                    <select class="form-control" id="field_verificationTeam" name="verificationTeam" [(ngModel)]="need.verificationTeamId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="verificationTeamOption.id" *ngFor="let verificationTeamOption of verificationteams; trackBy: trackVerificationTeamById">{{verificationTeamOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaNeed.approvalStatus" for="field_approvalStatus">Approval Status</label>
+                    <select class="form-control" id="field_approvalStatus" name="approvalStatus" [(ngModel)]="need.approvalStatusId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="approvalStatusOption.id" *ngFor="let approvalStatusOption of approvalstatuses; trackBy: trackApprovalStatusById">{{approvalStatusOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaNeed.personInCharge" for="field_personInCharge">Person In Charge</label>
+                    <select class="form-control" id="field_personInCharge" name="personInCharge" [(ngModel)]="need.personInChargeId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="registeredUserOption.id" *ngFor="let registeredUserOption of registeredusers; trackBy: trackRegisteredUserById">{{registeredUserOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label jhiTranslate="karmaApp.karmaNeed.categories" for="field_categories">Categories</label>
+                    <select class="form-control" id="field_categories" multiple name="categories" [(ngModel)]="need.categories">
+                        <option [ngValue]="getSelected(need.categories, categoryOption)" *ngFor="let categoryOption of categories; trackBy: trackCategoryById">{{categoryOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaNeed.postedUser" for="field_postedUser">Posted User</label>
+                    <select class="form-control" id="field_postedUser" name="postedUser" [(ngModel)]="need.postedUserId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="registeredUserOption.id" *ngFor="let registeredUserOption of registeredusers; trackBy: trackRegisteredUserById">{{registeredUserOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

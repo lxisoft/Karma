@@ -1,0 +1,33 @@
+{
+  "karmaApp": {
+    "karmaNeed": {
+      "home": {
+        "title": "Needs",
+        "createLabel": "Create a new Need",
+        "createOrEditLabel": "Create or edit a Need"
+      },
+      "created": "A new Need is created with identifier {{ param }}",
+      "updated": "A Need is updated with identifier {{ param }}",
+      "deleted": "A Need is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Need {{ id }}?"
+      },
+      "detail": {
+        "title": "Need"
+      },
+      "description": "Description",
+      "beneficiaryType": "Beneficiary Type",
+      "date": "Date",
+      "proofs": "Proofs",
+      "helps": "Helps",
+      "comments": "Comments",
+      "severity": "Severity",
+      "verificationTeam": "Verification Team",
+      "approvalStatus": "Approval Status",
+      "personInCharge": "Person In Charge",
+      "categories": "Categories",
+      "postedUser": "Posted User",
+      "userChecks": "User Checks"
+    }
+  }
+}
