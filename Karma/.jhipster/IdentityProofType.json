@@ -1,0 +1,21 @@
+{
+    "name": "IdentityProofType",
+    "fields": [
+        {
+            "fieldName": "type",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20181203055325",
+    "javadoc": "IdentityProofType entity.\n@author Sarangi Balu",
+    "entityTableName": "identity_proof_type",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "Karma",
+    "applications": "*",
+    "microserviceName": "Karma"
+}

@@ -1,0 +1,28 @@
+{
+  "karmaApp": {
+    "karmaComment": {
+      "home": {
+        "title": "Comments",
+        "createLabel": "Create a new Comment",
+        "createOrEditLabel": "Create or edit a Comment"
+      },
+      "created": "A new Comment is created with identifier {{ param }}",
+      "updated": "A Comment is updated with identifier {{ param }}",
+      "deleted": "A Comment is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Comment {{ id }}?"
+      },
+      "detail": {
+        "title": "Comment"
+      },
+      "message": "Message",
+      "date": "Date",
+      "need": "Need",
+      "help": "Help",
+      "post": "Post",
+      "replies": "Replies",
+      "commentedUser": "Commented User",
+      "userChecks": "User Checks"
+    }
+  }
+}

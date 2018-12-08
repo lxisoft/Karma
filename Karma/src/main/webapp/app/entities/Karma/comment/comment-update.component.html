@@ -1,0 +1,64 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-comment-heading" jhiTranslate="karmaApp.karmaComment.home.createOrEditLabel">Create or edit a Comment</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!comment.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="comment.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaComment.message" for="field_message">Message</label>
+                    <input type="text" class="form-control" name="message" id="field_message"
+                        [(ngModel)]="comment.message" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaComment.date" for="field_date">Date</label>
+                    <div class="d-flex">
+                        <input id="field_date" type="datetime-local" class="form-control" name="date" [(ngModel)]="date"
+                        />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaComment.need" for="field_need">Need</label>
+                    <select class="form-control" id="field_need" name="need" [(ngModel)]="comment.needId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="needOption.id" *ngFor="let needOption of needs; trackBy: trackNeedById">{{needOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaComment.help" for="field_help">Help</label>
+                    <select class="form-control" id="field_help" name="help" [(ngModel)]="comment.helpId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="helpOption.id" *ngFor="let helpOption of helps; trackBy: trackHelpById">{{helpOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaComment.post" for="field_post">Post</label>
+                    <select class="form-control" id="field_post" name="post" [(ngModel)]="comment.postId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="postOption.id" *ngFor="let postOption of posts; trackBy: trackPostById">{{postOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaComment.commentedUser" for="field_commentedUser">Commented User</label>
+                    <select class="form-control" id="field_commentedUser" name="commentedUser" [(ngModel)]="comment.commentedUserId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="registeredUserOption.id" *ngFor="let registeredUserOption of registeredusers; trackBy: trackRegisteredUserById">{{registeredUserOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

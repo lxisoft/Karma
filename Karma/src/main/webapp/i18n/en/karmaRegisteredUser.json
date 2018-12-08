@@ -1,0 +1,41 @@
+{
+  "karmaApp": {
+    "karmaRegisteredUser": {
+      "home": {
+        "title": "Registered Users",
+        "createLabel": "Create a new Registered User",
+        "createOrEditLabel": "Create or edit a Registered User"
+      },
+      "created": "A new Registered User is created with identifier {{ param }}",
+      "updated": "A Registered User is updated with identifier {{ param }}",
+      "deleted": "A Registered User is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Registered User {{ id }}?"
+      },
+      "detail": {
+        "title": "Registered User"
+      },
+      "email": "Email",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "rating": "Rating",
+      "description": "Description",
+      "profession": "Profession",
+      "gender": "Gender",
+      "dob": "Dob",
+      "bloodGroup": "Blood Group",
+      "emotionalQuotient": "Emotional Quotient",
+      "socialQuotient": "Social Quotient",
+      "happinessIndex": "Happiness Index",
+      "profilePic": "Profile Pic",
+      "idProof": "Id Proof",
+      "addresses": "Addresses",
+      "needs": "Needs",
+      "helps": "Helps",
+      "posts": "Posts",
+      "feeds": "Feeds",
+      "checkedNeeds": "Checked Needs",
+      "verificationTeams": "Verification Teams"
+    }
+  }
+}

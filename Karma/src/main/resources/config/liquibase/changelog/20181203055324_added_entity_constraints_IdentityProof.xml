@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity IdentityProof.
+    -->
+    <changeSet id="20181203055324-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="identity_proof_type_id"
+                                 baseTableName="identity_proof"
+                                 constraintName="fk_identity_proof_identity_proof_type_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="identity_proof_type"/>
+
+    </changeSet>
+</databaseChangeLog>
