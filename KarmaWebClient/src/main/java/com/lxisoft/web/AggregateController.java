@@ -77,7 +77,7 @@ public class AggregateController {
 	@Timed
 	public String postNeed(@ModelAttribute NeedDTO needDTO,@RequestParam MultipartFile[] multipartFiles,Model model)
 			throws URISyntaxException, IllegalStateException, IOException {
-		log.debug(" request to save Need : {},{}", needDTO);
+		log.debug(" request to save Need : {},{}", needDTO,multipartFiles.length);
 		
         NeedDTO needDto=aggregateResourceApi.postNeedUsingPOST(needDTO).getBody();
         
@@ -97,7 +97,7 @@ public class AggregateController {
 		}
         }
         
-		log.debug("save Need : {}", needDTO);
+		log.debug("save Need : {},{}", needDTO,multipartFiles);
 
 		model.addAttribute("need",needDto);
 		return "help-post-result";
