@@ -210,8 +210,10 @@ public class AggregateController {
 			@PathVariable(value = "approvalStatus") String approvalStatus, Model model) {
 		log.debug("request to get a page of Needs");
 
+		List<String> dateArray= new ArrayList<String>();
+		dateArray.add("date,desc");
 		List<NeedDTO> needs = aggregateResourceApi.getAllNeedsByApprovedStatusUsingGET(approvalStatus, eagerload, null,
-				null, null, null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
+				null, null, null, eagerload, null, dateArray, null, null, null).getBody();
 
 		List<CategoryDTO> categories = aggregateResourceApi.getAllCategoriesUsingGET(null, null, null, null, eagerload,
 				null, null, eagerload, eagerload, eagerload).getBody();
@@ -356,8 +358,11 @@ public class AggregateController {
 			@PathVariable(value = "approvalStatus") String approvalStatus, Model model) {
 		log.debug("request to get a page of helps");
 
+		List<String> dateArray= new ArrayList<String>();
+		dateArray.add("time,desc");
+		
 		List<HelpDTO> helps = aggregateResourceApi.getAllHelpsByApprovedStatusUsingGET(approvalStatus, null, null, null,
-				null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
+				null, eagerload, null, dateArray, null, null, null).getBody();
 		
 		List<ApprovalStatusDTO> approvalStatuses = aggregateResourceApi.getAllApprovalStatusesUsingGET(null, null, null,
 				null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();

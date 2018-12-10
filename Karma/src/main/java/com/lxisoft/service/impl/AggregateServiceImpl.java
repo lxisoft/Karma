@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 package com.lxisoft.service.impl;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -35,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -417,7 +417,7 @@ public class AggregateServiceImpl implements AggregateService {
 				
 				log.info("*****************{}",need.getId());
 				
-				Page<UserCheckDTO> userCheckDTOs=findAllUserChecksByCheckedNeedId(pageable,need.getId());
+				Page<UserCheckDTO> userCheckDTOs=findAllUserChecksByCheckedNeedId(new PageRequest(0,100),need.getId());
 				
 				List<UserCheckDTO> userCheckDTOList = userCheckDTOs.getContent();
 								
@@ -472,7 +472,7 @@ public class AggregateServiceImpl implements AggregateService {
 				
 
 				
-				Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByNeedId(need.getId(),pageable)
+				Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByNeedId(need.getId(),new PageRequest(0,100))
 						.map(mediaMapper::toDto);
 
 				List<String> mediaUrls=new ArrayList<String>();
@@ -861,7 +861,7 @@ public class AggregateServiceImpl implements AggregateService {
 	    
 	    Long approvalStatusId=approvalStatusRepository.findByStatus(approvalStatus).get().getId();
          	           	
-	    Page<HelpDTO> helpDtos= helpRepository.findAllHelpsByApprovalStatusId(pageable,approvalStatusId)
+	    Page<HelpDTO> helpDtos= helpRepository.findAllHelpsByApprovalStatusId(new PageRequest(0,100),approvalStatusId)
                                 .map(helpMapper::toDto);
 	    
 	    List<HelpDTO> helps=helpDtos.getContent();
@@ -892,7 +892,7 @@ public class AggregateServiceImpl implements AggregateService {
 	    	
 			//anjali
 			
-			Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByHelpId(help.getId(),pageable)
+			Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByHelpId(help.getId(),new PageRequest(0,100))
 					.map(mediaMapper::toDto);
 
 			List<String> mediaUrls=new ArrayList<String>();
@@ -906,7 +906,7 @@ public class AggregateServiceImpl implements AggregateService {
 	    	
 	    }
          	
-	    Page<HelpDTO> pagee = new PageImpl<HelpDTO>(helps, pageable, helps.size());
+	    Page<HelpDTO> pagee = new PageImpl<HelpDTO>(helps, new PageRequest(0,100), helps.size());
      	
    	    return pagee;
 
