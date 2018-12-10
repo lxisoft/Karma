@@ -360,7 +360,7 @@
 											</div>
 										</div>
 										<input type=hidden th:name="timeInString" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm:ss')}">
-										<input type="hidden" th:name="${need.id}">
+										<input type="hidden" th:name="fulfilledNeedId" th:value="${need.id}">
 										<button class="btn btn-info btn-sm w-50 my-3 mx-auto btn-block" name="submit" type="submit">Post</button><i
 										 onclick="$('#help-post-extended').hide();" th:onclick="|$('#help-post-extended-${need.id}').hide();|" class="fa fa-close mx-auto"
 										 aria-hidden="true"></i>
