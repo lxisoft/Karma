@@ -75,38 +75,49 @@ public class AggregateController {
 	 */
 	@PostMapping("/needs")
 	@Timed
-	public String postNeed(@ModelAttribute NeedDTO needDTO,@RequestParam MultipartFile[] multipartFiles,Model model)
+	public String postNeed(@ModelAttribute NeedDTO needDTO, @RequestParam MultipartFile[] multipartFiles, Model model)
 			throws URISyntaxException, IllegalStateException, IOException {
-		log.debug(" request to save Need : {},{}", needDTO,multipartFiles.length);
-		
-        NeedDTO needDto=aggregateResourceApi.postNeedUsingPOST(needDTO).getBody();
-        
-		
-        if(multipartFiles!=null){
-		for(MultipartFile file : multipartFiles) {
-	    	
-			MediaDTO mediaDTO=new MediaDTO();
-			
-			mediaDTO.setFileName(file.getOriginalFilename());
-			mediaDTO.setNeedId(needDto.getId());
-			mediaDTO.setExtension(file.getContentType());
-			mediaDTO.setBytes(file.getBytes());
-			
-			MediaDTO mediaDto=aggregateResourceApi.postMediaUsingPOST(mediaDTO).getBody(); 
-	    	 
-		}
-        }
-        
-		log.debug("save Need : {},{}", needDTO,multipartFiles);
+		log.debug(" request to save Need : {},{}", needDTO, multipartFiles.length);
 
-		model.addAttribute("need",needDto);
+		NeedDTO needDto = aggregateResourceApi.postNeedUsingPOST(needDTO).getBody();
+
+		if (multipartFiles != null) {
+			for (MultipartFile file : multipartFiles) {
+
+				MediaDTO mediaDTO = new MediaDTO();
+
+				mediaDTO.setFileName(file.getOriginalFilename());
+				mediaDTO.setNeedId(needDto.getId());
+				mediaDTO.setExtension(file.getContentType());
+				mediaDTO.setBytes(file.getBytes());
+
+				MediaDTO mediaDto = aggregateResourceApi.postMediaUsingPOST(mediaDTO).getBody();
+
+			}
+		}
+
+		log.debug("save Need : {},{}", needDTO, multipartFiles);
+
+		model.addAttribute("need", needDto);
 		return "help-post-result";
 
 	}
 
 	/**
-	 * GET /needs : get all the needs.
+	 * Redirects to the page containing all the approved needs
 	 *
+	 */
+	@GetMapping("/")
+	@Timed
+	public String getAllNeeds() {
+		log.debug("request to redirect to url /home/aaproved");
+		return "redirect:/home/approved";
+
+	}
+
+	/**
+	 * GET /needs : get all the needs. getA
+	 * 
 	 * @param pageable
 	 *            the pagination information
 	 * @param eagerload
@@ -127,7 +138,7 @@ public class AggregateController {
 		return "home";
 
 	}
-	
+
 	/**
 	 * GET /needs : get all the needs.
 	 *
@@ -143,10 +154,11 @@ public class AggregateController {
 	public String getAllHelpsByNeedId(@PathVariable(value = "id") Long id, Model model) {
 		log.debug("request to get a page of Needs");
 
-		List<HelpDTO> helps = aggregateResourceApi.getAllCompletedHelpsByfulfilledNeedIdUsingGET(id, id, null, null, null, null, null, null, null, null, null).getBody();
-		NeedDTO need=aggregateResourceApi.getNeedUsingGET(id).getBody();
+		List<HelpDTO> helps = aggregateResourceApi.getAllCompletedHelpsByfulfilledNeedIdUsingGET(id, id, null, null,
+				null, null, null, null, null, null, null).getBody();
+		NeedDTO need = aggregateResourceApi.getNeedUsingGET(id).getBody();
 		model.addAttribute("helps", helps);
-		model.addAttribute("need",need);
+		model.addAttribute("need", need);
 		return "completed-helps";
 
 	}
@@ -281,29 +293,30 @@ public class AggregateController {
 	 */
 	@PostMapping("/helps")
 	@Timed
-	public String helpNeedy(@ModelAttribute HelpDTO helpDTO,@RequestParam MultipartFile[] multipartFiles, Model model) throws URISyntaxException, IOException {
+	public String helpNeedy(@ModelAttribute HelpDTO helpDTO, @RequestParam MultipartFile[] multipartFiles, Model model)
+			throws URISyntaxException, IOException {
 
 		log.debug("REST request to save Help : {}", helpDTO);
 
-		//anjali
-		
-				HelpDTO helpDto=aggregateResourceApi.helpNeedyUsingPOST(helpDTO).getBody();
-				
-				if(multipartFiles!=null){
-				for(MultipartFile file : multipartFiles) {
-			    	
-					MediaDTO mediaDTO=new MediaDTO();
-					
-					mediaDTO.setFileName(file.getOriginalFilename());
-					mediaDTO.setNeedId(helpDto.getId());
-					mediaDTO.setExtension(file.getContentType());
-					mediaDTO.setBytes(file.getBytes());
-					
-					MediaDTO mediaDto=aggregateResourceApi.postMediaUsingPOST(mediaDTO).getBody(); 
-			    	 
-				}
-				}
-				//anjali
+		// anjali
+
+		HelpDTO helpDto = aggregateResourceApi.helpNeedyUsingPOST(helpDTO).getBody();
+
+		if (multipartFiles != null) {
+			for (MultipartFile file : multipartFiles) {
+
+				MediaDTO mediaDTO = new MediaDTO();
+
+				mediaDTO.setFileName(file.getOriginalFilename());
+				mediaDTO.setNeedId(helpDto.getId());
+				mediaDTO.setExtension(file.getContentType());
+				mediaDTO.setBytes(file.getBytes());
+
+				MediaDTO mediaDto = aggregateResourceApi.postMediaUsingPOST(mediaDTO).getBody();
+
+			}
+		}
+		// anjali
 
 		HelpDTO helpdto = aggregateResourceApi.helpNeedyUsingPOST(helpDTO).getBody();
 
@@ -358,12 +371,12 @@ public class AggregateController {
 
 		List<HelpDTO> helps = aggregateResourceApi.getAllHelpsByApprovedStatusUsingGET(approvalStatus, null, null, null,
 				null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
-		
+
 		List<ApprovalStatusDTO> approvalStatuses = aggregateResourceApi.getAllApprovalStatusesUsingGET(null, null, null,
 				null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
 
-		model.addAttribute("approvalStatuses", approvalStatuses); 
-		
+		model.addAttribute("approvalStatuses", approvalStatuses);
+
 		model.addAttribute("helps", helps);
 
 		if (approvalStatus.equals(("completed")))
@@ -573,9 +586,9 @@ public class AggregateController {
 		List<ReplyDTO> replies = aggregateResourceApi.getAllRepliesByCommentIdUsingGET(id, id, null, null, null,
 				eagerload, null, null, eagerload, eagerload, eagerload).getBody();
 
-		model.addAttribute("comments", replies);
+		model.addAttribute("replies", replies);
 
-		return "home :: replies";
+		return "home :: replies(commentId=${id})";
 
 	}
 
@@ -599,22 +612,31 @@ public class AggregateController {
 		CommentDTO result = aggregateResourceApi.addCommentUsingPOST(commentDTO).getBody();
 		// Long
 		// id=(result.getNeedId()==null)?(result.getHelpId()==null)?result.getPostId():result.getHelpId():result.getNeedId();
+		String resultFragment = null;
 		List<CommentDTO> comments = new ArrayList<CommentDTO>();
 		if (result.getNeedId() != null) {
 			comments = aggregateResourceApi.getAllCommentsByNeedIdUsingGET(result.getNeedId(), null, null, null, null,
 					null, null, null, null, null, null).getBody();
-		} else if (result.getHelpId() != null) {
-			comments = aggregateResourceApi.getAllCommentsByNeedIdUsingGET(result.getHelpId(), null, null, null, null,
+
+			model.addAttribute("need", aggregateResourceApi.getNeedUsingGET(result.getNeedId()).getBody());
+			resultFragment = "home::need";
+		}
+
+		else if (result.getHelpId() != null) {
+			comments = aggregateResourceApi.getAllCommentsByHelpIdUsingGET(result.getHelpId(), null, null, null, null,
 					null, null, null, null, null, null).getBody();
-		} else {
-			comments = aggregateResourceApi.getAllCommentsByNeedIdUsingGET(result.getPostId(), null, null, null, null,
-					null, null, null, null, null, null).getBody();
+			model.addAttribute("help", aggregateResourceApi.getHelpUsingGET(result.getNeedId()));
+			resultFragment = "completed-helps::help";
+		}
+
+		else {
+			log.info("method is not defined for posts");
 		}
 		model.addAttribute("result", result);
 
 		model.addAttribute("comments", comments);
 
-		return "home::comments";
+		return resultFragment;
 	}
 
 	/**
@@ -644,7 +666,7 @@ public class AggregateController {
 		model.addAttribute("replies", replies);
 		return "home::replies(commentId=${replyDTO.commentId})";
 	}
-	
+
 	/**
 	 * GET /registeredUserDTO/:id : get the "id" registeredUserDTO.
 	 *
@@ -655,10 +677,10 @@ public class AggregateController {
 	@GetMapping("/registered-users/{id}")
 	@Timed
 	public String getOneRegisteredUser(@PathVariable(value = "id") Long id, Model model) {
-		
+
 		log.debug("request to get registeredUserDTO : {}", id);
 
-		RegisteredUserDTO registeredUser= aggregateResourceApi.getOneRegisteredUserUsingGET(id).getBody();
+		RegisteredUserDTO registeredUser = aggregateResourceApi.getOneRegisteredUserUsingGET(id).getBody();
 
 		model.addAttribute("registeredUser", registeredUser);
 
