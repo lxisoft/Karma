@@ -479,7 +479,7 @@ public class AggregateController {
 	 *            applicable for many-to-many)
 	 * @return the string value
 	 */
-	@GetMapping("/feeds")
+	@GetMapping("/getFeeds")
 	@Timed
 	public String getAllFeeds(Pageable pageable,
 			@RequestParam(required = false, defaultValue = "false") boolean eagerload, Model model) {
@@ -490,7 +490,7 @@ public class AggregateController {
 				.getBody();
 
 		model.addAttribute("feeds", feeds);
-		return "home";
+		return "feeds";
 
 	}
 
