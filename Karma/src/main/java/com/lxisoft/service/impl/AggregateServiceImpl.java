@@ -427,7 +427,7 @@ public class AggregateServiceImpl implements AggregateService {
 				
 				log.info("*****************{}",need.getId());
 				
-				Page<UserCheckDTO> userCheckDTOs=findAllUserChecksByCheckedNeedId(new PageRequest(0,100),need.getId());
+				Page<UserCheckDTO> userCheckDTOs=findAllUserChecksByCheckedNeedId(PageRequest.of(0,100),need.getId());
 				
 				List<UserCheckDTO> userCheckDTOList = userCheckDTOs.getContent();
 								
@@ -482,7 +482,7 @@ public class AggregateServiceImpl implements AggregateService {
 				
 
 				
-				Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByNeedId(need.getId(),new PageRequest(0,100))
+				Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByNeedId(need.getId(),PageRequest.of(0,100))
 						.map(mediaMapper::toDto);
 
 				List<String> mediaUrls=new ArrayList<String>();
@@ -886,7 +886,7 @@ public class AggregateServiceImpl implements AggregateService {
 	    
 	    Long approvalStatusId=approvalStatusRepository.findByStatus(approvalStatus).get().getId();
          	           	
-	    Page<HelpDTO> helpDtos= helpRepository.findAllHelpsByApprovalStatusId(new PageRequest(0,100),approvalStatusId)
+	    Page<HelpDTO> helpDtos= helpRepository.findAllHelpsByApprovalStatusId(pageable,approvalStatusId)
                                 .map(helpMapper::toDto);
 	    
 	    List<HelpDTO> helps=helpDtos.getContent();
@@ -917,7 +917,7 @@ public class AggregateServiceImpl implements AggregateService {
 	    	
 			//anjali
 			
-			Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByHelpId(help.getId(),new PageRequest(0,100))
+			Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByHelpId(help.getId(),PageRequest.of(0,100))
 					.map(mediaMapper::toDto);
 
 			List<String> mediaUrls=new ArrayList<String>();
@@ -931,7 +931,7 @@ public class AggregateServiceImpl implements AggregateService {
 	    	
 	    }
          	
-	    Page<HelpDTO> pagee = new PageImpl<HelpDTO>(helps, new PageRequest(0,100), helps.size());
+	    Page<HelpDTO> pagee = new PageImpl<HelpDTO>(helps, pageable, helps.size());
      	
    	    return pagee;
 

@@ -224,6 +224,9 @@ public class AggregateController {
 
 		List<String> dateArray= new ArrayList<String>();
 		dateArray.add("date,desc");
+		
+		//List<NeedDTO> needs = aggregateResourceApi.getAllNeedsByApprovedStatusUsingGET(approvalStatus, eagerload, offset, page, pageNumber, pageSize, paged, size, sort, sortSorted, sortUnsorted, unpaged)
+		
 		List<NeedDTO> needs = aggregateResourceApi.getAllNeedsByApprovedStatusUsingGET(approvalStatus, eagerload, null,
 				null, null, null, eagerload, null, dateArray, null, null, null).getBody();
 
@@ -371,12 +374,22 @@ public class AggregateController {
 			@PathVariable(value = "approvalStatus") String approvalStatus, Model model) {
 		log.debug("request to get a page of helps");
 
-		List<String> dateArray= new ArrayList<String>();
-		dateArray.add("time,desc");
+		List<String> timeArray= new ArrayList<String>();
+		timeArray.add("time,desc");
 		
+		
+		
+		//List<NeedDTO> needs = aggregateResourceApi.getAllNeedsByApprovedStatusUsingGET(approvalStatus, eagerload, offset, page, pageNumber, pageSize, paged, size, sort, sortSorted, sortUnsorted, unpaged)
+		
+				/*List<NeedDTO> needs = aggregateResourceApi.getAllNeedsByApprovedStatusUsingGET(approvalStatus, eagerload, null,
+						null, null, null, eagerload, null, dateArray, null, null, null).getBody();
+		*/
+		
+		
+		//List<HelpDTO> helps = aggregateResourceApi.getAllHelpsByApprovedStatusUsingGET(approvalStatus, offset, page, pageNumber, pageSize, paged, size, sort, sortSorted, sortUnsorted, unpaged)
 		List<HelpDTO> helps = aggregateResourceApi.getAllHelpsByApprovedStatusUsingGET(approvalStatus, null, null, null,
 
-				null, eagerload, null, dateArray, null, null, null).getBody();
+				null, eagerload, null, timeArray, null, null, null).getBody();
 	
 		List<ApprovalStatusDTO> approvalStatuses = aggregateResourceApi.getAllApprovalStatusesUsingGET(null, null, null,
 				null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
