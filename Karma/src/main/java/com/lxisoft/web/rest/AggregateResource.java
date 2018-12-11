@@ -379,7 +379,8 @@ public class AggregateResource {
    @GetMapping("/helps/getAllHelpsByApprovedStatus/{approvalStatus}")
    @Timed
    public ResponseEntity<List<HelpDTO>> getAllHelpsByApprovedStatus(Pageable pageable,@PathVariable String approvalStatus) {
-       log.debug("REST request to get a page of Helps");
+       System.out.println("getAll helps by approval status***********************Pageable :"+pageable.getSort()+" approvalStatus:"+approvalStatus);
+	   log.debug("REST request to get a page of Helps");
        Page<HelpDTO> page = aggregateService.findAllHelpsByApprovedStatus(pageable,approvalStatus);           
        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/helps");
        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);

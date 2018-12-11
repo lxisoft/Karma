@@ -224,6 +224,9 @@ public class AggregateController {
 
 		List<String> dateArray= new ArrayList<String>();
 		dateArray.add("date,desc");
+		
+		//List<NeedDTO> needs = aggregateResourceApi.getAllNeedsByApprovedStatusUsingGET(approvalStatus, eagerload, offset, page, pageNumber, pageSize, paged, size, sort, sortSorted, sortUnsorted, unpaged)
+		
 		List<NeedDTO> needs = aggregateResourceApi.getAllNeedsByApprovedStatusUsingGET(approvalStatus, eagerload, null,
 				null, null, null, eagerload, null, dateArray, null, null, null).getBody();
 
@@ -295,12 +298,10 @@ public class AggregateController {
 	 */
 	@PostMapping("/helps")
 	@Timed
-	public String helpNeedy(@ModelAttribute HelpDTO helpDTO, @RequestParam MultipartFile[] multipartFiles, Model model)
+	public String helpNeedy(@ModelAttribute HelpDTO helpDTO,@RequestParam MultipartFile[] multipartFiles, Model model)
 			throws URISyntaxException, IOException {
 
 		log.debug("REST request to save Help : {}", helpDTO);
-
-		// anjali
 
 		HelpDTO helpDto = aggregateResourceApi.helpNeedyUsingPOST(helpDTO).getBody();
 
@@ -318,11 +319,10 @@ public class AggregateController {
 
 			}
 		}
-		// anjali
+		
+		log.debug("save help : {},{}",helpDto,multipartFiles);
 
-		HelpDTO helpdto = aggregateResourceApi.helpNeedyUsingPOST(helpDTO).getBody();
-
-		model.addAttribute("help", helpdto);
+		model.addAttribute("help", helpDto);
 		model.addAttribute("message", "submitted");
 		return "approve-decline";
 	}
@@ -371,12 +371,22 @@ public class AggregateController {
 			@PathVariable(value = "approvalStatus") String approvalStatus, Model model) {
 		log.debug("request to get a page of helps");
 
-		List<String> dateArray= new ArrayList<String>();
-		dateArray.add("time,desc");
+		List<String> timeArray= new ArrayList<String>();
+		timeArray.add("time,desc");
 		
+		
+		
+		//List<NeedDTO> needs = aggregateResourceApi.getAllNeedsByApprovedStatusUsingGET(approvalStatus, eagerload, offset, page, pageNumber, pageSize, paged, size, sort, sortSorted, sortUnsorted, unpaged)
+		
+				/*List<NeedDTO> needs = aggregateResourceApi.getAllNeedsByApprovedStatusUsingGET(approvalStatus, eagerload, null,
+						null, null, null, eagerload, null, dateArray, null, null, null).getBody();
+		*/
+		
+		
+		//List<HelpDTO> helps = aggregateResourceApi.getAllHelpsByApprovedStatusUsingGET(approvalStatus, offset, page, pageNumber, pageSize, paged, size, sort, sortSorted, sortUnsorted, unpaged)
 		List<HelpDTO> helps = aggregateResourceApi.getAllHelpsByApprovedStatusUsingGET(approvalStatus, null, null, null,
 
-				null, eagerload, null, dateArray, null, null, null).getBody();
+				null, eagerload, null, timeArray, null, null, null).getBody();
 	
 		List<ApprovalStatusDTO> approvalStatuses = aggregateResourceApi.getAllApprovalStatusesUsingGET(null, null, null,
 				null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
@@ -479,7 +489,7 @@ public class AggregateController {
 	 *            applicable for many-to-many)
 	 * @return the string value
 	 */
-	@GetMapping("/feeds")
+	@GetMapping("/getFeeds")
 	@Timed
 	public String getAllFeeds(Pageable pageable,
 			@RequestParam(required = false, defaultValue = "false") boolean eagerload, Model model) {
@@ -490,7 +500,7 @@ public class AggregateController {
 				.getBody();
 
 		model.addAttribute("feeds", feeds);
-		return "home";
+		return "feeds";
 
 	}
 

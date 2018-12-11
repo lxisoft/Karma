@@ -214,6 +214,16 @@ public class AggregateServiceImpl implements AggregateService {
 		 
 		need = needRepository.save(need);
 				
+		//anjali
+		 FeedDTO feedDto=new FeedDTO();
+
+		 feedDto.setType("NeedPostAfterApproval");
+		 feedDto.setReferenceId(need.getId());
+		 //feedDto.setRegisteredUserId(need.getPostedUser().getId());
+
+		 saveFeed(feedDto);
+		 
+		 //anjali
 	     return needMapper.toDto(need);
 	}
 	
@@ -417,7 +427,7 @@ public class AggregateServiceImpl implements AggregateService {
 				
 				log.info("*****************{}",need.getId());
 				
-				Page<UserCheckDTO> userCheckDTOs=findAllUserChecksByCheckedNeedId(new PageRequest(0,100),need.getId());
+				Page<UserCheckDTO> userCheckDTOs=findAllUserChecksByCheckedNeedId(PageRequest.of(0,100),need.getId());
 				
 				List<UserCheckDTO> userCheckDTOList = userCheckDTOs.getContent();
 								
@@ -472,7 +482,7 @@ public class AggregateServiceImpl implements AggregateService {
 				
 
 				
-				Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByNeedId(need.getId(),new PageRequest(0,100))
+				Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByNeedId(need.getId(),PageRequest.of(0,100))
 						.map(mediaMapper::toDto);
 
 				List<String> mediaUrls=new ArrayList<String>();
@@ -732,6 +742,21 @@ public class AggregateServiceImpl implements AggregateService {
 		
 		help = helpRepository.save(help);
                
+		//anjali      
+		   
+				FeedDTO feedDto=new FeedDTO();
+				 
+				 feedDto.setType("HelpCompleted");
+				 feedDto.setReferenceId(help.getId());
+				// feedDto.setRegisteredUserId(help.getProvidedUser().getId());
+				 
+				 log.info("******feedtype{}",feedDto.getType());
+				 log.info("******reference id{}",feedDto.getReferenceId());
+				 
+				 saveFeed(feedDto);
+		      
+		 //anjali
+		        
         return helpMapper.toDto(help);
 	}
 
@@ -861,7 +886,7 @@ public class AggregateServiceImpl implements AggregateService {
 	    
 	    Long approvalStatusId=approvalStatusRepository.findByStatus(approvalStatus).get().getId();
          	           	
-	    Page<HelpDTO> helpDtos= helpRepository.findAllHelpsByApprovalStatusId(new PageRequest(0,100),approvalStatusId)
+	    Page<HelpDTO> helpDtos= helpRepository.findAllHelpsByApprovalStatusId(pageable,approvalStatusId)
                                 .map(helpMapper::toDto);
 	    
 	    List<HelpDTO> helps=helpDtos.getContent();
@@ -892,7 +917,7 @@ public class AggregateServiceImpl implements AggregateService {
 	    	
 			//anjali
 			
-			Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByHelpId(help.getId(),new PageRequest(0,100))
+			Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByHelpId(help.getId(),PageRequest.of(0,100))
 					.map(mediaMapper::toDto);
 
 			List<String> mediaUrls=new ArrayList<String>();
@@ -906,7 +931,7 @@ public class AggregateServiceImpl implements AggregateService {
 	    	
 	    }
          	
-	    Page<HelpDTO> pagee = new PageImpl<HelpDTO>(helps, new PageRequest(0,100), helps.size());
+	    Page<HelpDTO> pagee = new PageImpl<HelpDTO>(helps, pageable, helps.size());
      	
    	    return pagee;
 
@@ -1033,11 +1058,13 @@ public class AggregateServiceImpl implements AggregateService {
 		  	       usrCheckDtoObject.setVoteType("negative");
 		          result=userCheckRepository.save(usrCheckDtoObject);
 		       } 
-		      
-		      
-		    //anjali
-		        /*FeedDTO feedDto=new FeedDTO();
+		         
+		      //anjali
+		        FeedDTO feedDto=new FeedDTO();
 				
+		        log.info("****needid{}",result.getCheckedNeed().getId());
+		        log.info("****usercheck votetype{}",userCheckDTO.getVoteType());
+		        
 		        if((result.getCheckedNeed().getId()!=null)&&(userCheckDTO.getVoteType()=="postive")){
 		        	
 		        	 feedDto.setType("NeedIsGenuine");
@@ -1056,10 +1083,10 @@ public class AggregateServiceImpl implements AggregateService {
 					 log.info("***{}inside",feedDto.getType());
 		        }
 			 log.info("***{}after",feedDto.getType());
-			 saveFeed(feedDto);*/
+			 saveFeed(feedDto);
 			        
 			   //anjali
-		      		      
+		   		      		      
 		    return userCheckMapper.toDto(result);  
 		}
 
@@ -1129,8 +1156,43 @@ public class AggregateServiceImpl implements AggregateService {
 			
 			Comment comment = commentMapper.toEntity(commentDTO);
 			comment = commentRepository.save(comment);
-			
-            			
+		
+			 //anjali to post feed after comments on help, need and Post
+	        
+		        FeedDTO feedDto=new FeedDTO();
+		        
+		        if(commentDTO.getHelpId()!=null)
+		        {
+				 feedDto.setType("HelpComment");
+				 feedDto.setReferenceId(commentDTO.getHelpId());
+				 //feedDto.setRegisteredUserId(commentDTO.getCommentedUserId());
+				 
+				 saveFeed(feedDto);
+		        }
+		        
+		        else if(commentDTO.getNeedId()!=null)
+		        {
+				 feedDto.setType("NeedComment");
+				 feedDto.setReferenceId(commentDTO.getNeedId());
+				// feedDto.setRegisteredUserId(commentDTO.getCommentedUserId());
+				 
+				 saveFeed(feedDto);
+		        }
+		        
+		        else if(commentDTO.getPostId()!=null)
+		        {
+				 feedDto.setType("PostComment");
+				 feedDto.setReferenceId(commentDTO.getPostId());
+				// feedDto.setRegisteredUserId(commentDTO.getCommentedUserId());
+				 
+				 saveFeed(feedDto);
+		        }
+		        else
+		        {
+		        	
+		        }
+		        //anjali
+						
 			return commentMapper.toDto(comment);	
 		}
 
@@ -1449,7 +1511,7 @@ public class AggregateServiceImpl implements AggregateService {
 
        //anjali
 		
-	    /**
+		/**
 	     * Save a feed.
 	     *
 	     * @param feedDTO the entity to save
@@ -1460,33 +1522,9 @@ public class AggregateServiceImpl implements AggregateService {
 		public FeedDTO saveFeed(FeedDTO feedDTO) throws IOException {
 			log.debug("Request to save Feed : {}", feedDTO);
 			
-			if(feedDTO.getType().equals("NeedPostAfterApproval")){
+			if(feedDTO.getType().equals("NeedPostAfterApproval")){	
 				
-				feedDTO.setTitle("User Posted a new Need");
-			}
-			else if(feedDTO.getType().equals("HelpPostAfterCompletion")){
-				
-				feedDTO.setTitle("User Helped a need");
-			}
-			else if(feedDTO.getType().equals("PublishPost")){   //todo
-				
-				feedDTO.setTitle("User published a new Post");
-			}
-			else if(feedDTO.getType().equals("HelpPostComment")){
-				
-				feedDTO.setTitle("User commented on the Help");
-			}
-			else if(feedDTO.getType().equals("HelpIsLiked")){		
-				
-				feedDTO.setTitle("User Liked on the Help");
-			}
-			else if(feedDTO.getType().equals("HelpIsDisLiked")){	
-				
-				feedDTO.setTitle("User DisLiked the Help");
-			}
-			else if(feedDTO.getType().equals("NeedComment")){
-				
-				feedDTO.setTitle("User commented on the Need");
+				feedDTO.setTitle("User has Posted a need");
 			}
 			else if(feedDTO.getType().equals("NeedIsGenuine")){	
 				
@@ -1496,17 +1534,20 @@ public class AggregateServiceImpl implements AggregateService {
 		
 				feedDTO.setTitle("User marked the need as Fake");
 			}
-			else if(feedDTO.getType().equals("PostComment")){
+			else if(feedDTO.getType().equals("HelpCompleted")){
 				
-				feedDTO.setTitle("User commented on the post");		//todo
+				feedDTO.setTitle("User Helped a need");
 			}
-			else if(feedDTO.getType().equals("PostLike")){			//todo
+			else if(feedDTO.getType().equals("HelpComment")){
 				
-				feedDTO.setTitle("User Liked the post");
+				feedDTO.setTitle("User commented on the Help");
 			}
-			else if(feedDTO.getType().equals("PostDislike")){		//todo
+			else if(feedDTO.getType().equals("NeedComment")){
 				
-				feedDTO.setTitle("User DisLiked the post");
+				feedDTO.setTitle("User commented on the Need");
+			}
+			else{
+				
 			}
 			
 			 Feed feed = feedMapper.toEntity(feedDTO);
