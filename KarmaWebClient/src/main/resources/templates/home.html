@@ -159,76 +159,79 @@
 									<p class="card-subtitle mb-2 text-muted small mb-3 mt-1" th:text="'posted '+${need.timeElapsed}">posted just
 										now</p>
 									<th:block th:object="${need}">
-										<th:block th:if="${need.attachmentUrls != null}" th:each="attachmentUrl,index : ${need.attachmentUrls}">
-											<div class="col-md-12 mb-3">
+										<div th:fragment="attachments">
+											<th:block th:if="*{attachmentUrls != null}" th:each="attachmentUrl,index : *{attachmentUrls}">
+												<div class="col-md-12 mb-3">
 
-												<img src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" th:src="${'//localhost:8081/uploadedfiles/'+attachmentUrl}"
-												 class="img-fluid z-depth-1" alt="Responsive image">
+													<img src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" th:src="${'//localhost:8081/uploadedfiles/'+attachmentUrl}"
+													 class="img-fluid z-depth-1" alt="Responsive image">
+
+												</div>
+											</th:block>
+
+											<div class="row" th:remove="all">
+
+
+												<div class="col-md-12 mb-3">
+
+													<img src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" class="img-fluid z-depth-1" alt="Responsive image">
+
+												</div>
+
 
 											</div>
-										</th:block>
+
+
+
+											<div class="row" th:remove="all">
+
+
+												<div class="col-lg-4 col-md-12 mb-3">
+
+													<img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(115).jpg" class="img-fluid z-depth-1"
+													 alt="Responsive image">
+
+												</div>
+
+												<div class="col-lg-4 col-md-6 mb-3">
+
+													<img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(116).jpg" class="img-fluid z-depth-1"
+													 alt="Responsive image">
+
+												</div>
+
+												<div class="col-lg-4 col-md-6 mb-3">
+
+													<img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(117).jpg" class="img-fluid z-depth-1"
+													 alt="Responsive image">
+
+												</div>
+
+
+											</div>
+
+											<div class="row" th:remove="all">
+
+												<div class="col-md-6 mb-3">
+
+													<img src="https://mdbootstrap.com/img/Photos/Horizontal/People/6-col/img(117).jpg" class="img-fluid z-depth-1"
+													 alt="Responsive image">
+
+												</div>
+
+
+
+												<div class="col-md-6 mb-3">
+
+													<img src="https://mdbootstrap.com/img/Photos/Horizontal/People/6-col/img(129).jpg" class="img-fluid z-depth-1"
+													 alt="Responsive image">
+
+												</div>
+
+
+											</div>
+										</div>
 									</th:block>
-									<div class="row" th:remove="all">
-
-
-										<div class="col-md-12 mb-3">
-
-											<img src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" class="img-fluid z-depth-1" alt="Responsive image">
-
-										</div>
-
-
-									</div>
-
-
-
-									<div class="row" th:remove="all">
-
-
-										<div class="col-lg-4 col-md-12 mb-3">
-
-											<img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(115).jpg" class="img-fluid z-depth-1"
-											 alt="Responsive image">
-
-										</div>
-
-										<div class="col-lg-4 col-md-6 mb-3">
-
-											<img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(116).jpg" class="img-fluid z-depth-1"
-											 alt="Responsive image">
-
-										</div>
-
-										<div class="col-lg-4 col-md-6 mb-3">
-
-											<img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(117).jpg" class="img-fluid z-depth-1"
-											 alt="Responsive image">
-
-										</div>
-
-
-									</div>
-
-									<div class="row" th:remove="all">
-
-										<div class="col-md-6 mb-3">
-
-											<img src="https://mdbootstrap.com/img/Photos/Horizontal/People/6-col/img(117).jpg" class="img-fluid z-depth-1"
-											 alt="Responsive image">
-
-										</div>
-
-
-
-										<div class="col-md-6 mb-3">
-
-											<img src="https://mdbootstrap.com/img/Photos/Horizontal/People/6-col/img(129).jpg" class="img-fluid z-depth-1"
-											 alt="Responsive image">
-
-										</div>
-
-
-									</div>
 
 									<p class="mt-2 display-5" th:text="${need.description}">Some quick example text to build on the
 										panel title and make up the bulk of the panel's content.</p>
@@ -268,7 +271,7 @@
 											<div class="border-light border-bottom" th:each="comment : ${comments}" th:fragment="comments">
 
 												<p class="ml-4 mt-2 mb-0" th:text="${comment.message}">lkkjskdalj</p>
-												<p class="text-muted ml-4 small d-inline" th:text="'Siraj commented'+${comment.timeElapsed}">Siraj<span
+												<p class="text-muted ml-4 small d-inline" th:text="'Siraj commented '+${comment.timeElapsed}">Siraj<span
 													 class="large">.</span>3
 													minutes ago</p><i class="ml-3 fa fa-heart-o" aria-hidden="true" th:onclick="|likeComment('${comment.id}')|"><span
 													 class="ml-1 text-muted" th:text="${comment.noOfLikes}">32</span></i>
@@ -295,14 +298,14 @@
 
 												<!-- view all replies -->
 												<div class="offset-1" id="replies" th:id="${'replies-'+comment.id}" style="display: none;" th:style="|display: block;|"
-												 th:if="${replies != null}" th:with="commentId=${comment.id}">
+												 th:with="commentId=${comment.id}">
 
 													<div th:fragment="replies(commentId)">
-														<p class="text-primary text-center mt-1 mb-2">hide replies<span><i class="fa ml-2 clear-fix d-inline text-dark fa-angle-up mr-5 mt-1"
-																 aria-hidden="true" onclick="$('#replies').hide();" th:onlick="|$('#replies-${commentId}').hide();|"></i></span></p>
+														<p class="text-primary text-center mt-1 mb-2" th:if="${replies != null}">hide replies<span><i class="fa ml-2 clear-fix d-inline text-dark fa-angle-up mr-5 mt-1"
+																 aria-hidden="true" onclick="$('#replies').hide();" th:onclick="|$('#replies-${commentId}').hide();|"></i></span></p>
 														<div class="border-light border-bottom" th:each="reply : ${replies}">
 															<p class="ml-4 mt-2 mb-0" th:text="${reply.message}">lkkjskdalj</p>
-															<p class="text-muted ml-5 small d-inline" th:text="'Siraj replied'+${reply.timeElapsed}">Siraj<span
+															<p class="text-muted ml-5 small d-inline" th:text="'Siraj replied '+${reply.timeElapsed}">Siraj<span
 																 class="large">.</span>3
 																minutes ago</p><i class="ml-3 fa fa-heart-o" aria-hidden="true" th:text="${reply.noOfLikes}" th:onlick="|likeReply('${reply.id}')|"><span
 																 class="ml-1 text-muted">32</span></i>
