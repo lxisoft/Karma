@@ -98,7 +98,10 @@ spring:
             enabled: false
     thymeleaf:
         mode: HTML
-
+    servlet:
+      multipart:
+        max-file-size: 2000MB
+        max-request-size: 2000MB
 # ===================================================================
 # OpenID Connect Settings. Default settings are for Keycloak in Docker.
 # Start Keycloak using `docker-compose -f src/main/docker/keycloak.yml up`.
