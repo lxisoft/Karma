@@ -15,6 +15,8 @@
  */
 package com.lxisoft.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -27,8 +29,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class StaticResourceConfiguration implements WebMvcConfigurer {
 
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
+
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/pngFiles/**").addResourceLocations("file:ext-resources/").setCachePeriod(0);
+
+		log.debug("Configurations for loading images without rerunning the project");
+		registry.addResourceHandler("src/main/resources/**").addResourceLocations("file:uploadedfiles/")
+				.setCachePeriod(0);
 	}
 }
