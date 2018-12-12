@@ -13,7 +13,10 @@ Karma/node_modules/
 Karma/npm-debug.log.*
 Karma/.awcache/*
 Karma/.cache-loader/*
-
+######################
+# Resources
+######################
+Karma/src/main/resources/static/uploadedfiles/
 ######################
 # SASS
 ######################
