@@ -298,12 +298,10 @@ public class AggregateController {
 	 */
 	@PostMapping("/helps")
 	@Timed
-	public String helpNeedy(@ModelAttribute HelpDTO helpDTO, @RequestParam MultipartFile[] multipartFiles, Model model)
+	public String helpNeedy(@ModelAttribute HelpDTO helpDTO,@RequestParam MultipartFile[] multipartFiles, Model model)
 			throws URISyntaxException, IOException {
 
 		log.debug("REST request to save Help : {}", helpDTO);
-
-		// anjali
 
 		HelpDTO helpDto = aggregateResourceApi.helpNeedyUsingPOST(helpDTO).getBody();
 
@@ -321,11 +319,10 @@ public class AggregateController {
 
 			}
 		}
-		// anjali
+		
+		log.debug("save help : {},{}",helpDto,multipartFiles);
 
-		HelpDTO helpdto = aggregateResourceApi.helpNeedyUsingPOST(helpDTO).getBody();
-
-		model.addAttribute("help", helpdto);
+		model.addAttribute("help", helpDto);
 		model.addAttribute("message", "submitted");
 		return "approve-decline";
 	}
