@@ -588,10 +588,11 @@ public class AggregateResource {
       * @param replyDTO the replyDTO to create
       * @return the ResponseEntity with status 201 (Created) and with body the new replyDTO, or with status 400 (Bad Request) if the reply has already an ID
       * @throws URISyntaxException if the Location URI syntax is incorrect
+ 	 * @throws IOException 
       */
      @PostMapping("/replies")
      @Timed
-     public ResponseEntity<ReplyDTO> addReply(@RequestBody ReplyDTO replyDTO) throws URISyntaxException {
+     public ResponseEntity<ReplyDTO> addReply(@RequestBody ReplyDTO replyDTO) throws URISyntaxException, IOException {
          log.debug("REST request to save Reply : {}", replyDTO);
          if (replyDTO.getId() != null) {
              throw new BadRequestAlertException("A new reply cannot already have an ID", "Reply", "idexists");

@@ -1373,15 +1373,26 @@ public class AggregateServiceImpl implements AggregateService {
 	     * @param replyDTO the entity to save
 	     * 
 	     * @return the persisted entity
+		 * @throws IOException 
 	     */
 	    @Override
-		public ReplyDTO saveReply(ReplyDTO replyDTO) {
+		public ReplyDTO saveReply(ReplyDTO replyDTO) throws IOException {
 	    	log.debug("Request to save Reply : {}", replyDTO);
 	    	String parseDate=replyDTO.getDateInString().replace(" ","T").concat("Z");
 	        Instant date=Instant.parse(parseDate);
 	        replyDTO.setDate(date);
 	        Reply reply = replyMapper.toEntity(replyDTO);
 	        reply = replyRepository.save(reply);
+	        
+	        //anjali
+			 FeedDTO feedDto=new FeedDTO();
+
+			 feedDto.setType("Replied");
+			 feedDto.setReferenceId(reply.getId());
+			
+			 saveFeed(feedDto);
+			 
+			 //anjali
 	        return replyMapper.toDto(reply);
 		}
 
@@ -1651,6 +1662,10 @@ public class AggregateServiceImpl implements AggregateService {
 			else if(feedDTO.getType().equals("NeedComment")){
 				
 				feedDTO.setTitle("User commented on the Need");
+			}
+			else if(feedDTO.getType().equals("Replied")){
+				
+				feedDTO.setTitle("User Replied on the comment");
 			}
 			else{
 				
