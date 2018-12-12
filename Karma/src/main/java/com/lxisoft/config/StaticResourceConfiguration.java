@@ -35,6 +35,6 @@ public class StaticResourceConfiguration implements WebMvcConfigurer {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
 		log.debug("Configurations for loading images without rerunning the project");
-		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(0);
+		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/static/").setCachePeriod(0);
 	}
 }
