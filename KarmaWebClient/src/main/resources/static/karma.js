@@ -52,19 +52,21 @@ function markFake(needId) {
         }
     });
 }
-function viewComments(id) {
-    var element = "#comment-box-" + id;
-    console.log("view comments worked with id: " + element);
+function viewComments(needId) {
+    console.log("view comments worked with needId: " + needId);
     //$('#comments-' + needId).show();
-    $('#comments-section-' + id).load('/comments/getAllCommentsByHelpId/' + id);
-    $('#comments-section-' + id).show();
+    $('#comments-section-' + needId).load('/comments/getAllCommentsByNeedId/' + needId);
+    $('#comments-section-' + needId).show();
+    /* console.log(getCurrentTime()); */
 }
 function viewReplies(commentId) {
-    $('#comments-section-' + needId).show();
-    $('#replies-section-' + commentId).load('/comments/getAllCommentsByNeedId/' + commentId);
+    console.log("viewReplies- commentId :" + commentId + ' element: ' + $('#replies-' + commentId).val());
+    $('#replies-' + commentId).load('/replies/getAllRepliesByCommentId/' + commentId);
 }
 function addComment(id) {
     var element = "#comment-box-" + id;
+    console.log("addComment: " + element + ' ' + $(element).attr("data-checkedNeedId"));
+    //console.log("addComment: " + element + ' ' + $(element).data("checkedNeedId"));
     console.log("addComment: " + element + ' ' + $(element).data("checkedneedid"));
     console.log("message: " + $("#comment-box-text-" + id).val());
     /* 			if ($(element).data("checkedNeedId") != null)
@@ -92,7 +94,8 @@ function addComment(id) {
         success: function (response) {
             console.log("comment added successfully " + id);
 
-            $("#comments-" + id).html(response);
+            $("#need-" + id).html(response);
+            viewComments(id);
             if (response.success) {
 
                 //document.getElementById("success-message").innerHTML="success";
@@ -189,6 +192,6 @@ function getCurrentTime() {
     //var hours = date.getHours();
     //var minutes = date.getMinutes();
     //var seconds = date.getSeconds();
-    console.log("getCurrentTime()" + year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds);
+    //console.log("getCurrentTime()" + year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds);
     return year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
 }
