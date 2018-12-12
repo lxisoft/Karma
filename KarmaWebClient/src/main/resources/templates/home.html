@@ -159,11 +159,20 @@
 									<p class="card-subtitle mb-2 text-muted small mb-3 mt-1" th:text="'posted '+${need.timeElapsed}">posted just
 										now</p>
 									<th:block th:object="${need}">
+
 										<div th:fragment="attachments">
-											<th:block th:if="*{attachmentUrls != null}" th:each="attachmentUrl,index : *{attachmentUrls}">
+											<th:block th:if="*{videoUrls != null}" th:each="videoUrl,index : *{videoUrls}">
 												<div class="col-md-12 mb-3">
 
-													<img src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" th:src="${'//localhost:8081/uploadedfiles/'+attachmentUrl}"
+													<video th:src="${'//localhost:8081/uploadedfiles/'+videoUrl}" class="img-fluid z-depth-1" alt="Responsive image">
+
+												</div>
+											</th:block>
+
+											<th:block th:if="*{imageUrls != null}" th:each="imageUrl,index : *{imageUrls}">
+												<div class="col-md-12 mb-3">
+
+													<img src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" th:src="${'//localhost:8081/uploadedfiles/'+imageUrl}"
 													 class="img-fluid z-depth-1" alt="Responsive image">
 
 												</div>
