@@ -311,7 +311,7 @@ public class AggregateController {
 				MediaDTO mediaDTO = new MediaDTO();
 
 				mediaDTO.setFileName(file.getOriginalFilename());
-				mediaDTO.setNeedId(helpDto.getId());
+				mediaDTO.setHelpId(helpDto.getId());
 				mediaDTO.setExtension(file.getContentType());
 				mediaDTO.setBytes(file.getBytes());
 
