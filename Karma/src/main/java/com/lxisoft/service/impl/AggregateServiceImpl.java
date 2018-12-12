@@ -381,29 +381,29 @@ public class AggregateServiceImpl implements AggregateService {
 		Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByNeedId(need.getId(),PageRequest.of(0,100))
 				.map(mediaMapper::toDto);
 		
-		List<String> mediaUrls=new ArrayList<String>();
+		List<String> imageUrls=new ArrayList<String>();
 		List<String> videoUrls=new ArrayList<String>();
 		
 		for(MediaDTO mediaDto:mediaDTO.getContent()){
 		
 			if(mediaDto.getExtension().contains("image")){
 				log.info("****containcheck{}",mediaDto.getExtension().contains("image"));
-				mediaUrls.add(mediaDto.getUrl());
+				imageUrls.add(mediaDto.getFileName());
 			}
 			else if(mediaDto.getExtension().contains("video")){
 				log.info("****videocontaincheck{}",mediaDto.getExtension().contains("video"));
 				
-				videoUrls.add(mediaDto.getUrl());
+				videoUrls.add(mediaDto.getFileName());
 			}
 			else{
 				
 			}
 			
-			log.info("list size media url{}",mediaUrls.size());
+			log.info("list size media url{}",imageUrls.size());
 			log.info("list size video url{}",videoUrls.size());
 			
-			if(mediaUrls.size()!=0){
-				needDTO.setMediaUrls(mediaUrls);
+			if(imageUrls.size()!=0){
+				needDTO.setImageUrls(imageUrls);
 			}
 			if(videoUrls.size()!=0){
 				needDTO.setVideoUrls(videoUrls);
@@ -509,52 +509,36 @@ public class AggregateServiceImpl implements AggregateService {
 				Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByNeedId(need.getId(),PageRequest.of(0,100))
 						.map(mediaMapper::toDto);
 				
-				List<String> mediaUrls=new ArrayList<String>();
+				List<String> imageUrls=new ArrayList<String>();
 				List<String> videoUrls=new ArrayList<String>();
 				
-				ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-
 				for(MediaDTO mediaDto:mediaDTO.getContent()){
 				
 					if(mediaDto.getExtension().contains("image")){
-						log.info("****containcheck{}",mediaDto.getExtension().contains("image"));
+						log.info("****containcheck{}",mediaDto.getExtension().contains("image"));		
 						
-						Path path = Paths.get(mediaDto.getUrl());
-						Path absolutePath=path.toAbsolutePath();
-						log.info("absolutPAth{}",absolutePath);
-						String url=absolutePath.toString();
-						log.info("url{}",url);
-						
-						mediaUrls.add(url);
+						imageUrls.add(mediaDto.getFileName());
 					}
 					else if(mediaDto.getExtension().contains("video")){
 						log.info("****videocontaincheck{}",mediaDto.getExtension().contains("video"));
 						
-						Path path = Paths.get(mediaDto.getUrl());
-						Path absolutePath=path.toAbsolutePath();
-						log.info("absolutPAth{}",absolutePath);
-						String url=absolutePath.toString();
-						log.info("url{}",url);
-						
-						videoUrls.add(url);
+						videoUrls.add(mediaDto.getFileName());
 					}
 					else{
 						
 					}
 					
-					log.info("list size media url{}",mediaUrls.size());
+					log.info("list size media url{}",imageUrls.size());
 					log.info("list size video url{}",videoUrls.size());
 					
-					if(mediaUrls.size()!=0){
-						need.setMediaUrls(mediaUrls);
+					if(imageUrls.size()!=0){
+						need.setImageUrls(imageUrls);
 					}
 					if(videoUrls.size()!=0){
 						need.setVideoUrls(videoUrls);
 					}			
 				}
-				
-				
-				
+							
 											
 			 }
 			
@@ -593,29 +577,29 @@ public class AggregateServiceImpl implements AggregateService {
 
 
 	
-			List<String> mediaUrls=new ArrayList<String>();
+			List<String> imageUrls=new ArrayList<String>();
 			List<String> videoUrls=new ArrayList<String>();
 			
 			for(MediaDTO mediaDto:mediaDTO.getContent()){
 			
 				if(mediaDto.getExtension().contains("image")){
 					log.info("****containcheck{}",mediaDto.getExtension().contains("image"));
-					mediaUrls.add(mediaDto.getUrl());
+					imageUrls.add(mediaDto.getFileName());
 				}
 				else if(mediaDto.getExtension().contains("video")){
 					log.info("****videocontaincheck{}",mediaDto.getExtension().contains("video"));
 					
-					videoUrls.add(mediaDto.getUrl());
+					videoUrls.add(mediaDto.getFileName());
 				}
 				else{
 					
 				}
 				
-				log.info("list size media url{}",mediaUrls.size());
+				log.info("list size media url{}",imageUrls.size());
 				log.info("list size video url{}",videoUrls.size());
 				
-				if(mediaUrls.size()!=0){
-					helpDTO.setMediaUrls(mediaUrls);
+				if(imageUrls.size()!=0){
+					helpDTO.setImageUrls(imageUrls);
 				}
 				if(videoUrls.size()!=0){
 					helpDTO.setVideoUrls(videoUrls);
@@ -1019,7 +1003,8 @@ public class AggregateServiceImpl implements AggregateService {
 			
 			Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByHelpId(help.getId(),PageRequest.of(0,100))
 					.map(mediaMapper::toDto);	
-			List<String> mediaUrls=new ArrayList<String>();
+			
+			List<String> imageUrls=new ArrayList<String>();
 			List<String> videoUrls=new ArrayList<String>();
 			
 			for(MediaDTO mediaDto:mediaDTO.getContent()){
@@ -1027,34 +1012,22 @@ public class AggregateServiceImpl implements AggregateService {
 				if(mediaDto.getExtension().contains("image")){
 					log.info("****containcheck{}",mediaDto.getExtension().contains("image"));
 					
-					Path path = Paths.get(mediaDto.getUrl());
-					Path absolutePath=path.toAbsolutePath();
-					log.info("absolutPAth{}",absolutePath);
-					String url=absolutePath.toString();
-					log.info("url{}",url);
-					
-					mediaUrls.add(url);
+					imageUrls.add(mediaDto.getFileName());
 				}
 				else if(mediaDto.getExtension().contains("video")){
 					log.info("****videocontaincheck{}",mediaDto.getExtension().contains("video"));
-					
-					Path path = Paths.get(mediaDto.getUrl());
-					Path absolutePath=path.toAbsolutePath();
-					log.info("absolutPAth{}",absolutePath);
-					String url=absolutePath.toString();
-					log.info("url{}",url);
-					
-					videoUrls.add(url);
+				
+					videoUrls.add(mediaDto.getFileName());
 				}
 				else{
 					
 				}
 				
-				log.info("list size media url{}",mediaUrls.size());
+				log.info("list size media url{}",imageUrls.size());
 				log.info("list size video url{}",videoUrls.size());
 				
-				if(mediaUrls.size()!=0){
-					help.setMediaUrls(mediaUrls);
+				if(imageUrls.size()!=0){
+					help.setImageUrls(imageUrls);
 				}
 				if(videoUrls.size()!=0){
 					help.setVideoUrls(videoUrls);
