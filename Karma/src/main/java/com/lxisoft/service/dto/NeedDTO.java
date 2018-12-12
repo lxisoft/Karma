@@ -56,12 +56,44 @@ public class NeedDTO implements Serializable {
     private Long noOfRecommendations;
     
     private String userName;
-     
+    
     private List<String> mediaUrls=new ArrayList<>();
     
     private List<String> videoUrls=new ArrayList<>();
-    
-    public Long getId() {
+       
+    /**
+	 * @return the mediaUrls
+	 */
+	public List<String> getMediaUrls() {
+		return mediaUrls;
+	}
+
+
+	/**
+	 * @param mediaUrls the mediaUrls to set
+	 */
+	public void setMediaUrls(List<String> mediaUrls) {
+		this.mediaUrls = mediaUrls;
+	}
+
+
+	/**
+	 * @return the videoUrls
+	 */
+	public List<String> getVideoUrls() {
+		return videoUrls;
+	}
+
+
+	/**
+	 * @param videoUrls the videoUrls to set
+	 */
+	public void setVideoUrls(List<String> videoUrls) {
+		this.videoUrls = videoUrls;
+	}
+
+
+	public Long getId() {
         return id;
     }
 
@@ -289,25 +321,6 @@ public class NeedDTO implements Serializable {
 		this.userName = userName;
 	}
 
-	public List<String> getMediaUrls() {
-		return mediaUrls;
-	}
-
-
-	public void setMediaUrls(List<String> mediaUrls) {
-		this.mediaUrls = mediaUrls;
-	}
-
-
-	public List<String> getVideoUrls() {
-		return videoUrls;
-	}
-
-
-	public void setVideoUrls(List<String> videoUrls) {
-		this.videoUrls = videoUrls;
-	}
-
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -343,6 +356,4 @@ public class NeedDTO implements Serializable {
             ", postedUser=" + getPostedUserId() +
             "}";
     }
-
-
-	}
+}
