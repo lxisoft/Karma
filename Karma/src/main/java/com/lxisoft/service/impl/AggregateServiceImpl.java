@@ -15,7 +15,10 @@
  */
 package com.lxisoft.service.impl;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -23,6 +26,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.mail.MessagingException;
@@ -32,6 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties.Web.Server;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -507,16 +512,31 @@ public class AggregateServiceImpl implements AggregateService {
 				List<String> mediaUrls=new ArrayList<String>();
 				List<String> videoUrls=new ArrayList<String>();
 				
+				ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+
 				for(MediaDTO mediaDto:mediaDTO.getContent()){
 				
 					if(mediaDto.getExtension().contains("image")){
 						log.info("****containcheck{}",mediaDto.getExtension().contains("image"));
-						mediaUrls.add(mediaDto.getUrl());
+						
+						Path path = Paths.get(mediaDto.getUrl());
+						Path absolutePath=path.toAbsolutePath();
+						log.info("absolutPAth{}",absolutePath);
+						String url=absolutePath.toString();
+						log.info("url{}",url);
+						
+						mediaUrls.add(url);
 					}
 					else if(mediaDto.getExtension().contains("video")){
 						log.info("****videocontaincheck{}",mediaDto.getExtension().contains("video"));
 						
-						videoUrls.add(mediaDto.getUrl());
+						Path path = Paths.get(mediaDto.getUrl());
+						Path absolutePath=path.toAbsolutePath();
+						log.info("absolutPAth{}",absolutePath);
+						String url=absolutePath.toString();
+						log.info("url{}",url);
+						
+						videoUrls.add(url);
 					}
 					else{
 						
@@ -1006,12 +1026,25 @@ public class AggregateServiceImpl implements AggregateService {
 			
 				if(mediaDto.getExtension().contains("image")){
 					log.info("****containcheck{}",mediaDto.getExtension().contains("image"));
-					mediaUrls.add(mediaDto.getUrl());
+					
+					Path path = Paths.get(mediaDto.getUrl());
+					Path absolutePath=path.toAbsolutePath();
+					log.info("absolutPAth{}",absolutePath);
+					String url=absolutePath.toString();
+					log.info("url{}",url);
+					
+					mediaUrls.add(url);
 				}
 				else if(mediaDto.getExtension().contains("video")){
 					log.info("****videocontaincheck{}",mediaDto.getExtension().contains("video"));
 					
-					videoUrls.add(mediaDto.getUrl());
+					Path path = Paths.get(mediaDto.getUrl());
+					Path absolutePath=path.toAbsolutePath();
+					log.info("absolutPAth{}",absolutePath);
+					String url=absolutePath.toString();
+					log.info("url{}",url);
+					
+					videoUrls.add(url);
 				}
 				else{
 					
