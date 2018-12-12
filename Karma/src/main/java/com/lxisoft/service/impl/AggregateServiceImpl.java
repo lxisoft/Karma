@@ -377,18 +377,39 @@ public class AggregateServiceImpl implements AggregateService {
 			needDTO.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
 		}	
 		
-		
 		//media
-		
-		Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByNeedId(needDTO.getId(),pageable)
+		Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByNeedId(need.getId(),PageRequest.of(0,100))
 				.map(mediaMapper::toDto);
-
+		
 		List<String> mediaUrls=new ArrayList<String>();
-
-		for(MediaDTO mediaFromList:mediaDTO.getContent()){
-			mediaUrls.add(mediaFromList.getFileName());
+		List<String> videoUrls=new ArrayList<String>();
+		
+		for(MediaDTO mediaDto:mediaDTO.getContent()){
+		
+			if(mediaDto.getExtension().contains("image")){
+				log.info("****containcheck{}",mediaDto.getExtension().contains("image"));
+				mediaUrls.add(mediaDto.getUrl());
+			}
+			else if(mediaDto.getExtension().contains("video")){
+				log.info("****videocontaincheck{}",mediaDto.getExtension().contains("video"));
+				
+				videoUrls.add(mediaDto.getUrl());
+			}
+			else{
+				
+			}
+			
+			log.info("list size media url{}",mediaUrls.size());
+			log.info("list size video url{}",videoUrls.size());
+			
+			if(mediaUrls.size()!=0){
+				needDTO.setMediaUrls(mediaUrls);
+			}
+			if(videoUrls.size()!=0){
+				needDTO.setVideoUrls(videoUrls);
+			}			
 		}
-		needDTO.setAttachmentUrls(mediaUrls);
+	    
 
         
        
@@ -432,7 +453,7 @@ public class AggregateServiceImpl implements AggregateService {
 				
 				log.info("*****************{}",need.getId());
 				
-				Page<UserCheckDTO> userCheckDTOs=findAllUserChecksByCheckedNeedId(new PageRequest(0,100),need.getId());
+				Page<UserCheckDTO> userCheckDTOs=findAllUserChecksByCheckedNeedId(PageRequest.of(0,100),need.getId());
 				
 				List<UserCheckDTO> userCheckDTOList = userCheckDTOs.getContent();
 								
@@ -483,11 +504,9 @@ public class AggregateServiceImpl implements AggregateService {
 					postedDate = Date.from(need.getDate());
 					need.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
 				}
-				
-				
-				//anjali
-				
-				Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByNeedId(need.getId(),new PageRequest(0,100))
+								
+
+				Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByNeedId(need.getId(),PageRequest.of(0,100))
 						.map(mediaMapper::toDto);
 				
 				List<String> mediaUrls=new ArrayList<String>();
@@ -534,7 +553,8 @@ public class AggregateServiceImpl implements AggregateService {
 					}			
 				}
 				
-			//anjali	
+				
+				
 											
 			 }
 			
@@ -567,10 +587,49 @@ public class AggregateServiceImpl implements AggregateService {
         {
         	        	
         	HelpDTO helpDTO=helpMapper.toDto(help);
+        	
+        	Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByHelpId(help.getId(),pageable)
+					.map(mediaMapper::toDto);
+
+
+	
+			List<String> mediaUrls=new ArrayList<String>();
+			List<String> videoUrls=new ArrayList<String>();
+			
+			for(MediaDTO mediaDto:mediaDTO.getContent()){
+			
+				if(mediaDto.getExtension().contains("image")){
+					log.info("****containcheck{}",mediaDto.getExtension().contains("image"));
+					mediaUrls.add(mediaDto.getUrl());
+				}
+				else if(mediaDto.getExtension().contains("video")){
+					log.info("****videocontaincheck{}",mediaDto.getExtension().contains("video"));
+					
+					videoUrls.add(mediaDto.getUrl());
+				}
+				else{
+					
+				}
+				
+				log.info("list size media url{}",mediaUrls.size());
+				log.info("list size video url{}",videoUrls.size());
+				
+				if(mediaUrls.size()!=0){
+					helpDTO.setMediaUrls(mediaUrls);
+				}
+				if(videoUrls.size()!=0){
+					helpDTO.setVideoUrls(videoUrls);
+				}			
+			}
+				//anjali
+        			
+			
         	if(helpDTO.getApprovalStatusId()==4)
         	{
         		completedHelps.add(helpDTO);
-        	}      	
+        	}   
+        	
+        	
         	
         }
 
@@ -927,7 +986,7 @@ public class AggregateServiceImpl implements AggregateService {
 	    
 	    Long approvalStatusId=approvalStatusRepository.findByStatus(approvalStatus).get().getId();
          	           	
-	    Page<HelpDTO> helpDtos= helpRepository.findAllHelpsByApprovalStatusId(new PageRequest(0,100),approvalStatusId)
+	    Page<HelpDTO> helpDtos= helpRepository.findAllHelpsByApprovalStatusId(pageable,approvalStatusId)
                                 .map(helpMapper::toDto);
 	    
 	    List<HelpDTO> helps=helpDtos.getContent();
@@ -958,9 +1017,8 @@ public class AggregateServiceImpl implements AggregateService {
 	    	
 			//anjali
 			
-			Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByHelpId(help.getId(),new PageRequest(0,100))
-					.map(mediaMapper::toDto);
-	
+			Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByHelpId(help.getId(),PageRequest.of(0,100))
+					.map(mediaMapper::toDto);	
 			List<String> mediaUrls=new ArrayList<String>();
 			List<String> videoUrls=new ArrayList<String>();
 			
@@ -1006,7 +1064,7 @@ public class AggregateServiceImpl implements AggregateService {
 	    	
 	    }
          	
-	    Page<HelpDTO> pagee = new PageImpl<HelpDTO>(helps, new PageRequest(0,100), helps.size());
+	    Page<HelpDTO> pagee = new PageImpl<HelpDTO>(helps, pageable, helps.size());
      	
    	    return pagee;
 
@@ -1792,14 +1850,23 @@ public class AggregateServiceImpl implements AggregateService {
 								    public MediaDTO saveMedia(MediaDTO mediaDTO) throws IOException {
 								        log.debug("Request to save Media : {}", mediaDTO);
 								        	
+								        Instant instant = Instant.now();
+
+										Date current = Date.from(instant);
+										
 								            String fileName = mediaDTO.getFileName();
 								            
+								            //log.info("*******filename{}",fileName+current.getTime());
+								            mediaDTO.setFileName(fileName+current.getTime());
+								            
+								            //log.info("***mediafilename{}",mediaDTO.getFileName());
 								            mediaDTO.setUrl(path+fileName);
 								           
 								            log.info("*******media url{}",mediaDTO.getUrl());
 									        
 								            Files.write(Paths.get(path+fileName), mediaDTO.getBytes());
 								            
+								           							            
 								        Media media = mediaMapper.toEntity(mediaDTO);
 								        media = mediaRepository.save(media);
 								        return mediaMapper.toDto(media);
