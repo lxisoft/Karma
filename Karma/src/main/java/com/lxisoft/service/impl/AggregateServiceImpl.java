@@ -427,7 +427,7 @@ public class AggregateServiceImpl implements AggregateService {
 				
 				log.info("*****************{}",need.getId());
 				
-				Page<UserCheckDTO> userCheckDTOs=findAllUserChecksByCheckedNeedId(PageRequest.of(0,100),need.getId());
+				Page<UserCheckDTO> userCheckDTOs=findAllUserChecksByCheckedNeedId(new PageRequest(0,100),need.getId());
 				
 				List<UserCheckDTO> userCheckDTOList = userCheckDTOs.getContent();
 								
@@ -480,20 +480,41 @@ public class AggregateServiceImpl implements AggregateService {
 				}
 				
 				
-
+				//anjali
 				
-				Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByNeedId(need.getId(),PageRequest.of(0,100))
+				Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByNeedId(need.getId(),new PageRequest(0,100))
 						.map(mediaMapper::toDto);
-
+				
 				List<String> mediaUrls=new ArrayList<String>();
-
-				for(MediaDTO mediaFromList:mediaDTO.getContent()){
-					mediaUrls.add(mediaFromList.getFileName());
-					log.info("****url{}",mediaFromList.getFileName());
+				List<String> videoUrls=new ArrayList<String>();
+				
+				for(MediaDTO mediaDto:mediaDTO.getContent()){
+				
+					if(mediaDto.getExtension().contains("image")){
+						log.info("****containcheck{}",mediaDto.getExtension().contains("image"));
+						mediaUrls.add(mediaDto.getUrl());
+					}
+					else if(mediaDto.getExtension().contains("video")){
+						log.info("****videocontaincheck{}",mediaDto.getExtension().contains("video"));
+						
+						videoUrls.add(mediaDto.getUrl());
+					}
+					else{
+						
+					}
+					
+					log.info("list size media url{}",mediaUrls.size());
+					log.info("list size video url{}",videoUrls.size());
+					
+					if(mediaUrls.size()!=0){
+						need.setMediaUrls(mediaUrls);
+					}
+					if(videoUrls.size()!=0){
+						need.setVideoUrls(videoUrls);
+					}			
 				}
-				need.setAttachmentUrls(mediaUrls);
 				
-				
+			//anjali	
 											
 			 }
 			
@@ -886,7 +907,7 @@ public class AggregateServiceImpl implements AggregateService {
 	    
 	    Long approvalStatusId=approvalStatusRepository.findByStatus(approvalStatus).get().getId();
          	           	
-	    Page<HelpDTO> helpDtos= helpRepository.findAllHelpsByApprovalStatusId(pageable,approvalStatusId)
+	    Page<HelpDTO> helpDtos= helpRepository.findAllHelpsByApprovalStatusId(new PageRequest(0,100),approvalStatusId)
                                 .map(helpMapper::toDto);
 	    
 	    List<HelpDTO> helps=helpDtos.getContent();
@@ -917,21 +938,42 @@ public class AggregateServiceImpl implements AggregateService {
 	    	
 			//anjali
 			
-			Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByHelpId(help.getId(),PageRequest.of(0,100))
+			Page<MediaDTO> mediaDTO=mediaRepository.findAllUrlByHelpId(help.getId(),new PageRequest(0,100))
 					.map(mediaMapper::toDto);
-
+	
 			List<String> mediaUrls=new ArrayList<String>();
-
-			for(MediaDTO mediaFromList:mediaDTO.getContent()){
-				mediaUrls.add(mediaFromList.getUrl());
+			List<String> videoUrls=new ArrayList<String>();
+			
+			for(MediaDTO mediaDto:mediaDTO.getContent()){
+			
+				if(mediaDto.getExtension().contains("image")){
+					log.info("****containcheck{}",mediaDto.getExtension().contains("image"));
+					mediaUrls.add(mediaDto.getUrl());
+				}
+				else if(mediaDto.getExtension().contains("video")){
+					log.info("****videocontaincheck{}",mediaDto.getExtension().contains("video"));
+					
+					videoUrls.add(mediaDto.getUrl());
+				}
+				else{
+					
+				}
+				
+				log.info("list size media url{}",mediaUrls.size());
+				log.info("list size video url{}",videoUrls.size());
+				
+				if(mediaUrls.size()!=0){
+					help.setMediaUrls(mediaUrls);
+				}
+				if(videoUrls.size()!=0){
+					help.setVideoUrls(videoUrls);
+				}			
 			}
-			help.setAttachmentUrls(mediaUrls);
-
-			//anjali
+				//anjali
 	    	
 	    }
          	
-	    Page<HelpDTO> pagee = new PageImpl<HelpDTO>(helps, pageable, helps.size());
+	    Page<HelpDTO> pagee = new PageImpl<HelpDTO>(helps, new PageRequest(0,100), helps.size());
      	
    	    return pagee;
 

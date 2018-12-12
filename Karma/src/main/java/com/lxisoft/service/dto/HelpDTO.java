@@ -40,6 +40,9 @@ public class HelpDTO implements Serializable {
     
     private List<String> attachmentUrls=new ArrayList<>();
     
+    private List<String> mediaUrls=new ArrayList<>();
+    
+    private List<String> videoUrls=new ArrayList<>();
     
     /**
 	 * @return the attachmentUrls
@@ -219,4 +222,20 @@ public class HelpDTO implements Serializable {
             ", fulfilledNeed=" + getFulfilledNeedId() +
             "}";
     }
+
+	public List<String> getMediaUrls() {
+		return mediaUrls;
+	}
+
+	public void setMediaUrls(List<String> mediaUrls) {
+		this.mediaUrls = mediaUrls;
+	}
+
+	public List<String> getVideoUrls() {
+		return videoUrls;
+	}
+
+	public void setVideoUrls(List<String> videoUrls) {
+		this.videoUrls = videoUrls;
+	}
 }
