@@ -57,25 +57,11 @@ public class NeedDTO implements Serializable {
     
     private String userName;
     
-    private List<String> mediaUrls=new ArrayList<>();
+    private List<String> imageUrls=new ArrayList<>();
     
     private List<String> videoUrls=new ArrayList<>();
        
-    /**
-	 * @return the mediaUrls
-	 */
-	public List<String> getMediaUrls() {
-		return mediaUrls;
-	}
-
-
-	/**
-	 * @param mediaUrls the mediaUrls to set
-	 */
-	public void setMediaUrls(List<String> mediaUrls) {
-		this.mediaUrls = mediaUrls;
-	}
-
+   
 
 	/**
 	 * @return the videoUrls
@@ -356,4 +342,14 @@ public class NeedDTO implements Serializable {
             ", postedUser=" + getPostedUserId() +
             "}";
     }
+
+
+	public List<String> getImageUrls() {
+		return imageUrls;
+	}
+
+
+	public void setImageUrls(List<String> imageUrls) {
+		this.imageUrls = imageUrls;
+	}
 }

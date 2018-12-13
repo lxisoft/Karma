@@ -68,11 +68,11 @@ public class OAuth2SsoConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&77");
 		httpSecurity.authorizeRequests().antMatchers("/home/pending", "/helps/incompleted").hasAnyRole("ADMIN")
-				.antMatchers("/").hasAnyRole("USER").anyRequest().authenticated().and().formLogin().permitAll().and()
-				.logout().permitAll()// .anyRequest()
-				// .permitAll()
-				// .fullyAuthenticated()
-				.and().formLogin();
+				.antMatchers("/").hasAnyRole("USER").anyRequest().authenticated().and().formLogin()
+				.loginPage("/login").permitAll().and().logout().permitAll();// .anyRequest()
+		// .permitAll()
+		// .fullyAuthenticated()
+		// .and().formLogin();
 		// httpSecurity.csrf().disable();
 	}
 

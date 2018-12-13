@@ -712,4 +712,13 @@ public class AggregateController {
 		return "user";
 	}
 
+	@GetMapping("/login")
+	@Timed
+	public String customLogin() {
+
+		log.debug("request to login with custom loginpage");
+
+		return "login";
+	}
+
 }

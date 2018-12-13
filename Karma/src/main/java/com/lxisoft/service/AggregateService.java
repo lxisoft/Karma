@@ -296,8 +296,9 @@ public interface AggregateService {
 	/**
 	 * @param replyDTO
 	 * @return
+	 * @throws IOException 
 	 */
-	ReplyDTO saveReply(ReplyDTO replyDTO);
+	ReplyDTO saveReply(ReplyDTO replyDTO) throws IOException;
 
 	/**
 	 * @param pageable
