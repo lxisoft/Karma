@@ -18,7 +18,7 @@
 <body>
 	<div>
 		<!-- navigation bar on top -->
-		<th:block th:with="nav1='active',nav2='',nav3=''">
+		<th:block th:with="nav1='active',nav2='',nav3='',nav4=''">
 			<nav class="navbar fixed-top navbar-expand-lg navbar-dark info-color scrolling-navbar" th:fragment="navigation(nav1,nav2,nav3)">
 				<a class="navbar-brand" th:href="@{/home/approved}"><strong>Karma</strong></a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -29,11 +29,18 @@
 					<ul class="navbar-nav mr-auto">
 						<li class="nav-item" th:classappend="${nav1}"><a class="nav-link" th:href="@{/home/approved}">Home
 							</a></li>
-						<li class="nav-item" th:classappend="${nav2}"><a class="nav-link" th:href="@{/home/pending}">Unapproved needs</a></li>
-						<li class="nav-item" th:classappend="${nav3}"><a class="nav-link" th:href="@{/helps/incompleted}">Incomplete
+						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${nav2}"><a class="nav-link" th:href="@{/home/pending}">Unapproved
+								needs</a></li>
+						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${nav3}"><a class="nav-link" th:href="@{/helps/incompleted}">Incomplete
 								helps</a></li>
+						<li class="nav-item"><a class="nav-link" th:href="@{/registered-users/1}">Profile</a></li>
 					</ul>
 					<ul class="navbar-nav nav-flex-icons">
+						<li class="nav-item">
+							<p th:text="${#authentication.principal.username}" class="d-inline"></p>
+							<a class="d-inline nav-link" th:onclick="logOut();">(logout)</a>
+
+						</li>
 						<li class="nav-item"><a class="nav-link"><i class="fa fa-facebook"></i></a></li>
 						<li class="nav-item"><a class="nav-link"><i class="fa fa-twitter"></i></a></li>
 						<li class="nav-item"><a class="nav-link"><i class="fa fa-instagram"></i></a></li>
@@ -164,8 +171,7 @@
 											<th:block th:if="*{videoUrls != null}" th:each="videoUrl,index : *{videoUrls}">
 												<div class="col-md-12 mb-3">
 
-													<video src="G:/Projects/git-project/Karma-project/Karma/src/main/resources/static/uploadedfiles/How to Install FIFA 15 Ultimate Team Edition 3DM CRACK v1 + Update Test Windows 7 x64 - YouTube_0_1423248632837.mp4"
-													 class="img-fluid z-depth-1" alt="Responsive image"></video>
+													<video th:src="${'//localhost:8081/uploadedfiles/'+videoUrl}" class="img-fluid z-depth-1" alt="Responsive image">
 
 												</div>
 											</th:block>

@@ -137,6 +137,30 @@ function addReply(commentId) {
         }
     });
 }
+function logOut() {
+    $.ajax({
+        type: 'POST',
+        url: '/logout',
+        headers: {
+            'X-CSRF-TOKEN': $("input[name='_csrf']").val()
+        },
+        data: {
+            '_csrf': $("input[name='_csrf']").val()
+        },
+        success: function (response) {
+            console.log("logged out successfully ");
+
+            if (response.success) {
+
+                //document.getElementById("success-message").innerHTML="success";
+                console.log("reply added successfully in if condition");
+            }
+        },
+        error: function () {
+            console.log("reply added failed...!");
+        }
+    });
+}
 function likeComment(commentId) {
     /* 			$.ajax({
                     type: 'POST',
