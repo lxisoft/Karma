@@ -222,11 +222,14 @@ public class AggregateController {
 			@PathVariable(value = "approvalStatus") String approvalStatus, Model model) {
 		log.debug("request to get a page of Needs");
 
-		List<String> dateArray= new ArrayList<String>();
+		List<String> dateArray = new ArrayList<String>();
 		dateArray.add("date,desc");
-		
-		//List<NeedDTO> needs = aggregateResourceApi.getAllNeedsByApprovedStatusUsingGET(approvalStatus, eagerload, offset, page, pageNumber, pageSize, paged, size, sort, sortSorted, sortUnsorted, unpaged)
-		
+
+		// List<NeedDTO> needs =
+		// aggregateResourceApi.getAllNeedsByApprovedStatusUsingGET(approvalStatus,
+		// eagerload, offset, page, pageNumber, pageSize, paged, size, sort,
+		// sortSorted, sortUnsorted, unpaged)
+
 		List<NeedDTO> needs = aggregateResourceApi.getAllNeedsByApprovedStatusUsingGET(approvalStatus, eagerload, null,
 				null, null, null, eagerload, null, dateArray, null, null, null).getBody();
 
@@ -298,7 +301,7 @@ public class AggregateController {
 	 */
 	@PostMapping("/helps")
 	@Timed
-	public String helpNeedy(@ModelAttribute HelpDTO helpDTO,@RequestParam MultipartFile[] multipartFiles, Model model)
+	public String helpNeedy(@ModelAttribute HelpDTO helpDTO, @RequestParam MultipartFile[] multipartFiles, Model model)
 			throws URISyntaxException, IOException {
 
 		log.debug("REST request to save Help : {}", helpDTO);
@@ -319,8 +322,8 @@ public class AggregateController {
 
 			}
 		}
-		
-		log.debug("save help : {},{}",helpDto,multipartFiles);
+
+		log.debug("save help : {},{}", helpDto, multipartFiles);
 
 		model.addAttribute("help", helpDto);
 		model.addAttribute("message", "submitted");
@@ -371,23 +374,29 @@ public class AggregateController {
 			@PathVariable(value = "approvalStatus") String approvalStatus, Model model) {
 		log.debug("request to get a page of helps");
 
-		List<String> timeArray= new ArrayList<String>();
+		List<String> timeArray = new ArrayList<String>();
 		timeArray.add("time,desc");
-		
-		
-		
-		//List<NeedDTO> needs = aggregateResourceApi.getAllNeedsByApprovedStatusUsingGET(approvalStatus, eagerload, offset, page, pageNumber, pageSize, paged, size, sort, sortSorted, sortUnsorted, unpaged)
-		
-				/*List<NeedDTO> needs = aggregateResourceApi.getAllNeedsByApprovedStatusUsingGET(approvalStatus, eagerload, null,
-						null, null, null, eagerload, null, dateArray, null, null, null).getBody();
-		*/
-		
-		
-		//List<HelpDTO> helps = aggregateResourceApi.getAllHelpsByApprovedStatusUsingGET(approvalStatus, offset, page, pageNumber, pageSize, paged, size, sort, sortSorted, sortUnsorted, unpaged)
+
+		// List<NeedDTO> needs =
+		// aggregateResourceApi.getAllNeedsByApprovedStatusUsingGET(approvalStatus,
+		// eagerload, offset, page, pageNumber, pageSize, paged, size, sort,
+		// sortSorted, sortUnsorted, unpaged)
+
+		/*
+		 * List<NeedDTO> needs =
+		 * aggregateResourceApi.getAllNeedsByApprovedStatusUsingGET(
+		 * approvalStatus, eagerload, null, null, null, null, eagerload, null,
+		 * dateArray, null, null, null).getBody();
+		 */
+
+		// List<HelpDTO> helps =
+		// aggregateResourceApi.getAllHelpsByApprovedStatusUsingGET(approvalStatus,
+		// offset, page, pageNumber, pageSize, paged, size, sort, sortSorted,
+		// sortUnsorted, unpaged)
 		List<HelpDTO> helps = aggregateResourceApi.getAllHelpsByApprovedStatusUsingGET(approvalStatus, null, null, null,
 
 				null, eagerload, null, timeArray, null, null, null).getBody();
-	
+
 		List<ApprovalStatusDTO> approvalStatuses = aggregateResourceApi.getAllApprovalStatusesUsingGET(null, null, null,
 				null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
 
@@ -701,6 +710,15 @@ public class AggregateController {
 		model.addAttribute("registeredUser", registeredUser);
 
 		return "registeredUser";
+	}
+
+	@GetMapping("/login")
+	@Timed
+	public String customLogin() {
+
+		log.debug("request to login with custom loginpage");
+
+		return "login";
 	}
 
 }

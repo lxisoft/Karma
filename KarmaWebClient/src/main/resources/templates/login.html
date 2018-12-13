@@ -20,16 +20,16 @@
 
             <div class="offset-md-4 col-md-4">
 
-                <form class="text-center border border-light p-5" th:action="@{/home/approved}" th:method="post">
+                <form class="text-center border border-light p-5" th:action="@{/login}" th:method="post">
 
                     <p class="h4 mb-4 text-info">Login</p>
 
 
                     <div class="md-form input-group mb-4">
-                        <input type="text" class="form-control rounded-0" id="username" placeholder="username" />
+                        <input type="text" class="form-control rounded-0" name="username" id="username" placeholder="username" />
                     </div>
                     <div class="md-form input-group mb-4">
-                        <input type="password" class="form-control rounded-0" id="password" placeholder="password" />
+                        <input type="password" class="form-control rounded-0" name="password" id="password" placeholder="password" />
                     </div>
 
                     <!-- Sign in button -->
