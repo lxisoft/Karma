@@ -81,7 +81,7 @@ public class AggregateController {
 
 		NeedDTO needDto = aggregateResourceApi.postNeedUsingPOST(needDTO).getBody();
 
-		if (multipartFiles != null) {
+		if (!multipartFiles[0].isEmpty()) {
 			for (MultipartFile file : multipartFiles) {
 
 				MediaDTO mediaDTO = new MediaDTO();
@@ -308,7 +308,7 @@ public class AggregateController {
 
 		HelpDTO helpDto = aggregateResourceApi.helpNeedyUsingPOST(helpDTO).getBody();
 
-		if (multipartFiles != null) {
+		if (!multipartFiles[0].isEmpty()) {
 			for (MultipartFile file : multipartFiles) {
 
 				MediaDTO mediaDTO = new MediaDTO();
