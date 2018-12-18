@@ -154,8 +154,11 @@ public class AggregateController {
 	public String getAllHelpsByNeedId(@PathVariable(value = "id") Long id, Model model) {
 		log.debug("request to get a page of Needs");
 
+		List<String> timeArray = new ArrayList<String>();
+		timeArray.add("time,desc");
+		
 		List<HelpDTO> helps = aggregateResourceApi.getAllCompletedHelpsByfulfilledNeedIdUsingGET(id, id, null, null,
-				null, null, null, null, null, null, null).getBody();
+				null, null, null, timeArray, null, null, null).getBody();
 		NeedDTO need = aggregateResourceApi.getNeedUsingGET(id).getBody();
 		model.addAttribute("helps", helps);
 		model.addAttribute("need", need);
@@ -504,8 +507,12 @@ public class AggregateController {
 			@RequestParam(required = false, defaultValue = "false") boolean eagerload, Model model) {
 		log.debug("request to get a page of Feeds");
 
+		List<String> dateArray = new ArrayList<String>();
+		dateArray.add("date,desc");
+
+		
 		List<FeedDTO> feeds = aggregateResourceApi
-				.getAllFeedsUsingGET(null, null, null, null, eagerload, null, null, eagerload, eagerload, eagerload)
+				.getAllFeedsUsingGET(null, null, null, null, eagerload, null, dateArray, null, null, null)
 				.getBody();
 
 		model.addAttribute("feeds", feeds);
@@ -530,8 +537,11 @@ public class AggregateController {
 			@PathVariable(value = "registeredUserId") Long registeredUserId, Model model) {
 		log.debug("request to get a page of Feeds");
 
+		List<String> dateArray = new ArrayList<String>();
+		dateArray.add("date,desc");
+		
 		List<FeedDTO> feeds = aggregateResourceApi.getAllFeedsByRegisteredUserIdUsingGET(registeredUserId,
-				registeredUserId, null, null, null, eagerload, null, null, eagerload, eagerload, eagerload).getBody();
+				registeredUserId, null, null, null, eagerload, null, dateArray, null, null, null).getBody();
 
 		model.addAttribute("feeds", feeds);
 
@@ -556,8 +566,11 @@ public class AggregateController {
 			@PathVariable(value = "id") Long id, Model model) {
 		log.debug("request to get a page of Comments");
 
+		List<String> dateArray = new ArrayList<String>();
+		dateArray.add("date,desc");
+		
 		List<CommentDTO> comments = aggregateResourceApi.getAllCommentsByNeedIdUsingGET(id, id, null, null, null,
-				eagerload, null, null, eagerload, eagerload, eagerload).getBody();
+				eagerload, null, dateArray, null, null, null).getBody();
 
 		model.addAttribute("comments", comments);
 
@@ -582,8 +595,11 @@ public class AggregateController {
 			@PathVariable(value = "id") Long id, Model model) {
 		log.debug("request to get a page of Comments by help id");
 
+		List<String> dateArray = new ArrayList<String>();
+		dateArray.add("date,desc");
+		
 		List<CommentDTO> comments = aggregateResourceApi.getAllCommentsByHelpIdUsingGET(id, id, null, null, null,
-				eagerload, null, null, eagerload, eagerload, eagerload).getBody();
+				eagerload, null, dateArray, null, null, null).getBody();
 
 		model.addAttribute("comments", comments);
 
@@ -608,8 +624,10 @@ public class AggregateController {
 			@PathVariable(value = "id") Long id, Model model) {
 		log.debug("request to get a page of Replie");
 
+		List<String> dateArray = new ArrayList<String>();
+		dateArray.add("date,desc");
 		List<ReplyDTO> replies = aggregateResourceApi.getAllRepliesByCommentIdUsingGET(id, id, null, null, null,
-				eagerload, null, null, eagerload, eagerload, eagerload).getBody();
+				eagerload, null, dateArray, null, null, null).getBody();
 
 		model.addAttribute("replies", replies);
 

@@ -539,7 +539,7 @@ public class AggregateServiceImpl implements AggregateService {
 
 			HelpDTO helpDTO = helpMapper.toDto(help);
 
-			Page<MediaDTO> mediaDTO = mediaRepository.findAllUrlByHelpId(help.getId(), pageable)
+			Page<MediaDTO> mediaDTO = mediaRepository.findAllUrlByHelpId(help.getId(), PageRequest.of(0, 100))
 					.map(mediaMapper::toDto);
 
 			List<String> imageUrls = new ArrayList<String>();
