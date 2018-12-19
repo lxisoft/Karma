@@ -63,6 +63,16 @@ function viewReplies(commentId) {
     console.log("viewReplies- commentId :" + commentId + ' element: ' + $('#replies-' + commentId).val());
     $('#replies-' + commentId).load('/replies/getAllRepliesByCommentId/' + commentId);
 }
+function viewNeed(referenceId) {
+    console.log("view need with needId: " + referenceId);
+    $('#feed-need-section-' + referenceId).load('/needs/' + referenceId);
+    $('#feed-need-section-' + referenceId).show();
+}
+function viewHelp(referenceId) {
+    console.log("view help with helpId: " + referenceId);
+    $('#feed-help-section-' + referenceId).load('/helps/getHelpById/' + referenceId);
+    $('#feed-help-section-' + referenceId).show();
+}
 function addComment(id) {
     var element = "#comment-box-" + id;
     console.log("addComment: " + element + ' ' + $(element).attr("data-checkedNeedId"));

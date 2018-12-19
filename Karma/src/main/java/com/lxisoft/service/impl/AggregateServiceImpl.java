@@ -1616,8 +1616,31 @@ public class AggregateServiceImpl implements AggregateService {
 	@Override
 	public Page<FeedDTO> findAllFeeds(Pageable pageable) {
 		log.debug("Request to get all Feeds");
-		return feedRepository.findAll(pageable).map(feedMapper::toDto);
-
+	
+		Page<FeedDTO> feedDTO=feedRepository.findAll(pageable).map(feedMapper::toDto);
+		
+		List<FeedDTO> feedList=new ArrayList<FeedDTO>();
+		
+		for(FeedDTO oneFeed:feedDTO.getContent()){
+			
+			if(oneFeed.getType().contains("Need")){
+				
+				oneFeed.setNeed(true);
+				
+				feedList.add(oneFeed);
+			}
+			else if(oneFeed.getType().contains("Help")){
+				
+				oneFeed.setHelp(true);
+				
+				feedList.add(oneFeed);
+			}		
+		}
+		
+		Page<FeedDTO> feed = new PageImpl<FeedDTO>(feedList, pageable, feedList.size());
+		
+		return feed;
+		
 	}
 
 	/**

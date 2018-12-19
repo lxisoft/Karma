@@ -177,9 +177,11 @@ public class AggregateController {
 
 		NeedDTO needDTO = aggregateResourceApi.getNeedUsingGET(id).getBody();
 
+		log.info("******inside getNeed{}",needDTO.getDescription());
 		model.addAttribute("need", needDTO);
 
-		return "need";
+		//return "feeds";
+		return "home::need";
 	}
 
 	/**
@@ -309,7 +311,7 @@ public class AggregateController {
 		HelpDTO helpDto = aggregateResourceApi.helpNeedyUsingPOST(helpDTO).getBody();
 
 		if (!multipartFiles[0].isEmpty()) {
-			for (MultipartFile file : multipartFiles) {
+				for (MultipartFile file : multipartFiles) {
 
 				MediaDTO mediaDTO = new MediaDTO();
 
@@ -330,6 +332,26 @@ public class AggregateController {
 		return "approve-decline";
 	}
 
+	/**
+	 * GET /helps/:id : get the "id" help.
+	 *
+	 * @param id
+	 *            the id of the helpDTO to retrieve
+	 * @return the string value
+	 */
+	@GetMapping("/helps/getHelpById/{id}")
+	@Timed
+	public String getHelp(@PathVariable(value = "id") Long id, Model model) {
+		log.debug("request to get Help : {}", id);
+
+		HelpDTO helpDTO = aggregateResourceApi.getHelpUsingGET(id).getBody();
+
+		log.info("******inside getHelp{}",helpDTO.getDescription());
+		model.addAttribute("help", helpDTO);
+
+		return "completed-helps::help";
+	}
+	
 	/**
 	 * PUT /helps : Updates an existing need.
 	 *
