@@ -262,73 +262,76 @@
 
 								<!-- comments section -->
 								<div th:object="${need}" id="comments-section" th:id="${'comments-section-'+need.id}" th:with="checkedNeedId=${need.id},checkedHelpId=null,postId=null">
-									<div th:if="${comments != null}" style="display: none;" th:style="|display:block;|" th:fragment="comment-section(checkedNeedId,checkedHelpId,postId)">
+									<div th:id="*{'comment-data-'+id}" data-th-attr="data-checkedNeedId=${checkedNeedId},data-checkedHelpId=${checkedHelpId},data-postId=${postId}"
+									 th:fragment="comment-section(checkedNeedId,checkedHelpId,postId)">
+										<div th:if="${comments != null}" style="display: none;" th:style="|display:block;|">
 
-										<!-- comment form -->
-										<div class="md-form mt-0 mx-3 form-info" th:if="${comments != null}" id="comment-box" th:id="'comment-box-'+*{id}"
-										 data-th-attr="data-checkedNeedId=${checkedNeedId},data-checkedHelpId=${checkedHelpId},data-postId=${postId}"
-										 th:style="|display: block;|">
-											<form>
-												<textarea type="text" id="comment-box-text" th:id="|comment-box-text-*{id}|" class="md-textarea form-control d-inline w-75"
-												 rows="1" th:name="message"></textarea>
-												<label for="comment-box">Comment here</label>
-												<input type=hidden th:name="dateInString" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm:ss')}">
-												<span class="input-group-btn"><button type="button" class="btn btn-outline-info btn-sm" th:onclick="|addComment(*{id});|">Add
-														comment</button></span>
-											</form>
-										</div>
-
-										<!-- view all comments -->
-
-										<div th:id="${'comments-'+needId}">
-											<p class="text-primary text-center mt-5 d-inline ml-5 mb-4"><span th:text="${(#lists.size(comments)>0)?'All comments':'No comments'}">All
-													comments</span><span class="ml-2"><i class="fa fa-angle-up mr-5 mt-1 text-dark" aria-hidden="true" onclick="$('#comments-section').hide();"
-													 th:onclick="|$('#comments-section-*{id}').hide();|"></i></span></p>
-											<div class="border-light border-bottom" th:each="comment : ${comments}" th:fragment="comments">
-
-												<p class="ml-4 mt-2 mb-0" th:text="${comment.message}">lkkjskdalj</p>
-												<p class="text-muted ml-4 small d-inline" th:text="'Siraj commented '+${comment.timeElapsed}">Siraj<span
-													 class="large">.</span>3
-													minutes ago</p><i class="ml-3 fa fa-heart-o" aria-hidden="true" th:onclick="|likeComment('${comment.id}')|"><span
-													 class="ml-1 text-muted" th:text="${comment.noOfLikes}">32</span></i>
-												<p class="text-primary d-inline ml-4" th:text="${(comment.noOfReplies!=null)?comment.noOfReplies+' replies':null}"
-												 onclick="$('#replies').show();" th:onclick="|viewReplies(${comment.id});|">10
-													replies</p>
-												<i class="fa fa-reply float-right small text-info mr-5" th:id="${'reply-button-'+comment.id}" aria-hidden="true"
-												 onclick="$('#reply-box').show();$(this).hide();" th:onclick="|$('#reply-box-${comment.id}').show();$(this).hide();|"></i>
-
-												<!-- reply form -->
-												<div class="md-form mt-0 form-info offset-2 mr-2" id="reply-box" th:id="${'reply-box-'+comment.id}" style="display: none;"
-												 th:style="|display: none;|">
-													<textarea type="text" id="reply-box-text" th:id="${'reply-box-text-'+comment.id}" class="md-textarea form-control d-inline w-75"
-													 rows="1"></textarea>
-													<label for="comment-box">Add reply here.....</label>
-
+											<!-- comment form -->
+											<div class="md-form mt-0 mx-3 form-info" th:if="${comments != null}" id="comment-box" th:id="'comment-box-'+*{id}"
+											 th:style="|display: block;|">
+												<p th:text="|data-checkedNeedId=${checkedNeedId},data-checkedHelpId=${checkedHelpId},data-postId=${postId}|"></p>
+												<form>
+													<textarea type="text" id="comment-box-text" th:id="|comment-box-text-*{id}|" class="md-textarea form-control d-inline w-75"
+													 rows="1" th:name="message"></textarea>
+													<label for="comment-box">Comment here</label>
 													<input type=hidden th:name="dateInString" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm:ss')}">
+													<span class="input-group-btn"><button type="button" class="btn btn-outline-info btn-sm" th:onclick="|addComment(*{id});|">Add
+															comment</button></span>
+												</form>
+											</div>
 
-													<span class="input-group-btn mb-5"><button type="button" class="btn btn-outline-info btn-sm" th:onclick="|addReply(${comment.id});|">Add
-															reply</button></span><i class="fa fa-close" aria-hidden="true" th:onclick="|$('#reply-box-${comment.id}').hide();$('#reply-button-${comment.id}').show();|"
-													 onclick="$('#reply-box').hide();"></i>
+											<!-- view all comments -->
 
-												</div>
+											<div th:id="${'comments-'+needId}">
+												<p class="text-primary text-center mt-5 d-inline ml-5 mb-4"><span th:text="${(#lists.size(comments)>0)?'All comments':'No comments'}">All
+														comments</span><span class="ml-2"><i class="fa fa-angle-up mr-5 mt-1 text-dark" aria-hidden="true"
+														 onclick="$('#comments-section').hide();" th:onclick="|$('#comments-section-*{id}').hide();|"></i></span></p>
+												<div class="border-light border-bottom" th:each="comment : ${comments}" th:fragment="comments">
 
-												<!-- view all replies -->
-												<div class="offset-1" id="replies" th:id="${'replies-'+comment.id}" style="display: none;" th:style="|display: block;|"
-												 th:with="commentId=${comment.id}">
+													<p class="ml-4 mt-2 mb-0" th:text="${comment.message}">lkkjskdalj</p>
+													<p class="text-muted ml-4 small d-inline" th:text="'Siraj commented '+${comment.timeElapsed}">Siraj<span
+														 class="large">.</span>3
+														minutes ago</p><i class="ml-3 fa fa-heart-o" aria-hidden="true" th:onclick="|likeComment('${comment.id}')|"><span
+														 class="ml-1 text-muted" th:text="${comment.noOfLikes}">32</span></i>
+													<p class="text-primary d-inline ml-4" th:text="${(comment.noOfReplies!=null)?comment.noOfReplies+' replies':null}"
+													 onclick="$('#replies').show();" th:onclick="|viewReplies(${comment.id});|">10
+														replies</p>
+													<i class="fa fa-reply float-right small text-info mr-5" th:id="${'reply-button-'+comment.id}" aria-hidden="true"
+													 onclick="$('#reply-box').show();$(this).hide();" th:onclick="|$('#reply-box-${comment.id}').show();$(this).hide();|"></i>
 
-													<div th:fragment="replies(commentId)">
-														<p class="text-primary text-center mt-1 mb-2" th:if="${replies != null}">hide replies<span><i class="fa ml-2 clear-fix d-inline text-dark fa-angle-up mr-5 mt-1"
-																 aria-hidden="true" onclick="$('#replies').hide();" th:onclick="|$('#replies-${commentId}').hide();|"></i></span></p>
-														<div class="border-light border-bottom" th:each="reply : ${replies}">
-															<p class="ml-4 mt-2 mb-0" th:text="${reply.message}">lkkjskdalj</p>
-															<p class="text-muted ml-5 small d-inline" th:text="'Siraj replied '+${reply.timeElapsed}">Siraj<span
-																 class="large">.</span>3
-																minutes ago</p><i class="ml-3 fa fa-heart-o" aria-hidden="true" th:text="${reply.noOfLikes}" th:onlick="|likeReply('${reply.id}')|"><span
-																 class="ml-1 text-muted">32</span></i>
+													<!-- reply form -->
+													<div class="md-form mt-0 form-info offset-2 mr-2" id="reply-box" th:id="${'reply-box-'+comment.id}" style="display: none;"
+													 th:style="|display: none;|">
+														<textarea type="text" id="reply-box-text" th:id="${'reply-box-text-'+comment.id}" class="md-textarea form-control d-inline w-75"
+														 rows="1"></textarea>
+														<label for="comment-box">Add reply here.....</label>
+
+														<input type=hidden th:name="dateInString" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm:ss')}">
+
+														<span class="input-group-btn mb-5"><button type="button" class="btn btn-outline-info btn-sm" th:onclick="|addReply(${comment.id});|">Add
+																reply</button></span><i class="fa fa-close" aria-hidden="true" th:onclick="|$('#reply-box-${comment.id}').hide();$('#reply-button-${comment.id}').show();|"
+														 onclick="$('#reply-box').hide();"></i>
+
+													</div>
+
+													<!-- view all replies -->
+													<div class="offset-1" id="replies" th:id="${'replies-'+comment.id}" style="display: none;" th:style="|display: block;|"
+													 th:with="commentId=${comment.id}">
+
+														<div th:fragment="replies(commentId)">
+															<p class="text-primary text-center mt-1 mb-2" th:if="${replies != null}">hide replies<span><i class="fa ml-2 clear-fix d-inline text-dark fa-angle-up mr-5 mt-1"
+																	 aria-hidden="true" onclick="$('#replies').hide();" th:onclick="|$('#replies-${commentId}').hide();|"></i></span></p>
+															<div class="border-light border-bottom" th:each="reply : ${replies}">
+																<p class="ml-4 mt-2 mb-0" th:text="${reply.message}">lkkjskdalj</p>
+																<p class="text-muted ml-5 small d-inline" th:text="'Siraj replied '+${reply.timeElapsed}">Siraj<span
+																	 class="large">.</span>3
+																	minutes ago</p><i class="ml-3 fa fa-heart-o" aria-hidden="true" th:text="${reply.noOfLikes}" th:onlick="|likeReply('${reply.id}')|"><span
+																	 class="ml-1 text-muted">32</span></i>
+															</div>
 														</div>
 													</div>
-												</div>
 
+												</div>
 											</div>
 										</div>
 									</div>

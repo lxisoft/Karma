@@ -52,11 +52,23 @@ function markFake(needId) {
         }
     });
 }
-function viewComments(needId) {
-    console.log("view comments worked with needId: " + needId);
+function viewComments(id) {
+    console.log("view comments worked with needId: " + id);
     //$('#comments-' + needId).show();
-    $('#comments-section-' + needId).load('/comments/getAllCommentsByNeedId/' + needId);
-    $('#comments-section-' + needId).show();
+    var element = "#comment-data-" + id;
+    var commentType;
+
+    if ($(element).data("checkedneedid") != null) {
+        commentType = "Need";
+    }
+    else if ($(element).data("checkedhelpid") != null) {
+        commentType = "Help";
+    }
+    else {
+        commentType = "Post";
+    }
+    $('#comments-section-' + id).load('/comments/getAllCommentsBy' + commentType + 'Id/' + id);
+    $('#comments-section-' + id).show();
     /* console.log(getCurrentTime()); */
 }
 function viewReplies(commentId) {
@@ -64,7 +76,7 @@ function viewReplies(commentId) {
     $('#replies-' + commentId).load('/replies/getAllRepliesByCommentId/' + commentId);
 }
 function addComment(id) {
-    var element = "#comment-box-" + id;
+    var element = "#comment-data-" + id;
     console.log("addComment: " + element + ' ' + $(element).attr("data-checkedNeedId"));
     //console.log("addComment: " + element + ' ' + $(element).data("checkedNeedId"));
     console.log("addComment: " + element + ' ' + $(element).data("checkedneedid"));
