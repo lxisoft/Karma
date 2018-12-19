@@ -58,19 +58,45 @@
 			<div class="row mt-5"></div>
 		<div class="row mt-5"></div>
 			<div class="col-sm-8">
-				<div th:each="feed : ${feeds}" class="row my-3">
 					<div class="card border-info mb-3 mx-auto"
 						style="width: 75%">
+					<div th:each="feed : ${feeds}" class="row my-3" th:fragment="feeds">
+						
 						<div th:text="'posted on '+${feed.date}" class="card-header"></div>
 						<div class="card-body text-info">
 							<h5 class="card-title">Feed</h5>
 							<p class="card-text" th:text="${feed.title}"></p>
-							<!-- <p th:if="${need.beneficiaryType != 'you'}">help is for
-								someone else</p>  -->
-							<div>
-							</div>
-						</div>
-					</div>
+							
+							<!-- display for need reference id -->
+							<th:block th:if="${feed.need}==true">    
+							
+								 <div class="text-center col-xs-5 border-bottom border-light">
+										<a class="small muted-text" th:onclick="|viewNeed('${feed.referenceId}');|">click to view details</a>
+								</div>
+			
+						 	<!--  <div th:id="${'feed-need-section-'+feed.referenceId}" th:fragment="feed-need-section(referenceId)">   -->
+		
+									<div th:id="${'feed-need-section-'+feed.referenceId}">
+								</div>  
+							
+					 		</th:block>		
+					 		
+					 		<!-- display for help reference id -->
+							<th:block th:if="${feed.help}==true">    
+							
+								 <div class="text-center col-xs-5 border-bottom border-light">
+										<a class="small muted-text" th:onclick="|viewHelp('${feed.referenceId}');|">click to view details</a>
+								</div>
+			
+						 	 <div th:id="${'feed-help-section-'+feed.referenceId}">
+
+								</div>  
+							
+					 		</th:block>	
+					 		
+						</div> 
+					
+				</div>
 				</div>
 			</div> 
 
@@ -88,6 +114,8 @@
 	<!-- MDB core JavaScript -->
 	<script type="text/javascript"
 		src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.11/js/mdb.min.js"></script>
+		<!-- Script file -->
+	<script type="text/javascript" th:src="|/karma.js|" src="static/karma.js"></script>
 </body>
 
 </html>
