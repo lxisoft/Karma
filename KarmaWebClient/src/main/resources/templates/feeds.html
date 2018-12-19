@@ -2,119 +2,104 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<meta charset="utf-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta http-equiv="x-ua-compatible" content="ie=edge">
-<title>Need</title>
-<!-- Font Awesome -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<!-- Bootstrap core CSS -->
-<link
-	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css"
-	rel="stylesheet">
-<!-- Material Design Bootstrap -->
-<link
-	href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.11/css/mdb.min.css"
-	rel="stylesheet">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<title>Need</title>
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<!-- Bootstrap core CSS -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Material Design Bootstrap -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.11/css/mdb.min.css" rel="stylesheet">
 </head>
 
 <body>
-	<nav
-		class="navbar fixed-top navbar-expand-lg navbar-dark info-color scrolling-navbar">
-		<a class="navbar-brand" href="#"><strong>Karma</strong></a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse"
-			data-target="#navbarSupportedContent"
-			aria-controls="navbarSupportedContent" aria-expanded="false"
-			aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active"><a class="nav-link" href="#">Home
-						<span class="sr-only">(current)</span>
-				</a></li>
-				<li class="nav-item"><a class="nav-link"
-					th:href="@{/categories}">I need help</a></li>
-				<li class="nav-item"><a class="nav-link"
-					th:href="@{/home/pending}">Pending help requests</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">Helps</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">Incomplete
-						helps</a></li>
-			</ul>
-			<ul class="navbar-nav nav-flex-icons">
-				<li class="nav-item"><a class="nav-link"><i
-						class="fa fa-facebook"></i></a></li>
-				<li class="nav-item"><a class="nav-link"><i
-						class="fa fa-twitter"></i></a></li>
-				<li class="nav-item"><a class="nav-link"><i
-						class="fa fa-instagram"></i></a></li>
-			</ul>
+	<div th:insert="home :: navigation(nav1='active',nav2='',nav3='',nav4='')">
+		<nav class="navbar fixed-top navbar-expand-lg navbar-dark info-color scrolling-navbar">
+			<a class="navbar-brand" href="#"><strong>Karma</strong></a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+			 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active"><a class="nav-link" href="#">Home
+							<span class="sr-only">(current)</span>
+						</a></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/categories}">I need help</a></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/home/pending}">Pending help requests</a></li>
+					<li class="nav-item"><a class="nav-link" href="#">Helps</a></li>
+					<li class="nav-item"><a class="nav-link" href="#">Incomplete
+							helps</a></li>
+				</ul>
+				<ul class="navbar-nav nav-flex-icons">
+					<li class="nav-item"><a class="nav-link"><i class="fa fa-facebook"></i></a></li>
+					<li class="nav-item"><a class="nav-link"><i class="fa fa-twitter"></i></a></li>
+					<li class="nav-item"><a class="nav-link"><i class="fa fa-instagram"></i></a></li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+
+	<!-- anjali edited-->
+	<div class="row mt-5"></div>
+	<div class="row mt-5"></div>
+	<div class="container-fluid">
+		<div class="col-sm-6 offset-sm-3 col-md-6 offset-md-3">
+			<div class="card border-info mb-3 mx-auto">
+				<div th:each="feed : ${feeds}" class="row my-3" th:fragment="feeds">
+
+
+					<div class="card-body text-info">
+						<h5 class="card-title" th:text="${feed.title}">Feed</h5>
+						<!-- <p class="card-text" th:text="${feed.title}"></p> -->
+						<p th:text="'posted on '+${feed.date}" class="card-subtitle mb-2 text-muted small mb-3 mt-1">12 minutes ago</p>
+						<!-- display for need reference id -->
+						<th:block th:if="${feed.need}==true">
+
+							<div class="text-center col-xs-5 border-bottom border-light">
+								<a class="small muted-text" th:onclick="|viewNeed('${feed.referenceId}');|">click to view details</a>
+							</div>
+
+							<!--  <div th:id="${'feed-need-section-'+feed.referenceId}" th:fragment="feed-need-section(referenceId)">   -->
+
+							<div th:id="${'feed-need-section-'+feed.referenceId}">
+							</div>
+
+						</th:block>
+
+						<!-- display for help reference id -->
+						<th:block th:if="${feed.help}==true">
+
+							<div class="text-center col-xs-5 border-bottom border-light">
+								<a class="small muted-text" th:onclick="|viewHelp('${feed.referenceId}');|">click to view details</a>
+							</div>
+
+							<div th:id="${'feed-help-section-'+feed.referenceId}">
+
+							</div>
+
+						</th:block>
+
+					</div>
+
+				</div>
+			</div>
 		</div>
-	</nav>
-		
-			<!-- anjali edited-->
-			<div class="row mt-5"></div>
-		<div class="row mt-5"></div>
-			<div class="col-sm-8">
-					<div class="card border-info mb-3 mx-auto"
-						style="width: 75%">
-					<div th:each="feed : ${feeds}" class="row my-3" th:fragment="feeds">
-						
-						<div th:text="'posted on '+${feed.date}" class="card-header"></div>
-						<div class="card-body text-info">
-							<h5 class="card-title">Feed</h5>
-							<p class="card-text" th:text="${feed.title}"></p>
-							
-							<!-- display for need reference id -->
-							<th:block th:if="${feed.need}==true">    
-							
-								 <div class="text-center col-xs-5 border-bottom border-light">
-										<a class="small muted-text" th:onclick="|viewNeed('${feed.referenceId}');|">click to view details</a>
-								</div>
-			
-						 	<!--  <div th:id="${'feed-need-section-'+feed.referenceId}" th:fragment="feed-need-section(referenceId)">   -->
-		
-									<div th:id="${'feed-need-section-'+feed.referenceId}">
-								</div>  
-							
-					 		</th:block>		
-					 		
-					 		<!-- display for help reference id -->
-							<th:block th:if="${feed.help}==true">    
-							
-								 <div class="text-center col-xs-5 border-bottom border-light">
-										<a class="small muted-text" th:onclick="|viewHelp('${feed.referenceId}');|">click to view details</a>
-								</div>
-			
-						 	 <div th:id="${'feed-help-section-'+feed.referenceId}">
+	</div>
 
-								</div>  
-							
-					 		</th:block>	
-					 		
-						</div> 
-					
-				</div>
-				</div>
-			</div> 
-
-			<!--	 anjali end-->
+	<!--	 anjali end-->
 	<!-- SCRIPTS -->
 	<!-- JQuery -->
-	<script type="text/javascript"
-		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<!-- Bootstrap tooltips -->
-	<script type="text/javascript"
-		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
 	<!-- Bootstrap core JavaScript -->
-	<script type="text/javascript"
-		src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
 	<!-- MDB core JavaScript -->
-	<script type="text/javascript"
-		src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.11/js/mdb.min.js"></script>
-		<!-- Script file -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.11/js/mdb.min.js"></script>
+	<!-- Script file -->
 	<script type="text/javascript" th:src="|/karma.js|" src="static/karma.js"></script>
 </body>
 
