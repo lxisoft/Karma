@@ -20,6 +20,10 @@ public class FeedDTO implements Serializable {
     private Long referenceId;
 
     private Long registeredUserId;
+    
+    private boolean need;
+
+    private boolean help;
 
     public Long getId() {
         return id;
@@ -101,4 +105,21 @@ public class FeedDTO implements Serializable {
             ", registeredUser=" + getRegisteredUserId() +
             "}";
     }
-}
+
+	public boolean isNeed() {
+		return need;
+	}
+
+	public void setNeed(boolean need) {
+		this.need = need;
+	}
+
+	public boolean isHelp() {
+		return help;
+	}
+
+	public void setHelp(boolean help) {
+		this.help = help;
+	}
+
+	}

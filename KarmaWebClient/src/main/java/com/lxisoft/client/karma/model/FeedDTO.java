@@ -14,14 +14,20 @@ import javax.validation.constraints.*;
  * FeedDTO
  */
 @Validated
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-06T02:34:03.795225400+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-14T22:50:26.810906+05:30[Asia/Calcutta]")
 
 public class FeedDTO   {
   @JsonProperty("date")
   private OffsetDateTime date = null;
 
+  @JsonProperty("help")
+  private Boolean help = null;
+
   @JsonProperty("id")
   private Long id = null;
+
+  @JsonProperty("need")
+  private Boolean need = null;
 
   @JsonProperty("referenceId")
   private Long referenceId = null;
@@ -56,6 +62,26 @@ public class FeedDTO   {
     this.date = date;
   }
 
+  public FeedDTO help(Boolean help) {
+    this.help = help;
+    return this;
+  }
+
+  /**
+   * Get help
+   * @return help
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public Boolean isHelp() {
+    return help;
+  }
+
+  public void setHelp(Boolean help) {
+    this.help = help;
+  }
+
   public FeedDTO id(Long id) {
     this.id = id;
     return this;
@@ -74,6 +100,26 @@ public class FeedDTO   {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public FeedDTO need(Boolean need) {
+    this.need = need;
+    return this;
+  }
+
+  /**
+   * Get need
+   * @return need
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public Boolean isNeed() {
+    return need;
+  }
+
+  public void setNeed(Boolean need) {
+    this.need = need;
   }
 
   public FeedDTO referenceId(Long referenceId) {
@@ -167,7 +213,9 @@ public class FeedDTO   {
     }
     FeedDTO feedDTO = (FeedDTO) o;
     return Objects.equals(this.date, feedDTO.date) &&
+        Objects.equals(this.help, feedDTO.help) &&
         Objects.equals(this.id, feedDTO.id) &&
+        Objects.equals(this.need, feedDTO.need) &&
         Objects.equals(this.referenceId, feedDTO.referenceId) &&
         Objects.equals(this.registeredUserId, feedDTO.registeredUserId) &&
         Objects.equals(this.title, feedDTO.title) &&
@@ -176,7 +224,7 @@ public class FeedDTO   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(date, id, referenceId, registeredUserId, title, type);
+    return Objects.hash(date, help, id, need, referenceId, registeredUserId, title, type);
   }
 
   @Override
@@ -185,7 +233,9 @@ public class FeedDTO   {
     sb.append("class FeedDTO {\n");
     
     sb.append("    date: ").append(toIndentedString(date)).append("\n");
+    sb.append("    help: ").append(toIndentedString(help)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    need: ").append(toIndentedString(need)).append("\n");
     sb.append("    referenceId: ").append(toIndentedString(referenceId)).append("\n");
     sb.append("    registeredUserId: ").append(toIndentedString(registeredUserId)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
