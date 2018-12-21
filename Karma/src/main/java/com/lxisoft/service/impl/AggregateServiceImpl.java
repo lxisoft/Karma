@@ -485,11 +485,11 @@ public class AggregateServiceImpl implements AggregateService {
 
 			for (MediaDTO mediaDto : mediaDTO.getContent()) {
 
-				if (mediaDto.getExtension().contains("image")) {
+				if (mediaDto.getFileContentType().contains("image")) {
 					log.info("****containcheck{}", mediaDto.getExtension().contains("image"));
 
 					imageUrls.add(mediaDto.getFileName());
-				} else if (mediaDto.getExtension().contains("video")) {
+				} else if (mediaDto.getFileContentType().contains("video")) {
 					log.info("****videocontaincheck{}", mediaDto.getExtension().contains("video"));
 
 					videoUrls.add(mediaDto.getFileName());
@@ -1798,7 +1798,7 @@ public class AggregateServiceImpl implements AggregateService {
 
 		log.info("*******media url{}", mediaDTO.getUrl());
 
-		Files.write(Paths.get(path + fileName), mediaDTO.getBytes());
+		Files.write(Paths.get(path + fileName), mediaDTO.getFile());
 
 		Media media = mediaMapper.toEntity(mediaDTO);
 		media = mediaRepository.save(media);

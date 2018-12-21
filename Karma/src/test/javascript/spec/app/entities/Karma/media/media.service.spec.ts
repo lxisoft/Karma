@@ -21,7 +21,7 @@ describe('Service Tests', () => {
       service = injector.get(MediaService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new Media(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA');
+      elemDefault = new Media(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 'image/png', 'AAAAAAA');
     });
 
     describe('Service methods', async () => {
@@ -57,7 +57,8 @@ describe('Service Tests', () => {
           {
             fileName: 'BBBBBB',
             url: 'BBBBBB',
-            extension: 'BBBBBB'
+            extension: 'BBBBBB',
+            file: 'BBBBBB'
           },
           elemDefault
         );
@@ -76,7 +77,8 @@ describe('Service Tests', () => {
           {
             fileName: 'BBBBBB',
             url: 'BBBBBB',
-            extension: 'BBBBBB'
+            extension: 'BBBBBB',
+            file: 'BBBBBB'
           },
           elemDefault
         );

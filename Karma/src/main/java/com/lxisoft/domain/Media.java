@@ -35,6 +35,13 @@ public class Media implements Serializable {
     @Column(name = "extension")
     private String extension;
 
+    @Lob
+    @Column(name = "jhi_file")
+    private byte[] file;
+
+    @Column(name = "jhi_file_content_type")
+    private String fileContentType;
+
     @ManyToOne
     @JsonIgnoreProperties("proofs")
     private Need need;
@@ -93,6 +100,32 @@ public class Media implements Serializable {
 
     public void setExtension(String extension) {
         this.extension = extension;
+    }
+
+    public byte[] getFile() {
+        return file;
+    }
+
+    public Media file(byte[] file) {
+        this.file = file;
+        return this;
+    }
+
+    public void setFile(byte[] file) {
+        this.file = file;
+    }
+
+    public String getFileContentType() {
+        return fileContentType;
+    }
+
+    public Media fileContentType(String fileContentType) {
+        this.fileContentType = fileContentType;
+        return this;
+    }
+
+    public void setFileContentType(String fileContentType) {
+        this.fileContentType = fileContentType;
     }
 
     public Need getNeed() {
@@ -162,6 +195,8 @@ public class Media implements Serializable {
             ", fileName='" + getFileName() + "'" +
             ", url='" + getUrl() + "'" +
             ", extension='" + getExtension() + "'" +
+            ", file='" + getFile() + "'" +
+            ", fileContentType='" + getFileContentType() + "'" +
             "}";
     }
 }

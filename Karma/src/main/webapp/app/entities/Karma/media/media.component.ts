@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiParseLinks, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
 import { IMedia } from 'app/shared/model/Karma/media.model';
 import { Principal } from 'app/core';
@@ -36,6 +36,7 @@ export class MediaComponent implements OnInit, OnDestroy {
     private jhiAlertService: JhiAlertService,
     private principal: Principal,
     private activatedRoute: ActivatedRoute,
+    private dataUtils: JhiDataUtils,
     private router: Router,
     private eventManager: JhiEventManager
   ) {
@@ -105,6 +106,14 @@ export class MediaComponent implements OnInit, OnDestroy {
 
   trackId(index: number, item: IMedia) {
     return item.id;
+  }
+
+  byteSize(field) {
+    return this.dataUtils.byteSize(field);
+  }
+
+  openFile(contentType, field) {
+    return this.dataUtils.openFile(contentType, field);
   }
 
   registerChangeInMedia() {

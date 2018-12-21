@@ -2,8 +2,7 @@ package com.lxisoft.service.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
-
-import org.springframework.web.multipart.MultipartFile;
+import javax.persistence.Lob;
 
 /**
  * A DTO for the Media entity.
@@ -18,47 +17,17 @@ public class MediaDTO implements Serializable {
 
     private String extension;
 
+    @Lob
+    private byte[] file;
+    private String fileContentType;
+
     private Long needId;
 
     private Long helpId;
 
     private Long postId;
-    
-    private byte[] bytes;
-    
-    private MultipartFile file;
-    
-    
 
-    /**
-	 * @return the bytes
-	 */
-	public byte[] getBytes() {
-		return bytes;
-	}
-
-	/**
-	 * @param bytes the bytes to set
-	 */
-	public void setBytes(byte[] bytes) {
-		this.bytes = bytes;
-	}
-
-	/**
-	 * @return the file
-	 */
-	public MultipartFile getFile() {
-		return file;
-	}
-
-	/**
-	 * @param file the file to set
-	 */
-	public void setFile(MultipartFile file) {
-		this.file = file;
-	}
-
-	public Long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -88,6 +57,22 @@ public class MediaDTO implements Serializable {
 
     public void setExtension(String extension) {
         this.extension = extension;
+    }
+
+    public byte[] getFile() {
+        return file;
+    }
+
+    public void setFile(byte[] file) {
+        this.file = file;
+    }
+
+    public String getFileContentType() {
+        return fileContentType;
+    }
+
+    public void setFileContentType(String fileContentType) {
+        this.fileContentType = fileContentType;
     }
 
     public Long getNeedId() {
@@ -142,6 +127,7 @@ public class MediaDTO implements Serializable {
             ", fileName='" + getFileName() + "'" +
             ", url='" + getUrl() + "'" +
             ", extension='" + getExtension() + "'" +
+            ", file='" + getFile() + "'" +
             ", need=" + getNeedId() +
             ", help=" + getHelpId() +
             ", post=" + getPostId() +

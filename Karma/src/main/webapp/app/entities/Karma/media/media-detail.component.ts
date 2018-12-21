@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { JhiDataUtils } from 'ng-jhipster';
 
 import { IMedia } from 'app/shared/model/Karma/media.model';
 
@@ -10,7 +11,7 @@ import { IMedia } from 'app/shared/model/Karma/media.model';
 export class MediaDetailComponent implements OnInit {
   media: IMedia;
 
-  constructor(private activatedRoute: ActivatedRoute) {}
+  constructor(private dataUtils: JhiDataUtils, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
     this.activatedRoute.data.subscribe(({ media }) => {
@@ -18,6 +19,13 @@ export class MediaDetailComponent implements OnInit {
     });
   }
 
+  byteSize(field) {
+    return this.dataUtils.byteSize(field);
+  }
+
+  openFile(contentType, field) {
+    return this.dataUtils.openFile(contentType, field);
+  }
   previousState() {
     window.history.back();
   }

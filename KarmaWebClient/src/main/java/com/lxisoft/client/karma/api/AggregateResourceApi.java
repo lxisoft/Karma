@@ -35,7 +35,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-06T02:34:03.795225400+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-21T10:50:24.022075900+05:30[Asia/Calcutta]")
 
 @Api(value = "AggregateResource", description = "the AggregateResource API")
 public interface AggregateResourceApi {
@@ -452,7 +452,7 @@ public interface AggregateResourceApi {
     ResponseEntity<FeedDTO> postFeedUsingPOST(@ApiParam(value = "feedDTO" ,required=true )  @Valid @RequestBody FeedDTO feedDTO);
 
 
-    @ApiOperation(value = "PostMedia", nickname = "postMediaUsingPOST", notes = "", response = MediaDTO.class, tags={ "aggregate-resource", })
+    @ApiOperation(value = "postMedia", nickname = "postMediaUsingPOST", notes = "", response = MediaDTO.class, tags={ "aggregate-resource", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = MediaDTO.class),
         @ApiResponse(code = 201, message = "Created"),

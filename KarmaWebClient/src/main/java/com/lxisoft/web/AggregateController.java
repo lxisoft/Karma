@@ -85,12 +85,15 @@ public class AggregateController {
 			for (MultipartFile file : multipartFiles) {
 
 				MediaDTO mediaDTO = new MediaDTO();
-
+			
+				
 				mediaDTO.setFileName(file.getOriginalFilename());
 				mediaDTO.setNeedId(needDto.getId());
 				mediaDTO.setExtension(file.getContentType());
-				mediaDTO.setBytes(file.getBytes());
+				mediaDTO.setFile(file.getBytes());
+				mediaDTO.setFileContentType(file.getContentType());
 
+				
 				MediaDTO mediaDto = aggregateResourceApi.postMediaUsingPOST(mediaDTO).getBody();
 
 			}
@@ -320,11 +323,13 @@ public class AggregateController {
 				for (MultipartFile file : multipartFiles) {
 
 				MediaDTO mediaDTO = new MediaDTO();
-
+				
+				
 				mediaDTO.setFileName(file.getOriginalFilename());
-				mediaDTO.setHelpId(helpDto.getId());
+				mediaDTO.setNeedId(helpDto.getId());
 				mediaDTO.setExtension(file.getContentType());
-				mediaDTO.setBytes(file.getBytes());
+				mediaDTO.setFile(file.getBytes());
+				mediaDTO.setFileContentType(file.getContentType());
 
 				MediaDTO mediaDto = aggregateResourceApi.postMediaUsingPOST(mediaDTO).getBody();
 

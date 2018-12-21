@@ -16,6 +16,8 @@ import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 
 import com.lxisoft.config.ApplicationProperties;
@@ -23,6 +25,10 @@ import com.lxisoft.config.DefaultProfileUtil;
 
 import io.github.jhipster.config.JHipsterConstants;
 
+@ComponentScan( excludeFilters = {
+    @ComponentScan.Filter(com.lxisoft.client.ExcludeFromComponentScan.class)
+})
+@EnableFeignClients
 @SpringBootApplication
 @EnableConfigurationProperties({ LiquibaseProperties.class, ApplicationProperties.class })
 @EnableDiscoveryClient

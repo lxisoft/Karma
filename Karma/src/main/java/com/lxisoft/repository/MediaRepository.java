@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MediaRepository extends JpaRepository<Media, Long> {
 	
-	Page<Media> findAllUrlByNeedId(Long needId,Pageable pageable);
+    Page<Media> findAllUrlByNeedId(Long needId,Pageable pageable);
 	
 	Page<Media> findAllUrlByHelpId(Long helpId,Pageable pageable);
 

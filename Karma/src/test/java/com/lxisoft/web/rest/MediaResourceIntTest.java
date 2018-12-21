@@ -22,6 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -50,6 +51,11 @@ public class MediaResourceIntTest {
 
     private static final String DEFAULT_EXTENSION = "AAAAAAAAAA";
     private static final String UPDATED_EXTENSION = "BBBBBBBBBB";
+
+    private static final byte[] DEFAULT_FILE = TestUtil.createByteArray(1, "0");
+    private static final byte[] UPDATED_FILE = TestUtil.createByteArray(1, "1");
+    private static final String DEFAULT_FILE_CONTENT_TYPE = "image/jpg";
+    private static final String UPDATED_FILE_CONTENT_TYPE = "image/png";
 
     @Autowired
     private MediaRepository mediaRepository;
@@ -97,7 +103,9 @@ public class MediaResourceIntTest {
         Media media = new Media()
             .fileName(DEFAULT_FILE_NAME)
             .url(DEFAULT_URL)
-            .extension(DEFAULT_EXTENSION);
+            .extension(DEFAULT_EXTENSION)
+            .file(DEFAULT_FILE)
+            .fileContentType(DEFAULT_FILE_CONTENT_TYPE);
         return media;
     }
 
@@ -125,6 +133,8 @@ public class MediaResourceIntTest {
         assertThat(testMedia.getFileName()).isEqualTo(DEFAULT_FILE_NAME);
         assertThat(testMedia.getUrl()).isEqualTo(DEFAULT_URL);
         assertThat(testMedia.getExtension()).isEqualTo(DEFAULT_EXTENSION);
+        assertThat(testMedia.getFile()).isEqualTo(DEFAULT_FILE);
+        assertThat(testMedia.getFileContentType()).isEqualTo(DEFAULT_FILE_CONTENT_TYPE);
     }
 
     @Test
@@ -160,7 +170,9 @@ public class MediaResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(media.getId().intValue())))
             .andExpect(jsonPath("$.[*].fileName").value(hasItem(DEFAULT_FILE_NAME.toString())))
             .andExpect(jsonPath("$.[*].url").value(hasItem(DEFAULT_URL.toString())))
-            .andExpect(jsonPath("$.[*].extension").value(hasItem(DEFAULT_EXTENSION.toString())));
+            .andExpect(jsonPath("$.[*].extension").value(hasItem(DEFAULT_EXTENSION.toString())))
+            .andExpect(jsonPath("$.[*].fileContentType").value(hasItem(DEFAULT_FILE_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].file").value(hasItem(Base64Utils.encodeToString(DEFAULT_FILE))));
     }
     
     @Test
@@ -176,7 +188,9 @@ public class MediaResourceIntTest {
             .andExpect(jsonPath("$.id").value(media.getId().intValue()))
             .andExpect(jsonPath("$.fileName").value(DEFAULT_FILE_NAME.toString()))
             .andExpect(jsonPath("$.url").value(DEFAULT_URL.toString()))
-            .andExpect(jsonPath("$.extension").value(DEFAULT_EXTENSION.toString()));
+            .andExpect(jsonPath("$.extension").value(DEFAULT_EXTENSION.toString()))
+            .andExpect(jsonPath("$.fileContentType").value(DEFAULT_FILE_CONTENT_TYPE))
+            .andExpect(jsonPath("$.file").value(Base64Utils.encodeToString(DEFAULT_FILE)));
     }
 
     @Test
@@ -202,7 +216,9 @@ public class MediaResourceIntTest {
         updatedMedia
             .fileName(UPDATED_FILE_NAME)
             .url(UPDATED_URL)
-            .extension(UPDATED_EXTENSION);
+            .extension(UPDATED_EXTENSION)
+            .file(UPDATED_FILE)
+            .fileContentType(UPDATED_FILE_CONTENT_TYPE);
         MediaDTO mediaDTO = mediaMapper.toDto(updatedMedia);
 
         restMediaMockMvc.perform(put("/api/media")
@@ -217,6 +233,8 @@ public class MediaResourceIntTest {
         assertThat(testMedia.getFileName()).isEqualTo(UPDATED_FILE_NAME);
         assertThat(testMedia.getUrl()).isEqualTo(UPDATED_URL);
         assertThat(testMedia.getExtension()).isEqualTo(UPDATED_EXTENSION);
+        assertThat(testMedia.getFile()).isEqualTo(UPDATED_FILE);
+        assertThat(testMedia.getFileContentType()).isEqualTo(UPDATED_FILE_CONTENT_TYPE);
     }
 
     @Test

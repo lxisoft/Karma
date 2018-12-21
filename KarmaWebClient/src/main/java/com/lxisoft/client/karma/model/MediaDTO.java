@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.springframework.core.io.Resource;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -14,17 +13,17 @@ import javax.validation.constraints.*;
  * MediaDTO
  */
 @Validated
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-06T02:34:03.795225400+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-21T10:50:24.022075900+05:30[Asia/Calcutta]")
 
 public class MediaDTO   {
-  @JsonProperty("bytes")
-  private byte[] bytes = null;
-
   @JsonProperty("extension")
   private String extension = null;
 
   @JsonProperty("file")
-  private Resource file = null;
+  private byte[] file = null;
+
+  @JsonProperty("fileContentType")
+  private String fileContentType = null;
 
   @JsonProperty("fileName")
   private String fileName = null;
@@ -43,26 +42,6 @@ public class MediaDTO   {
 
   @JsonProperty("url")
   private String url = null;
-
-  public MediaDTO bytes(byte[] bytes) {
-    this.bytes = bytes;
-    return this;
-  }
-
-  /**
-   * Get bytes
-   * @return bytes
-  **/
-  @ApiModelProperty(value = "")
-
-@Pattern(regexp="^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$") 
-  public byte[] getBytes() {
-    return bytes;
-  }
-
-  public void setBytes(byte[] bytes) {
-    this.bytes = bytes;
-  }
 
   public MediaDTO extension(String extension) {
     this.extension = extension;
@@ -84,7 +63,7 @@ public class MediaDTO   {
     this.extension = extension;
   }
 
-  public MediaDTO file(Resource file) {
+  public MediaDTO file(byte[] file) {
     this.file = file;
     return this;
   }
@@ -95,14 +74,33 @@ public class MediaDTO   {
   **/
   @ApiModelProperty(value = "")
 
-  @Valid
-
-  public Resource getFile() {
+@Pattern(regexp="^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$") 
+  public byte[] getFile() {
     return file;
   }
 
-  public void setFile(Resource file) {
+  public void setFile(byte[] file) {
     this.file = file;
+  }
+
+  public MediaDTO fileContentType(String fileContentType) {
+    this.fileContentType = fileContentType;
+    return this;
+  }
+
+  /**
+   * Get fileContentType
+   * @return fileContentType
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public String getFileContentType() {
+    return fileContentType;
+  }
+
+  public void setFileContentType(String fileContentType) {
+    this.fileContentType = fileContentType;
   }
 
   public MediaDTO fileName(String fileName) {
@@ -235,9 +233,9 @@ public class MediaDTO   {
       return false;
     }
     MediaDTO mediaDTO = (MediaDTO) o;
-    return Objects.equals(this.bytes, mediaDTO.bytes) &&
-        Objects.equals(this.extension, mediaDTO.extension) &&
+    return Objects.equals(this.extension, mediaDTO.extension) &&
         Objects.equals(this.file, mediaDTO.file) &&
+        Objects.equals(this.fileContentType, mediaDTO.fileContentType) &&
         Objects.equals(this.fileName, mediaDTO.fileName) &&
         Objects.equals(this.helpId, mediaDTO.helpId) &&
         Objects.equals(this.id, mediaDTO.id) &&
@@ -248,7 +246,7 @@ public class MediaDTO   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(bytes, extension, file, fileName, helpId, id, needId, postId, url);
+    return Objects.hash(extension, file, fileContentType, fileName, helpId, id, needId, postId, url);
   }
 
   @Override
@@ -256,9 +254,9 @@ public class MediaDTO   {
     StringBuilder sb = new StringBuilder();
     sb.append("class MediaDTO {\n");
     
-    sb.append("    bytes: ").append(toIndentedString(bytes)).append("\n");
     sb.append("    extension: ").append(toIndentedString(extension)).append("\n");
     sb.append("    file: ").append(toIndentedString(file)).append("\n");
+    sb.append("    fileContentType: ").append(toIndentedString(fileContentType)).append("\n");
     sb.append("    fileName: ").append(toIndentedString(fileName)).append("\n");
     sb.append("    helpId: ").append(toIndentedString(helpId)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");

@@ -24,6 +24,24 @@
                     <input type="text" class="form-control" name="extension" id="field_extension"
                         [(ngModel)]="media.extension" />
                 </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="karmaApp.karmaMedia.file" for="field_file">File</label>
+                    <div>
+                        <div *ngIf="media.file" class="form-text text-danger clearfix">
+                            <a class="pull-left" (click)="openFile(media.fileContentType, media.file)" jhiTranslate="entity.action.open">open</a><br>
+                            <span class="pull-left">{{media.fileContentType}}, {{byteSize(media.file)}}</span>
+                            <button type="button" (click)="media.file=null;media.fileContentType=null;"
+                                    class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_file" (change)="setFileData($event, media, 'file', false)" jhiTranslate="entity.action.addblob"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="file" id="field_file"
+                        [(ngModel)]="media.file" />
+                    <input type="hidden" class="form-control" name="fileContentType" id="field_fileContentType"
+                        [(ngModel)]="media.fileContentType" />
+                </div>
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="karmaApp.karmaMedia.need" for="field_need">Need</label>

@@ -25,8 +25,7 @@ import java.util.Optional;
 /**
  * REST controller for managing Media.
  */
-/*@RestController
-@RequestMapping("/api")*/
+
 public class MediaResource {
 
     private final Logger log = LoggerFactory.getLogger(MediaResource.class);

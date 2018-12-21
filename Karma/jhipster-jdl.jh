@@ -58,7 +58,8 @@ entity Address{
 entity Media {
   fileName String,
   url String,
-  extension String
+  extension String,
+  file Blob
 }
 
 /**

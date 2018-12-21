@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
  * FeedDTO
  */
 @Validated
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-14T22:50:26.810906+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-21T10:50:24.022075900+05:30[Asia/Calcutta]")
 
 public class FeedDTO   {
   @JsonProperty("date")

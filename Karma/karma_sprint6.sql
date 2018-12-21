@@ -453,17 +453,13 @@ CREATE TABLE `media` (
   `file_name` varchar(255) DEFAULT NULL,
   `url` varchar(255) DEFAULT NULL,
   `extension` varchar(255) DEFAULT NULL,
+  `jhi_file` longblob,
+  `jhi_file_content_type` varchar(255) DEFAULT NULL,
   `need_id` bigint(20) DEFAULT NULL,
   `help_id` bigint(20) DEFAULT NULL,
   `post_id` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_media_need_id` (`need_id`),
-  KEY `fk_media_help_id` (`help_id`),
-  KEY `fk_media_post_id` (`post_id`),
-  CONSTRAINT `fk_media_post_id` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`),
-  CONSTRAINT `fk_media_help_id` FOREIGN KEY (`help_id`) REFERENCES `help` (`id`),
-  CONSTRAINT `fk_media_need_id` FOREIGN KEY (`need_id`) REFERENCES `need` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='Media entity. @author Dheeraj das.';
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Media entity. @author Dheeraj das.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -472,7 +468,6 @@ CREATE TABLE `media` (
 
 LOCK TABLES `media` WRITE;
 /*!40000 ALTER TABLE `media` DISABLE KEYS */;
-INSERT INTO `media` VALUES (1,'rose','/src/main/resources/static/uploadedfiles/rose.jpeg','.jpeg',NULL,NULL,NULL),(3,'sunflower','/src/main/resources/static/uploadedfiles/sunflower.jpeg','.jpeg',NULL,NULL,NULL),(4,'baby','/src/main/resources/static/uploadedfiles/baby.jpeg','.jpeg',NULL,NULL,NULL),(5,'apple','/src/main/resources/static/uploadedfiles/apple.jpeg','.jpeg',NULL,NULL,NULL),(6,'lilly','/src/main/resources/static/uploadedfiles/lilly.jpeg','.jpeg',NULL,NULL,NULL),(7,'cherry','/src/main/resources/static/uploadedfiles/cherry.jpeg','.jpeg',NULL,NULL,NULL),(8,'lotus','/src/main/resources/static/uploadedfiles/lotus.jpeg','.jpeg',NULL,NULL,NULL),(9,'orange','/src/main/resources/static/uploadedfiles/orange.jpeg','.jpeg',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `media` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -609,7 +604,7 @@ CREATE TABLE `registered_user` (
 
 LOCK TABLES `registered_user` WRITE;
 /*!40000 ALTER TABLE `registered_user` DISABLE KEYS */;
-INSERT INTO `registered_user` VALUES (1,'anjali.chandran@lxisoft.com','Anjali','c',9,'am happy','nulla nisl','Female','2018-03-30','AB+ve',2,10,6,1,NULL),(2,'sarangibalu.a@lxisoft.com','Sarangi','Kuma',8,'am cool','nulla nisl','Male','1992-03-30','B+ve',2,10,6,3,NULL),(3,'sanilkumar.p@lxisoft.com','Sanil','Kuma',8,'am cool','nulla nisl','Male','1992-03-30','B+ve',2,10,6,4,NULL),(4,'muhammed.ruhail@lxisoft.com','Ruhail','m',10,'am cool','nulla nisl','male','2018-03-30','AB+ve',2,10,6,5,NULL),(5,'neeraja.m@lxisoft.com','Neeraja','m',15,'am fine','abc','Female','2018-03-30','AB+ve',2,10,6,6,NULL),(6,'sooraj.p.n@lxisoft.com','Sooraj','m',18,'am fine','abc','male','2018-03-30','AB+ve',2,10,6,7,NULL),(7,'dheeraj.das@lxisoft.com','Dheeraj','m',18,'am coool','abc','male','2018-03-30','AB+ve',2,10,6,8,NULL),(8,'deepthi.e@lxisoft.com','Deepthi','m',18,'am coool','abc','female','2018-03-30','A-ve',2,10,6,9,NULL);
+INSERT INTO `registered_user` VALUES (1,'anjali.chandran@lxisoft.com','Anjali','c',9,'am happy','nulla nisl','Female','2018-03-30','AB+ve',2,10,6,NULL,NULL),(2,'sarangibalu.a@lxisoft.com','Sarangi','Kuma',8,'am cool','nulla nisl','Male','1992-03-30','B+ve',2,10,6,NULL,NULL),(3,'sanilkumar.p@lxisoft.com','Sanil','Kuma',8,'am cool','nulla nisl','Male','1992-03-30','B+ve',2,10,6,NULL,NULL),(4,'muhammed.ruhail@lxisoft.com','Ruhail','m',10,'am cool','nulla nisl','male','2018-03-30','AB+ve',2,10,6,NULL,NULL),(5,'neeraja.m@lxisoft.com','Neeraja','m',15,'am fine','abc','Female','2018-03-30','AB+ve',2,10,6,NULL,NULL),(6,'sooraj.p.n@lxisoft.com','Sooraj','m',18,'am fine','abc','male','2018-03-30','AB+ve',2,10,6,NULL,NULL),(7,'dheeraj.das@lxisoft.com','Dheeraj','m',18,'am coool','abc','male','2018-03-30','AB+ve',2,10,6,NULL,NULL),(8,'deepthi.e@lxisoft.com','Deepthi','m',18,'am coool','abc','female','2018-03-30','A-ve',2,10,6,NULL,NULL);
 /*!40000 ALTER TABLE `registered_user` ENABLE KEYS */;
 UNLOCK TABLES;
 

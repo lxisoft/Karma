@@ -17,6 +17,13 @@
                 <dd>
                     <span>{{media.extension}}</span>
                 </dd>
+                <dt><span jhiTranslate="karmaApp.karmaMedia.file">File</span></dt>
+                <dd>
+                    <div *ngIf="media.file">
+                        <a (click)="openFile(media.fileContentType, media.file)" jhiTranslate="entity.action.open">open</a>
+                        {{media.fileContentType}}, {{byteSize(media.file)}}
+                    </div>
+                </dd>
                 <dt><span jhiTranslate="karmaApp.karmaMedia.need">Need</span></dt>
                 <dd>
                     <div *ngIf="media.needId">
