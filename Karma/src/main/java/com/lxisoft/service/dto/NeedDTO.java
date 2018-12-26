@@ -56,32 +56,11 @@ public class NeedDTO implements Serializable {
     private Long noOfRecommendations;
     
     private String userName;
-    
-    private List<String> imageUrls=new ArrayList<>();
-    
-    private List<String> videoUrls=new ArrayList<>();
-       
+         
     private List<String> imageMedias=new ArrayList<String>();
     
     private List<String> videoMedias=new ArrayList<String>();
     
-
-	/**
-	 * @return the videoUrls
-	 */
-	public List<String> getVideoUrls() {
-		return videoUrls;
-	}
-
-
-	/**
-	 * @param videoUrls the videoUrls to set
-	 */
-	public void setVideoUrls(List<String> videoUrls) {
-		this.videoUrls = videoUrls;
-	}
-
-
 	public Long getId() {
         return id;
     }
@@ -345,17 +324,6 @@ public class NeedDTO implements Serializable {
             ", postedUser=" + getPostedUserId() +
             "}";
     }
-
-
-	public List<String> getImageUrls() {
-		return imageUrls;
-	}
-
-
-	public void setImageUrls(List<String> imageUrls) {
-		this.imageUrls = imageUrls;
-	}
-
 
 	public List<String> getImageMedias() {
 		return imageMedias;

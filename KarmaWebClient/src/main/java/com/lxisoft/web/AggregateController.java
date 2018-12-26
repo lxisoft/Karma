@@ -327,7 +327,7 @@ public class AggregateController {
 				
 				
 				mediaDTO.setFileName(file.getOriginalFilename());
-				mediaDTO.setNeedId(helpDto.getId());
+				mediaDTO.setHelpId(helpDto.getId());
 				mediaDTO.setExtension(file.getContentType());
 				mediaDTO.setFile(file.getBytes());
 				mediaDTO.setFileContentType(file.getContentType());
@@ -509,6 +509,8 @@ public class AggregateController {
 	@Timed
 	public String markingGenuineness(@ModelAttribute UserCheckDTO userCheckDTO, Model model) throws URISyntaxException {
 		log.debug("REST request to save UserCheck : {}", userCheckDTO);
+		
+		log.info("****controller mg{}",userCheckDTO.isIsGenuine());
 
 		UserCheckDTO result = aggregateResourceApi.markingGenuinenesUsingPOST(userCheckDTO).getBody();
 
@@ -522,7 +524,7 @@ public class AggregateController {
 
 		model.addAttribute("needs", needs);
 
-		return "home::needs";
+		return "home::c";
 	}
 
 	/**
