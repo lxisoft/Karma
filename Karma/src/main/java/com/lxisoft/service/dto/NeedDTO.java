@@ -61,7 +61,10 @@ public class NeedDTO implements Serializable {
     
     private List<String> videoUrls=new ArrayList<>();
        
-   
+    private List<String> imageMedias=new ArrayList<String>();
+    
+    private List<String> videoMedias=new ArrayList<String>();
+    
 
 	/**
 	 * @return the videoUrls
@@ -352,4 +355,25 @@ public class NeedDTO implements Serializable {
 	public void setImageUrls(List<String> imageUrls) {
 		this.imageUrls = imageUrls;
 	}
-}
+
+
+	public List<String> getImageMedias() {
+		return imageMedias;
+	}
+
+
+	public void setImageMedias(List<String> imageMedias) {
+		this.imageMedias = imageMedias;
+	}
+
+
+	public List<String> getVideoMedias() {
+		return videoMedias;
+	}
+
+
+	public void setVideoMedias(List<String> videoMedias) {
+		this.videoMedias = videoMedias;
+	}
+
+	}

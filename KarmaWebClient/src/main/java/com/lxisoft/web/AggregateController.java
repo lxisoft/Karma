@@ -226,13 +226,14 @@ public class AggregateController {
 	 * @return the string value
 	 */
 
-	@GetMapping("home/{approvalStatus}")
+	@GetMapping("/home/{approvalStatus}")
 	@Timed
 	public String getAllNeedsByApprovedStatus(Pageable pageable,
 			@RequestParam(required = false, defaultValue = "false") boolean eagerload,
 			@PathVariable(value = "approvalStatus") String approvalStatus, Model model) {
 		log.debug("request to get a page of Needs");
-
+		
+		log.info("***********controller status{}",approvalStatus);
 		List<String> dateArray = new ArrayList<String>();
 		dateArray.add("date,desc");
 

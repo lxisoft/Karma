@@ -17,7 +17,7 @@ import javax.validation.constraints.*;
  * NeedDTO
  */
 @Validated
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-21T10:50:24.022075900+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-25T22:21:03.890697700+05:30[Asia/Calcutta]")
 
 public class NeedDTO   {
   @JsonProperty("approvalStatusId")
@@ -49,6 +49,10 @@ public class NeedDTO   {
 
   @JsonProperty("id")
   private Long id = null;
+
+  @JsonProperty("imageMedias")
+  @Valid
+  private List<String> imageMedias = null;
 
   @JsonProperty("imageUrls")
   @Valid
@@ -86,6 +90,10 @@ public class NeedDTO   {
 
   @JsonProperty("verificationTeamId")
   private Long verificationTeamId = null;
+
+  @JsonProperty("videoMedias")
+  @Valid
+  private List<String> videoMedias = null;
 
   @JsonProperty("videoUrls")
   @Valid
@@ -296,6 +304,34 @@ public class NeedDTO   {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public NeedDTO imageMedias(List<String> imageMedias) {
+    this.imageMedias = imageMedias;
+    return this;
+  }
+
+  public NeedDTO addImageMediasItem(String imageMediasItem) {
+    if (this.imageMedias == null) {
+      this.imageMedias = new ArrayList<String>();
+    }
+    this.imageMedias.add(imageMediasItem);
+    return this;
+  }
+
+  /**
+   * Get imageMedias
+   * @return imageMedias
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public List<String> getImageMedias() {
+    return imageMedias;
+  }
+
+  public void setImageMedias(List<String> imageMedias) {
+    this.imageMedias = imageMedias;
   }
 
   public NeedDTO imageUrls(List<String> imageUrls) {
@@ -546,6 +582,34 @@ public class NeedDTO   {
     this.verificationTeamId = verificationTeamId;
   }
 
+  public NeedDTO videoMedias(List<String> videoMedias) {
+    this.videoMedias = videoMedias;
+    return this;
+  }
+
+  public NeedDTO addVideoMediasItem(String videoMediasItem) {
+    if (this.videoMedias == null) {
+      this.videoMedias = new ArrayList<String>();
+    }
+    this.videoMedias.add(videoMediasItem);
+    return this;
+  }
+
+  /**
+   * Get videoMedias
+   * @return videoMedias
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public List<String> getVideoMedias() {
+    return videoMedias;
+  }
+
+  public void setVideoMedias(List<String> videoMedias) {
+    this.videoMedias = videoMedias;
+  }
+
   public NeedDTO videoUrls(List<String> videoUrls) {
     this.videoUrls = videoUrls;
     return this;
@@ -593,6 +657,7 @@ public class NeedDTO   {
         Objects.equals(this.dateInString, needDTO.dateInString) &&
         Objects.equals(this.description, needDTO.description) &&
         Objects.equals(this.id, needDTO.id) &&
+        Objects.equals(this.imageMedias, needDTO.imageMedias) &&
         Objects.equals(this.imageUrls, needDTO.imageUrls) &&
         Objects.equals(this.noOfComments, needDTO.noOfComments) &&
         Objects.equals(this.noOfHelps, needDTO.noOfHelps) &&
@@ -605,12 +670,13 @@ public class NeedDTO   {
         Objects.equals(this.timeElapsed, needDTO.timeElapsed) &&
         Objects.equals(this.userName, needDTO.userName) &&
         Objects.equals(this.verificationTeamId, needDTO.verificationTeamId) &&
+        Objects.equals(this.videoMedias, needDTO.videoMedias) &&
         Objects.equals(this.videoUrls, needDTO.videoUrls);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(approvalStatusId, attachmentUrls, beneficiaryType, categories, categoryList, date, dateInString, description, id, imageUrls, noOfComments, noOfHelps, noOfRecommendations, percentageOfGenuineness, personInChargeId, postedUserId, severityId, severityLevel, timeElapsed, userName, verificationTeamId, videoUrls);
+    return Objects.hash(approvalStatusId, attachmentUrls, beneficiaryType, categories, categoryList, date, dateInString, description, id, imageMedias, imageUrls, noOfComments, noOfHelps, noOfRecommendations, percentageOfGenuineness, personInChargeId, postedUserId, severityId, severityLevel, timeElapsed, userName, verificationTeamId, videoMedias, videoUrls);
   }
 
   @Override
@@ -627,6 +693,7 @@ public class NeedDTO   {
     sb.append("    dateInString: ").append(toIndentedString(dateInString)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    imageMedias: ").append(toIndentedString(imageMedias)).append("\n");
     sb.append("    imageUrls: ").append(toIndentedString(imageUrls)).append("\n");
     sb.append("    noOfComments: ").append(toIndentedString(noOfComments)).append("\n");
     sb.append("    noOfHelps: ").append(toIndentedString(noOfHelps)).append("\n");
@@ -639,6 +706,7 @@ public class NeedDTO   {
     sb.append("    timeElapsed: ").append(toIndentedString(timeElapsed)).append("\n");
     sb.append("    userName: ").append(toIndentedString(userName)).append("\n");
     sb.append("    verificationTeamId: ").append(toIndentedString(verificationTeamId)).append("\n");
+    sb.append("    videoMedias: ").append(toIndentedString(videoMedias)).append("\n");
     sb.append("    videoUrls: ").append(toIndentedString(videoUrls)).append("\n");
     sb.append("}");
     return sb.toString();

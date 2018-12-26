@@ -29,6 +29,9 @@ import io.github.jhipster.config.JHipsterConstants;
     @ComponentScan.Filter(com.lxisoft.client.ExcludeFromComponentScan.class)
 })
 @EnableFeignClients
+@ComponentScan( excludeFilters = {
+    @ComponentScan.Filter(com.lxisoft.client.ExcludeFromComponentScan.class)
+})
 @SpringBootApplication
 @EnableConfigurationProperties({ LiquibaseProperties.class, ApplicationProperties.class })
 @EnableDiscoveryClient

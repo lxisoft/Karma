@@ -176,11 +176,11 @@
 												</div>
 											</th:block>
 
-											<th:block th:if="*{imageUrls != null}" th:each="imageUrl,index : *{imageUrls}">
+											<th:block th:if="${need.imageMedias != null}" th:each="imageMedia,index : ${need.imageMedias}"> 
 												<div class="col-md-12 mb-3">
 
-													<img src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" th:src="${'//localhost:8081/uploadedfiles/'+imageUrl}"
-													 class="img-fluid z-depth-1" alt="Responsive image">
+													<img src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" th:src="${imageMedia}"
+													  class="img-fluid z-depth-1" alt="Responsive image">
 
 												</div>
 											</th:block>

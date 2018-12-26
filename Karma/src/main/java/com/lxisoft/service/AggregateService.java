@@ -106,8 +106,9 @@ public interface AggregateService {
      * @param pageable the pagination information
      * 
      * @return the list of approvedstatus entities
+     * @throws IOException 
      */
-    Page<NeedDTO> findAllNeedsByApprovedStatus(Pageable pageable, String approvalStatus);
+    Page<NeedDTO> findAllNeedsByApprovedStatus(Pageable pageable, String approvalStatus) throws IOException;
     
     /**
      * Get all the SeverityId needs.
@@ -527,6 +528,14 @@ public interface AggregateService {
 			     * @return the list of entities
 			     */
 				Page<MediaDTO> findAllUrlByHelpId(Long helpId, Pageable pageable);
+
+				 /**
+			     * Get all the media.
+			     *
+			     * @param needId of the media
+			     * @return the list of entities
+			     */
+			    Page<MediaDTO> findAllFileByNeedId(Long needId,Pageable pageable);
 
 			  
 			  //anjali
