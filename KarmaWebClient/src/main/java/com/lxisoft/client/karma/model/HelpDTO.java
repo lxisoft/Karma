@@ -16,7 +16,7 @@ import javax.validation.constraints.*;
  * HelpDTO
  */
 @Validated
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-25T22:21:03.890697700+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-26T14:20:55.246873800+05:30[Asia/Calcutta]")
 
 public class HelpDTO   {
   @JsonProperty("approvalStatusId")
@@ -34,6 +34,10 @@ public class HelpDTO   {
 
   @JsonProperty("id")
   private Long id = null;
+
+  @JsonProperty("imageMedias")
+  @Valid
+  private List<String> imageMedias = null;
 
   @JsonProperty("imageUrls")
   @Valid
@@ -62,6 +66,10 @@ public class HelpDTO   {
 
   @JsonProperty("userName")
   private String userName = null;
+
+  @JsonProperty("videoMedias")
+  @Valid
+  private List<String> videoMedias = null;
 
   @JsonProperty("videoUrls")
   @Valid
@@ -173,6 +181,34 @@ public class HelpDTO   {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public HelpDTO imageMedias(List<String> imageMedias) {
+    this.imageMedias = imageMedias;
+    return this;
+  }
+
+  public HelpDTO addImageMediasItem(String imageMediasItem) {
+    if (this.imageMedias == null) {
+      this.imageMedias = new ArrayList<String>();
+    }
+    this.imageMedias.add(imageMediasItem);
+    return this;
+  }
+
+  /**
+   * Get imageMedias
+   * @return imageMedias
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public List<String> getImageMedias() {
+    return imageMedias;
+  }
+
+  public void setImageMedias(List<String> imageMedias) {
+    this.imageMedias = imageMedias;
   }
 
   public HelpDTO imageUrls(List<String> imageUrls) {
@@ -364,6 +400,34 @@ public class HelpDTO   {
     this.userName = userName;
   }
 
+  public HelpDTO videoMedias(List<String> videoMedias) {
+    this.videoMedias = videoMedias;
+    return this;
+  }
+
+  public HelpDTO addVideoMediasItem(String videoMediasItem) {
+    if (this.videoMedias == null) {
+      this.videoMedias = new ArrayList<String>();
+    }
+    this.videoMedias.add(videoMediasItem);
+    return this;
+  }
+
+  /**
+   * Get videoMedias
+   * @return videoMedias
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public List<String> getVideoMedias() {
+    return videoMedias;
+  }
+
+  public void setVideoMedias(List<String> videoMedias) {
+    this.videoMedias = videoMedias;
+  }
+
   public HelpDTO videoUrls(List<String> videoUrls) {
     this.videoUrls = videoUrls;
     return this;
@@ -407,6 +471,7 @@ public class HelpDTO   {
         Objects.equals(this.description, helpDTO.description) &&
         Objects.equals(this.fulfilledNeedId, helpDTO.fulfilledNeedId) &&
         Objects.equals(this.id, helpDTO.id) &&
+        Objects.equals(this.imageMedias, helpDTO.imageMedias) &&
         Objects.equals(this.imageUrls, helpDTO.imageUrls) &&
         Objects.equals(this.noOfComments, helpDTO.noOfComments) &&
         Objects.equals(this.noOfDisLikes, helpDTO.noOfDisLikes) &&
@@ -416,12 +481,13 @@ public class HelpDTO   {
         Objects.equals(this.timeElapsed, helpDTO.timeElapsed) &&
         Objects.equals(this.timeInString, helpDTO.timeInString) &&
         Objects.equals(this.userName, helpDTO.userName) &&
+        Objects.equals(this.videoMedias, helpDTO.videoMedias) &&
         Objects.equals(this.videoUrls, helpDTO.videoUrls);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(approvalStatusId, attachmentUrls, description, fulfilledNeedId, id, imageUrls, noOfComments, noOfDisLikes, noOfLikes, providedUserId, time, timeElapsed, timeInString, userName, videoUrls);
+    return Objects.hash(approvalStatusId, attachmentUrls, description, fulfilledNeedId, id, imageMedias, imageUrls, noOfComments, noOfDisLikes, noOfLikes, providedUserId, time, timeElapsed, timeInString, userName, videoMedias, videoUrls);
   }
 
   @Override
@@ -434,6 +500,7 @@ public class HelpDTO   {
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    fulfilledNeedId: ").append(toIndentedString(fulfilledNeedId)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    imageMedias: ").append(toIndentedString(imageMedias)).append("\n");
     sb.append("    imageUrls: ").append(toIndentedString(imageUrls)).append("\n");
     sb.append("    noOfComments: ").append(toIndentedString(noOfComments)).append("\n");
     sb.append("    noOfDisLikes: ").append(toIndentedString(noOfDisLikes)).append("\n");
@@ -443,6 +510,7 @@ public class HelpDTO   {
     sb.append("    timeElapsed: ").append(toIndentedString(timeElapsed)).append("\n");
     sb.append("    timeInString: ").append(toIndentedString(timeInString)).append("\n");
     sb.append("    userName: ").append(toIndentedString(userName)).append("\n");
+    sb.append("    videoMedias: ").append(toIndentedString(videoMedias)).append("\n");
     sb.append("    videoUrls: ").append(toIndentedString(videoUrls)).append("\n");
     sb.append("}");
     return sb.toString();

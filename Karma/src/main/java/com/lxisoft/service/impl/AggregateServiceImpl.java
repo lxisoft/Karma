@@ -374,7 +374,7 @@ public class AggregateServiceImpl implements AggregateService {
 		Page<MediaDTO> mediaDTO = mediaRepository.findAllUrlByNeedId(need.getId(), PageRequest.of(0, 100))
 				.map(mediaMapper::toDto);
 
-		List<String> imageUrls = new ArrayList<String>();
+		/*List<String> imageUrls = new ArrayList<String>();
 		List<String> videoUrls = new ArrayList<String>();
 
 		for (MediaDTO mediaDto : mediaDTO.getContent()) {
@@ -399,7 +399,7 @@ public class AggregateServiceImpl implements AggregateService {
 			if (videoUrls.size() != 0) {
 				needDTO.setVideoUrls(videoUrls);
 			}
-		}
+		}*/
 
 		return Optional.of(needDTO);
 	}
@@ -955,34 +955,34 @@ public class AggregateServiceImpl implements AggregateService {
 
 			Page<MediaDTO> mediaDTO = mediaRepository.findAllUrlByHelpId(help.getId(), PageRequest.of(0, 100))
 					.map(mediaMapper::toDto);
-
-			List<String> imageUrls = new ArrayList<String>();
-			List<String> videoUrls = new ArrayList<String>();
-
+			
+			List<String> imageList=new ArrayList<String>();
+			List<String> videoList=new ArrayList<String>();			 
+			 
 			for (MediaDTO mediaDto : mediaDTO.getContent()) {
-
-				if (mediaDto.getExtension().contains("image")) {
-					log.info("****containcheck{}", mediaDto.getExtension().contains("image"));
-
-					imageUrls.add(mediaDto.getFileName());
-				} else if (mediaDto.getExtension().contains("video")) {
-					log.info("****videocontaincheck{}", mediaDto.getExtension().contains("video"));
-
-					videoUrls.add(mediaDto.getFileName());
-				} else {
-
+				
+				if (mediaDto.getFileContentType().contains("image")) {
+					
+				Base64Encoder encoder = new Base64Encoder();
+				String imageString = encoder.encode(mediaDto.getFile());
+	            
+				imageList.add(imageString);
+				
 				}
-
-				log.info("list size media url{}", imageUrls.size());
-				log.info("list size video url{}", videoUrls.size());
-
-				if (imageUrls.size() != 0) {
-					help.setImageUrls(imageUrls);
+				else if (mediaDto.getFileContentType().contains("video")) {
+					
+				Base64Encoder encoder = new Base64Encoder();
+				String videoString = encoder.encode(mediaDto.getFile());
+	            
+				videoList.add(videoString);
+				
 				}
-				if (videoUrls.size() != 0) {
-					help.setVideoUrls(videoUrls);
-				}
+						
 			}
+			
+			help.setImageMedias(imageList);
+			help.setVideoMedias(videoList);
+
 			// anjali
 
 		}
@@ -1084,6 +1084,7 @@ public class AggregateServiceImpl implements AggregateService {
 	@Override
 	public UserCheckDTO markingGenuinenes(UserCheckDTO userCheckDTO) throws IOException {
 
+		log.info("*****inside service impl mg",userCheckDTO.getVoteType());
 		UserCheck result = null;
 
 		UserCheck usrCheckDtoObject = userCheckRepository
@@ -1118,8 +1119,9 @@ public class AggregateServiceImpl implements AggregateService {
 
 		log.info("****needid{}", result.getCheckedNeed().getId());
 		log.info("****usercheck votetype{}", userCheckDTO.getVoteType());
+		log.info("*****result votetype{}",result.getVoteType());
 
-		if ((result.getCheckedNeed().getId() != null) && (userCheckDTO.getVoteType() == "postive")) {
+		if ((result.getCheckedNeed().getId() != null) && (result.getVoteType() == "postive")) {
 
 			feedDto.setType("NeedIsGenuine");
 			feedDto.setReferenceId(result.getCheckedNeed().getId());
@@ -1127,7 +1129,7 @@ public class AggregateServiceImpl implements AggregateService {
 
 		}
 
-		if ((result.getCheckedNeed().getId() != null) && (userCheckDTO.getVoteType() == "negative")) {
+		if ((result.getCheckedNeed().getId() != null) && (result.getVoteType() == "negative")) {
 
 			feedDto.setType("NeedIsFake");
 			feedDto.setReferenceId(result.getCheckedNeed().getId());
