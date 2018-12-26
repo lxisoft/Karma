@@ -489,31 +489,33 @@ public class AggregateServiceImpl implements AggregateService {
 					.map(mediaMapper::toDto);
 
 			 List<String> imageList=new ArrayList<String>();
+			 List<String> videoList=new ArrayList<String>();
+			 
 			 
 			for (MediaDTO mediaDto : mediaDTO.getContent()) {
-				log.info("****containcheck{}", mediaDto.getExtension().contains("image"));
-				log.info("testtt{}",mediaDto.getFileName());
-				log.info("testtt{}",mediaDto.getUrl());
-
-				//String imageString = null;
 				
-				/*Base64Encoder encoder = new Base64Encoder();
-	            imageString = encoder.encode(mediaDto.getFile());
+				if (mediaDto.getFileContentType().contains("image")) {
+					
+				Base64Encoder encoder = new Base64Encoder();
+				String imageString = encoder.encode(mediaDto.getFile());
 	            
-	           // log.info("imagestring{}",imageString);*/
-
-				String image="data:image/jpg;base64,"+Base64.getEncoder().encodeToString(mediaDto.getFile());
-				imageList.add(image);
+				imageList.add(imageString);
 				
-				//imageList.add(imageString);
+				}
+				else if (mediaDto.getFileContentType().contains("video")) {
+					
+				Base64Encoder encoder = new Base64Encoder();
+				String videoString = encoder.encode(mediaDto.getFile());
+	            
+				videoList.add(videoString);
+				
+				}
 						
 			}
 			
 			need.setImageMedias(imageList);
-			
-			log.info("needlmagelistoutside{}",need.getImageMedias().size());
-			
-			
+			need.setVideoMedias(videoList);
+				
 		}
 
 		Page<NeedDTO> pagee = new PageImpl<NeedDTO>(needs, pageable, needs.size());

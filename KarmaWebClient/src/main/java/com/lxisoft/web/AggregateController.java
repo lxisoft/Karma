@@ -85,13 +85,15 @@ public class AggregateController {
 			for (MultipartFile file : multipartFiles) {
 
 				MediaDTO mediaDTO = new MediaDTO();
-
+			
+				
 				mediaDTO.setFileName(file.getOriginalFilename());
 				mediaDTO.setNeedId(needDto.getId());
 				mediaDTO.setExtension(file.getContentType());
 				mediaDTO.setFile(file.getBytes());
 				mediaDTO.setFileContentType(file.getContentType());
 
+				
 				MediaDTO mediaDto = aggregateResourceApi.postMediaUsingPOST(mediaDTO).getBody();
 
 			}
@@ -132,12 +134,11 @@ public class AggregateController {
 			@RequestParam(required = false, defaultValue = "false") boolean eagerload, Model model) {
 		log.debug("request to get a page of Needs");
 
-		List<String> dateArray = new ArrayList<String>();
+		List<String> dateArray=new ArrayList<String>();
 		dateArray.add("date,desc");
-
-		List<NeedDTO> needs = aggregateResourceApi
-				.getAllNeedsUsingGET(eagerload, null, null, null, null, eagerload, null, dateArray, null, null, null)
-				.getBody();
+		
+		List<NeedDTO> needs = aggregateResourceApi.getAllNeedsUsingGET(eagerload, null, null, null, null, eagerload,
+				null, dateArray, null, null, null).getBody();
 
 		model.addAttribute("needs", needs);
 		return "home";
@@ -161,7 +162,7 @@ public class AggregateController {
 
 		List<String> timeArray = new ArrayList<String>();
 		timeArray.add("time,desc");
-
+		
 		List<HelpDTO> helps = aggregateResourceApi.getAllCompletedHelpsByfulfilledNeedIdUsingGET(id, id, null, null,
 				null, null, null, timeArray, null, null, null).getBody();
 		NeedDTO need = aggregateResourceApi.getNeedUsingGET(id).getBody();
@@ -185,10 +186,10 @@ public class AggregateController {
 
 		NeedDTO needDTO = aggregateResourceApi.getNeedUsingGET(id).getBody();
 
-		log.info("******inside getNeed{}", needDTO.getDescription());
+		log.info("******inside getNeed{}",needDTO.getDescription());
 		model.addAttribute("need", needDTO);
 
-		// return "feeds";
+		//return "feeds";
 		return "home::need";
 	}
 
@@ -296,7 +297,7 @@ public class AggregateController {
 				.getApprovalStatusUsingGET(needDTO.getApprovalStatusId()).getBody();
 
 		model.addAttribute("need", needDTO);
-		model.addAttribute("message", "Successfully updated");
+		model.addAttribute("message", approvalStatusDTO);
 		return "approve-decline";
 	}
 
@@ -320,10 +321,11 @@ public class AggregateController {
 		HelpDTO helpDto = aggregateResourceApi.helpNeedyUsingPOST(helpDTO).getBody();
 
 		if (!multipartFiles[0].isEmpty()) {
-			for (MultipartFile file : multipartFiles) {
+				for (MultipartFile file : multipartFiles) {
 
 				MediaDTO mediaDTO = new MediaDTO();
-
+				
+				
 				mediaDTO.setFileName(file.getOriginalFilename());
 				mediaDTO.setNeedId(helpDto.getId());
 				mediaDTO.setExtension(file.getContentType());
@@ -356,12 +358,12 @@ public class AggregateController {
 
 		HelpDTO helpDTO = aggregateResourceApi.getHelpUsingGET(id).getBody();
 
-		log.info("******inside getHelp{}", helpDTO.getDescription());
+		log.info("******inside getHelp{}",helpDTO.getDescription());
 		model.addAttribute("help", helpDTO);
 
 		return "completed-helps::help";
 	}
-
+	
 	/**
 	 * PUT /helps : Updates an existing need.
 	 *
@@ -510,9 +512,9 @@ public class AggregateController {
 
 		UserCheckDTO result = aggregateResourceApi.markingGenuinenesUsingPOST(userCheckDTO).getBody();
 
-		List<String> dateArray = new ArrayList<String>();
+		List<String> dateArray=new ArrayList<String>();
 		dateArray.add("date,desc");
-
+		
 		List<NeedDTO> needs = aggregateResourceApi.getAllNeedsByApprovedStatusUsingGET("approved", null, null, null,
 				null, null, null, null, dateArray, null, null, null).getBody();
 
@@ -542,8 +544,10 @@ public class AggregateController {
 		List<String> dateArray = new ArrayList<String>();
 		dateArray.add("date,desc");
 
+		
 		List<FeedDTO> feeds = aggregateResourceApi
-				.getAllFeedsUsingGET(null, null, null, null, eagerload, null, dateArray, null, null, null).getBody();
+				.getAllFeedsUsingGET(null, null, null, null, eagerload, null, dateArray, null, null, null)
+				.getBody();
 
 		model.addAttribute("feeds", feeds);
 		return "feeds";
@@ -569,7 +573,7 @@ public class AggregateController {
 
 		List<String> dateArray = new ArrayList<String>();
 		dateArray.add("date,desc");
-
+		
 		List<FeedDTO> feeds = aggregateResourceApi.getAllFeedsByRegisteredUserIdUsingGET(registeredUserId,
 				registeredUserId, null, null, null, eagerload, null, dateArray, null, null, null).getBody();
 
@@ -598,10 +602,9 @@ public class AggregateController {
 
 		List<String> dateArray = new ArrayList<String>();
 		dateArray.add("date,desc");
-
-		List<CommentDTO> comments = aggregateResourceApi
-				.getAllCommentsByNeedIdUsingGET(id, id, null, null, null, eagerload, null, dateArray, null, null, null)
-				.getBody();
+		
+		List<CommentDTO> comments = aggregateResourceApi.getAllCommentsByNeedIdUsingGET(id, id, null, null, null,
+				eagerload, null, dateArray, null, null, null).getBody();
 
 		model.addAttribute("comments", comments);
 
@@ -628,10 +631,9 @@ public class AggregateController {
 
 		List<String> dateArray = new ArrayList<String>();
 		dateArray.add("date,desc");
-
-		List<CommentDTO> comments = aggregateResourceApi
-				.getAllCommentsByHelpIdUsingGET(id, id, null, null, null, eagerload, null, dateArray, null, null, null)
-				.getBody();
+		
+		List<CommentDTO> comments = aggregateResourceApi.getAllCommentsByHelpIdUsingGET(id, id, null, null, null,
+				eagerload, null, dateArray, null, null, null).getBody();
 
 		model.addAttribute("comments", comments);
 
@@ -688,13 +690,14 @@ public class AggregateController {
 		// Long
 		// id=(result.getNeedId()==null)?(result.getHelpId()==null)?result.getPostId():result.getHelpId():result.getNeedId();
 		String resultFragment = null;
-
+		
 		List<String> dateArray = new ArrayList<String>();
 		dateArray.add("date,desc");
 
 		List<String> timeArray = new ArrayList<String>();
 		timeArray.add("time,desc");
 
+		
 		List<CommentDTO> comments = new ArrayList<CommentDTO>();
 		if (result.getNeedId() != null) {
 			comments = aggregateResourceApi.getAllCommentsByNeedIdUsingGET(result.getNeedId(), null, null, null, null,
@@ -739,9 +742,10 @@ public class AggregateController {
 		log.debug("REST request to save Reply : {}", replyDTO);
 
 		List<ReplyDTO> replies = new ArrayList<ReplyDTO>();
-
+		
 		List<String> dateArray = new ArrayList<String>();
 		dateArray.add("date,desc");
+
 
 		ReplyDTO result = aggregateResourceApi.addReplyUsingPOST(replyDTO).getBody();
 

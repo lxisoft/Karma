@@ -168,18 +168,19 @@
 									<th:block th:object="${need}">
 
 										<div th:fragment="attachments">
-											<th:block th:if="*{videoUrls != null}" th:each="videoUrl,index : *{videoUrls}">
+											<th:block th:if="${need.videoMedias != null}" th:each="videoMedia,index : ${need.videoMedias}">
 												<div class="col-md-12 mb-3">
 
-													<video th:src="${'//localhost:8081/uploadedfiles/'+videoUrl}" class="img-fluid z-depth-1" alt="Responsive image">
+													<video width="600" height="400" controls="controls" th:src="${'data:video/mp4;base64,'+videoMedia}">
 
+													</video>
 												</div>
 											</th:block>
 
 											<th:block th:if="${need.imageMedias != null}" th:each="imageMedia,index : ${need.imageMedias}"> 
 												<div class="col-md-12 mb-3">
 
-													<img src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" th:src="${imageMedia}"
+													<img width="600" height="400" src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" th:src="${'data:image/jpeg;base64,'+imageMedia}"
 													  class="img-fluid z-depth-1" alt="Responsive image">
 
 												</div>
