@@ -16,6 +16,7 @@
 package com.lxisoft.service;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Date;
 import java.util.Optional;
 
@@ -539,6 +540,42 @@ public interface AggregateService {
 
 			  
 			  //anjali
+
+			//Code Starts:	Dheeraj Das
+				
+				/**
+			     * Convert date from string to instant
+			     *
+			     * @param parsedDate in string
+			     * @return the date in instant
+			     */
+				Instant convertDateFromStringToInstant(String parsedDate);
+				
+			//Code Ends:	Dheeraj Das	
+				
+			//Code Starts :	Dheeraj Das
+			
+				/**
+			     * Get top five registeredUser by social quotient.
+			     *
+			     * @param pageable the pagination information
+			     * @return the list of entity
+			     */
+				Page<RegisteredUserDTO> findTop5RegisteredUsersBySocialQuotient(Pageable pageable);
+				
+			//Code Ends : Dheeraj Das
+				
+			//Code Starts :	Dheeraj Das
+			
+				/**
+			     * Get top five registeredUser by emotional quotient.
+			     *
+			     * @param pageable the pagination information
+			     * @return the list of entity
+			     */
+				Page<RegisteredUserDTO> findTop5RegisteredUsersByEmotionalQuotient(Pageable pageable);
+				
+			//Code Ends : Dheeraj Das
 			  
 
 

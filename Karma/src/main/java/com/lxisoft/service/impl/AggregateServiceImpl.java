@@ -16,14 +16,11 @@
 package com.lxisoft.service.impl;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -94,8 +91,6 @@ import com.lxisoft.service.mapper.RegisteredUserMapper;
 import com.lxisoft.service.mapper.ReplyMapper;
 import com.lxisoft.service.mapper.SeverityMapper;
 import com.lxisoft.service.mapper.UserCheckMapper;
-import com.mysql.jdbc.util.Base64Decoder;
-import com.sun.mail.util.BASE64EncoderStream;
 import com.thoughtworks.xstream.core.util.Base64Encoder;
 
 /**
@@ -1855,5 +1850,71 @@ public class AggregateServiceImpl implements AggregateService {
 	}
 
 	// anjali
+	
+	//Code Starts: Dheeraj 
+	
+	/**
+	* Convert date from string to instant
+	*
+	* @param parsedDate in string
+	* @return the date in instant
+	*/
+	@Override
+	public Instant convertDateFromStringToInstant(String parsedDate) 
+	{
+		if(parsedDate!=null)
+		{
+			char lastChar = parsedDate.charAt(parsedDate.length()-1);
+										
+			if(lastChar == 'Z')
+			{
+				Instant dateInstant = Instant.parse(parsedDate);
+				return dateInstant;
+			}
+			else
+			{
+				Instant dateInstant = Instant.parse(parsedDate.replace(" ", "T").concat("Z"));
+				return dateInstant;
+			}
+		}
+		else
+		{
+			Instant dateInstant = null;
+			return dateInstant;
+		}
+	}
 
+	//Code Ends: Dheeraj Das
+									
+	//Code Starts: Dheeraj Das
+		
+	/**
+	* Get top five registeredUser by social quotient.
+	*
+	* @param pageable the pagination information
+	* @return the list of entity
+	*/
+	@Override
+	public Page<RegisteredUserDTO> findTop5RegisteredUsersBySocialQuotient(Pageable pageable) {
+	log.debug("Request to get top 5 registered users by Social Quotient");									
+	return registeredUserRepository.findTop5ByOrderBySocialQuotientDesc(pageable).map(registeredUserMapper::toDto);
+	}
+						
+	//Code Ends: Dheeraj Das
+									
+	//Code Starts: Dheeraj Das
+			
+	/**
+	* Get top five registeredUser by emotional quotient.
+	*
+	* @param pageable the pagination information
+	* @return the list of entity
+	*/
+	@Override
+	public Page<RegisteredUserDTO> findTop5RegisteredUsersByEmotionalQuotient(Pageable pageable) {
+	log.debug("Request to get top 5 registered users by Emotional Quotient");
+	return registeredUserRepository.findTop5ByOrderByEmotionalQuotientDesc(pageable).map(registeredUserMapper::toDto);
+	}
+						
+	//Code Ends: Dheeraj Das
 }
