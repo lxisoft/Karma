@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    <div class="mb-4" th:insert="home :: navigation(nav1='',nav2='',nav3='',nav4='active')">
+    <div class="pb-4" th:insert="home :: navigation(nav1='',nav2='',nav3='',nav4='active')">
         <!-- navigation bar on top -->
         <th:block th:with="nav1='active',nav2='',nav3=''">
             <nav class="navbar fixed-top navbar-expand-lg navbar-dark info-color scrolling-navbar" th:fragment="navigation(nav1,nav2,nav3)">
@@ -48,44 +48,135 @@
     </div>
 
     <!--user profile picture-->
-    <div class="container-fluid mt-4 p-3">
-        <div class="row mt-4">
-            <div class="col-sm-3 offset-2 mt-4">
-                <img src="/static/IMG_5515.JPG" style="width:25rem;height:15rem;" alt="" class="img-fluid z-depth-1 rounded-circle">
-            </div>
+    <div class="container-fluid mt-4 p-4">
+        <div class="row">
+            <div class="col-sm-9">
+                <div class="row">
+                    <div class="col-sm-3 offset-1 mt-3">
+                        <img src="/static/images/IMG_5515.JPG" th:src="${user.profilePic}" style="width:12rem;height:12rem;"
+                            alt="" class="img-fluid z-depth-1 rounded-circle">
+                    </div>
 
-            <div class="col-sm-6 mt-4">
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <p class="display-4 text-info" th:text="${user.firstName+' '+user.lastName}">Name</p>
-                    </li>
-                    <li class="list-group-item">
-                        <p class="text-dark" th:text="${user.email}">email</p>
-                    </li>
-                    <!--                     <li class="list-group-item">PhoneNumber</li>
+                    <div class="col-sm-7 mt-4 mr-4">
+                        <div class="row">
+                            <ul class="list-group w-100">
+                                <li class="list-group-item">
+                                    <p class="display-4 text-info" th:text="${user.firstName+' '+user.lastName}">Name</p>
+                                </li>
+                                <li class="list-group-item">
+                                    <p class="text-dark" th:text="${user.email}">email</p>
+                                </li>
+                                <!--                     <li class="list-group-item">PhoneNumber</li>
                     <li class="list-group-item"></li>
                     <li class="list-group-item">GHJGGHJ</li> -->
-                </ul>
+                            </ul>
+                        </div>
+
+                        <!-- <div class="row text-center"> -->
+                        <!--                     <div class="col-sm-12">
+                        <th:block th:with="color= ${(user.socialQuotient >0 && user.socialQuotient <= 5)? 'danger-color-dark': (user.socialQuotient >5 && user.socialQuotient <= 10)? 'warning-color-dark':(user.socialQuotient >10 && user.socialQuotient <= 15)? 'info-color-dark':'success-color-dark'}">
+                            <div class="progress md-progress mt-1 mx-2 w-25 ml-auto float-right" style="height: 10px;">
+                                <div class="progress-bar" th:classappend="${color}" role="progressbar" th:style="'width:'+ ${user.socialQuotient}+'%;'"
+                                    style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"
+                                    th:text="${user.socialQuotient}">25%
+                                    genuine</div>
+                            </div>
+
+                        </th:block>
+                        <th:block th:with="color= ${(user.emotionalQuotient >0 && user.emotionalQuotient <= 5)? 'danger-color-dark': (user.emotionalQuotient >5 && user.emotionalQuotient <= 10)? 'warning-color-dark':(user.emotionalQuotient >10 && user.emotionalQuotient <= 15)? 'info-color-dark':'success-color-dark'}">
+                            <div class="progress md-progress mt-1 w-25 mx-2 ml-auto float-right" style="height: 10px;">
+                                <div class="progress-bar" th:classappend="${color}" role="progressbar" th:style="'width:'+ ${user.emotionalQuotient}+'%;'"
+                                    style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"
+                                    th:text="${user.emotionalQuotient}">25%
+                                    genuine</div>
+                            </div>
+
+                        </th:block>
+                    </div> -->
+
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-sm-7 offset-4 border border-warning">
+                        <div class="row">
+                            <div class="col-sm-5 text-center warning-color-dark rounded m-4">
+                                <h5 class="text-white">Social Intelligence</h4>
+                                    <h4 class="display-4 text-white">32</h4>
+                            </div>
+                            <div class="col-sm-5 text-center primary-color rounded m-4">
+                                <h5 class="text-white">Emotional Intelligence</h5>
+                                <h4 class="display-4 text-white">32</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-5 text-center success-color rounded m-4">
+                                <h5 class="text-white">Helped</h4>
+                                    <h4 class="display-4 text-white">32</h4>
+                                    <h5 class="text-white">people</h4>
+                            </div>
+                            <div class="col-sm-5 text-center danger-color rounded m-4">
+                                <h6 class="text-white">Asked for help</h6>
+                                <h6 class="display-4 text-white">32</h6>
+                                <h5 class="text-white">times</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="row text-center">
-            <div class="offset-sm-2 col-sm-8">
-                <th:block th:with="color= ${(user.socialQuotient >0 && user.socialQuotient <= 5)? 'danger-color-dark': (user.socialQuotient >5 && user.socialQuotient <= 10)? 'warning-color-dark':(user.socialQuotient >10 && user.socialQuotient <= 15)? 'info-color-dark':'success-color-dark'}">
-                    <div class="progress md-progress mt-1 mx-2 w-25 ml-auto float-right" style="height: 10px;">
-                        <div class="progress-bar" th:classappend="${color}" role="progressbar" th:style="'width:'+ ${user.socialQuotient}+'%;'"
-                            style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" th:text="${user.socialQuotient}">25%
-                            genuine</div>
-                    </div>
+            <div class="ml-4 col-sm-2" style="height:auto;">
+                <div class="row">
+                    <div class="col-sm-12 border ml-2 mt-4 p-4 default-color rounded offset-1">
+                        <h4 class="text-center">Top 5</h4>
+                        <div class="row">
 
-                </th:block>
-                <th:block th:with="color= ${(user.emotionalQuotient >0 && user.emotionalQuotient <= 5)? 'danger-color-dark': (user.emotionalQuotient >5 && user.emotionalQuotient <= 10)? 'warning-color-dark':(user.emotionalQuotient >10 && user.emotionalQuotient <= 15)? 'info-color-dark':'success-color-dark'}">
-                    <div class="progress md-progress mt-1 w-25 mx-2 ml-auto float-right" style="height: 10px;">
-                        <div class="progress-bar" th:classappend="${color}" role="progressbar" th:style="'width:'+ ${user.emotionalQuotient}+'%;'"
-                            style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" th:text="${user.emotionalQuotient}">25%
-                            genuine</div>
-                    </div>
+                            <img src="/static/images/IMG_5515.JPG" th:src="${user.profilePic}" style="width:1.5rem;height:1.5rem;"
+                                alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
+                                1</a></div>
+                        <div class="row"><img src="/static/images/IMG_5515.JPG" th:src="${user.profilePic}" style="width:1.5rem;height:1.5rem;"
+                                alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
+                                1</a></div>
+                        <div class="row"><img src="/static/images/IMG_5515.JPG" th:src="${user.profilePic}" style="width:1.5rem;height:1.5rem;"
+                                alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
+                                1</a></div>
+                        <div class="row"><img src="/static/images/IMG_5515.JPG" th:src="${user.profilePic}" style="width:1.5rem;height:1.5rem;"
+                                alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
+                                1</a></div>
+                        <div class="row"><img src="/static/images/IMG_5515.JPG" th:src="${user.profilePic}" style="width:1.5rem;height:1.5rem;"
+                                alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
+                                1</a></div>
+                        <div class="row"><img src="/static/images/IMG_5515.JPG" th:src="${user.profilePic}" style="width:1.5rem;height:1.5rem;"
+                                alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
+                                1</a></div>
 
-                </th:block>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 border ml-2 mt-4 p-4 secondary-color rounded offset-1">
+                        <h4 class="text-center">Top 5</h4>
+                        <div class="row">
+
+                            <img src="/static/images/IMG_5515.JPG" th:src="${user.profilePic}" style="width:1.5rem;height:1.5rem;"
+                                alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
+                                1</a></div>
+                        <div class="row"><img src="/static/images/IMG_5515.JPG" th:src="${user.profilePic}" style="width:1.5rem;height:1.5rem;"
+                                alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
+                                1</a></div>
+                        <div class="row"><img src="/static/images/IMG_5515.JPG" th:src="${user.profilePic}" style="width:1.5rem;height:1.5rem;"
+                                alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
+                                1</a></div>
+                        <div class="row"><img src="/static/images/IMG_5515.JPG" th:src="${user.profilePic}" style="width:1.5rem;height:1.5rem;"
+                                alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
+                                1</a></div>
+                        <div class="row"><img src="/static/images/IMG_5515.JPG" th:src="${user.profilePic}" style="width:1.5rem;height:1.5rem;"
+                                alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
+                                1</a></div>
+                        <div class="row"><img src="/static/images/IMG_5515.JPG" th:src="${user.profilePic}" style="width:1.5rem;height:1.5rem;"
+                                alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
+                                1</a></div>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
