@@ -66,7 +66,7 @@
 
 						</div>
 						<th:block th:object="${need}" th:with="firstButton='Approve',secondButton='Decline',firstStatus='approved',secondStatus='declined',action='/needs'">
-							<div class="float-right ml-auto mr-2 mb-2" th:fragment="change-status(firstButton,secondButton,firstStatus,secondStatus,action)">
+							<div class="float-right ml-auto mr-2 mb-2" th:fragment="change-status(firstButton,secondButton,firstStatus,secondStatus)">
 								<!-- <th:block th:each="severity : ${severities}" th:remove="all"> -->
 								<th:block th:each="status : ${approvalStatuses}">
 									<form class="d-inline-block form-inline  mr-2" th:action="${action}" th:method="put" th:if="${status.status == firstStatus}">
@@ -87,7 +87,7 @@
 									</form>
 									<!-- </th:block> -->
 
-									<form class="d-inline-block float-right  mr-2" th:action="${action}" th:method="put" th:if="${status.status == secondStatus}">
+									<form class="d-inline-block float-right  mr-2" th:action="@{/needs}" th:method="put" th:if="${status.status == secondStatus}">
 										<!-- 									<input type="hidden" th:field="*{description}">
 									<input type="hidden" th:field="*{beneficiaryType}">
 									<input type="hidden" th:field="*{date}">

@@ -159,13 +159,14 @@ public class AggregateResource {
 	 *            flag to eager load entities from relationships (This is
 	 *            applicable for many-to-many)
 	 * @return the string value
+     * @throws IOException 
 	 */
 
 	@GetMapping("/needs/getAllNeedsByApprovedStatus/{approvalStatus}")
 	@Timed
 	public ResponseEntity<List<NeedDTO>> getAllNeedsByApprovedStatus(Pageable pageable,
 			@RequestParam(required = false, defaultValue = "false") boolean eagerload,
-			@PathVariable(value = "approvalStatus") String approvalStatus) {
+			@PathVariable(value = "approvalStatus") String approvalStatus) throws IOException {
 		log.debug("request to get a page of Needs");
 		Page<NeedDTO> page;
 		if (eagerload) {
@@ -830,6 +831,21 @@ public class AggregateResource {
 	      HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/media/getAllUrlByHelpId/");
 	      return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 	  }
+	  
+	  /**
+	    *
+	    * @param needId the id of the mediaDTO to retrieve
+	    * @return the ResponseEntity with status 200 (OK) and with body the mediaDTO, or with status 404 (Not Found)
+	    */
+	   @GetMapping("/media/getAllMediaByNeedId/{needId}")
+	   @Timed
+	   public ResponseEntity<List<MediaDTO>> getAllMediaByNeedId(@PathVariable Long needId,Pageable pageable) {
+	       log.debug("REST request to get a page of Media{}",needId);
+	       Page<MediaDTO> page = aggregateService.findAllFileByNeedId(needId,pageable);
+	       HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/media/getAllMediaByNeedId/");
+	       return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+	   }
+	   
 	    //anjali
 
 

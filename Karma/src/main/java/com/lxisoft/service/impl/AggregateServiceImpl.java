@@ -16,11 +16,14 @@
 package com.lxisoft.service.impl;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -91,6 +94,9 @@ import com.lxisoft.service.mapper.RegisteredUserMapper;
 import com.lxisoft.service.mapper.ReplyMapper;
 import com.lxisoft.service.mapper.SeverityMapper;
 import com.lxisoft.service.mapper.UserCheckMapper;
+import com.mysql.jdbc.util.Base64Decoder;
+import com.sun.mail.util.BASE64EncoderStream;
+import com.thoughtworks.xstream.core.util.Base64Encoder;
 
 /**
  * TODO Provide a detailed description here 
@@ -417,11 +423,13 @@ public class AggregateServiceImpl implements AggregateService {
 	 *            the pagination information
 	 * 
 	 * @return the list of approvedstatus entities
+	 * @throws IOException 
 	 */
 	@Override
-	public Page<NeedDTO> findAllNeedsByApprovedStatus(Pageable pageable, String approvalStatus) {
+	public Page<NeedDTO> findAllNeedsByApprovedStatus(Pageable pageable, String approvalStatus) throws IOException {
 
 		log.debug("Request to get all Needs by approval status");
+		log.info("****status{}",approvalStatus);
 
 		long approvalStatusId = findNeedByApprovalStatus(approvalStatus).get().getId();
 
@@ -477,37 +485,37 @@ public class AggregateServiceImpl implements AggregateService {
 				need.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
 			}
 
-			Page<MediaDTO> mediaDTO = mediaRepository.findAllUrlByNeedId(need.getId(), PageRequest.of(0, 100))
+			Page<MediaDTO> mediaDTO = mediaRepository.findAllFileByNeedId(need.getId(), PageRequest.of(0, 100))
 					.map(mediaMapper::toDto);
 
-			List<String> imageUrls = new ArrayList<String>();
-			List<String> videoUrls = new ArrayList<String>();
-
+			 List<String> imageList=new ArrayList<String>();
+			 List<String> videoList=new ArrayList<String>();
+			 
+			 
 			for (MediaDTO mediaDto : mediaDTO.getContent()) {
-
+				
 				if (mediaDto.getFileContentType().contains("image")) {
-					log.info("****containcheck{}", mediaDto.getExtension().contains("image"));
-
-					imageUrls.add(mediaDto.getFileName());
-				} else if (mediaDto.getFileContentType().contains("video")) {
-					log.info("****videocontaincheck{}", mediaDto.getExtension().contains("video"));
-
-					videoUrls.add(mediaDto.getFileName());
-				} else {
-
+					
+				Base64Encoder encoder = new Base64Encoder();
+				String imageString = encoder.encode(mediaDto.getFile());
+	            
+				imageList.add(imageString);
+				
 				}
-
-				log.info("list size media url{}", imageUrls.size());
-				log.info("list size video url{}", videoUrls.size());
-
-				if (imageUrls.size() != 0) {
-					need.setImageUrls(imageUrls);
+				else if (mediaDto.getFileContentType().contains("video")) {
+					
+				Base64Encoder encoder = new Base64Encoder();
+				String videoString = encoder.encode(mediaDto.getFile());
+	            
+				videoList.add(videoString);
+				
 				}
-				if (videoUrls.size() != 0) {
-					need.setVideoUrls(videoUrls);
-				}
+						
 			}
-
+			
+			need.setImageMedias(imageList);
+			need.setVideoMedias(videoList);
+				
 		}
 
 		Page<NeedDTO> pagee = new PageImpl<NeedDTO>(needs, pageable, needs.size());
@@ -1791,7 +1799,7 @@ public class AggregateServiceImpl implements AggregateService {
 		String fileName = mediaDTO.getFileName();
 
 		// log.info("*******filename{}",fileName+current.getTime());
-		mediaDTO.setFileName(fileName + current.getTime());
+		mediaDTO.setFileName(current.getTime()+fileName);
 
 		// log.info("***mediafilename{}",mediaDTO.getFileName());
 		mediaDTO.setUrl(path + fileName);
@@ -1799,7 +1807,7 @@ public class AggregateServiceImpl implements AggregateService {
 		log.info("*******media url{}", mediaDTO.getUrl());
 
 		Files.write(Paths.get(path + fileName), mediaDTO.getFile());
-
+				
 		Media media = mediaMapper.toEntity(mediaDTO);
 		media = mediaRepository.save(media);
 		return mediaMapper.toDto(media);
@@ -1829,6 +1837,19 @@ public class AggregateServiceImpl implements AggregateService {
 	public Page<MediaDTO> findAllUrlByHelpId(Long helpId, Pageable pageable) {
 		// TODO Auto-generated method stub
 		return mediaRepository.findAllUrlByHelpId(helpId, pageable).map(mediaMapper::toDto);
+	}
+
+	/**
+	 * Get all the media by needId.
+	 *
+	 * @param needId
+	 *            of the media
+	 * @return the list of entities
+	 */
+	@Override
+	public Page<MediaDTO> findAllFileByNeedId(Long needId, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return mediaRepository.findAllFileByNeedId(needId, pageable).map(mediaMapper::toDto);
 	}
 
 	// anjali

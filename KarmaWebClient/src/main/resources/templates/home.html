@@ -178,7 +178,7 @@
 												</div>
 											</th:block>
 
-											<th:block th:if="*{imageUrls != null}" th:each="imageUrl,index : *{imageUrls}">
+											<th:block th:if="*{imageUrls != null $$ vide}" th:each="imageUrl,index : *{imageUrls}">
 												<div class="col-md-12 mb-3">
 
 													<img src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" th:src="${'//localhost:8081/uploadedfiles/'+imageUrl}"
