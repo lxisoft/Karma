@@ -16,7 +16,7 @@ import javax.validation.constraints.*;
  * RegisteredUserDTO
  */
 @Validated
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-26T14:20:55.246873800+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-26T23:53:37.224618500+05:30[Asia/Calcutta]")
 
 public class RegisteredUserDTO   {
   @JsonProperty("bloodGroup")
@@ -51,6 +51,12 @@ public class RegisteredUserDTO   {
 
   @JsonProperty("lastName")
   private String lastName = null;
+
+  @JsonProperty("noOfHelps")
+  private Long noOfHelps = null;
+
+  @JsonProperty("noOfNeeds")
+  private Long noOfNeeds = null;
 
   @JsonProperty("profession")
   private String profession = null;
@@ -285,6 +291,46 @@ public class RegisteredUserDTO   {
     this.lastName = lastName;
   }
 
+  public RegisteredUserDTO noOfHelps(Long noOfHelps) {
+    this.noOfHelps = noOfHelps;
+    return this;
+  }
+
+  /**
+   * Get noOfHelps
+   * @return noOfHelps
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public Long getNoOfHelps() {
+    return noOfHelps;
+  }
+
+  public void setNoOfHelps(Long noOfHelps) {
+    this.noOfHelps = noOfHelps;
+  }
+
+  public RegisteredUserDTO noOfNeeds(Long noOfNeeds) {
+    this.noOfNeeds = noOfNeeds;
+    return this;
+  }
+
+  /**
+   * Get noOfNeeds
+   * @return noOfNeeds
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public Long getNoOfNeeds() {
+    return noOfNeeds;
+  }
+
+  public void setNoOfNeeds(Long noOfNeeds) {
+    this.noOfNeeds = noOfNeeds;
+  }
+
   public RegisteredUserDTO profession(String profession) {
     this.profession = profession;
     return this;
@@ -386,6 +432,8 @@ public class RegisteredUserDTO   {
         Objects.equals(this.id, registeredUserDTO.id) &&
         Objects.equals(this.idProofId, registeredUserDTO.idProofId) &&
         Objects.equals(this.lastName, registeredUserDTO.lastName) &&
+        Objects.equals(this.noOfHelps, registeredUserDTO.noOfHelps) &&
+        Objects.equals(this.noOfNeeds, registeredUserDTO.noOfNeeds) &&
         Objects.equals(this.profession, registeredUserDTO.profession) &&
         Objects.equals(this.profilePicId, registeredUserDTO.profilePicId) &&
         Objects.equals(this.rating, registeredUserDTO.rating) &&
@@ -394,7 +442,7 @@ public class RegisteredUserDTO   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(bloodGroup, description, dob, email, emotionalQuotient, firstName, gender, happinessIndex, id, idProofId, lastName, profession, profilePicId, rating, socialQuotient);
+    return Objects.hash(bloodGroup, description, dob, email, emotionalQuotient, firstName, gender, happinessIndex, id, idProofId, lastName, noOfHelps, noOfNeeds, profession, profilePicId, rating, socialQuotient);
   }
 
   @Override
@@ -413,6 +461,8 @@ public class RegisteredUserDTO   {
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    idProofId: ").append(toIndentedString(idProofId)).append("\n");
     sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
+    sb.append("    noOfHelps: ").append(toIndentedString(noOfHelps)).append("\n");
+    sb.append("    noOfNeeds: ").append(toIndentedString(noOfNeeds)).append("\n");
     sb.append("    profession: ").append(toIndentedString(profession)).append("\n");
     sb.append("    profilePicId: ").append(toIndentedString(profilePicId)).append("\n");
     sb.append("    rating: ").append(toIndentedString(rating)).append("\n");

@@ -432,8 +432,7 @@ public class AggregateServiceImpl implements AggregateService {
 
 		List<NeedDTO> needs = page.getContent();
 
-		int count = 0;
-
+		
 		for (NeedDTO need : needs) {
 
 			log.info("*****************{}", need.getId());
@@ -542,36 +541,47 @@ public class AggregateServiceImpl implements AggregateService {
 
 			HelpDTO helpDTO = helpMapper.toDto(help);
 
+			// anjali
+
 			Page<MediaDTO> mediaDTO = mediaRepository.findAllUrlByHelpId(help.getId(), PageRequest.of(0, 100))
 					.map(mediaMapper::toDto);
-
-			List<String> imageUrls = new ArrayList<String>();
-			List<String> videoUrls = new ArrayList<String>();
-
+			
+			List<String> imageList=new ArrayList<String>();
+			List<String> videoList=new ArrayList<String>();			 
+			 
 			for (MediaDTO mediaDto : mediaDTO.getContent()) {
-
-				if (mediaDto.getExtension().contains("image")) {
-					log.info("****containcheck{}", mediaDto.getExtension().contains("image"));
-					imageUrls.add(mediaDto.getFileName());
-				} else if (mediaDto.getExtension().contains("video")) {
-					log.info("****videocontaincheck{}", mediaDto.getExtension().contains("video"));
-
-					videoUrls.add(mediaDto.getFileName());
-				} else {
-
+				
+				if (mediaDto.getFileContentType().contains("image")) {
+					
+				Base64Encoder encoder = new Base64Encoder();
+				String imageString = encoder.encode(mediaDto.getFile());
+	            
+				imageList.add(imageString);
+				
 				}
-
-				log.info("list size media url{}", imageUrls.size());
-				log.info("list size video url{}", videoUrls.size());
-
-				if (imageUrls.size() != 0) {
-					helpDTO.setImageUrls(imageUrls);
+				else if (mediaDto.getFileContentType().contains("video")) {
+					
+				Base64Encoder encoder = new Base64Encoder();
+				String videoString = encoder.encode(mediaDto.getFile());
+	            
+				videoList.add(videoString);
+				
 				}
-				if (videoUrls.size() != 0) {
-					helpDTO.setVideoUrls(videoUrls);
-				}
+						
 			}
+			
+			helpDTO.setImageMedias(imageList);
+			helpDTO.setVideoMedias(videoList);
+
 			// anjali
+			
+			
+			Date postedDate = null;
+			if (help.getTime() != null) {
+				postedDate = Date.from(helpDTO.getTime());
+				helpDTO.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
+			}
+
 
 			if (helpDTO.getApprovalStatusId() == 4) {
 				completedHelps.add(helpDTO);
@@ -1713,11 +1723,13 @@ public class AggregateServiceImpl implements AggregateService {
 
 		RegisteredUser registeredUser = registeredUserRepository.findById(id).get();
 		RegisteredUserDTO registeredUserDto = registeredUserMapper.toDto(registeredUser);
+		
 		registeredUserDto.setEmotionalQuotient(calculateRegisteredUserEmotionalQuotient(id));
 		registeredUserDto.setSocialQuotient(calculateRegisteredUserSocialQuotient(id));
+		registeredUserDto.setNoOfHelps((long)helpRepository.CountOfHelpsByProvidedUserId(id));
+		registeredUserDto.setNoOfNeeds((long)needRepository.CountOfNeedsByPostedUserId(id));
 
-		// RegisteredUser registeredUser =
-		// registeredUserRepository.save(registeredUserMapper.toEntity(registeredUserDTO));
+		
 		return Optional.of(registeredUserDto);
 	}
 
@@ -1740,7 +1752,7 @@ public class AggregateServiceImpl implements AggregateService {
 
 			registeredUserDTO.setEmotionalQuotient(0l);
 		}
-		Long pointOfHelpEq = helpRepository.findCountOfHelpsByRegisteredUserId(registeredUserId) / 3;
+		Long pointOfHelpEq = helpRepository.CountOfHelpsByProvidedUserId(registeredUserId) / 3;
 		Long pointOfPostEq = postRepository.findCountOfPostsByRegisteredUserId(registeredUserId) / 6;
 		Long emotionalQuotient = pointOfHelpEq + pointOfPostEq;
 
@@ -1767,7 +1779,7 @@ public class AggregateServiceImpl implements AggregateService {
 
 			registeredUserDTO.setSocialQuotient(0l);
 		}
-		Long pointOfHelpSq = helpRepository.findCountOfHelpsByRegisteredUserId(registeredUserId);
+		Long pointOfHelpSq = helpRepository.CountOfHelpsByProvidedUserId(registeredUserId);
 		Long pointOfPostSq = postRepository.findCountOfPostsByRegisteredUserId(registeredUserId) / 12;
 		Long socialQuotient = pointOfHelpSq + pointOfPostSq;
 

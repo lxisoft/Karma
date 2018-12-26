@@ -30,5 +30,16 @@ public interface NeedRepository extends JpaRepository<Need, Long> {
     Page<Need> findAllNeedsByApprovalStatusId(Pageable pageable, Long approvalStatusId);
     
     Page<Need> findAllNeedsBySeverityId(Pageable pageable,Long severityId);
+    
+      //sarangi
+
+  		/**
+  		 * @param registeredUserId
+  		 * @return 
+  		 */
+  		@Query(value="select count(h) from Need n where n.postedUser.id=:registeredUserId")
+  		Long CountOfNeedsByPostedUserId(@Param("registeredUserId") Long registeredUserId);
+
+  	 //sarangi
 
 }

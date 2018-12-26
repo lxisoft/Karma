@@ -42,15 +42,15 @@ public interface HelpRepository extends JpaRepository<Help, Long> {
 	public Integer countOfHelpsByfulfilledNeedId(@Param("needId") Long needId,@Param("approvalStatus") String approvalStatus); 
 	
 	
-	   //neeraja
+	   //sarangi
 
 		/**
 		 * @param registeredUserId
 		 * @return 
 		 */
 		@Query(value="select count(h) from Help h where h.providedUser.id=:registeredUserId")
-		Long findCountOfHelpsByRegisteredUserId(@Param("registeredUserId") Long registeredUserId);
+		Long CountOfHelpsByProvidedUserId(@Param("registeredUserId") Long registeredUserId);
 
-		//neeraja
+		//sarangi
 
 }
