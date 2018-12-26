@@ -7,7 +7,7 @@
 	<meta name="_csrf" th:content="${_csrf.token}" />
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 	<title>Home</title>
-	<link rel="stylesheet" href="/static/css/ckin.css">
+	<link rel="stylesheet" href="/static/css/ckin.css" th:href="@{/css/ckin.css}">
 	<!-- Font Awesome -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<!-- Bootstrap core CSS -->
@@ -169,19 +169,20 @@
 									<th:block th:object="${need}">
 
 										<div th:fragment="attachments">
-											<th:block th:if="*{videoUrls != null}" th:each="videoUrl,index : *{videoUrls}">
+											<th:block th:if="${need.videoMedias != null}" th:each="videoMedia,index : ${need.videoMedias}">
 												<div class="col-md-12 mb-3">
 													<video src="/static/videos/How to Install FIFA 15 Ultimate Team Edition 3DM CRACK v1 + Update Test Windows 7 x64 - YouTube_0_1423248632837.mp4"
-													 data-ckin="default" data-color="#34B4E3" data-overlay="1" data-title="The curious case of Chameleon..."></video>
+													 th:src="${'data:video/mp4;base64,'+videoMedia}" data-ckin="default" data-color="#34B4E3" data-overlay="1"
+													 data-title="The curious case of Chameleon..."></video>
 
 
 												</div>
 											</th:block>
 
-											<th:block th:if="*{imageUrls != null $$ vide}" th:each="imageUrl,index : *{imageUrls}">
+											<th:block th:if="${need.imageMedias != null}" th:each="imageMedia,index : ${need.imageMedias}">
 												<div class="col-md-12 mb-3">
 
-													<img src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" th:src="${'//localhost:8081/uploadedfiles/'+imageUrl}"
+													<img src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" th:src="${'data:image/jpeg;base64,'+imageMedia}"
 													 class="img-fluid z-depth-1" alt="Responsive image">
 
 												</div>
@@ -440,8 +441,8 @@
 	<!-- MDB core JavaScript -->
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.13/js/mdb.min.js"></script>
 	<!-- Script file -->
-	<script type="text/javascript" th:src="|js/karma.js|" src="/static/js/karma.js"></script>
-	<script type="text/javascript" th:src="|js/ckin.js|" src="/static/js/ckin.js"></script>
+	<script type="text/javascript" th:src="|/js/karma.js|" src="/static/js/karma.js"></script>
+	<script type="text/javascript" th:src="|/js/ckin.js|" src="/static/js/ckin.js"></script>
 </body>
 
 </html>
