@@ -113,7 +113,7 @@ public class AggregateController {
 	@GetMapping("/")
 	@Timed
 	public String getAllNeeds() {
-		log.debug("request to redirect to url /home/aaproved");
+		log.debug("request to redirect to url /home/approved");
 		return "redirect:/home/approved";
 
 	}
@@ -231,9 +231,10 @@ public class AggregateController {
 	public String getAllNeedsByApprovedStatus(Pageable pageable,
 			@RequestParam(required = false, defaultValue = "false") boolean eagerload,
 			@PathVariable(value = "approvalStatus") String approvalStatus, Model model) {
-		log.debug("request to get a page of Needs");
-		
-		log.info("***********controller status{}",approvalStatus);
+
+		log.debug("request to get a page of Needs with status {}", approvalStatus);
+
+
 		List<String> dateArray = new ArrayList<String>();
 		dateArray.add("date,desc");
 

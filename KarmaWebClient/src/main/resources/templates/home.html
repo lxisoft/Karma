@@ -7,6 +7,7 @@
 	<meta name="_csrf" th:content="${_csrf.token}" />
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 	<title>Home</title>
+	<link rel="stylesheet" href="/static/css/ckin.css" th:href="@{/css/ckin.css}">
 	<!-- Font Awesome -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<!-- Bootstrap core CSS -->
@@ -170,18 +171,19 @@
 										<div th:fragment="attachments">
 											<th:block th:if="${need.videoMedias != null}" th:each="videoMedia,index : ${need.videoMedias}">
 												<div class="col-md-12 mb-3">
+													<video src="/static/videos/How to Install FIFA 15 Ultimate Team Edition 3DM CRACK v1 + Update Test Windows 7 x64 - YouTube_0_1423248632837.mp4"
+													 th:src="${'data:video/mp4;base64,'+videoMedia}" data-ckin="default" data-color="#34B4E3" data-overlay="1"
+													 data-title="The curious case of Chameleon..."></video>
 
-													<video width="600" height="400" controls="controls" th:src="${'data:video/mp4;base64,'+videoMedia}">
 
-													</video>
 												</div>
 											</th:block>
 
-											<th:block th:if="${need.imageMedias != null}" th:each="imageMedia,index : ${need.imageMedias}"> 
+											<th:block th:if="${need.imageMedias != null}" th:each="imageMedia,index : ${need.imageMedias}">
 												<div class="col-md-12 mb-3">
 
-													<img width="600" height="400" src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" th:src="${'data:image/jpeg;base64,'+imageMedia}"
-													  class="img-fluid z-depth-1" alt="Responsive image">
+													<img src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" th:src="${'data:image/jpeg;base64,'+imageMedia}"
+													 class="img-fluid z-depth-1" alt="Responsive image">
 
 												</div>
 											</th:block>
@@ -431,6 +433,7 @@
 	<!-- JQuery -->
 	<!-- JQuery -->
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="http://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
 	<!-- Bootstrap tooltips -->
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
 	<!-- Bootstrap core JavaScript -->
@@ -438,7 +441,8 @@
 	<!-- MDB core JavaScript -->
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.13/js/mdb.min.js"></script>
 	<!-- Script file -->
-	<script type="text/javascript" th:src="|/karma.js|" src="static/karma.js"></script>
+	<script type="text/javascript" th:src="|/js/karma.js|" src="/static/js/karma.js"></script>
+	<script type="text/javascript" th:src="|/js/ckin.js|" src="/static/js/ckin.js"></script>
 </body>
 
 </html>
