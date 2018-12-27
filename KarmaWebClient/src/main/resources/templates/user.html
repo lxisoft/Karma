@@ -54,11 +54,11 @@
             <div class="col-sm-9">
 
                 <div class="row">
-                    <!--profile pic-->
-                    <div class="col-sm-3 offset-1 mt-3">
-                        <img src="/static/images/IMG_5515.JPG" style="width:12rem;height:12rem;" alt="" class="img-fluid z-depth-1 rounded-circle">
+                    <div th:if="${user.imageMedia != null}" class="col-md-12 mb-3">
+                        <img alt="Responsive image" class="img-fluid z-depth-1 rounded-circle" src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg"
+                            th:src="${'data:image/jpeg;base64,'+user.imageMedia}">
                     </div>
-                    <!--personal information-->
+
                     <div class="col-sm-7 mt-4 mr-4">
                         <div class="row">
                             <ul class="list-group w-100">

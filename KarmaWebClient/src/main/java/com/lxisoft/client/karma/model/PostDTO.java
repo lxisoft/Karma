@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
  * PostDTO
  */
 @Validated
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-26T23:53:37.224618500+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-27T14:19:04.189059+05:30[Asia/Calcutta]")
 
 public class PostDTO   {
   @JsonProperty("date")

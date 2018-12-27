@@ -1713,6 +1713,20 @@ public class AggregateServiceImpl implements AggregateService {
 		registeredUserDto.setSocialQuotient(calculateRegisteredUserSocialQuotient(id));
 		registeredUserDto.setNoOfHelps((long) helpRepository.CountOfHelpsByProvidedUserId(id));
 		registeredUserDto.setNoOfNeeds((long) needRepository.CountOfNeedsByPostedUserId(id));
+		
+		//anjali 
+		
+				Optional<MediaDTO> mediaDto=mediaRepository.findById(registeredUserDto.getProfilePicId()).map(mediaMapper::toDto);
+
+				if (mediaDto.get().getFileContentType().contains("image")) {
+					
+					Base64Encoder encoder = new Base64Encoder();
+					String imageString = encoder.encode(mediaDto.get().getFile());
+		            
+					registeredUserDto.setImageMedia(imageString);
+					}
+			
+		//anjali
 
 		return Optional.of(registeredUserDto);
 	}

@@ -16,7 +16,7 @@ import javax.validation.constraints.*;
  * RegisteredUserDTO
  */
 @Validated
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-26T23:53:37.224618500+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-12-27T14:19:04.189059+05:30[Asia/Calcutta]")
 
 public class RegisteredUserDTO   {
   @JsonProperty("bloodGroup")
@@ -48,6 +48,9 @@ public class RegisteredUserDTO   {
 
   @JsonProperty("idProofId")
   private Long idProofId = null;
+
+  @JsonProperty("imageMedia")
+  private String imageMedia = null;
 
   @JsonProperty("lastName")
   private String lastName = null;
@@ -271,6 +274,26 @@ public class RegisteredUserDTO   {
     this.idProofId = idProofId;
   }
 
+  public RegisteredUserDTO imageMedia(String imageMedia) {
+    this.imageMedia = imageMedia;
+    return this;
+  }
+
+  /**
+   * Get imageMedia
+   * @return imageMedia
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public String getImageMedia() {
+    return imageMedia;
+  }
+
+  public void setImageMedia(String imageMedia) {
+    this.imageMedia = imageMedia;
+  }
+
   public RegisteredUserDTO lastName(String lastName) {
     this.lastName = lastName;
     return this;
@@ -431,6 +454,7 @@ public class RegisteredUserDTO   {
         Objects.equals(this.happinessIndex, registeredUserDTO.happinessIndex) &&
         Objects.equals(this.id, registeredUserDTO.id) &&
         Objects.equals(this.idProofId, registeredUserDTO.idProofId) &&
+        Objects.equals(this.imageMedia, registeredUserDTO.imageMedia) &&
         Objects.equals(this.lastName, registeredUserDTO.lastName) &&
         Objects.equals(this.noOfHelps, registeredUserDTO.noOfHelps) &&
         Objects.equals(this.noOfNeeds, registeredUserDTO.noOfNeeds) &&
@@ -442,7 +466,7 @@ public class RegisteredUserDTO   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(bloodGroup, description, dob, email, emotionalQuotient, firstName, gender, happinessIndex, id, idProofId, lastName, noOfHelps, noOfNeeds, profession, profilePicId, rating, socialQuotient);
+    return Objects.hash(bloodGroup, description, dob, email, emotionalQuotient, firstName, gender, happinessIndex, id, idProofId, imageMedia, lastName, noOfHelps, noOfNeeds, profession, profilePicId, rating, socialQuotient);
   }
 
   @Override
@@ -460,6 +484,7 @@ public class RegisteredUserDTO   {
     sb.append("    happinessIndex: ").append(toIndentedString(happinessIndex)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    idProofId: ").append(toIndentedString(idProofId)).append("\n");
+    sb.append("    imageMedia: ").append(toIndentedString(imageMedia)).append("\n");
     sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
     sb.append("    noOfHelps: ").append(toIndentedString(noOfHelps)).append("\n");
     sb.append("    noOfNeeds: ").append(toIndentedString(noOfNeeds)).append("\n");
