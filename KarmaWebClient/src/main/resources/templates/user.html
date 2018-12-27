@@ -54,9 +54,9 @@
             <div class="col-sm-9">
 
                 <div class="row">
-                    <div th:if="${user.imageMedia != null}" class="col-md-12 mb-3">
-                        <img alt="Responsive image" class="img-fluid z-depth-1 rounded-circle" src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg"
-                            th:src="${'data:image/jpeg;base64,'+user.imageMedia}">
+                    <div th:if="${user.imageMedia != null}" class="offset-1 col-sm-2 mb-3">
+                        <img alt="Responsive image" class="img-fluid z-depth-1 rounded-circle" style="width:10rem;height:10rem"
+                            src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" th:src="${'data:image/jpeg;base64,'+user.imageMedia}">
                     </div>
 
                     <div class="col-sm-7 mt-4 mr-4">
@@ -74,28 +74,28 @@
                     <!--dashboard tile-->
                     <div class="row mt-4">
 
-                        <div class="col-sm-7 offset-4 border border-warning">
+                        <div class="col-sm-12 offset-7 border border-warning">
                             <!--social quotient-->
                             <div class="row">
-                                <div class="col-sm-5 text-center warning-color-dark rounded m-4 p-2">
+                                <div class="col-sm-4 text-center warning-color-dark rounded m-4 p-2">
                                     <h5 class="text-white">Social Intelligence</h4>
                                         <h4 class="display-4 text-white" th:text="${user.socialQuotient}">32</h4>
                                 </div>
                                 <!--emotional quotient-->
-                                <div class="col-sm-5 text-center primary-color rounded m-4 p-2">
+                                <div class="col-sm-4 text-center primary-color rounded m-4 p-2">
                                     <h5 class="text-white">Emotional Intelligence</h5>
                                     <h4 class="display-4 text-white" th:text="${user.emotionalQuotient}">32</h4>
                                 </div>
                             </div>
                             <div class="row">
                                 <!--No of helps-->
-                                <div class="col-sm-5 text-center success-color rounded m-4 p-2">
+                                <div class="col-sm-4 text-center success-color rounded m-4 p-2">
                                     <h5 class="text-white">Helped</h4>
                                         <h4 class="display-4 text-white" th:text="${user.noOfHelps}">32</h4>
                                         <h5 class="text-white">people</h4>
                                 </div>
                                 <!--No of needs-->
-                                <div class="col-sm-5 text-center danger-color rounded m-4 p-2">
+                                <div class="col-sm-4 text-center danger-color rounded m-4 p-2">
                                     <h6 class="text-white">Asked for help</h6>
                                     <h6 class="display-4 text-white" th:text="${user.noOfNeeds}">32</h6>
                                     <h5 class="text-white">times</h5>
