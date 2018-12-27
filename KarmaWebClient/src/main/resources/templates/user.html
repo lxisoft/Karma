@@ -71,105 +71,105 @@
 
                         </div>
                     </div>
-                    <!--dashboard tile-->
-                    <div class="row mt-4">
-
-                        <div class="col-sm-12 offset-7 border border-warning">
-                            <!--social quotient-->
-                            <div class="row">
-                                <div class="col-sm-4 text-center warning-color-dark rounded m-4 p-2">
-                                    <h5 class="text-white">Social Intelligence</h4>
-                                        <h4 class="display-4 text-white" th:text="${user.socialQuotient}">32</h4>
-                                </div>
-                                <!--emotional quotient-->
-                                <div class="col-sm-4 text-center primary-color rounded m-4 p-2">
-                                    <h5 class="text-white">Emotional Intelligence</h5>
-                                    <h4 class="display-4 text-white" th:text="${user.emotionalQuotient}">32</h4>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <!--No of helps-->
-                                <div class="col-sm-4 text-center success-color rounded m-4 p-2">
-                                    <h5 class="text-white">Helped</h4>
-                                        <h4 class="display-4 text-white" th:text="${user.noOfHelps}">32</h4>
-                                        <h5 class="text-white">people</h4>
-                                </div>
-                                <!--No of needs-->
-                                <div class="col-sm-4 text-center danger-color rounded m-4 p-2">
-                                    <h6 class="text-white">Asked for help</h6>
-                                    <h6 class="display-4 text-white" th:text="${user.noOfNeeds}">32</h6>
-                                    <h5 class="text-white">times</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-                <div class="ml-4 col-sm-2" style="height:auto;">
-                    <div class="row">
-                        <div class="col-sm-12 border ml-2 mt-4 p-4 default-color rounded offset-1">
-                            <h4 class="text-center">Top 5 persons</h4>
-                            <th:block th:each="person:${top5EmotionalIntelligentPeople}">
-                                <div class="row" th:remove="all">
+                <!--dashboard tile-->
+                <div class="row mt-4">
 
-                                    <img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;" alt=""
-                                        class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
-                                        1</a></div>
-                                <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
-                                        alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
-                                        1</a></div>
-                                <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
-                                        alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
-                                        1</a></div>
-                                <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
-                                        alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
-                                        1</a></div>
-                                <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
-                                        alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
-                                        1</a></div>
-
-
-                                <div class="row"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
-                                        alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" th:text="${person.firstName+' '+person.lastName}"
-                                        class="ml-1 h6 text-white">user
-                                        1</a></div>
-                            </th:block>
+                    <div class="col-sm-7 offset-3 border border-warning">
+                        <!--social quotient-->
+                        <div class="row">
+                            <div class="col-sm-5 text-center warning-color-dark rounded m-4 p-2">
+                                <h5 class="text-white">Social Intelligence</h4>
+                                    <h4 class="display-4 text-white" th:text="${user.socialQuotient}">32</h4>
+                            </div>
+                            <!--emotional quotient-->
+                            <div class="col-sm-5 text-center primary-color rounded m-4 p-2">
+                                <h5 class="text-white">Emotional Intelligence</h5>
+                                <h4 class="display-4 text-white" th:text="${user.emotionalQuotient}">32</h4>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-12 border ml-2 mt-4 p-4 secondary-color rounded offset-1">
-                            <h4 class="text-center">Top 5 leaders</h4>
-                            <th:block th:each="person:${top5EmotionalIntelligentPeople}">
-                                <div class="row">
-
-                                    <img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;" alt=""
-                                        class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white"
-                                        th:text="${person.firstName+' '+person.lastName}">user
-                                        1</a></div>
-
-
-                                <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
-                                        alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
-                                        1</a></div>
-                                <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
-                                        alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
-                                        1</a></div>
-                                <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
-                                        alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
-                                        1</a></div>
-                                <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
-                                        alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
-                                        1</a></div>
-                                <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
-                                        alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
-                                        1</a></div>
-                            </th:block>
-
+                        <div class="row">
+                            <!--No of helps-->
+                            <div class="col-sm-5 text-center success-color rounded m-4 p-2">
+                                <h5 class="text-white">Helped</h4>
+                                    <h4 class="display-4 text-white" th:text="${user.noOfHelps}">32</h4>
+                                    <h5 class="text-white">people</h4>
+                            </div>
+                            <!--No of needs-->
+                            <div class="col-sm-5 text-center danger-color rounded m-4 p-2">
+                                <h6 class="text-white">Asked for help</h6>
+                                <h6 class="display-4 text-white" th:text="${user.noOfNeeds}">32</h6>
+                                <h5 class="text-white">times</h5>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="ml-4 col-sm-2" style="height:auto;">
+                <div class="row">
+                    <div class="col-sm-12 border ml-2 mt-4 p-4 default-color rounded offset-1">
+                        <h4 class="text-center">Top 5 persons</h4>
+                        <th:block th:each="person:${top5EmotionalIntelligentPeople}">
+                            <div class="row" th:remove="all">
+
+                                <img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;" alt="" class="img-fluid z-depth-1 rounded-circle"><a
+                                    href="#" class="ml-1 h6 text-white">user
+                                    1</a></div>
+                            <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
+                                    alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
+                                    1</a></div>
+                            <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
+                                    alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
+                                    1</a></div>
+                            <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
+                                    alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
+                                    1</a></div>
+                            <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
+                                    alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
+                                    1</a></div>
+
+
+                            <div class="row"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
+                                    alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" th:text="${person.firstName+' '+person.lastName}"
+                                    class="ml-1 h6 text-white">user
+                                    1</a></div>
+                        </th:block>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 border ml-2 mt-4 p-4 secondary-color rounded offset-1">
+                        <h4 class="text-center">Top 5 leaders</h4>
+                        <th:block th:each="person:${top5EmotionalIntelligentPeople}">
+                            <div class="row">
+
+                                <img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;" alt="" class="img-fluid z-depth-1 rounded-circle"><a
+                                    href="#" class="ml-1 h6 text-white" th:text="${person.firstName+' '+person.lastName}">user
+                                    1</a></div>
+
+
+                            <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
+                                    alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
+                                    1</a></div>
+                            <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
+                                    alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
+                                    1</a></div>
+                            <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
+                                    alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
+                                    1</a></div>
+                            <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
+                                    alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
+                                    1</a></div>
+                            <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
+                                    alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
+                                    1</a></div>
+                        </th:block>
+
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
 </body>
 
 </html>
