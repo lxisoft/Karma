@@ -772,8 +772,16 @@ public class AggregateController {
 		log.debug("request to get registeredUserDTO : {}", id);
 
 		RegisteredUserDTO registeredUser = aggregateResourceApi.getOneRegisteredUserUsingGET(id).getBody();
-
+		
+		List<RegisteredUserDTO> top5EmotionalIntelligentPeople=aggregateResourceApi.getTop5RegisteredUsersByEmotionalQuotientUsingGET(id, null, null, null, null, null, null, null, null, null).getBody();
+        
+		List<RegisteredUserDTO> top5SocialIntelligentPeople=aggregateResourceApi.getTop5RegisteredUsersBySocialQuotientUsingGET(id, null, null, null, null, null, null, null, null, null).getBody();
+		
 		model.addAttribute("user", registeredUser);
+		
+		model.addAttribute("top5EmotionalIntelligentPeople", top5EmotionalIntelligentPeople);
+		
+		model.addAttribute("top5EmotionalIntelligentPeople", top5SocialIntelligentPeople);
 
 		return "user";
 	}
