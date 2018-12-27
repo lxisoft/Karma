@@ -369,32 +369,30 @@ public class AggregateServiceImpl implements AggregateService {
 		Page<MediaDTO> mediaDTO = mediaRepository.findAllUrlByNeedId(need.getId(), PageRequest.of(0, 100))
 				.map(mediaMapper::toDto);
 
-		/*List<String> imageUrls = new ArrayList<String>();
-		List<String> videoUrls = new ArrayList<String>();
-
-		for (MediaDTO mediaDto : mediaDTO.getContent()) {
-
-			if (mediaDto.getExtension().contains("image")) {
-				log.info("****containcheck{}", mediaDto.getExtension().contains("image"));
-				imageUrls.add(mediaDto.getFileName());
-			} else if (mediaDto.getExtension().contains("video")) {
-				log.info("****videocontaincheck{}", mediaDto.getExtension().contains("video"));
-
-				videoUrls.add(mediaDto.getFileName());
-			} else {
-
-			}
-
-			log.info("list size media url{}", imageUrls.size());
-			log.info("list size video url{}", videoUrls.size());
-
-			if (imageUrls.size() != 0) {
-				needDTO.setImageUrls(imageUrls);
-			}
-			if (videoUrls.size() != 0) {
-				needDTO.setVideoUrls(videoUrls);
-			}
-		}*/
+		/*
+		 * List<String> imageUrls = new ArrayList<String>(); List<String>
+		 * videoUrls = new ArrayList<String>();
+		 * 
+		 * for (MediaDTO mediaDto : mediaDTO.getContent()) {
+		 * 
+		 * if (mediaDto.getExtension().contains("image")) {
+		 * log.info("****containcheck{}",
+		 * mediaDto.getExtension().contains("image"));
+		 * imageUrls.add(mediaDto.getFileName()); } else if
+		 * (mediaDto.getExtension().contains("video")) {
+		 * log.info("****videocontaincheck{}",
+		 * mediaDto.getExtension().contains("video"));
+		 * 
+		 * videoUrls.add(mediaDto.getFileName()); } else {
+		 * 
+		 * }
+		 * 
+		 * log.info("list size media url{}", imageUrls.size());
+		 * log.info("list size video url{}", videoUrls.size());
+		 * 
+		 * if (imageUrls.size() != 0) { needDTO.setImageUrls(imageUrls); } if
+		 * (videoUrls.size() != 0) { needDTO.setVideoUrls(videoUrls); } }
+		 */
 
 		return Optional.of(needDTO);
 	}
@@ -418,13 +416,13 @@ public class AggregateServiceImpl implements AggregateService {
 	 *            the pagination information
 	 * 
 	 * @return the list of approvedstatus entities
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	@Override
 	public Page<NeedDTO> findAllNeedsByApprovedStatus(Pageable pageable, String approvalStatus) throws IOException {
 
 		log.debug("Request to get all Needs by approval status");
-		log.info("****status{}",approvalStatus);
+		log.info("****status{}", approvalStatus);
 
 		long approvalStatusId = findNeedByApprovalStatus(approvalStatus).get().getId();
 
@@ -432,7 +430,6 @@ public class AggregateServiceImpl implements AggregateService {
 
 		List<NeedDTO> needs = page.getContent();
 
-		
 		for (NeedDTO need : needs) {
 
 			log.info("*****************{}", need.getId());
@@ -482,34 +479,32 @@ public class AggregateServiceImpl implements AggregateService {
 			Page<MediaDTO> mediaDTO = mediaRepository.findAllFileByNeedId(need.getId(), PageRequest.of(0, 100))
 					.map(mediaMapper::toDto);
 
-			 List<String> imageList=new ArrayList<String>();
-			 List<String> videoList=new ArrayList<String>();
-			 
-			 
+			List<String> imageList = new ArrayList<String>();
+			List<String> videoList = new ArrayList<String>();
+
 			for (MediaDTO mediaDto : mediaDTO.getContent()) {
-				
+
 				if (mediaDto.getFileContentType().contains("image")) {
-					
-				Base64Encoder encoder = new Base64Encoder();
-				String imageString = encoder.encode(mediaDto.getFile());
-	            
-				imageList.add(imageString);
-				
+
+					Base64Encoder encoder = new Base64Encoder();
+					String imageString = encoder.encode(mediaDto.getFile());
+
+					imageList.add(imageString);
+
+				} else if (mediaDto.getFileContentType().contains("video")) {
+
+					Base64Encoder encoder = new Base64Encoder();
+					String videoString = encoder.encode(mediaDto.getFile());
+
+					videoList.add(videoString);
+
 				}
-				else if (mediaDto.getFileContentType().contains("video")) {
-					
-				Base64Encoder encoder = new Base64Encoder();
-				String videoString = encoder.encode(mediaDto.getFile());
-	            
-				videoList.add(videoString);
-				
-				}
-						
+
 			}
-			
+
 			need.setImageMedias(imageList);
 			need.setVideoMedias(videoList);
-				
+
 		}
 
 		Page<NeedDTO> pagee = new PageImpl<NeedDTO>(needs, pageable, needs.size());
@@ -545,43 +540,40 @@ public class AggregateServiceImpl implements AggregateService {
 
 			Page<MediaDTO> mediaDTO = mediaRepository.findAllUrlByHelpId(help.getId(), PageRequest.of(0, 100))
 					.map(mediaMapper::toDto);
-			
-			List<String> imageList=new ArrayList<String>();
-			List<String> videoList=new ArrayList<String>();			 
-			 
+
+			List<String> imageList = new ArrayList<String>();
+			List<String> videoList = new ArrayList<String>();
+
 			for (MediaDTO mediaDto : mediaDTO.getContent()) {
-				
+
 				if (mediaDto.getFileContentType().contains("image")) {
-					
-				Base64Encoder encoder = new Base64Encoder();
-				String imageString = encoder.encode(mediaDto.getFile());
-	            
-				imageList.add(imageString);
-				
+
+					Base64Encoder encoder = new Base64Encoder();
+					String imageString = encoder.encode(mediaDto.getFile());
+
+					imageList.add(imageString);
+
+				} else if (mediaDto.getFileContentType().contains("video")) {
+
+					Base64Encoder encoder = new Base64Encoder();
+					String videoString = encoder.encode(mediaDto.getFile());
+
+					videoList.add(videoString);
+
 				}
-				else if (mediaDto.getFileContentType().contains("video")) {
-					
-				Base64Encoder encoder = new Base64Encoder();
-				String videoString = encoder.encode(mediaDto.getFile());
-	            
-				videoList.add(videoString);
-				
-				}
-						
+
 			}
-			
+
 			helpDTO.setImageMedias(imageList);
 			helpDTO.setVideoMedias(videoList);
 
 			// anjali
-			
-			
+
 			Date postedDate = null;
 			if (help.getTime() != null) {
 				postedDate = Date.from(helpDTO.getTime());
 				helpDTO.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
 			}
-
 
 			if (helpDTO.getApprovalStatusId() == 4) {
 				completedHelps.add(helpDTO);
@@ -960,31 +952,30 @@ public class AggregateServiceImpl implements AggregateService {
 
 			Page<MediaDTO> mediaDTO = mediaRepository.findAllUrlByHelpId(help.getId(), PageRequest.of(0, 100))
 					.map(mediaMapper::toDto);
-			
-			List<String> imageList=new ArrayList<String>();
-			List<String> videoList=new ArrayList<String>();			 
-			 
+
+			List<String> imageList = new ArrayList<String>();
+			List<String> videoList = new ArrayList<String>();
+
 			for (MediaDTO mediaDto : mediaDTO.getContent()) {
-				
+
 				if (mediaDto.getFileContentType().contains("image")) {
-					
-				Base64Encoder encoder = new Base64Encoder();
-				String imageString = encoder.encode(mediaDto.getFile());
-	            
-				imageList.add(imageString);
-				
+
+					Base64Encoder encoder = new Base64Encoder();
+					String imageString = encoder.encode(mediaDto.getFile());
+
+					imageList.add(imageString);
+
+				} else if (mediaDto.getFileContentType().contains("video")) {
+
+					Base64Encoder encoder = new Base64Encoder();
+					String videoString = encoder.encode(mediaDto.getFile());
+
+					videoList.add(videoString);
+
 				}
-				else if (mediaDto.getFileContentType().contains("video")) {
-					
-				Base64Encoder encoder = new Base64Encoder();
-				String videoString = encoder.encode(mediaDto.getFile());
-	            
-				videoList.add(videoString);
-				
-				}
-						
+
 			}
-			
+
 			help.setImageMedias(imageList);
 			help.setVideoMedias(videoList);
 
@@ -1089,7 +1080,7 @@ public class AggregateServiceImpl implements AggregateService {
 	@Override
 	public UserCheckDTO markingGenuinenes(UserCheckDTO userCheckDTO) throws IOException {
 
-		log.info("*****inside service impl mg",userCheckDTO.getVoteType());
+		log.info("*****inside service impl mg", userCheckDTO.getVoteType());
 		UserCheck result = null;
 
 		UserCheck usrCheckDtoObject = userCheckRepository
@@ -1124,7 +1115,7 @@ public class AggregateServiceImpl implements AggregateService {
 
 		log.info("****needid{}", result.getCheckedNeed().getId());
 		log.info("****usercheck votetype{}", userCheckDTO.getVoteType());
-		log.info("*****result votetype{}",result.getVoteType());
+		log.info("*****result votetype{}", result.getVoteType());
 
 		if ((result.getCheckedNeed().getId() != null) && (result.getVoteType() == "postive")) {
 
@@ -1142,41 +1133,42 @@ public class AggregateServiceImpl implements AggregateService {
 
 			log.info("***{}inside", feedDto.getType());
 		}
-			log.info("***{}after", feedDto.getType());
-			saveFeed(feedDto);
+		log.info("***{}after", feedDto.getType());
+		saveFeed(feedDto);
 
-			// anjali
+		// anjali
 
-			return userCheckMapper.toDto(result);
-		}
-	
-		/**
-	     * Save a reply.
-	     *
-	     * @param replyDTO the entity to save
-	     * 
-	     * @return the persisted entity
-		 * @throws IOException 
-	     */
-	    @Override
-		public ReplyDTO saveReply(ReplyDTO replyDTO) throws IOException {
-	    	log.debug("Request to save Reply : {}", replyDTO);
-	    	String parseDate=replyDTO.getDateInString().replace(" ","T").concat("Z");
-	        Instant date=Instant.parse(parseDate);
-	        replyDTO.setDate(date);
-	        Reply reply = replyMapper.toEntity(replyDTO);
-	        reply = replyRepository.save(reply);
-	        
-	        //anjali
-			 FeedDTO feedDto=new FeedDTO();
+		return userCheckMapper.toDto(result);
+	}
 
-			 feedDto.setType("Replied");
-			 feedDto.setReferenceId(reply.getId());
-			
-			 saveFeed(feedDto);
-			 
-			 //anjali
-	        return replyMapper.toDto(reply);
+	/**
+	 * Save a reply.
+	 *
+	 * @param replyDTO
+	 *            the entity to save
+	 * 
+	 * @return the persisted entity
+	 * @throws IOException
+	 */
+	@Override
+	public ReplyDTO saveReply(ReplyDTO replyDTO) throws IOException {
+		log.debug("Request to save Reply : {}", replyDTO);
+		String parseDate = replyDTO.getDateInString().replace(" ", "T").concat("Z");
+		Instant date = Instant.parse(parseDate);
+		replyDTO.setDate(date);
+		Reply reply = replyMapper.toEntity(replyDTO);
+		reply = replyRepository.save(reply);
+
+		// anjali
+		FeedDTO feedDto = new FeedDTO();
+
+		feedDto.setType("Replied");
+		feedDto.setReferenceId(reply.getId());
+
+		saveFeed(feedDto);
+
+		// anjali
+		return replyMapper.toDto(reply);
 	}
 
 	/**
@@ -1336,7 +1328,7 @@ public class AggregateServiceImpl implements AggregateService {
 		return page;
 
 	}
-	
+
 	/**
 	 * find all replys By CommentId
 	 * 
@@ -1472,57 +1464,51 @@ public class AggregateServiceImpl implements AggregateService {
 		return postDtos;
 	}
 
-		// code:End
+	// code:End
 
-       //anjali
-		
-		/**
-	     * Save a feed.
-	     *
-	     * @param feedDTO the entity to save
-	     * @return the persisted entity
-	     * @throws IOException 
-	     */
-		@Override
-		public FeedDTO saveFeed(FeedDTO feedDTO) throws IOException {
-			log.debug("Request to save Feed : {}", feedDTO);
-			
-			if(feedDTO.getType().equals("NeedPostAfterApproval")){	
-				
-				feedDTO.setTitle("User has Posted a need");
-			}
-			else if(feedDTO.getType().equals("NeedIsGenuine")){	
-				
-				feedDTO.setTitle("User marked the need as Genuine");
-			}
-			else if(feedDTO.getType().equals("NeedIsFake")){	
-		
-				feedDTO.setTitle("User marked the need as Fake");
-			}
-			else if(feedDTO.getType().equals("HelpCompleted")){
-				
-				feedDTO.setTitle("User Helped a need");
-			}
-			else if(feedDTO.getType().equals("HelpComment")){
-				
-				feedDTO.setTitle("User commented on the Help");
-			}
-			else if(feedDTO.getType().equals("NeedComment")){
-				
-				feedDTO.setTitle("User commented on the Need");
-			}
-			else if(feedDTO.getType().equals("Replied")){
-				
-				feedDTO.setTitle("User Replied on the comment");
-			}
-			else{
-				
-			}
-			
-			 Feed feed = feedMapper.toEntity(feedDTO);
-		     feed = feedRepository.save(feed);
-		     return feedMapper.toDto(feed);
-	
+	// anjali
+
+	/**
+	 * Save a feed.
+	 *
+	 * @param feedDTO
+	 *            the entity to save
+	 * @return the persisted entity
+	 * @throws IOException
+	 */
+	@Override
+	public FeedDTO saveFeed(FeedDTO feedDTO) throws IOException {
+		log.debug("Request to save Feed : {}", feedDTO);
+
+		if (feedDTO.getType().equals("NeedPostAfterApproval")) {
+
+			feedDTO.setTitle("User has Posted a need");
+		} else if (feedDTO.getType().equals("NeedIsGenuine")) {
+
+			feedDTO.setTitle("User marked the need as Genuine");
+		} else if (feedDTO.getType().equals("NeedIsFake")) {
+
+			feedDTO.setTitle("User marked the need as Fake");
+		} else if (feedDTO.getType().equals("HelpCompleted")) {
+
+			feedDTO.setTitle("User Helped a need");
+		} else if (feedDTO.getType().equals("HelpComment")) {
+
+			feedDTO.setTitle("User commented on the Help");
+		} else if (feedDTO.getType().equals("NeedComment")) {
+
+			feedDTO.setTitle("User commented on the Need");
+		} else if (feedDTO.getType().equals("Replied")) {
+
+			feedDTO.setTitle("User Replied on the comment");
+		} else {
+
+		}
+
+		Feed feed = feedMapper.toEntity(feedDTO);
+		feed = feedRepository.save(feed);
+		return feedMapper.toDto(feed);
+
 	}
 
 	// Code:End
@@ -1631,31 +1617,30 @@ public class AggregateServiceImpl implements AggregateService {
 	@Override
 	public Page<FeedDTO> findAllFeeds(Pageable pageable) {
 		log.debug("Request to get all Feeds");
-	
-		Page<FeedDTO> feedDTO=feedRepository.findAll(pageable).map(feedMapper::toDto);
-		
-		List<FeedDTO> feedList=new ArrayList<FeedDTO>();
-		
-		for(FeedDTO oneFeed:feedDTO.getContent()){
-			
-			if(oneFeed.getType().contains("Need")){
-				
+
+		Page<FeedDTO> feedDTO = feedRepository.findAll(pageable).map(feedMapper::toDto);
+
+		List<FeedDTO> feedList = new ArrayList<FeedDTO>();
+
+		for (FeedDTO oneFeed : feedDTO.getContent()) {
+
+			if (oneFeed.getType().contains("Need")) {
+
 				oneFeed.setNeed(true);
-				
+
+				feedList.add(oneFeed);
+			} else if (oneFeed.getType().contains("Help")) {
+
+				oneFeed.setHelp(true);
+
 				feedList.add(oneFeed);
 			}
-			else if(oneFeed.getType().contains("Help")){
-				
-				oneFeed.setHelp(true);
-				
-				feedList.add(oneFeed);
-			}		
 		}
-		
+
 		Page<FeedDTO> feed = new PageImpl<FeedDTO>(feedList, pageable, feedList.size());
-		
+
 		return feed;
-		
+
 	}
 
 	/**
@@ -1723,13 +1708,12 @@ public class AggregateServiceImpl implements AggregateService {
 
 		RegisteredUser registeredUser = registeredUserRepository.findById(id).get();
 		RegisteredUserDTO registeredUserDto = registeredUserMapper.toDto(registeredUser);
-		
+
 		registeredUserDto.setEmotionalQuotient(calculateRegisteredUserEmotionalQuotient(id));
 		registeredUserDto.setSocialQuotient(calculateRegisteredUserSocialQuotient(id));
-		registeredUserDto.setNoOfHelps((long)helpRepository.CountOfHelpsByProvidedUserId(id));
-		registeredUserDto.setNoOfNeeds((long)needRepository.CountOfNeedsByPostedUserId(id));
+		registeredUserDto.setNoOfHelps((long) helpRepository.CountOfHelpsByProvidedUserId(id));
+		registeredUserDto.setNoOfNeeds((long) needRepository.CountOfNeedsByPostedUserId(id));
 
-		
 		return Optional.of(registeredUserDto);
 	}
 
@@ -1808,7 +1792,7 @@ public class AggregateServiceImpl implements AggregateService {
 		String fileName = mediaDTO.getFileName();
 
 		// log.info("*******filename{}",fileName+current.getTime());
-		mediaDTO.setFileName(current.getTime()+fileName);
+		mediaDTO.setFileName(current.getTime() + fileName);
 
 		// log.info("***mediafilename{}",mediaDTO.getFileName());
 		mediaDTO.setUrl(path + fileName);
@@ -1816,7 +1800,7 @@ public class AggregateServiceImpl implements AggregateService {
 		log.info("*******media url{}", mediaDTO.getUrl());
 
 		Files.write(Paths.get(path + fileName), mediaDTO.getFile());
-				
+
 		Media media = mediaMapper.toEntity(mediaDTO);
 		media = mediaRepository.save(media);
 		return mediaMapper.toDto(media);
@@ -1862,71 +1846,68 @@ public class AggregateServiceImpl implements AggregateService {
 	}
 
 	// anjali
-	
-	//Code Starts: Dheeraj 
-	
+
+	// Code Starts: Dheeraj
+
 	/**
-	* Convert date from string to instant
-	*
-	* @param parsedDate in string
-	* @return the date in instant
-	*/
+	 * Convert date from string to instant
+	 *
+	 * @param parsedDate
+	 *            in string
+	 * @return the date in instant
+	 */
 	@Override
-	public Instant convertDateFromStringToInstant(String parsedDate) 
-	{
-		if(parsedDate!=null)
-		{
-			char lastChar = parsedDate.charAt(parsedDate.length()-1);
-										
-			if(lastChar == 'Z')
-			{
+	public Instant convertDateFromStringToInstant(String parsedDate) {
+		if (parsedDate != null) {
+			char lastChar = parsedDate.charAt(parsedDate.length() - 1);
+
+			if (lastChar == 'Z') {
 				Instant dateInstant = Instant.parse(parsedDate);
 				return dateInstant;
-			}
-			else
-			{
+			} else {
 				Instant dateInstant = Instant.parse(parsedDate.replace(" ", "T").concat("Z"));
 				return dateInstant;
 			}
-		}
-		else
-		{
+		} else {
 			Instant dateInstant = null;
 			return dateInstant;
 		}
 	}
 
-	//Code Ends: Dheeraj Das
-									
-	//Code Starts: Dheeraj Das
-		
+	// Code Ends: Dheeraj Das
+
+	// Code Starts: Dheeraj Das
+
 	/**
-	* Get top five registeredUser by social quotient.
-	*
-	* @param pageable the pagination information
-	* @return the list of entity
-	*/
+	 * Get top five registeredUser by social quotient.
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @return the list of entity
+	 */
 	@Override
 	public Page<RegisteredUserDTO> findTop5RegisteredUsersBySocialQuotient(Pageable pageable) {
-	log.debug("Request to get top 5 registered users by Social Quotient");									
-	return registeredUserRepository.findTop5ByOrderBySocialQuotientDesc(pageable).map(registeredUserMapper::toDto);
+		log.debug("Request to get top 5 registered users by Social Quotient");
+		return registeredUserRepository.findTop5ByOrderBySocialQuotientDesc(pageable).map(registeredUserMapper::toDto);
 	}
-						
-	//Code Ends: Dheeraj Das
-									
-	//Code Starts: Dheeraj Das
-			
+
+	// Code Ends: Dheeraj Das
+
+	// Code Starts: Dheeraj Das
+
 	/**
-	* Get top five registeredUser by emotional quotient.
-	*
-	* @param pageable the pagination information
-	* @return the list of entity
-	*/
+	 * Get top five registeredUser by emotional quotient.
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @return the list of entity
+	 */
 	@Override
 	public Page<RegisteredUserDTO> findTop5RegisteredUsersByEmotionalQuotient(Pageable pageable) {
-	log.debug("Request to get top 5 registered users by Emotional Quotient");
-	return registeredUserRepository.findTop5ByOrderByEmotionalQuotientDesc(pageable).map(registeredUserMapper::toDto);
+		log.debug("Request to get top 5 registered users by Emotional Quotient");
+		return registeredUserRepository.findTop5ByOrderByEmotionalQuotientDesc(pageable)
+				.map(registeredUserMapper::toDto);
 	}
-						
-	//Code Ends: Dheeraj Das
+
+	// Code Ends: Dheeraj Das
 }
