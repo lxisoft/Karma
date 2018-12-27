@@ -16,14 +16,11 @@
 package com.lxisoft.service.impl;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -94,8 +91,6 @@ import com.lxisoft.service.mapper.RegisteredUserMapper;
 import com.lxisoft.service.mapper.ReplyMapper;
 import com.lxisoft.service.mapper.SeverityMapper;
 import com.lxisoft.service.mapper.UserCheckMapper;
-import com.mysql.jdbc.util.Base64Decoder;
-import com.sun.mail.util.BASE64EncoderStream;
 import com.thoughtworks.xstream.core.util.Base64Encoder;
 
 /**
@@ -437,8 +432,7 @@ public class AggregateServiceImpl implements AggregateService {
 
 		List<NeedDTO> needs = page.getContent();
 
-		int count = 0;
-
+		
 		for (NeedDTO need : needs) {
 
 			log.info("*****************{}", need.getId());
@@ -547,36 +541,47 @@ public class AggregateServiceImpl implements AggregateService {
 
 			HelpDTO helpDTO = helpMapper.toDto(help);
 
+			// anjali
+
 			Page<MediaDTO> mediaDTO = mediaRepository.findAllUrlByHelpId(help.getId(), PageRequest.of(0, 100))
 					.map(mediaMapper::toDto);
-
-			List<String> imageUrls = new ArrayList<String>();
-			List<String> videoUrls = new ArrayList<String>();
-
+			
+			List<String> imageList=new ArrayList<String>();
+			List<String> videoList=new ArrayList<String>();			 
+			 
 			for (MediaDTO mediaDto : mediaDTO.getContent()) {
-
-				if (mediaDto.getExtension().contains("image")) {
-					log.info("****containcheck{}", mediaDto.getExtension().contains("image"));
-					imageUrls.add(mediaDto.getFileName());
-				} else if (mediaDto.getExtension().contains("video")) {
-					log.info("****videocontaincheck{}", mediaDto.getExtension().contains("video"));
-
-					videoUrls.add(mediaDto.getFileName());
-				} else {
-
+				
+				if (mediaDto.getFileContentType().contains("image")) {
+					
+				Base64Encoder encoder = new Base64Encoder();
+				String imageString = encoder.encode(mediaDto.getFile());
+	            
+				imageList.add(imageString);
+				
 				}
-
-				log.info("list size media url{}", imageUrls.size());
-				log.info("list size video url{}", videoUrls.size());
-
-				if (imageUrls.size() != 0) {
-					helpDTO.setImageUrls(imageUrls);
+				else if (mediaDto.getFileContentType().contains("video")) {
+					
+				Base64Encoder encoder = new Base64Encoder();
+				String videoString = encoder.encode(mediaDto.getFile());
+	            
+				videoList.add(videoString);
+				
 				}
-				if (videoUrls.size() != 0) {
-					helpDTO.setVideoUrls(videoUrls);
-				}
+						
 			}
+			
+			helpDTO.setImageMedias(imageList);
+			helpDTO.setVideoMedias(videoList);
+
 			// anjali
+			
+			
+			Date postedDate = null;
+			if (help.getTime() != null) {
+				postedDate = Date.from(helpDTO.getTime());
+				helpDTO.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
+			}
+
 
 			if (helpDTO.getApprovalStatusId() == 4) {
 				completedHelps.add(helpDTO);
@@ -1718,11 +1723,13 @@ public class AggregateServiceImpl implements AggregateService {
 
 		RegisteredUser registeredUser = registeredUserRepository.findById(id).get();
 		RegisteredUserDTO registeredUserDto = registeredUserMapper.toDto(registeredUser);
+		
 		registeredUserDto.setEmotionalQuotient(calculateRegisteredUserEmotionalQuotient(id));
 		registeredUserDto.setSocialQuotient(calculateRegisteredUserSocialQuotient(id));
+		registeredUserDto.setNoOfHelps((long)helpRepository.CountOfHelpsByProvidedUserId(id));
+		registeredUserDto.setNoOfNeeds((long)needRepository.CountOfNeedsByPostedUserId(id));
 
-		// RegisteredUser registeredUser =
-		// registeredUserRepository.save(registeredUserMapper.toEntity(registeredUserDTO));
+		
 		return Optional.of(registeredUserDto);
 	}
 
@@ -1745,7 +1752,7 @@ public class AggregateServiceImpl implements AggregateService {
 
 			registeredUserDTO.setEmotionalQuotient(0l);
 		}
-		Long pointOfHelpEq = helpRepository.findCountOfHelpsByRegisteredUserId(registeredUserId) / 3;
+		Long pointOfHelpEq = helpRepository.CountOfHelpsByProvidedUserId(registeredUserId) / 3;
 		Long pointOfPostEq = postRepository.findCountOfPostsByRegisteredUserId(registeredUserId) / 6;
 		Long emotionalQuotient = pointOfHelpEq + pointOfPostEq;
 
@@ -1772,7 +1779,7 @@ public class AggregateServiceImpl implements AggregateService {
 
 			registeredUserDTO.setSocialQuotient(0l);
 		}
-		Long pointOfHelpSq = helpRepository.findCountOfHelpsByRegisteredUserId(registeredUserId);
+		Long pointOfHelpSq = helpRepository.CountOfHelpsByProvidedUserId(registeredUserId);
 		Long pointOfPostSq = postRepository.findCountOfPostsByRegisteredUserId(registeredUserId) / 12;
 		Long socialQuotient = pointOfHelpSq + pointOfPostSq;
 
@@ -1855,5 +1862,71 @@ public class AggregateServiceImpl implements AggregateService {
 	}
 
 	// anjali
+	
+	//Code Starts: Dheeraj 
+	
+	/**
+	* Convert date from string to instant
+	*
+	* @param parsedDate in string
+	* @return the date in instant
+	*/
+	@Override
+	public Instant convertDateFromStringToInstant(String parsedDate) 
+	{
+		if(parsedDate!=null)
+		{
+			char lastChar = parsedDate.charAt(parsedDate.length()-1);
+										
+			if(lastChar == 'Z')
+			{
+				Instant dateInstant = Instant.parse(parsedDate);
+				return dateInstant;
+			}
+			else
+			{
+				Instant dateInstant = Instant.parse(parsedDate.replace(" ", "T").concat("Z"));
+				return dateInstant;
+			}
+		}
+		else
+		{
+			Instant dateInstant = null;
+			return dateInstant;
+		}
+	}
 
+	//Code Ends: Dheeraj Das
+									
+	//Code Starts: Dheeraj Das
+		
+	/**
+	* Get top five registeredUser by social quotient.
+	*
+	* @param pageable the pagination information
+	* @return the list of entity
+	*/
+	@Override
+	public Page<RegisteredUserDTO> findTop5RegisteredUsersBySocialQuotient(Pageable pageable) {
+	log.debug("Request to get top 5 registered users by Social Quotient");									
+	return registeredUserRepository.findTop5ByOrderBySocialQuotientDesc(pageable).map(registeredUserMapper::toDto);
+	}
+						
+	//Code Ends: Dheeraj Das
+									
+	//Code Starts: Dheeraj Das
+			
+	/**
+	* Get top five registeredUser by emotional quotient.
+	*
+	* @param pageable the pagination information
+	* @return the list of entity
+	*/
+	@Override
+	public Page<RegisteredUserDTO> findTop5RegisteredUsersByEmotionalQuotient(Pageable pageable) {
+	log.debug("Request to get top 5 registered users by Emotional Quotient");
+	return registeredUserRepository.findTop5ByOrderByEmotionalQuotientDesc(pageable).map(registeredUserMapper::toDto);
+	}
+						
+	//Code Ends: Dheeraj Das
 }

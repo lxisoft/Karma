@@ -36,10 +36,44 @@ public class RegisteredUserDTO implements Serializable {
     private Long happinessIndex;
 
     private Long profilePicId;
+    
+    private Long noOfHelps;
+    
+    private Long noOfNeeds;
 
     private Long idProofId;
+    
+    
 
-    public Long getId() {
+    /**
+	 * @return the noOfHelps
+	 */
+	public Long getNoOfHelps() {
+		return noOfHelps;
+	}
+
+	/**
+	 * @param noOfHelps the noOfHelps to set
+	 */
+	public void setNoOfHelps(Long noOfHelps) {
+		this.noOfHelps = noOfHelps;
+	}
+
+	/**
+	 * @return the noOfNeeds
+	 */
+	public Long getNoOfNeeds() {
+		return noOfNeeds;
+	}
+
+	/**
+	 * @param noOfNeeds the noOfNeeds to set
+	 */
+	public void setNoOfNeeds(Long noOfNeeds) {
+		this.noOfNeeds = noOfNeeds;
+	}
+
+	public Long getId() {
         return id;
     }
 

@@ -848,6 +848,29 @@ public class AggregateResource {
 	   
 	    //anjali
 
+		//Code Starts : Dheeraj Das
+	  
+	  @GetMapping("/registeredUsers/getTop5RegisteredUsersBySocialQuotient")
+	  @Timed
+	  public ResponseEntity<List<RegisteredUserDTO>> getTop5RegisteredUsersBySocialQuotient(Pageable pageable) {
+	      log.debug("REST request to get a page of RegisteredUsers{}");
+	      Page<RegisteredUserDTO> page = aggregateService.findTop5RegisteredUsersBySocialQuotient(pageable);
+	      HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/registeredUsers/getTop5RegisteredUsersBySocialQuotient/");
+	      return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+	  }
+	// Code Ends : Dheeraj Das
+	  
+	//Code Starts : Dheeraj Das
+	  
+	  @GetMapping("/registeredUsers/getTop5RegisteredUsersByEmotionalQuotient")
+	  @Timed
+	  public ResponseEntity<List<RegisteredUserDTO>> getTop5RegisteredUsersByEmotionalQuotient(Pageable pageable) {
+	      log.debug("REST request to get a page of RegisteredUsers{}");
+	      Page<RegisteredUserDTO> page = aggregateService.findTop5RegisteredUsersByEmotionalQuotient(pageable);
+	      HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/registeredUsers/getTop5RegisteredUsersByEmotionalQuotient/");
+	      return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+	  }
+	// Code Ends : Dheeraj Das
 
 
 
