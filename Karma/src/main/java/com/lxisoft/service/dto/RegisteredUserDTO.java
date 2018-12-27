@@ -43,6 +43,7 @@ public class RegisteredUserDTO implements Serializable {
 
     private Long idProofId;
     
+    private String imageMedia;
     
 
     /**
@@ -234,4 +235,12 @@ public class RegisteredUserDTO implements Serializable {
             ", idProof=" + getIdProofId() +
             "}";
     }
+
+	public String getImageMedia() {
+		return imageMedia;
+	}
+
+	public void setImageMedia(String imageMedia) {
+		this.imageMedia = imageMedia;
+	}
 }
