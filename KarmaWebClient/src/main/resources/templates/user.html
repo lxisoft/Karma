@@ -47,15 +47,18 @@
         </th:block>
     </div>
 
-    <!--user profile picture-->
+    <!--dashboard-->
     <div class="container-fluid mt-4 p-4">
         <div class="row">
+            <!--user info-->
             <div class="col-sm-9">
+
                 <div class="row">
+                    <!--profile pic-->
                     <div class="col-sm-3 offset-1 mt-3">
                         <img src="/static/images/IMG_5515.JPG" style="width:12rem;height:12rem;" alt="" class="img-fluid z-depth-1 rounded-circle">
                     </div>
-
+                    <!--personal information-->
                     <div class="col-sm-7 mt-4 mr-4">
                         <div class="row">
                             <ul class="list-group w-100">
@@ -65,120 +68,108 @@
                                 <li class="list-group-item">
                                     <p class="text-dark" th:text="${user.email}">email</p>
                                 </li>
-                                <!--                     <li class="list-group-item">PhoneNumber</li>
-                    <li class="list-group-item"></li>
-                    <li class="list-group-item">GHJGGHJ</li> -->
-                            </ul>
+
                         </div>
-
-                        <!-- <div class="row text-center"> -->
-                        <!--                     <div class="col-sm-12">
-                        <th:block th:with="color= ${(user.socialQuotient >0 && user.socialQuotient <= 5)? 'danger-color-dark': (user.socialQuotient >5 && user.socialQuotient <= 10)? 'warning-color-dark':(user.socialQuotient >10 && user.socialQuotient <= 15)? 'info-color-dark':'success-color-dark'}">
-                            <div class="progress md-progress mt-1 mx-2 w-25 ml-auto float-right" style="height: 10px;">
-                                <div class="progress-bar" th:classappend="${color}" role="progressbar" th:style="'width:'+ ${user.socialQuotient}+'%;'"
-                                    style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"
-                                    th:text="${user.socialQuotient}">25%
-                                    genuine</div>
-                            </div>
-
-                        </th:block>
-                        <th:block th:with="color= ${(user.emotionalQuotient >0 && user.emotionalQuotient <= 5)? 'danger-color-dark': (user.emotionalQuotient >5 && user.emotionalQuotient <= 10)? 'warning-color-dark':(user.emotionalQuotient >10 && user.emotionalQuotient <= 15)? 'info-color-dark':'success-color-dark'}">
-                            <div class="progress md-progress mt-1 w-25 mx-2 ml-auto float-right" style="height: 10px;">
-                                <div class="progress-bar" th:classappend="${color}" role="progressbar" th:style="'width:'+ ${user.emotionalQuotient}+'%;'"
-                                    style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"
-                                    th:text="${user.emotionalQuotient}">25%
-                                    genuine</div>
-                            </div>
-
-                        </th:block>
-                    </div> -->
-
                     </div>
-                </div>
-                <div class="row mt-4">
-                    <div class="col-sm-7 offset-4 border border-warning">
-                        <div class="row">
-                            <div class="col-sm-5 text-center warning-color-dark rounded m-4 p-2">
-                                <h5 class="text-white">Social Intelligence</h4>
-                                    <h4 class="display-4 text-white">32</h4>
+                    <!--dashboard tile-->
+                    <div class="row mt-4">
+
+                        <div class="col-sm-7 offset-4 border border-warning">
+                            <!--social quotient-->
+                            <div class="row">
+                                <div class="col-sm-5 text-center warning-color-dark rounded m-4 p-2">
+                                    <h5 class="text-white">Social Intelligence</h4>
+                                        <h4 class="display-4 text-white" th:text="${user.socialQuotient}">32</h4>
+                                </div>
+                                <!--emotional quotient-->
+                                <div class="col-sm-5 text-center primary-color rounded m-4 p-2">
+                                    <h5 class="text-white">Emotional Intelligence</h5>
+                                    <h4 class="display-4 text-white" th:text="${user.emotionalQuotient}">32</h4>
+                                </div>
                             </div>
-                            <div class="col-sm-5 text-center primary-color rounded m-4 p-2">
-                                <h5 class="text-white">Emotional Intelligence</h5>
-                                <h4 class="display-4 text-white">32</h4>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-5 text-center success-color rounded m-4 p-2">
-                                <h5 class="text-white">Helped</h4>
-                                    <h4 class="display-4 text-white">32</h4>
-                                    <h5 class="text-white">people</h4>
-                            </div>
-                            <div class="col-sm-5 text-center danger-color rounded m-4 p-2">
-                                <h6 class="text-white">Asked for help</h6>
-                                <h6 class="display-4 text-white">32</h6>
-                                <h5 class="text-white">times</h5>
+                            <div class="row">
+                                <!--No of helps-->
+                                <div class="col-sm-5 text-center success-color rounded m-4 p-2">
+                                    <h5 class="text-white">Helped</h4>
+                                        <h4 class="display-4 text-white" th:text="${user.noOfHelps}">32</h4>
+                                        <h5 class="text-white">people</h4>
+                                </div>
+                                <!--No of needs-->
+                                <div class="col-sm-5 text-center danger-color rounded m-4 p-2">
+                                    <h6 class="text-white">Asked for help</h6>
+                                    <h6 class="display-4 text-white" th:text="${user.noOfNeeds}">32</h6>
+                                    <h5 class="text-white">times</h5>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="ml-4 col-sm-2" style="height:auto;">
-                <div class="row">
-                    <div class="col-sm-12 border ml-2 mt-4 p-4 default-color rounded offset-1">
-                        <h4 class="text-center">Top 5</h4>
-                        <div class="row">
+                <div class="ml-4 col-sm-2" style="height:auto;">
+                    <div class="row">
+                        <div class="col-sm-12 border ml-2 mt-4 p-4 default-color rounded offset-1">
+                            <h4 class="text-center">Top 5 persons</h4>
+                            <th:block th:each="person:${top5EmotionalIntelligentPeople}">
+                                <div class="row" th:remove="all">
 
-                            <img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;" alt="" class="img-fluid z-depth-1 rounded-circle"><a
-                                href="#" class="ml-1 h6 text-white">user
-                                1</a></div>
-                        <div class="row"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;" alt=""
-                                class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
-                                1</a></div>
-                        <div class="row"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;" alt=""
-                                class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
-                                1</a></div>
-                        <div class="row"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;" alt=""
-                                class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
-                                1</a></div>
-                        <div class="row"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;" alt=""
-                                class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
-                                1</a></div>
-                        <div class="row"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;" alt=""
-                                class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
-                                1</a></div>
+                                    <img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;" alt=""
+                                        class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
+                                        1</a></div>
+                                <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
+                                        alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
+                                        1</a></div>
+                                <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
+                                        alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
+                                        1</a></div>
+                                <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
+                                        alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
+                                        1</a></div>
+                                <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
+                                        alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
+                                        1</a></div>
 
+
+                                <div class="row"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
+                                        alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" th:text="${person.firstName+' '+person.lastName}"
+                                        class="ml-1 h6 text-white">user
+                                        1</a></div>
+                            </th:block>
+                        </div>
                     </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-sm-12 border ml-2 mt-4 p-4 secondary-color rounded offset-1">
-                        <h4 class="text-center">Top 5</h4>
-                        <div class="row">
+                    <div class="row">
+                        <div class="col-sm-12 border ml-2 mt-4 p-4 secondary-color rounded offset-1">
+                            <h4 class="text-center">Top 5 leaders</h4>
+                            <th:block th:each="person:${top5EmotionalIntelligentPeople}">
+                                <div class="row">
 
-                            <img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;" alt="" class="img-fluid z-depth-1 rounded-circle"><a
-                                href="#" class="ml-1 h6 text-white">user
-                                1</a></div>
-                        <div class="row"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;" alt=""
-                                class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
-                                1</a></div>
-                        <div class="row"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;" alt=""
-                                class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
-                                1</a></div>
-                        <div class="row"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;" alt=""
-                                class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
-                                1</a></div>
-                        <div class="row"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;" alt=""
-                                class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
-                                1</a></div>
-                        <div class="row"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;" alt=""
-                                class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
-                                1</a></div>
+                                    <img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;" alt=""
+                                        class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white"
+                                        th:text="${person.firstName+' '+person.lastName}">user
+                                        1</a></div>
 
+
+                                <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
+                                        alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
+                                        1</a></div>
+                                <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
+                                        alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
+                                        1</a></div>
+                                <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
+                                        alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
+                                        1</a></div>
+                                <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
+                                        alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
+                                        1</a></div>
+                                <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
+                                        alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
+                                        1</a></div>
+                            </th:block>
+
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 </body>
 
 </html>
