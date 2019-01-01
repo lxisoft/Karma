@@ -16,7 +16,7 @@ Karma/.cache-loader/*
 ######################
 # Resources
 ######################
-#Karma/src/main/resources/static/uploadedfiles/
+Karma/src/main/resources/static/uploadedfiles/
 ######################
 # SASS
 ######################
