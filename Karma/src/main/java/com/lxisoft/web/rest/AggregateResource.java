@@ -849,7 +849,14 @@ public class AggregateResource {
 	    //anjali
 
 		//Code Starts : Dheeraj Das
-	  
+	   /**
+		 * GET /registeredUsers : get all the registeredUsers by socialQuotient.
+		 *
+		 * @param pageable
+		 *            the pagination information
+		 * @return the string value
+	     * @throws IOException 
+		 */
 	  @GetMapping("/registeredUsers/getTop5RegisteredUsersBySocialQuotient")
 	  @Timed
 	  public ResponseEntity<List<RegisteredUserDTO>> getTop5RegisteredUsersBySocialQuotient(Pageable pageable) {
@@ -862,6 +869,15 @@ public class AggregateResource {
 	  
 	//Code Starts : Dheeraj Das
 	  
+
+	  /**
+		 * GET /registeredUsers : get all the registeredUsers by emotionalQuotient.
+		 *
+		 * @param pageable
+		 *            the pagination information
+		 * @return the string value
+	     * @throws IOException 
+		 */
 	  @GetMapping("/registeredUsers/getTop5RegisteredUsersByEmotionalQuotient")
 	  @Timed
 	  public ResponseEntity<List<RegisteredUserDTO>> getTop5RegisteredUsersByEmotionalQuotient(Pageable pageable) {
@@ -872,7 +888,22 @@ public class AggregateResource {
 	  }
 	// Code Ends : Dheeraj Das
 
-
+	  /**
+		 * GET /registeredUsers : get all the registeredUsers by name.
+		 *
+		 * @param pageable
+		 *            the pagination information,name to search
+		 * @return the string value
+	     * @throws IOException 
+		 */
+	  @GetMapping("/registeredUsers/getAllRegisteredUsersByFirstName/{name}")
+	  @Timed
+	  public ResponseEntity<List<RegisteredUserDTO>> getAllRegisteredUsersByFirstName(Pageable pageable,@PathVariable String name) {
+	      log.debug("REST request to get a page of RegisteredUsers by name{}");
+	      Page<RegisteredUserDTO> page = aggregateService.findAllRegisteredUsersByFirstNameStartingWith(pageable,name);
+	      HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/registeredUsers/getAllRegisteredUsersByFirstName/");
+	      return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+	  }
 
 
 }

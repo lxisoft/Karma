@@ -577,6 +577,13 @@ public interface AggregateService {
 				
 			//Code Ends : Dheeraj Das
 			  
-
+				/**
+			     * Get registeredUsers by first name.
+			     *
+			     * @param pageable the pagination information
+			     * @return the list of entity
+			     */
+				Page<RegisteredUserDTO> findAllRegisteredUsersByFirstNameStartingWith(Pageable pageable,String name);
+				
 
 }

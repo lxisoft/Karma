@@ -27,4 +27,8 @@ public interface RegisteredUserRepository extends JpaRepository<RegisteredUser, 
 	Page<RegisteredUser> findTop5ByOrderByEmotionalQuotientDesc(Pageable pageable);
 
 	//Code Starts : Dheeraj Das
+	
+	Page<RegisteredUser> findAllRegisteredUsersByFirstNameStartingWith(Pageable pageable,String name);
+		
+	
 }

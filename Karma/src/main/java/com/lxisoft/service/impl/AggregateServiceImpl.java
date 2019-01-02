@@ -1919,4 +1919,25 @@ public class AggregateServiceImpl implements AggregateService {
 	}
 
 	// Code Ends: Dheeraj Das
+	
+
+	/**
+	 * Get registeredUser by first name.
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @return the list of entity
+	 */
+	@Override
+	public Page<RegisteredUserDTO> findAllRegisteredUsersByFirstNameStartingWith(Pageable pageable,String name) {
+		// TODO Auto-generated method stub
+		
+		log.debug("Request to get registered users by first name");
+		return registeredUserRepository.findAllRegisteredUsersByFirstNameStartingWith(pageable,name)
+				.map(registeredUserMapper::toDto);
+	
+		
+	}
+
+	
 }
