@@ -178,14 +178,24 @@
 												</div>
 											</th:block>
 
-											<th:block th:if="${need.imageMedias != null}" th:each="imageMedia,index : ${need.imageMedias}">
+											 <th:block th:if="${need.imageMedias != null}" th:each="imageMedia,index : ${need.imageMedias}">
 												<div class="col-md-12 mb-3">
 
 													<img src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" th:src="${'data:image/jpeg;base64,'+imageMedia}"
 													 class="img-fluid z-depth-1" alt="Responsive image">
 
 												</div>
-											</th:block>
+											</th:block>  
+											
+									<!-- <th:block th:if="${need.imageMedias != null}" th:each="imageMedia,index : ${need.imageMedias}"> 
+										<div class="col-md-12 mb-3">
+
+										<img width="600" height="400" src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" th:src="${'data:image/jpeg;base64,'+imageMedia}"
+													  class="img-fluid z-depth-1" alt="Responsive image">
+
+										</div>
+									</th:block>  -->
+											 
 
 											<div class="row" th:remove="all">
 
