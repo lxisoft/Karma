@@ -16,8 +16,6 @@
 package com.lxisoft.service.impl;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -33,7 +31,6 @@ import javax.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -183,8 +180,8 @@ public class AggregateServiceImpl implements AggregateService {
 	@Autowired
 	private JavaMailSender sender;
 
-	@Value("${upload.path}")
-	private String path;
+	/*@Value("${upload.path}")
+	private String path;*/
 
 	/**
 	 * Save a need.
@@ -1808,12 +1805,10 @@ public class AggregateServiceImpl implements AggregateService {
 		// log.info("*******filename{}",fileName+current.getTime());
 		mediaDTO.setFileName(current.getTime() + fileName);
 
-		// log.info("***mediafilename{}",mediaDTO.getFileName());
+		/*log.info("***mediafilename{}",mediaDTO.getFileName());
 		mediaDTO.setUrl(path + fileName);
 
-		log.info("*******media url{}", mediaDTO.getUrl());
-
-		Files.write(Paths.get(path + fileName), mediaDTO.getFile());
+		Files.write(Paths.get(path + fileName), mediaDTO.getFile()); */
 
 		Media media = mediaMapper.toEntity(mediaDTO);
 		media = mediaRepository.save(media);

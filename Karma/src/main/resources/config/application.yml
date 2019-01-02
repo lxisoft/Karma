@@ -176,8 +176,8 @@ jhipster:
         license:
         license-url:
 
-upload:
-  path: src/main/resources/static/uploadedfiles/
+#upload:
+ # path: src/main/resources/static/uploadedfiles/
 
 # ===================================================================
 # Application specific properties
