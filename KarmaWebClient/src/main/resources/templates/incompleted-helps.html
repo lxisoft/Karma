@@ -6,6 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 	<title>Pending requests</title>
+	<link rel="stylesheet" href="/static/css/ckin.css" th:href="@{/css/ckin.css}">
 	<!-- Font Awesome -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<!-- Bootstrap core CSS -->
@@ -61,21 +62,21 @@
 								
 								<th:block th:if="${help.videoMedias != null}" th:each="videoMedia,index : ${help.videoMedias}">
 												<div class="col-md-12 mb-3">
+													<video th:src="${'data:video/mp4;base64,'+videoMedia}" data-ckin="default" data-color="#34B4E3" data-overlay="1"
+													 data-title="The curious case of Chameleon..."></video>
 
-													<video width="600" height="400" controls="controls" th:src="${'data:video/mp4;base64,'+videoMedia}">
 
-													</video>
 												</div>
 											</th:block>
 
-											<th:block th:if="${help.imageMedias != null}" th:each="imageMedia,index : ${help.imageMedias}"> 
+											 <th:block th:if="${help.imageMedias != null}" th:each="imageMedia,index : ${help.imageMedias}">
 												<div class="col-md-12 mb-3">
 
-													<img width="600" height="400" src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" th:src="${'data:image/jpeg;base64,'+imageMedia}"
-													  class="img-fluid z-depth-1" alt="Responsive image">
+													<img src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" th:src="${'data:image/jpeg;base64,'+imageMedia}"
+													 class="img-fluid z-depth-1" alt="Responsive image">
 
 												</div>
-											</th:block>
+											</th:block>  
 								
 							</th:block>
 
@@ -108,6 +109,11 @@
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
 	<!-- MDB core JavaScript -->
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.11/js/mdb.min.js"></script>
+	<!-- Script file -->
+	<script type="text/javascript" th:src="|/js/karma.js|" src="/static/js/karma.js"></script>
+	<script type="text/javascript" th:src="|/js/ckin.js|" src="/static/js/ckin.js"></script>
+	
+
 </body>
 
 </html>
