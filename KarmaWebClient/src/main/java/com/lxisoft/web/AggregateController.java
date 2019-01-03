@@ -795,5 +795,54 @@ public class AggregateController {
 
 		return "login";
 	}
+	
+	/*
+	@GetMapping("/registeredUsers/searchByFirstName")
+    public String getUser(Model model){
+        model.addAttribute("registeredUser", new RegisteredUserDTO());
+        return "searchByFirstName";
+    }*/
+	
+	@ModelAttribute("registeredUser")
+	public RegisteredUserDTO createModel() {
+	    return new RegisteredUserDTO();
+	}
+	
+	/**
+	 * GET /registeredUsers/searchByFirstName : get all the users by name
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @return the string value
+	 */
+	@GetMapping("/registeredUsers/searchByFirstName")
+	@Timed
+	public String searchByFirstName(Pageable pageable, @ModelAttribute("registeredUser") RegisteredUserDTO registeredUser, BindingResult result,Model model) {
 
+		log.debug("request to get a page of users by name {}", registeredUser.getFirstName());
+
+		List<RegisteredUserDTO> registeredUsers=aggregateResourceApi.getAllRegisteredUsersByFirstNameUsingGET(registeredUser.getFirstName(), null, null, null, null, null, null, null,
+				null, null, null).getBody();
+		
+		model.addAttribute("registeredUsers", registeredUsers);
+
+		return "user-search-result";
+	}
+	
+
+	/*@GetMapping("/registeredUsers/searchByFirstName")
+	@Timed
+	public String searchByFirstName(Pageable pageable, @RequestParam(value = "searchName", required = false) String name,Model model) {
+
+		log.debug("request to get a page of users by name {}", name);
+
+		List<RegisteredUserDTO> registeredUsers=aggregateResourceApi.getAllRegisteredUsersByFirstNameUsingGET(name, null, null, null, null, null, null, null,
+				null, null, null).getBody();
+		
+		model.addAttribute("registeredUsers", registeredUsers);
+
+		return "home";
+	}
+*/
+	
 }

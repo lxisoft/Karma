@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>User</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.11/css/mdb.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="pb-4" th:insert="home :: navigation(nav1='',nav2='',nav3='',nav4='active')">
+        <!-- navigation bar on top -->
+        <th:block th:with="nav1='active',nav2='',nav3=''">
+            <nav class="navbar fixed-top navbar-expand-lg navbar-dark info-color scrolling-navbar" th:fragment="navigation(nav1,nav2,nav3)">
+                <a class="navbar-brand" th:href="@{/home/approved}"><strong>Karma</strong></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item" th:classappend="${nav1}"><a class="nav-link" th:href="@{/home/approved}">Home
+                            </a></li>
+                        <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${nav2}"><a class="nav-link"
+                                th:href="@{/home/pending}">Unapproved
+                                needs</a></li>
+                        <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${nav3}"><a class="nav-link"
+                                th:href="@{/helps/incompleted}">Incomplete
+                                helps</a></li>
+                        <li class="nav-item" th:classappend="${nav3}"><a class="nav-link" th:href="@{/user/1}">Profile</a></li>
+                    </ul>
+                    <ul class="navbar-nav nav-flex-icons">
+                        <li class="nav-item"><a class="nav-link"><i class="fa fa-facebook"></i></a></li>
+                        <li class="nav-item"><a class="nav-link"><i class="fa fa-twitter"></i></a></li>
+                        <li class="nav-item"><a class="nav-link"><i class="fa fa-instagram"></i></a></li>
+                    </ul>
+                </div>
+            </nav>
+        </th:block>
+    </div>
+
+    <!--search result-->
+    <div class="container-fluid mt-4 p-4">
+        <div class="row">
+            <!--user info-->
+            <div class="col-sm-9">
+	<!--  -->
+		
+         				<div th:each="registeredUser : ${registeredUsers}" class="row my-3">
+					<div class="card" style="width:100%">
+						<div class="card-body">
+							
+							<h5 class="card-title mb-2 text-info" th:text="${registeredUser.firstName}">FirstName</h5>
+	
+						<p class="card-subtitle mb-2 text-muted small mb-4 mt-1" th:text="${registeredUser.email}">Email</p>
+	
+						</div>
+					</div>
+				</div>      
+
+<!--  -->
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

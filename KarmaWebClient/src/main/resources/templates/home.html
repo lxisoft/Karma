@@ -35,6 +35,21 @@
 						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${nav3}"><a class="nav-link" th:href="@{/helps/incompleted}">Incomplete
 								helps</a></li>
 						<li class="nav-item"><a class="nav-link" th:href="@{/registered-users/1}">Profile</a></li>
+						
+						<!-- Search form -->
+				<!-- 		<form class="form-inline active-purple-8" th:action="@{/registeredUsers/searchByFirstName}" th:object="${registeredUser}" th:method="get">
+ 						 <input class="form-control form-control-sm mr-3 w-75" name="searchName" type="text" placeholder="Search" aria-label="Search"  th:field="${registeredUser.firstName}">
+ 						 <i class="fas fa-search" aria-hidden="true"></i>
+ 						 
+ 							</form>   -->
+ 							
+ 							<!-- Search form -->
+						<form class="form-inline " th:action="@{/registeredUsers/searchByFirstName}" th:object="${registeredUser}" th:method="get">
+  							<input class="form-control form-control-sm mr-3 w-75" name="searchName" type="text" placeholder="Search" aria-label="Search" th:field="${registeredUser.firstName}">
+  							
+  							<i class="fas fa-search" aria-hidden="true"></i>
+						</form>
+						
 					</ul>
 					<ul class="navbar-nav nav-flex-icons">
 						<li class="nav-item">
@@ -183,19 +198,8 @@
 
 													<img src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" th:src="${'data:image/jpeg;base64,'+imageMedia}"
 													 class="img-fluid z-depth-1" alt="Responsive image">
-
 												</div>
-											</th:block>  
-											
-									<!-- <th:block th:if="${need.imageMedias != null}" th:each="imageMedia,index : ${need.imageMedias}"> 
-										<div class="col-md-12 mb-3">
-
-										<img width="600" height="400" src="https://mdbootstrap.com/img/Photos/Slides/img%20(137).jpg" th:src="${'data:image/jpeg;base64,'+imageMedia}"
-													  class="img-fluid z-depth-1" alt="Responsive image">
-
-										</div>
-									</th:block>  -->
-											 
+											</th:block> 
 
 											<div class="row" th:remove="all">
 

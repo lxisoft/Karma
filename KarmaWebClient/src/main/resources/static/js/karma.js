@@ -241,3 +241,4 @@ function getCurrentTime() {
     //console.log("getCurrentTime()" + year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds);
     return year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
 }
+
