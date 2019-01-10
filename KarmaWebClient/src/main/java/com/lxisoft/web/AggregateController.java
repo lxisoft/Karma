@@ -603,6 +603,7 @@ public class AggregateController {
 			@RequestParam(required = false, defaultValue = "false") boolean eagerload,
 			@PathVariable(value = "id") Long id, Model model) {
 		log.debug("request to get a page of Comments");
+		log.info("****id{}",id);
 
 		List<String> dateArray = new ArrayList<String>();
 		dateArray.add("date,desc");

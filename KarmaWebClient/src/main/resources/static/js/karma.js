@@ -62,19 +62,21 @@ function viewComments(id) {
      
     if ($(element).data("checkedneedid") != null) {
         commentType = "Need";
-        $('#comments-section-' + id).load('/comments/getAllCommentsByNeedId' + id);
+        $('#comments-section-' + id).load('/comments/getAllCommentsByNeedId/' + id);
 
     }
     else if ($(element).data("checkedhelpid") != null) {
         commentType = "Help";
-        $('#comments-section-' + id).load('/comments/getAllCommentsBy' + commentType + 'Id/' + id);
+      //  $('#comments-section-' + id).load('/comments/getAllCommentsBy' + commentType + 'Id/' + id);
+        $('#comments-section-' + id).load('/comments/getAllCommentsByHelpId/' + id);
 
     }
-    else {
+   /* else {
         commentType = "Post";
-        $('#comments-section-' + id).load('/comments/getAllCommentsBy' + commentType + 'Id/' + id);
+       // $('#comments-section-' + id).load('/comments/getAllCommentsBy' + commentType + 'Id/' + id);
+        $('#comments-section-' + id).load('/comments/getAllCommentsByPostId/' + id);
 
-    }
+    }*/
  //   $('#comments-section-' + id).load('/comments/getAllCommentsBy' + commentType + 'Id/' + id);
     $('#comments-section-' + id).show();
     /* console.log(getCurrentTime()); */
