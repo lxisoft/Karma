@@ -4,8 +4,10 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="_csrf" th:content="${_csrf.token}" />
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 	<title>Need</title>
+	<link rel="stylesheet" href="/static/css/ckin.css" th:href="@{/css/ckin.css}">
 	<!-- Font Awesome -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<!-- Bootstrap core CSS -->
@@ -100,7 +102,10 @@
 	<!-- MDB core JavaScript -->
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.11/js/mdb.min.js"></script>
 	<!-- Script file -->
-	<script type="text/javascript" th:src="|/karma.js|" src="static/karma.js"></script>
+	<script type="text/javascript" th:src="|/js/karma.js|" src="/static/js/karma.js"></script>
+	<script type="text/javascript" th:src="|/js/ckin.js|" src="/static/js/ckin.js"></script>
+	
+	
 </body>
 
 </html>

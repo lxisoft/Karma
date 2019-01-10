@@ -1,7 +1,7 @@
 function markGenuine(needId) {
     $.ajax({
         type: 'POST',
-        url: '/user-checks/markingGenuineness',
+        url: '/user-checks/markingGenuineness',  
         headers: {
             'X-CSRF-TOKEN': $("input[name='_csrf']").val()
         },
@@ -58,16 +58,24 @@ function viewComments(id) {
     var element = "#comment-data-" + id;
     var commentType;
 
+   console.log("element: " + element + ' ' + $(element).attr("checkedNeedId"));
+     
     if ($(element).data("checkedneedid") != null) {
         commentType = "Need";
+        $('#comments-section-' + id).load('/comments/getAllCommentsByNeedId' + id);
+
     }
     else if ($(element).data("checkedhelpid") != null) {
         commentType = "Help";
+        $('#comments-section-' + id).load('/comments/getAllCommentsBy' + commentType + 'Id/' + id);
+
     }
     else {
         commentType = "Post";
+        $('#comments-section-' + id).load('/comments/getAllCommentsBy' + commentType + 'Id/' + id);
+
     }
-    $('#comments-section-' + id).load('/comments/getAllCommentsBy' + commentType + 'Id/' + id);
+ //   $('#comments-section-' + id).load('/comments/getAllCommentsBy' + commentType + 'Id/' + id);
     $('#comments-section-' + id).show();
     /* console.log(getCurrentTime()); */
 }

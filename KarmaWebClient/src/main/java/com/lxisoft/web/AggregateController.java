@@ -362,7 +362,7 @@ public class AggregateController {
 		log.info("******inside getHelp{}",helpDTO.getDescription());
 		model.addAttribute("help", helpDTO);
 
-		return "completed-helps::help";
+		return "incompleted-helps::help";
 	}
 	
 	/**
@@ -525,7 +525,8 @@ public class AggregateController {
 
 		model.addAttribute("needs", needs);
 
-		return "home::c";
+		return "home::comments";
+		//return "home";
 	}
 
 	/**

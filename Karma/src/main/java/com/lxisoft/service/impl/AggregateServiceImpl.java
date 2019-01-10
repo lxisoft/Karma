@@ -217,6 +217,7 @@ public class AggregateServiceImpl implements AggregateService {
 
 		feedDto.setType("NeedPostAfterApproval");
 		feedDto.setReferenceId(need.getId());
+		feedDto.setDate(need.getDate());
 		// feedDto.setRegisteredUserId(need.getPostedUser().getId());
 
 		saveFeed(feedDto);
@@ -787,6 +788,7 @@ public class AggregateServiceImpl implements AggregateService {
 
 		feedDto.setType("HelpCompleted");
 		feedDto.setReferenceId(help.getId());
+		feedDto.setDate(help.getTime());
 		// feedDto.setRegisteredUserId(help.getProvidedUser().getId());
 
 		log.info("******feedtype{}", feedDto.getType());
@@ -1161,6 +1163,7 @@ public class AggregateServiceImpl implements AggregateService {
 
 		feedDto.setType("Replied");
 		feedDto.setReferenceId(reply.getId());
+		feedDto.setDate(reply.getDate());
 
 		saveFeed(feedDto);
 
@@ -1235,6 +1238,8 @@ public class AggregateServiceImpl implements AggregateService {
 		// anjali to post feed after comments on help, need and Post
 
 		FeedDTO feedDto = new FeedDTO();
+		
+		feedDto.setDate(comment.getDate());
 
 		if (commentDTO.getHelpId() != null) {
 			feedDto.setType("HelpComment");
@@ -1625,13 +1630,19 @@ public class AggregateServiceImpl implements AggregateService {
 
 				oneFeed.setNeed(true);
 
+				log.info("feed test****{}",oneFeed.isNeed());
 				feedList.add(oneFeed);
 			} else if (oneFeed.getType().contains("Help")) {
 
 				oneFeed.setHelp(true);
 
+				log.info("feed test****{}",oneFeed.isNeed());
+				
 				feedList.add(oneFeed);
 			}
+			
+			log.info("feed test list size****{}",feedList.size());
+			
 		}
 
 		Page<FeedDTO> feed = new PageImpl<FeedDTO>(feedList, pageable, feedList.size());

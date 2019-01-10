@@ -269,8 +269,8 @@
 										panel title and make up the bulk of the panel's content.</p>
 
 									<div class="text-center col-xs-5 border-bottom border-light">
-										<a class="small muted-text" onclick="$('#comments').show();" th:onclick="|viewComments(${need.id});|" th:text="${need.noOfComments+' comments'}">0
-											Comments</a>
+										<a class="small muted-text" onclick="$('#comments').show();" th:onclick="|viewComments(${need.id})|" th:text="${need.noOfComments+' comments'}">0
+											Comments</a>									
 										<a class="small muted-text ml-4" th:text="${need.noOfHelps}+' people helped'">8
 											people helped</a>
 									</div>
@@ -278,27 +278,28 @@
 
 								<!-- comments section -->
 								<div th:object="${need}" id="comments-section" th:id="${'comments-section-'+need.id}" th:with="checkedNeedId=${need.id},checkedHelpId=null,postId=null">
-									<div th:id="*{'comment-data-'+id}" data-th-attr="data-checkedNeedId=${checkedNeedId},data-checkedHelpId=${checkedHelpId},data-postId=${postId}"
+									<div th:id="${'comment-data-'+need.id}" data-th-attr="data-checkedNeedId=${checkedNeedId},data-checkedHelpId=${checkedHelpId},data-postId=${postId}"
 									 th:fragment="comment-section(checkedNeedId,checkedHelpId,postId)">
 										<div th:if="${comments != null}" style="display: none;" th:style="|display:block;|">
 
 											<!-- comment form -->
-											<div class="md-form mt-0 mx-3 form-info" th:if="${comments != null}" id="comment-box" th:id="'comment-box-'+*{id}"
+											<div class="md-form mt-0 mx-3 form-info" th:if="${comments != null}" id="comment-box" th:id="'comment-box-'+${need.id}"
 											 th:style="|display: block;|">
 												<p th:text="|data-checkedNeedId=${checkedNeedId},data-checkedHelpId=${checkedHelpId},data-postId=${postId}|"></p>
 												<form>
-													<textarea type="text" id="comment-box-text" th:id="|comment-box-text-*{id}|" class="md-textarea form-control d-inline w-75"
+													<textarea type="text" id="comment-box-text" th:id="|comment-box-text-${need.id}|" class="md-textarea form-control d-inline w-75"
 													 rows="1" th:name="message"></textarea>
 													<label for="comment-box">Comment here</label>
 													<input type=hidden th:name="dateInString" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm:ss')}">
-													<span class="input-group-btn"><button type="button" class="btn btn-outline-info btn-sm" th:onclick="|addComment(*{id});|">Add
+													<span class="input-group-btn"><button type="button" class="btn btn-outline-info btn-sm" th:onclick="|addComment(${need.id});|">Add
 															comment</button></span>
 												</form>
 											</div>
 
 											<!-- view all comments -->
 
-											<div th:id="${'comments-'+needId}">
+											<!-- <div th:id="${'comments-'+needId}">  -->
+											<div th:id="${'comments-section-'+needId}">
 												<p class="text-primary text-center mt-5 d-inline ml-5 mb-4"><span th:text="${(#lists.size(comments)>0)?'All comments':'No comments'}">All
 														comments</span><span class="ml-2"><i class="fa fa-angle-up mr-5 mt-1 text-dark" aria-hidden="true"
 														 onclick="$('#comments-section').hide();" th:onclick="|$('#comments-section-*{id}').hide();|"></i></span></p>
@@ -443,10 +444,8 @@
 	</div>
 	</div>
 	<!-- SCRIPTS -->
-	<!-- JQuery -->
-	<!-- JQuery -->
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="http://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+	 <!-- JQuery -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
 	<!-- Bootstrap tooltips -->
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
 	<!-- Bootstrap core JavaScript -->
