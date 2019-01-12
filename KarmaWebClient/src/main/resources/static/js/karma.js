@@ -234,7 +234,6 @@ function likeReply(replyId) {
         }
     });
 }
-
 function getCurrentTime() {
     var date = new Date();
     var year = date.getFullYear();
@@ -251,4 +250,37 @@ function getCurrentTime() {
     //console.log("getCurrentTime()" + year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds);
     return year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
 }
+function divToggle() {
+	  var content = "#feed-need-section-"+feed.referenceId;
+	  if (content.style.display === "none") {
+	    content.style.display = "block";
+	  } else {
+	    content.style.display = "none";
+	  }
+	}
+function viewFeed(id, feedId) {
+    console.log("view comments worked with needId: " + id);
+    var element = "#feed-data-" + id;
+    
+    console.log("viewfeed inside: " + element + ' ' + $(element).attr("data-need"));
+    
+    console.log("feed id"+feedId);
+    
+    if ($(element).data("need") === true) {
+       
+    	$('#feed-section-' + feedId).load('/needs/' + id);
+    	  console.log("inside need");
+          
 
+    }
+    else if ($(element).data("help") === true) {
+       
+    	$('#feed-section-' + feedId).load('/helps/getHelpById/' + id);
+    	  console.log("inside help");
+          
+    }
+    else{
+    	
+    }
+   $('#feed-section-' + feedId).show();
+}
