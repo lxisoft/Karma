@@ -284,3 +284,6 @@ function viewFeed(id, feedId) {
     }
    $('#feed-section-' + feedId).show();
 }
+function divToggle() {
+	$(".card-feed").hide();
+}

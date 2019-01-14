@@ -55,7 +55,7 @@
 
 							<p class="card-subtitle mb-2 text-muted small mb-3 mt-1" th:text="'posted '+${help.time}">posted just now</p>
 
-						<div th:fragment="help">
+						<div class="card" th:fragment="help">
 						
 							<th:block th:object="${help}">
 								<!-- <div th:replace="home :: attachments">
@@ -69,7 +69,7 @@
 
 
 												</div>
-											</th:block>
+									</th:block>
 
 											 <th:block th:if="${help.imageMedias != null}" th:each="imageMedia,index : ${help.imageMedias}">
 												<div class="col-md-12 mb-3">
@@ -96,6 +96,7 @@
 							<th:block th:object="${help}" th:insert="pending-requests :: change-status(firstButton='Mark as helped',secondButton='Decline',firstStatus='completed',secondStatus='incompleted',action='/helps')">
 
 							</th:block>
+								
 							</div>
 						</div>
 					</div>

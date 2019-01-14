@@ -56,15 +56,17 @@
 						<h5 class="card-title" th:text="${feed.title}">Feed</h5>
 						<p th:text="'posted on '+${feed.date}" class="card-subtitle mb-2 text-muted small mb-3 mt-1">12 minutes ago</p>
 						
-							<div th:id="'feed-data-'+${feed.referenceId}" data-th-attr="data-need=${feed.need},data-help=${feed.help}" class="text-center col-xs-5 border-bottom border-light" >
+							<div th:id="'feed-data-'+${feed.referenceId}" data-th-attr="data-need=${feed.need},data-help=${feed.help}" class="content text-center col-xs-5 border-bottom border-light" >
 								<a th:onclick="|viewFeed('${feed.referenceId}','${feed.id}');|">click to view details</a>
 								
+								 <a th:onclick="|divToggle();|">view less</a>
+							
 							</div>
-												
-							  <div th:id="${'feed-section-'+feed.id}">
+									
+							  <div class="card-feed" th:id="${'feed-section-'+feed.id}">
+							  	
 							 </div> 
 						
-
 						</div>
 						
 					</div>
