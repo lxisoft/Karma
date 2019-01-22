@@ -270,7 +270,7 @@ function viewFeed(id, feedId) {
        
     	$('#feed-section-' + feedId).load('/needs/' + id);
     	  console.log("inside need");
-          
+    	 
 
     }
     else if ($(element).data("help") === true) {
@@ -287,3 +287,14 @@ function viewFeed(id, feedId) {
 function divToggle() {
 	$(".card-feed").hide();
 }
+
+/*function divToggle() {
+	$(document).ready(function () {
+	    $(".card-feed").hide();
+	    $(".content").on("click", function () {
+	        var txt = $(".card-feed").is(':visible') ? 'Read More' : 'Read Less';
+	        $(".content").text(txt);
+	        $(this).next('.card-feed').slideToggle(200);
+	    });
+	});
+}*/

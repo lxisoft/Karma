@@ -187,6 +187,7 @@ public class AggregateController {
 		NeedDTO needDTO = aggregateResourceApi.getNeedUsingGET(id).getBody();
 
 		log.info("******inside getNeed{}",needDTO.getDescription());
+		//log.info("******image{}",needDTO.get);
 		model.addAttribute("need", needDTO);
 
 		//return "feeds";
@@ -784,7 +785,7 @@ public class AggregateController {
 		
 		model.addAttribute("top5EmotionalIntelligentPeople", top5EmotionalIntelligentPeople);
 		
-		model.addAttribute("top5EmotionalIntelligentPeople", top5SocialIntelligentPeople);
+		model.addAttribute("top5SocialIntelligentPeople", top5SocialIntelligentPeople);
 
 		return "user";
 	}

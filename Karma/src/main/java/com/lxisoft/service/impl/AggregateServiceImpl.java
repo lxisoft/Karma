@@ -363,34 +363,34 @@ public class AggregateServiceImpl implements AggregateService {
 			needDTO.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(postedDate).toString());
 		}
 
-		// media
-		Page<MediaDTO> mediaDTO = mediaRepository.findAllUrlByNeedId(need.getId(), PageRequest.of(0, 100))
+		Page<MediaDTO> mediaDTO = mediaRepository.findAllFileByNeedId(needDTO.getId(), PageRequest.of(0, 100))
 				.map(mediaMapper::toDto);
 
-		/*
-		 * List<String> imageUrls = new ArrayList<String>(); List<String>
-		 * videoUrls = new ArrayList<String>();
-		 * 
-		 * for (MediaDTO mediaDto : mediaDTO.getContent()) {
-		 * 
-		 * if (mediaDto.getExtension().contains("image")) {
-		 * log.info("****containcheck{}",
-		 * mediaDto.getExtension().contains("image"));
-		 * imageUrls.add(mediaDto.getFileName()); } else if
-		 * (mediaDto.getExtension().contains("video")) {
-		 * log.info("****videocontaincheck{}",
-		 * mediaDto.getExtension().contains("video"));
-		 * 
-		 * videoUrls.add(mediaDto.getFileName()); } else {
-		 * 
-		 * }
-		 * 
-		 * log.info("list size media url{}", imageUrls.size());
-		 * log.info("list size video url{}", videoUrls.size());
-		 * 
-		 * if (imageUrls.size() != 0) { needDTO.setImageUrls(imageUrls); } if
-		 * (videoUrls.size() != 0) { needDTO.setVideoUrls(videoUrls); } }
-		 */
+		List<String> imageList = new ArrayList<String>();
+		List<String> videoList = new ArrayList<String>();
+
+		for (MediaDTO mediaDto : mediaDTO.getContent()) {
+
+			if (mediaDto.getFileContentType().contains("image")) {
+
+				Base64Encoder encoder = new Base64Encoder();
+				String imageString = encoder.encode(mediaDto.getFile());
+
+				imageList.add(imageString);
+
+			} else if (mediaDto.getFileContentType().contains("video")) {
+
+				Base64Encoder encoder = new Base64Encoder();
+				String videoString = encoder.encode(mediaDto.getFile());
+
+				videoList.add(videoString);
+
+			}
+
+		}
+
+		needDTO.setImageMedias(imageList);
+		needDTO.setVideoMedias(videoList);
 
 		return Optional.of(needDTO);
 	}
@@ -881,14 +881,36 @@ public class AggregateServiceImpl implements AggregateService {
 
 		// anjali
 
-		Page<MediaDTO> mediaDTO = mediaRepository.findAllUrlByHelpId(help.getId(), pageable).map(mediaMapper::toDto);
+		Page<MediaDTO> mediaDTO = mediaRepository.findAllFileByNeedId(help.getId(), PageRequest.of(0, 100))
+				.map(mediaMapper::toDto);
 
-		List<String> mediaUrls = new ArrayList<String>();
+		List<String> imageList = new ArrayList<String>();
+		List<String> videoList = new ArrayList<String>();
 
-		for (MediaDTO mediaFromList : mediaDTO.getContent()) {
-			mediaUrls.add(mediaFromList.getUrl());
+		for (MediaDTO mediaDto : mediaDTO.getContent()) {
+
+			if (mediaDto.getFileContentType().contains("image")) {
+
+				Base64Encoder encoder = new Base64Encoder();
+				String imageString = encoder.encode(mediaDto.getFile());
+
+				imageList.add(imageString);
+
+			} else if (mediaDto.getFileContentType().contains("video")) {
+
+				Base64Encoder encoder = new Base64Encoder();
+				String videoString = encoder.encode(mediaDto.getFile());
+
+				videoList.add(videoString);
+
+			}
+
 		}
-		help.setAttachmentUrls(mediaUrls);
+
+		help.setImageMedias(imageList);
+		help.setVideoMedias(videoList);
+
+
 
 		// anjali
 		return Optional.of(help);
@@ -949,7 +971,7 @@ public class AggregateServiceImpl implements AggregateService {
 
 			// anjali
 
-			Page<MediaDTO> mediaDTO = mediaRepository.findAllUrlByHelpId(help.getId(), PageRequest.of(0, 100))
+			Page<MediaDTO> mediaDTO = mediaRepository.findAllFileByHelpId(help.getId(), PageRequest.of(0, 100))
 					.map(mediaMapper::toDto);
 
 			List<String> imageList = new ArrayList<String>();
@@ -1723,7 +1745,8 @@ public class AggregateServiceImpl implements AggregateService {
 		registeredUserDto.setNoOfNeeds((long) needRepository.CountOfNeedsByPostedUserId(id));
 		
 		//anjali 
-		
+			
+		log.info("**********profile id{}",registeredUserDto.getProfilePicId());
 				Optional<MediaDTO> mediaDto=mediaRepository.findById(registeredUserDto.getProfilePicId()).map(mediaMapper::toDto);
 
 				if (mediaDto.get().getFileContentType().contains("image")) {
@@ -1864,6 +1887,19 @@ public class AggregateServiceImpl implements AggregateService {
 		// TODO Auto-generated method stub
 		return mediaRepository.findAllFileByNeedId(needId, pageable).map(mediaMapper::toDto);
 	}
+	
+	/**
+	 * Get all the media by helpId.
+	 *
+	 * @param helpId
+	 *            of the media
+	 * @return the list of entities
+	 */
+	@Override
+	public Page<MediaDTO> findAllFileByHelpId(Long helpId, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return mediaRepository.findAllFileByHelpId(helpId, pageable).map(mediaMapper::toDto);
+	}
 
 	// anjali
 
@@ -1908,7 +1944,39 @@ public class AggregateServiceImpl implements AggregateService {
 	@Override
 	public Page<RegisteredUserDTO> findTop5RegisteredUsersBySocialQuotient(Pageable pageable) {
 		log.debug("Request to get top 5 registered users by Social Quotient");
-		return registeredUserRepository.findTop5ByOrderBySocialQuotientDesc(pageable).map(registeredUserMapper::toDto);
+		Page<RegisteredUserDTO> registeredUserDTO=registeredUserRepository.findTop5ByOrderBySocialQuotientDesc(pageable).map(registeredUserMapper::toDto);
+		
+		//anjali 
+		
+		List<RegisteredUserDTO> registeredUserDto=registeredUserDTO.getContent();
+		
+		List<RegisteredUserDTO> userDtoList=new ArrayList<RegisteredUserDTO>();	
+		
+				for(RegisteredUserDTO registeredUser:registeredUserDto){
+					
+					log.info("*********id{}",registeredUser.getProfilePicId());
+					
+					if(registeredUser.getProfilePicId()!=null){
+						
+					Optional<MediaDTO> mediaDto=mediaRepository.findById(registeredUser.getProfilePicId()).map(mediaMapper::toDto);
+
+						if (mediaDto.get().getFileContentType().contains("image")) {
+							
+							Base64Encoder encoder = new Base64Encoder();
+							String imageString = encoder.encode(mediaDto.get().getFile());
+				            
+							registeredUser.setImageMedia(imageString);
+							}
+						
+					}
+						userDtoList.add(registeredUser);
+					}
+				
+				Page<RegisteredUserDTO> registeredDtos = new PageImpl<RegisteredUserDTO>(userDtoList, pageable, userDtoList.size());
+				
+				return registeredDtos;
+				//anjali
+
 	}
 
 	// Code Ends: Dheeraj Das
@@ -1925,8 +1993,40 @@ public class AggregateServiceImpl implements AggregateService {
 	@Override
 	public Page<RegisteredUserDTO> findTop5RegisteredUsersByEmotionalQuotient(Pageable pageable) {
 		log.debug("Request to get top 5 registered users by Emotional Quotient");
-		return registeredUserRepository.findTop5ByOrderByEmotionalQuotientDesc(pageable)
+		Page<RegisteredUserDTO> registeredUserDTO=registeredUserRepository.findTop5ByOrderByEmotionalQuotientDesc(pageable)
 				.map(registeredUserMapper::toDto);
+		
+		//anjali 
+		
+				List<RegisteredUserDTO> registeredUserDto=registeredUserDTO.getContent();
+				
+				List<RegisteredUserDTO> userDtoList=new ArrayList<RegisteredUserDTO>();	
+				
+						for(RegisteredUserDTO registeredUser:registeredUserDto){
+							
+							log.info("*********id{}",registeredUser.getProfilePicId());
+							
+							if(registeredUser.getProfilePicId()!=null){
+								
+							Optional<MediaDTO> mediaDto=mediaRepository.findById(registeredUser.getProfilePicId()).map(mediaMapper::toDto);
+
+								if (mediaDto.get().getFileContentType().contains("image")) {
+									
+									Base64Encoder encoder = new Base64Encoder();
+									String imageString = encoder.encode(mediaDto.get().getFile());
+						            
+									registeredUser.setImageMedia(imageString);
+									}
+								
+							}
+								userDtoList.add(registeredUser);
+							}
+						
+						Page<RegisteredUserDTO> registeredDtos = new PageImpl<RegisteredUserDTO>(userDtoList, pageable, userDtoList.size());
+						
+						return registeredDtos;
+						//anjali
+
 	}
 
 	// Code Ends: Dheeraj Das

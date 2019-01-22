@@ -110,29 +110,12 @@
                     <div class="col-sm-12 border ml-2 mt-4 p-4 default-color rounded offset-1">
                         <h4 class="text-center">Top 5 persons</h4>
                         <th:block th:each="person:${top5EmotionalIntelligentPeople}">
-                            <div class="row" th:remove="all">
-
-                                <img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;" alt="" class="img-fluid z-depth-1 rounded-circle"><a
-                                    href="#" class="ml-1 h6 text-white">user
-                                    1</a></div>
-                            <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
-                                    alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
-                                    1</a></div>
-                            <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
-                                    alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
-                                    1</a></div>
-                            <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
-                                    alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
-                                    1</a></div>
-                            <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
-                                    alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
-                                    1</a></div>
-
-
-                            <div class="row"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
-                                    alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" th:text="${person.firstName+' '+person.lastName}"
-                                    class="ml-1 h6 text-white">user
-                                    1</a></div>
+                                                
+                            <div class="row"><img alt="" src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
+                                     class="img-fluid z-depth-1 rounded-circle" th:src="${'data:image/jpeg;base64,'+person.imageMedia}"><a href="#" th:text="${person.firstName+' '+person.lastName}"
+                                    class="ml-1 h6 text-white">user 1</a></div>
+                                    
+                                    
                         </th:block>
                     </div>
                 </div>
@@ -140,29 +123,13 @@
                 <div class="row">
                     <div class="col-sm-12 border ml-2 mt-4 p-4 secondary-color rounded offset-1">
                         <h4 class="text-center">Top 5 leaders</h4>
-                        <th:block th:each="person:${top5EmotionalIntelligentPeople}">
+                        <th:block th:each="person1:${top5SocialIntelligentPeople}">
                             <div class="row">
 
-                                <img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;" alt="" class="img-fluid z-depth-1 rounded-circle"><a
-                                    href="#" class="ml-1 h6 text-white" th:text="${person.firstName+' '+person.lastName}">user
+                                <img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;" alt="" class="img-fluid z-depth-1 rounded-circle" th:src="${'data:image/jpeg;base64,'+person1.imageMedia}"><a
+                                    href="#" class="ml-1 h6 text-white" th:text="${person1.firstName+' '+person1.lastName}">user
                                     1</a></div>
 
-
-                            <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
-                                    alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
-                                    1</a></div>
-                            <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
-                                    alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-white">user
-                                    1</a></div>
-                            <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
-                                    alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
-                                    1</a></div>
-                            <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
-                                    alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
-                                    1</a></div>
-                            <div class="row" th:remove="all"><img src="/static/images/IMG_5515.JPG" style="width:1.5rem;height:1.5rem;"
-                                    alt="" class="img-fluid z-depth-1 rounded-circle"><a href="#" class="ml-1 h6 text-info">user
-                                    1</a></div>
                         </th:block>
 
                     </div>

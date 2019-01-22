@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
  * IdentityProofTypeDTO
  */
 @Validated
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-01-03T21:30:58.472201400+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-01-15T13:59:42.068056700+05:30[Asia/Calcutta]")
 
 public class IdentityProofTypeDTO   {
   @JsonProperty("id")

@@ -840,9 +840,23 @@ public class AggregateResource {
 	   @GetMapping("/media/getAllMediaByNeedId/{needId}")
 	   @Timed
 	   public ResponseEntity<List<MediaDTO>> getAllMediaByNeedId(@PathVariable Long needId,Pageable pageable) {
-	       log.debug("REST request to get a page of Media{}",needId);
+	       log.debug("REST request to get a page of Need Medias{}",needId);
 	       Page<MediaDTO> page = aggregateService.findAllFileByNeedId(needId,pageable);
 	       HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/media/getAllMediaByNeedId/");
+	       return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+	   }
+	   
+	   /**
+	    *
+	    * @param helpId the id of the mediaDTO to retrieve
+	    * @return the ResponseEntity with status 200 (OK) and with body the mediaDTO, or with status 404 (Not Found)
+	    */
+	   @GetMapping("/media/getAllMediaByHelpId/{helpId}")
+	   @Timed
+	   public ResponseEntity<List<MediaDTO>> getAllMediaByHelpId(@PathVariable Long helpId,Pageable pageable) {
+	       log.debug("REST request to get a page of Help Medias{}",helpId);
+	       Page<MediaDTO> page = aggregateService.findAllFileByHelpId(helpId,pageable);
+	       HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/media/getAllMediaByHelpId/");
 	       return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 	   }
 	   
